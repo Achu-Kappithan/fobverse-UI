@@ -1,0 +1,202 @@
+<div class="bg-white">
+    <div class="min-h-screen bg-white flex flex-col lg:flex-row overflow-hidden">
+        <div class="relative bg-[#f7f3ff] w-full lg:w-[634px] p-8 flex flex-col items-center justify-center lg:py-0 lg:px-20">
+            <div class="absolute top-5 left-8 lg:left-20 flex items-center space-x-2">
+                <div class="w-8 h-8 bg-[#6A45F5] rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">J</span>
+                </div>
+                <span class="text-[#252F4A] font-bold text-2xl">JobVerse</span>
+            </div>
+
+            <div class="hidden lg:block relative w-full h-full">
+                <div class="w-full h-full bg-[#f7f3ff]"></div>
+                
+                <div class="absolute top-20 left-4 z-[9999]  ">
+                    <div class="w-[165px] h-[152px] bg-white border border-[#DCDFE4] rounded-lg p-5 shadow-sm">
+                        <div class="flex space-x-2 mb-4">
+                            <span class="text-[#6A45F5] font-bold text-2xl">FobVerse</span>
+                        </div>
+                        <div>
+                            <span class="block text-[#252F4A] font-bold text-xl">100K+</span>
+                            <span class="block text-[#252F4A] text-base opacity-50">People got hired</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-[#f7f3ff] border-4 border-[#EAE6FF] rounded-3xl flex items-center justify-center overflow-hidden">
+                  <img src="/templateimages/v1_5138.png" alt="My Image" class="max-w-full max-h-full object-contain">
+                </div>
+
+              <div class="absolute bottom-20 left-[220px]">
+                <div class="w-[277px] h-[198px] bg-white border border-[#DCDFE4] rounded-lg p-5 relative shadow-sm">
+                  <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                      <div class="w-16 h-16 bg-[#F9DA6C] rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-[#252F4A]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="flex-1 relative">
+                      <div class="mb-2">
+                        <span class="block text-[#252F4A] font-semibold text-sm opacity-50">Adam Sandler</span>
+                        <span class="block text-[#252F4A] text-sm opacity-50">Lead Engineer at Canva</span>
+                      </div>
+                      <!-- Inline opening quote -->
+                      <p class="text-[#252F4A] font-semibold text-base">
+                        <span class="text-[#6A45F5] text-4xl font-bold leading-none mr-1">"</span>
+                        Great platform for the job seeker that searching for new career heights."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:hidden text-center text-[#252F4A] my-8">
+                <h2 class="text-2xl font-semibold">Join JobVerse today!</h2>
+                <p class="text-lg opacity-70">Find your dream job with ease.</p>
+            </div>
+        </div>
+
+        <div class="flex-1 flex items-center justify-center p-4 sm:p-8 bg-white">
+          <div class="w-full max-w-[408px] space-y-6">
+
+            <!-- Tabs -->
+            <div class="flex justify-center gap-6 text-sm font-medium">
+              <button class="text-[#6A45F5] bg-[#F0EDFF] px-3 py-1 rounded">Job Seeker</button>
+              <button class="text-[#6A45F5] hover:underline">Company</button>
+            </div>
+
+            <!-- Heading -->
+            <div class="text-center">
+              <h1 class="text-[#252F4A] font-semibold text-2xl sm:text-3xl">Get more opportunities</h1>
+            </div>
+
+            <!-- Google Sign Up -->
+            <div class="flex justify-center">
+              <button class="flex items-center justify-center gap-2 w-full max-w-[356px] h-[48px] px-4 border border-[#D1D5FF] rounded-md">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" class="w-4 h-4">
+                <span class="text-[#3D5AFE] text-sm md:text-base font-semibold">Login with Google</span>
+              </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-4">
+              <hr class="flex-grow border-t border-gray-200">
+              <span class="text-gray-400 text-sm">Or login with email</span>
+              <hr class="flex-grow border-t border-gray-200">
+            </div>
+
+            <!-- Form -->
+            <form class="space-y-5" [formGroup]="loginForm" (ngsubmit)="handleSubmit()">
+                
+                <!-- Email Field -->
+                <div class="space-y-2">
+                  <label for="email" class="block text-[#252F4A] text-base">Email Address</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <!-- Heroicons: Envelope -->
+                      <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                          viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16 12H8m0 0l4-4m-4 4l4 4" />
+                      </svg>
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      formControlName="email"
+                      type="email"
+                      placeholder="Enter email address"
+                      class="w-full h-12 pl-10 pr-3 border border-[#DCDFE4] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
+                      {{loginForm.get('email')?.invalid && loginForm.get('email')?.touched ?'border-red-500' : 'border-[#DCDFE4]'}}"
+                    
+                    />
+                  </div>
+                  <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500 text-sm">
+                    Email is required.
+                </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-2">
+                  <label for="password" class="block text-[#252F4A] text-base">Password</label>
+                  <div class="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      formControlName="password"
+                      type="password"
+                      placeholder="Enter password"
+                      class="w-full h-12 px-3 pr-10 pl-3 border border-[#DCDFE4] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
+                      {{loginForm.get('password')?.invalid && loginForm.get('password')?.touched ?'border-red-500' : 'border-[#DCDFE4]'}}"
+                      
+                    />
+                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm">
+                    password is required.
+                   </div>
+                    <!-- Show/Hide Icon -->
+                    <button type="button" onclick="togglePassword()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                      <!-- Eye Icon -->
+                      <svg id="eye-icon" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
+                          viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S3.732 16.057 2.458 12z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Submit -->
+                <button
+                  type="submit"
+                  class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors"
+                >
+                  Continue
+                </button>
+              </form>
+            <!-- Login Link -->
+            <div class="flex justify-center space-x-2">
+              <span class="text-[#252F4A] text-base opacity-70">Don’t have an account?</span>
+              <button ></button>
+              <a routerLink="/signup"  class="text-[#6A45F5] font-semibold text-base hover:underline">Sign Up</a>
+            </div>
+
+            <!-- Terms -->
+            <p class="text-[#252F4A] text-sm text-center px-4">
+              By clicking 'Continue', you acknowledge that you have read and accept the
+              <a href="#" class="text-[#6A45F5] hover:underline">Terms of Service</a>
+              and
+              <a href="#" class="text-[#6A45F5] hover:underline">Privacy Policy</a>.
+            </p>
+          </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+          const input = document.getElementById("password");
+          const icon = document.getElementById("eye-icon");
+          const isVisible = input.type === "text";
+
+          input.type = isVisible ? "password" : "text";
+
+          icon.innerHTML = isVisible
+            ? `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S3.732 16.057 2.458 12z" />`
+            : `<path stroke-linecap="round" stroke-linejoin="round"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.057 
+                        10.057 0 012.137-3.362m1.797-1.639A9.955 9.955 0 0112 5c4.478 0 8.268 2.943 
+                        9.542 7a10.05 10.05 0 01-4.043 5.197M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18" />`;
+        }
+
+    </script>
+</div>
+
+
