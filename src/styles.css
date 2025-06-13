@@ -1,0 +1,33 @@
+@keyframes borderProgress {
+  0% {
+    border-image-slice: 0;
+  }
+  100% {
+    border-image-slice: 1;
+  }
+}
+
+.custom-border-toast {
+  background-color: #f0fff4 !important;
+  border: 5px solid;
+  border-image-source: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
+  border-image-slice: 1;
+  border-width: 4px;
+  border-radius: 12px;
+  padding: 1rem;
+  animation: borderProgress linear forwards;
+  animation-duration: 3s; /* Match timer duration */
+  box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
+  position: relative;
+}
+
+/* Optional animated tick and colored title */
+.custom-toast-title {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.custom-toast-icon {
+  color: #4caf50 !important;
+}

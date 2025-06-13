@@ -14,22 +14,27 @@ export class SweetAlert {
        * @param text Optional text for the message.
        * @param timer Optional duration for auto-dismissal (defaults to 3000ms).
        */
-      showSuccessToast(title: string, text: string = '', timer: number = 3000): void {
-        Swal.fire({
-          icon: 'success',
-          title: title,
-          text: text,
-          toast: true, // Makes it a toast notification
-          position: 'top-end', // Position it at the top right
-          showConfirmButton: false, // No confirm button
-          timer: timer, // Auto-dismiss after this duration
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          }
-        });
-      }
+showSuccessToast(title: string, text: string = '', timer: number = 7000): void {
+  Swal.fire({
+    icon: 'success',
+    title: title,
+    text: text,
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: timer,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+    customClass: {
+      popup: 'custom-border-toast',
+      title: 'custom-toast-title',
+      icon: 'custom-toast-icon'
+    },
+    backdrop: false
+  });
+}
 
       /**
        * Shows an error notification (toast style).

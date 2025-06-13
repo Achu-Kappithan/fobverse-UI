@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CandidateRegistration } from '../interfaces';
 import { Observable } from 'rxjs';
+import { ApiResponce, UserPartial } from '../../../common/interfaces/apiresponce.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +15,9 @@ export class UserRegisterService {
   registerCandidate(candidate:CandidateRegistration):Observable<any>{
     console.log("data send to the backend for registration from regiser service ",candidate)
     return this.http.post(`${this.apiUrl}auth/registeruser`,candidate)
+  }
+
+  candidateVarification(token:string):Observable<ApiResponce<UserPartial>>{
+    return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/verify-email?token=${token}`)
   }
 }

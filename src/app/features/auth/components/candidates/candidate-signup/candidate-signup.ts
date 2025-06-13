@@ -47,13 +47,13 @@ export class CandidateSignup implements OnInit{
       this.service.registerCandidate({fullName,email,password}).subscribe({
         next:(response)=>{
           console.log('registration responce comes from the backend',response)
-          this.sweetalert.showSuccessToast('Registration Successful!', 'You can now log in.')
+          this.sweetalert.showSuccessToast(response.message)
           this.signupForm.reset()
           this.router.navigate(['/login'])
         },
         error:(error)=>{
           console.log(error)
-          this.sweetalert.showErrorToast("Error regading registration")
+          this.sweetalert.showErrorToast(error.error.message)
         }
       })
 
