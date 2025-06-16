@@ -4,3 +4,4 @@ export interface CandidateRegistration {
     email : string,
     password: string
 }
+

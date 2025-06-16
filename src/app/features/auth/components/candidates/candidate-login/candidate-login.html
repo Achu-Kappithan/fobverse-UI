@@ -89,7 +89,7 @@
             </div>
 
             <!-- Form -->
-            <form class="space-y-5" [formGroup]="loginForm" (ngsubmit)="handleSubmit()">
+            <form class="space-y-5" [formGroup]="loginForm" (ngSubmit)="handleFormSubmit()">
                 
                 <!-- Email Field -->
                 <div class="space-y-2">
@@ -114,7 +114,7 @@
                     
                     />
                   </div>
-                  <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500 text-sm">
+                  <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.touched)" class="text-red-500 text-sm">
                     Email is required.
                 </div>
                 </div>
@@ -133,14 +133,15 @@
                       {{loginForm.get('password')?.invalid && loginForm.get('password')?.touched ?'border-red-500' : 'border-[#DCDFE4]'}}"
                       
                     />
-                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.touched)" class="text-red-500 text-sm">
                     password is required.
                    </div>
+                   <span *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email.</span>
+
                     <!-- Show/Hide Icon -->
-                    <button type="button" onclick="togglePassword()"
+                    <button type="button" (click)="togglePassword('password')"
                             class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-                      <!-- Eye Icon -->
-                      <svg id="eye-icon" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
+                      <svg  id="eye-icon-password" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
                           viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -151,7 +152,6 @@
                   </div>
                 </div>
 
-                <!-- Submit -->
                 <button
                   type="submit"
                   class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors"
@@ -159,7 +159,6 @@
                   Continue
                 </button>
               </form>
-            <!-- Login Link -->
             <div class="flex justify-center space-x-2">
               <span class="text-[#252F4A] text-base opacity-70">Don’t have an account?</span>
               <button ></button>
@@ -177,26 +176,6 @@
         </div>
     </div>
 
-    <script>
-        function togglePassword() {
-          const input = document.getElementById("password");
-          const icon = document.getElementById("eye-icon");
-          const isVisible = input.type === "text";
-
-          input.type = isVisible ? "password" : "text";
-
-          icon.innerHTML = isVisible
-            ? `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S3.732 16.057 2.458 12z" />`
-            : `<path stroke-linecap="round" stroke-linejoin="round"
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.057 
-                        10.057 0 012.137-3.362m1.797-1.639A9.955 9.955 0 0112 5c4.478 0 8.268 2.943 
-                        9.542 7a10.05 10.05 0 01-4.043 5.197M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18" />`;
-        }
-
-    </script>
 </div>
 
 
