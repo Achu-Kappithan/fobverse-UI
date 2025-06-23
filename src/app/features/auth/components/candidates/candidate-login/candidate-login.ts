@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserRegisterService } from '../../../services/auth.service';
+import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 
 @Component({
   selector: 'app-candidate-login',
@@ -20,6 +21,7 @@ export class CandidateLogin implements OnInit {
 
   private service = inject(UserRegisterService);
   private router = inject(Router);
+  private swal = inject(SweetAlert)
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -31,10 +33,22 @@ export class CandidateLogin implements OnInit {
   handleFormSubmit(): void {
     if (this.loginForm.valid) {
       console.log('Form submitted successfully!', this.loginForm.value);
-      this.service.candidateLogin(this.loginForm.value).subscribe((val) => {
-        console.log(val);
-        this.router.navigate(['/candidate/home']);
-      });
+      this.service.candidateLogin(this.loginForm.value).subscribe({
+      next: (val) => {
+        if (val.success) {
+          this.swal.showSuccessToast("Login Completed");
+          this.router.navigate(['/candidate/home']);
+        } else {
+          this.swal.showErrorToast("Invalid Email or Password");
+          this.loginForm.reset();
+        }
+      },
+      error: (err) => {
+        console.error("Login error:", err);
+        this.swal.showErrorToast(err.statusText,err.error.message);
+        this.loginForm.reset()
+      }
+    });
     } else {
       console.log('Form is invalid');
       this.loginForm.markAllAsTouched();

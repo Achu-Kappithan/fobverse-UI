@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { Component, OnInit } from '@angular/core';
+import { UserRegisterService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-candidate-home',
@@ -8,11 +7,12 @@ import { Router } from '@angular/router';
   templateUrl: './candidate-home.html',
   styleUrl: './candidate-home.css'
 })
-export class CandidateHome {
-  
-  constructor(private _router:Router){}
+export class CandidateHome implements OnInit {
 
-  company(){
-    this._router.navigate(['/candidate/company'])
+  constructor(private userservise: UserRegisterService) {}
+  ngOnInit(): void {
+    this.userservise.user$.subscribe((user)=>{
+      console.log(user)
+    })
   }
 }

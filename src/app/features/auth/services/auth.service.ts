@@ -1,39 +1,144 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CandidateRegistration } from '../interfaces/auth.interface';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, Observable, of, tap } from 'rxjs';
 import {
   ApiResponce,
+  User,
   UserPartial,
 } from '../../../shared/interfaces/apiresponce.interface';
+import { error } from 'console';
+import { PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserRegisterService {
-  private apiUrl = 'http://localhost:3008/';
+  private apiUrl = 'http://localhost:3007/api/v1/'; 
+  public userSubject = new BehaviorSubject<UserPartial | null>(null)
+  user$ = this.userSubject.asObservable()
+  private isLoadingSubject = new BehaviorSubject<boolean>(false)
+  isLoading$ = this.isLoadingSubject.asObservable()
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      const catchedUser = localStorage.getItem('currentUser')
+      if(catchedUser){
+        this.userSubject.next(JSON.parse(catchedUser))
+      }
+    }
+  }
+
+  
 
   registerCandidate(candidate: CandidateRegistration): Observable<any> {
-    console.log(
-      'data send to the backend for registration from regisetr service ',
-      candidate
-    );
-    return this.http.post(`${this.apiUrl}auth/registeruser`, candidate);
+    return this.http.post(`${this.apiUrl}auth/candidate/register`, candidate,{withCredentials: true});
   }
 
   candidateVarification(token: string): Observable<ApiResponce<UserPartial>> {
     return this.http.get<ApiResponce<UserPartial>>(
-      `${this.apiUrl}auth/verify-email?token=${token}`
+      `${this.apiUrl}auth/verify-email?token=${token}`,{withCredentials:true}
     );
   }
 
   candidateLogin(
     candidate: Omit<CandidateRegistration, 'fullname'>
-  ): Observable<any> {
-    console.log('login detils of candidate', candidate);
-    return this.http.post(`${this.apiUrl}auth/candidateLogin`, candidate);
+  ): Observable<ApiResponce<UserPartial>> {
+    return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/candidate/login`, candidate,{withCredentials: true})
+    .pipe(
+      tap(response =>{
+        console.log("login responce",response)
+        if (response.success && response.data){
+          this.userSubject.next(response.data)
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('currentUser',JSON.stringify(response.data))
+          }
+          console.log(`${response.data.email} is active user`);
+        } else {
+            this.userSubject.next(null);
+            if (isPlatformBrowser(this.platformId)) {
+              localStorage.removeItem('currentUser');
+            }
+            console.log('No active user found');
+          }
+      }),
+      catchError((error)=>{
+        console.error('Login failed:', error);
+          this.userSubject.next(null);
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('currentUser');
+          }
+          return of({ success: false, data: null, message: 'Login failed' });
+      })
+    )
+  }
+
+  getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
+    this.isLoadingSubject.next(true);
+    return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/getuser`,{withCredentials: true})
+    .pipe(
+      tap(response =>{
+        console.log("current user",response)
+        if(response.success && response.data){
+          this.userSubject.next(response.data)
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('currentUser', JSON.stringify(response.data));
+          }
+          console.log(`${response.data.email} is active user`);
+        }else{
+          this.userSubject.next(null)
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('currentUser');
+          }
+          console.log("no active user found")
+        }
+      }),
+      catchError((error)=>{
+        console.error('Error fetching user details:', error);
+        this.userSubject.next(null)
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.removeItem('currentUser')
+        }
+        return of({ success: false, data: null, message: 'Failed to fetch user details' });
+      }),
+      finalize(()=>{
+        this.isLoadingSubject.next(false)
+      })
+    )
+  }
+
+  refreshToken(): Observable<any> {
+    console.log('Attempting to refresh token...');
+    return this.http.post(`${this.apiUrl}auth/refresh`, {},{withCredentials:true})
+      .pipe(
+        tap(response => {
+          console.log('Refresh token successful. New access token set via cookie.',response);
+        }),
+        catchError(error => {
+          console.error('Refresh token failed:', error);
+          this.userSubject.next(null); 
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('currentUser')
+          }
+          return of (null)
+        })
+      );
+  }
+
+  logout(): Observable<any> {
+    return this.http.post(`${this.apiUrl}auth/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => {
+        this.userSubject.next(null);
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.removeItem('currentUser');
+        }
+        console.log('User logged out');
+      }),
+      catchError((error) => {
+        console.error('Logout failed:', error);
+        return of(null);
+      })
+    );
   }
 }
-

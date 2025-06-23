@@ -28,6 +28,7 @@ export class EmailVerification implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     this.verificationSubscription = this.route.queryParams
       .pipe(
         tap((parms) =>
@@ -112,7 +113,7 @@ export class EmailVerification implements OnInit {
             this.swal.showSuccessToast('Email verified successfully!');
             this.router.navigate(['/email/success']);
           } else {
-            this.swal.showErrorToast(response.message);
+            this.swal.showErrorToast(response.message!);
             const reasonForRoute = response.reason || 'api_generic_failure';
             this.router.navigate(['/email/failed'], {
               queryParams: { reason: reasonForRoute },

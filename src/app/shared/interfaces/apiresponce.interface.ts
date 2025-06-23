@@ -2,13 +2,12 @@
 
 export interface ApiResponce<T> {
   success: boolean;
-  message: string;
-  statusCode: number; 
-  data?: T;
+  message?: string;
+  data: T| null
 }
 
 export interface UserPartial { 
-  _id: string;
+  _id?: string;
   email: string;
   fullName: string;
   is_verified?: boolean;
@@ -23,3 +22,4 @@ export interface User {
   is_superAdmin: boolean
 
 }
+
