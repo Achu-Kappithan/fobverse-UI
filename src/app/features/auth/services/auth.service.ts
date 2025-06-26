@@ -141,4 +141,9 @@ export class UserRegisterService {
       })
     );
   }
+
+  googleLogin(email:string,googleId:string){
+    const payload  = {email, googleId} 
+    return this.http.post(`${this.apiUrl}auth/google`,payload)
+  }
 }

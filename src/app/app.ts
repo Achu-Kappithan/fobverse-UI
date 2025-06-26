@@ -13,6 +13,6 @@ export class App  implements OnInit {
   constructor(private authservice: UserRegisterService){}
 
   ngOnInit(): void {
-    this.authservice.getCurrentUserDetails().subscribe()
+    // this.authservice.getCurrentUserDetails().subscribe()
   }
 }

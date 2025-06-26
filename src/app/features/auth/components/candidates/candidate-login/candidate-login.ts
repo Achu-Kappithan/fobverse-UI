@@ -9,21 +9,56 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { UserRegisterService } from '../../../services/auth.service';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-candidate-login',
-  imports: [RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [RouterLink, ReactiveFormsModule, CommonModule,GoogleSigninButtonModule],
   templateUrl: './candidate-login.html',
   styleUrl: './candidate-login.css',
 })
 export class CandidateLogin implements OnInit {
   loginForm!: FormGroup;
 
+  user: SocialUser | null = null
+  loggedIn: boolean = false;
+
   private service = inject(UserRegisterService);
   private router = inject(Router);
-  private swal = inject(SweetAlert)
+  private swal = inject(SweetAlert);
+
+  constructor(private googleService:SocialAuthService){}
+
 
   ngOnInit(): void {
+    this.googleService.authState.subscribe({
+      next: (user) => {
+        if (user && user.idToken) {
+          this.service.googleLogin(user.email, user.idToken)
+            .pipe(
+              catchError((error) => {
+                console.error('Google login failed:', error);
+                return throwError(() => new Error('Google login failed'));
+              })
+            )
+            .subscribe({
+              next: (response) => {
+                console.log('Backend response:', response);
+                // Handle successful login (e.g., store token, redirect)
+              },
+              error: (error) => {
+                console.error('Error during login:', error);
+                // Show user-friendly error message
+              },
+            });
+        }
+      },
+      error: (error) => {
+        console.error('Google auth state error:', error);
+        // Handle Google auth error
+      },
+    });
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
@@ -70,5 +105,9 @@ export class CandidateLogin implements OnInit {
         eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S3.732 16.057 2.458 12z"/>`;
       }
     }
+  }
+
+  signInWithGoogle():void{
+    this.googleService.signIn(GoogleLoginProvider.PROVIDER_ID)
   }
 }

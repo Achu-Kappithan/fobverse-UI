@@ -74,11 +74,13 @@
             </div>
 
             <!-- Google Sign Up -->
-            <div class="flex justify-center">
-              <button class="flex items-center justify-center gap-2 w-full max-w-[356px] h-[48px] px-4 border border-[#D1D5FF] rounded-md">
+            <div *ngIf="!loggedIn" class="flex justify-center">
+              <!-- <button (click)="signInWithGoogle()" class="flex items-center justify-center gap-2 w-full max-w-[356px] h-[48px] px-4 border border-[#D1D5FF] rounded-md">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" class="w-4 h-4">
                 <span class="text-[#3D5AFE] text-sm md:text-base font-semibold">Login with Google</span>
-              </button>
+              </button> -->
+              <asl-google-signin-button type='standard' size='medium'>
+              </asl-google-signin-button>
             </div>
 
             <!-- Divider -->
