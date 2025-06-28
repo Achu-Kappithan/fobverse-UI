@@ -35,28 +35,23 @@ export class CandidateLogin implements OnInit {
     this.googleService.authState.subscribe({
       next: (user) => {
         if (user && user.idToken) {
-          this.service.googleLogin(user.email, user.idToken)
-            .pipe(
-              catchError((error) => {
-                console.error('Google login failed:', error);
-                return throwError(() => new Error('Google login failed'));
-              })
-            )
+          this.service.googleLogin(user.idToken)
             .subscribe({
               next: (response) => {
                 console.log('Backend response:', response);
-                // Handle successful login (e.g., store token, redirect)
+                if(response.success){
+                  this.swal.showSuccessToast(response.message ?? 'Login Successfull')
+                  this.router.navigate(['/candidate/home'])
+                }
               },
               error: (error) => {
                 console.error('Error during login:', error);
-                // Show user-friendly error message
               },
             });
         }
       },
       error: (error) => {
         console.error('Google auth state error:', error);
-        // Handle Google auth error
       },
     });
     this.loginForm = new FormGroup({

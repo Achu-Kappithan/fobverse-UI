@@ -4,6 +4,7 @@ import { CandidateRegistration } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, finalize, Observable, of, tap } from 'rxjs';
 import {
   ApiResponce,
+  GoogleResponce,
   User,
   UserPartial,
 } from '../../../shared/interfaces/apiresponce.interface';
@@ -25,7 +26,7 @@ export class UserRegisterService {
     if (isPlatformBrowser(this.platformId)) {
       const catchedUser = localStorage.getItem('currentUser')
       if(catchedUser){
-        this.userSubject.next(JSON.parse(catchedUser))
+        this.getCurrentUserDetails().subscribe();
       }
     }
   }
@@ -38,7 +39,7 @@ export class UserRegisterService {
 
   candidateVarification(token: string): Observable<ApiResponce<UserPartial>> {
     return this.http.get<ApiResponce<UserPartial>>(
-      `${this.apiUrl}auth/verify-email?token=${token}`,{withCredentials:true}
+      `${this.apiUrl}auth/verify-email?token=${token}`,{withCredentials: true}
     );
   }
 
@@ -48,69 +49,46 @@ export class UserRegisterService {
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/candidate/login`, candidate,{withCredentials: true})
     .pipe(
       tap(response =>{
-        console.log("login responce",response)
-        if (response.success && response.data){
-          this.userSubject.next(response.data)
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('currentUser',JSON.stringify(response.data))
-          }
-          console.log(`${response.data.email} is active user`);
+        if (response.success){
+          console.log("login responce",response)
         } else {
             this.userSubject.next(null);
-            if (isPlatformBrowser(this.platformId)) {
-              localStorage.removeItem('currentUser');
-            }
             console.log('No active user found');
           }
       }),
       catchError((error)=>{
         console.error('Login failed:', error);
           this.userSubject.next(null);
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem('currentUser');
-          }
           return of({ success: false, data: null, message: 'Login failed' });
       })
     )
   }
 
   getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
-    this.isLoadingSubject.next(true);
+    console.log("try to get user details")
     return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/getuser`,{withCredentials: true})
     .pipe(
       tap(response =>{
         console.log("current user",response)
         if(response.success && response.data){
           this.userSubject.next(response.data)
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('currentUser', JSON.stringify(response.data));
-          }
-          console.log(`${response.data.email} is active user`);
+          console.log(`${response.data.email} is active user`);  
         }else{
           this.userSubject.next(null)
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem('currentUser');
-          }
           console.log("no active user found")
         }
       }),
       catchError((error)=>{
         console.error('Error fetching user details:', error);
         this.userSubject.next(null)
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.removeItem('currentUser')
-        }
         return of({ success: false, data: null, message: 'Failed to fetch user details' });
       }),
-      finalize(()=>{
-        this.isLoadingSubject.next(false)
-      })
     )
   }
 
   refreshToken(): Observable<any> {
     console.log('Attempting to refresh token...');
-    return this.http.post(`${this.apiUrl}auth/refresh`, {},{withCredentials:true})
+    return this.http.post(`${this.apiUrl}auth/refresh`, {},{withCredentials: true})
       .pipe(
         tap(response => {
           console.log('Refresh token successful. New access token set via cookie.',response);
@@ -118,9 +96,6 @@ export class UserRegisterService {
         catchError(error => {
           console.error('Refresh token failed:', error);
           this.userSubject.next(null); 
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem('currentUser')
-          }
           return of (null)
         })
       );
@@ -142,8 +117,7 @@ export class UserRegisterService {
     );
   }
 
-  googleLogin(email:string,googleId:string){
-    const payload  = {email, googleId} 
-    return this.http.post(`${this.apiUrl}auth/google`,payload)
+  googleLogin(googleId:string):Observable<ApiResponce<UserPartial>>{
+    return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/google?googleId=${googleId}`,{withCredentials: true})
   }
 }
