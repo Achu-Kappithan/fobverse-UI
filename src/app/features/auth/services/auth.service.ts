@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CandidateRegistration } from '../interfaces/auth.interface';
+import { CandidateRegistration, login } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, finalize, Observable, of, tap } from 'rxjs';
 import {
   ApiResponce,
@@ -31,10 +31,8 @@ export class UserRegisterService {
     }
   }
 
-  
-
   registerCandidate(candidate: CandidateRegistration): Observable<any> {
-    return this.http.post(`${this.apiUrl}auth/candidate/register`, candidate,{withCredentials: true});
+    return this.http.post(`${this.apiUrl}auth/register`, candidate,{withCredentials: true});
   }
 
   candidateVarification(token: string): Observable<ApiResponce<UserPartial>> {
@@ -44,24 +42,9 @@ export class UserRegisterService {
   }
 
   candidateLogin(
-    candidate: Omit<CandidateRegistration, 'fullname'>
+    candidate: login
   ): Observable<ApiResponce<UserPartial>> {
-    return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/candidate/login`, candidate,{withCredentials: true})
-    .pipe(
-      tap(response =>{
-        if (response.success){
-          console.log("login responce",response)
-        } else {
-            this.userSubject.next(null);
-            console.log('No active user found');
-          }
-      }),
-      catchError((error)=>{
-        console.error('Login failed:', error);
-          this.userSubject.next(null);
-          return of({ success: false, data: null, message: 'Login failed' });
-      })
-    )
+    return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/login`, candidate,{withCredentials: true})
   }
 
   getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
@@ -77,12 +60,7 @@ export class UserRegisterService {
           this.userSubject.next(null)
           console.log("no active user found")
         }
-      }),
-      catchError((error)=>{
-        console.error('Error fetching user details:', error);
-        this.userSubject.next(null)
-        return of({ success: false, data: null, message: 'Failed to fetch user details' });
-      }),
+      })
     )
   }
 
@@ -117,7 +95,7 @@ export class UserRegisterService {
     );
   }
 
-  googleLogin(googleId:string):Observable<ApiResponce<UserPartial>>{
-    return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/google?googleId=${googleId}`,{withCredentials: true})
+  googleLogin(googleId:string,userType:string):Observable<ApiResponce<UserPartial>>{
+    return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/google?googleId=${googleId}&role=${userType}`,{withCredentials: true})
   }
 }

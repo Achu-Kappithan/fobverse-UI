@@ -13,7 +13,16 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const authService = inject(UserRegisterService);
   const router = inject(Router)
 
-if(req.url.includes('/auth/refresh')) {
+  const publicPaths = [
+    '/auth/refresh',
+    'auth/login',
+    'auth/register',
+    'auth/google'
+  ]
+
+  const isPublicRequest = publicPaths.some((path)=> req.url.includes(path))
+
+if(isPublicRequest) {
     return next(req);
 }
 

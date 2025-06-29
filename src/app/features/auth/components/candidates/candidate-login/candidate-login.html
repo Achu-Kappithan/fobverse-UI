@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-[#f7f3ff] border-4 border-[#EAE6FF] rounded-3xl flex items-center justify-center overflow-hidden">
-                  <img src="/templateimages/v1_5138.png" alt="My Image" class="max-w-full max-h-full object-contain">
+                  <img [src]="imagePath" alt="My Image" class="max-w-full max-h-full object-contain">
                 </div>
 
               <div class="absolute bottom-20 left-[220px]">
@@ -63,12 +63,23 @@
           <div class="w-full max-w-[408px] space-y-6">
 
             <!-- Tabs -->
+            <!-- <div class="flex justify-center gap-6 text-sm font-medium">
+              <button [routerLink]="['/login']" class="text-[#6A45F5]  bg-[#F0EDFF] px-3 py-1 rounded hover:underline">Job Seeker</button>
+              <button [routerLink]="['/company/login']" class="text-[#6A45F5] hover:underline">Company</button>
+            </div> -->
+
             <div class="flex justify-center gap-6 text-sm font-medium">
-              <button class="text-[#6A45F5] bg-[#F0EDFF] px-3 py-1 rounded">Job Seeker</button>
-              <button class="text-[#6A45F5] hover:underline">Company</button>
+              <button
+               [routerLink]="['/login']"
+               [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'candidate'}"
+               >Job Seeker</button>
+              <button
+               [routerLink]="['/company/login']"
+                class="text-[#6A45F5] hover:underline"
+                [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'company'}"
+                >Company</button>
             </div>
 
-            <!-- Heading -->
             <div class="text-center">
               <h1 class="text-[#252F4A] font-semibold text-2xl sm:text-3xl">Get more opportunities</h1>
             </div>
@@ -79,7 +90,7 @@
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" class="w-4 h-4">
                 <span class="text-[#3D5AFE] text-sm md:text-base font-semibold">Login with Google</span>
               </button> -->
-              <asl-google-signin-button type='standard' size='medium'>
+              <asl-google-signin-button type='standard' size='large'>
               </asl-google-signin-button>
             </div>
 

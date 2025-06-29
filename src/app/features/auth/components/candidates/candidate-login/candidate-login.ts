@@ -1,75 +1,114 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserRegisterService } from '../../../services/auth.service';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { catchError, throwError } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-candidate-login',
-  imports: [RouterLink, ReactiveFormsModule, CommonModule,GoogleSigninButtonModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule,GoogleSigninButtonModule],
   templateUrl: './candidate-login.html',
   styleUrl: './candidate-login.css',
 })
-export class CandidateLogin implements OnInit {
-  loginForm!: FormGroup;
+export class CandidateLogin implements OnInit, OnDestroy {
 
+  loginForm!: FormGroup;
   user: SocialUser | null = null
   loggedIn: boolean = false;
+
+  userType:string=''
+  imagePath:string = ''
 
   private service = inject(UserRegisterService);
   private router = inject(Router);
   private swal = inject(SweetAlert);
+  private googleService = inject(SocialAuthService)
+  private route = inject(ActivatedRoute)
+  private googlesub?:Subscription
 
-  constructor(private googleService:SocialAuthService){}
+  // constructor(
+  //   private googleService:SocialAuthService,
+  //   private route:ActivatedRoute
+  // ){
+      
+  //   this.route.data.subscribe((data)=>{
+  //     this.userType=data['userType']
+  //   })
 
+  //   this.imagePath = this.userType =='candidate' ? "/templateimages/v1_5138.png": "/templateimages/image.png"
+  // }
 
   ngOnInit(): void {
-    this.googleService.authState.subscribe({
-      next: (user) => {
-        if (user && user.idToken) {
-          this.service.googleLogin(user.idToken)
-            .subscribe({
-              next: (response) => {
-                console.log('Backend response:', response);
-                if(response.success){
-                  this.swal.showSuccessToast(response.message ?? 'Login Successfull')
-                  this.router.navigate(['/candidate/home'])
-                }
-              },
-              error: (error) => {
-                console.error('Error during login:', error);
-              },
-            });
-        }
-      },
-      error: (error) => {
-        console.error('Google auth state error:', error);
-      },
-    });
+    this.route.data.subscribe((data)=>{
+      this.userType = data['userType'] ?? 'candidate'
+      this.imagePath = this.userType =='candidate' ? "/templateimages/v1_5138.png": "/templateimages/image.png"
+
+
+      this.googlesub =this.googleService.authState.subscribe({
+        next: (user) => {
+          if (user && user.idToken) {
+            this.service.googleLogin(user.idToken,this.userType)
+              .subscribe({
+                next: (response) => {
+                  console.log('Backend response:', response);
+                  if(response.success){
+                    this.swal.showSuccessToast(response.message ?? 'Login Successfull')
+                    console.log("logedin user role",response.data?.role)
+                    if(response.data?.role === 'candidate'){
+                      this.router.navigate(['/candidate/home']);
+                    }else if(response.data?.role === 'company'){
+                      this.router.navigate(['/company/home'])
+                    }
+                  }
+                },
+                error: (error) => {
+                  console.error('Error during login:', error);
+                  this.swal.showErrorToast(error.error.message)?? "Google login faild"
+                },
+              });
+          }
+        },
+        error: (error) => {
+          console.error('Google auth state error:', error);
+        },
+      });
+    })
+
+
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
     });
+
   }
 
   handleFormSubmit(): void {
     if (this.loginForm.valid) {
-      console.log('Form submitted successfully!', this.loginForm.value);
-      this.service.candidateLogin(this.loginForm.value).subscribe({
-      next: (val) => {
-        if (val.success) {
-          this.swal.showSuccessToast("Login Completed");
-          this.router.navigate(['/candidate/home']);
+      const userdata = {
+        ...this.loginForm.value,
+        role: this.userType
+      }
+      console.log('Form submitted successfully!',userdata);
+      this.service.candidateLogin(userdata).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.swal.showSuccessToast(response.message ?? "Login SuccessFull");
+          console.log("resoponce login data",response)
+          if(response.data?.role === 'candidate'){
+            this.router.navigate(['/candidate/home']);
+          }else if(response.data?.role === 'company'){
+            this.router.navigate(['/company/home'])
+          }
         } else {
-          this.swal.showErrorToast("Invalid Email or Password");
+          this.swal.showErrorToast(response.message ?? "Invalid Email or Password");
           this.loginForm.reset();
         }
       },
@@ -104,5 +143,9 @@ export class CandidateLogin implements OnInit {
 
   signInWithGoogle():void{
     this.googleService.signIn(GoogleLoginProvider.PROVIDER_ID)
+  }
+
+  ngOnDestroy(): void {
+    this.googlesub?.unsubscribe()
   }
 }

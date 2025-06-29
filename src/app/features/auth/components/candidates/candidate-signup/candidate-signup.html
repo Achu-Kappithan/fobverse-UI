@@ -23,7 +23,14 @@
                     </div>
                 </div>
 
-                <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-[#f7f3ff] border-4 border-[#EAE6FF] rounded-3xl"></div>
+                <!-- <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-[#f7f3ff] border-4 border-[#EAE6FF] rounded-3xl">
+                   <img src="/templateimages/image.png" alt="My Image" class="max-w-full max-h-full object-contain">
+                </div> -->
+
+                <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-[#f7f3ff] border-4 border-[#EAE6FF] rounded-3xl overflow-hidden">
+                  <img src="/templateimages/image.png" alt="My Image" class="w-full h-full object-cover">
+                </div>
+
 
               <div class="absolute bottom-20 left-[220px]">
                 <div class="w-[277px] h-[198px] bg-white border border-[#DCDFE4] rounded-lg p-5 relative shadow-sm">
@@ -62,8 +69,12 @@
 
             <!-- Tabs -->
             <div class="flex justify-center gap-6 text-sm font-medium">
-              <button class="text-[#6A45F5] bg-[#F0EDFF] px-3 py-1 rounded">Job Seeker</button>
-              <button class="text-[#6A45F5] hover:underline">Company</button>
+              <button [routerLink]="['/signup']"
+               [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'candidate'}"
+               >Job Seeker</button>
+              <button [routerLink]="['/company/signup']"
+               [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'company'}"
+               class="text-[#6A45F5] hover:underline">Company</button>
             </div>
 
             <!-- Heading -->
@@ -106,7 +117,7 @@
                         class="w-full h-12 pl-10 pr-3 border border-[#DCDFE4] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5] {{ signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched ? 'border-red-500' : 'border-[#DCDFE4]' }}"
                     />
                 </div>
-                <div *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched" class="text-red-500 text-sm">
+                <div *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched " class="text-red-500 text-sm">
                     Full Name is required.
                 </div>
             </div>
@@ -189,7 +200,7 @@
 
             <button
                 type="submit"
-                [disabled]="signupForm.invalid" class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors"
+                 class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors"
             >
                 Continue
             </button>

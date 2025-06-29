@@ -8,13 +8,13 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { UserRegisterService } from '../../../services/auth.service';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 
 @Component({
   selector: 'app-candidate-signup',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './candidate-signup.html',
   styleUrl: './candidate-signup.css',
 })
@@ -24,6 +24,15 @@ export class CandidateSignup implements OnInit {
   private router = inject(Router);
 
   signupForm!: FormGroup;
+  userType:string = ""
+  imagePath: string = ""
+
+  constructor(private route:ActivatedRoute){
+    this.route.data.subscribe((data)=>{
+      this.userType = data['userType']
+    })
+  }
+
   ngOnInit(): void {
     this.signupForm = new FormGroup(
       {
@@ -33,34 +42,49 @@ export class CandidateSignup implements OnInit {
           Validators.required,
           Validators.minLength(8),
           Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
           ),
         ]),
         confirmPassword: new FormControl('', Validators.required),
       },
       { validators: this.passwordMatchValidators }
     );
+    this.signupForm.get('password')?.valueChanges.subscribe(() => {
+      this.signupForm.get('confirmPassword')?.updateValueAndValidity();
+    });
   }
   passwordMatchValidators(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
+
+     if (!password || !confirmPassword) {
+      return null;
+    }
+
     if (
-      password &&
-      confirmPassword &&
       password.value !== confirmPassword.value
     ) {
-      return { passwordMatch: true };
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }else{
+      if (confirmPassword.hasError('passwordMismatch')) {
+        confirmPassword.setErrors(null);
+      }
     }
     return null;
   }
 
-  handleSubmit() {
-    console.log('submission works');
+  handleSubmit():void {
     if (this.signupForm.valid) {
       const { fullName, email, password } = this.signupForm.value;
-      console.log('Submited form details', this.signupForm.value);
-      console.log('Form Submitted', this.signupForm.valid);
-      this.service.registerCandidate({ fullName, email, password }).subscribe({
+      const userData = {
+        fullName: fullName,
+        email: email,
+        password: password,
+        role : this.userType
+      }
+      console.log("Signup form",userData)
+      this.service.registerCandidate(userData).subscribe({
         next: (response) => {
           console.log('registration responce comes from the backend', response);
           this.sweetalert.showSuccessToast(response.message);
@@ -74,7 +98,7 @@ export class CandidateSignup implements OnInit {
       });
     } else {
       console.log('Form is Invalid');
-      this.signupForm.markAllAsTouched();
+      this.signupForm.markAllAsTouched()
     }
   }
 

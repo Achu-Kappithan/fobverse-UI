@@ -8,15 +8,29 @@ import { Candidatecomponent } from './features/layout/candidatecomponent/candida
 import { CandidateHome } from './features/candidate/candidate-home/candidate-home';
 import { Authcomponent } from './features/layout/authcomponent/authcomponent';
 import { EmailComponent } from './features/layout/email-component/email-component';
+import { Company } from './features/layout/company/company';
+import { CompanyHome } from './features/company/company.home/company.home';
 
 export const routes: Routes = [
     {
         path:"",
         component : Authcomponent,
         children:[
-            {path:"login", component : CandidateLogin},
-            {path:"signup", component: CandidateSignup},
-            {path: "",redirectTo:'login', pathMatch:'full'}
+            {
+                path:"login", 
+                component : CandidateLogin,
+                data:{userType:'candidate'}
+            },
+            {
+                path:"signup",
+                component: CandidateSignup,
+                data:{userType:'candidate'}
+            },
+            {
+                path: "",
+                redirectTo:'login',
+                pathMatch:'full'
+            }
         ]
     },
     {
@@ -36,6 +50,29 @@ export const routes: Routes = [
                 path:'home',
                 component: CandidateHome
             },
+        ]
+    },
+
+
+    //company
+    {
+        path:'company',
+        component:Company,
+        children:[
+            {
+                path:'login',
+                component:CandidateLogin,
+                data:{userType:'company'}
+            },
+            {
+                path:'signup',
+                component:CandidateSignup,
+                data:{userType:'company'}
+            },
+            {
+                path:'home',
+                component:CompanyHome
+            }
         ]
     }
 ];

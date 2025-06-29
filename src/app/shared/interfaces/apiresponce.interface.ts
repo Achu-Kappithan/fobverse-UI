@@ -11,7 +11,8 @@ export interface UserPartial {
   email: string;
   fullName: string;
   is_verified?: boolean;
-  is_superAdmin?: boolean
+  is_superAdmin?: boolean;
+  role: string
 }
 
 export interface User {
