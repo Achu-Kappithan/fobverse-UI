@@ -10,6 +10,8 @@ import { Authcomponent } from './features/layout/authcomponent/authcomponent';
 import { EmailComponent } from './features/layout/email-component/email-component';
 import { Company } from './features/layout/company/company';
 import { CompanyHome } from './features/company/company.home/company.home';
+import { AdminComponent } from './features/layout/admin-component/admin-component';
+import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
 
 export const routes: Routes = [
     {
@@ -72,6 +74,24 @@ export const routes: Routes = [
             {
                 path:'home',
                 component:CompanyHome
+            }
+        ]
+    },
+
+    // Admin
+
+    {
+        path:"admin",
+        component: AdminComponent,
+        children:[
+            {
+                path:"login",
+                component: CandidateLogin,
+                data: {userType: "admin"}
+            },
+            {
+                path: "dashboard",
+                component: AdminDashboard,
             }
         ]
     }

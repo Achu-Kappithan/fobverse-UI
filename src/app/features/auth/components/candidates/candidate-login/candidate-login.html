@@ -62,13 +62,8 @@
         <div class="flex-1 flex items-center justify-center p-4 sm:p-8 bg-white">
           <div class="w-full max-w-[408px] space-y-6">
 
-            <!-- Tabs -->
-            <!-- <div class="flex justify-center gap-6 text-sm font-medium">
-              <button [routerLink]="['/login']" class="text-[#6A45F5]  bg-[#F0EDFF] px-3 py-1 rounded hover:underline">Job Seeker</button>
-              <button [routerLink]="['/company/login']" class="text-[#6A45F5] hover:underline">Company</button>
-            </div> -->
 
-            <div class="flex justify-center gap-6 text-sm font-medium">
+            <div  *ngIf="userType !== 'admin'"  class="flex justify-center gap-6 text-sm font-medium">
               <button
                [routerLink]="['/login']"
                [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'candidate'}"
@@ -85,7 +80,7 @@
             </div>
 
             <!-- Google Sign Up -->
-            <div *ngIf="!loggedIn" class="flex justify-center">
+            <div *ngIf="userType !=='admin'" class="flex justify-center">
               <!-- <button (click)="signInWithGoogle()" class="flex items-center justify-center gap-2 w-full max-w-[356px] h-[48px] px-4 border border-[#D1D5FF] rounded-md">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" class="w-4 h-4">
                 <span class="text-[#3D5AFE] text-sm md:text-base font-semibold">Login with Google</span>
@@ -95,7 +90,7 @@
             </div>
 
             <!-- Divider -->
-            <div class="flex items-center gap-4">
+            <div *ngIf="userType !=='admin'" class="flex items-center gap-4">
               <hr class="flex-grow border-t border-gray-200">
               <span class="text-gray-400 text-sm">Or login with email</span>
               <hr class="flex-grow border-t border-gray-200">
@@ -128,7 +123,8 @@
                     />
                   </div>
                   <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.touched)" class="text-red-500 text-sm">
-                    Email is required.
+                    <div> Email is required.</div><br>
+                    <span *ngIf="loginForm.get('email')?.errors?.['email']" class="text-red-500 text-sm"> Enter a valid email.</span>
                 </div>
                 </div>
 
@@ -149,7 +145,7 @@
                     <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.touched)" class="text-red-500 text-sm">
                     password is required.
                    </div>
-                   <span *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email.</span>
+                   
 
                     <!-- Show/Hide Icon -->
                     <button type="button" (click)="togglePassword('password')"

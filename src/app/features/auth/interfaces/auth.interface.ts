@@ -6,7 +6,7 @@ export interface CandidateRegistration {
     role: string
 }
 
-export interface  login {
+export interface  loginInterface {
     email:string,
     password:string,
     role: string

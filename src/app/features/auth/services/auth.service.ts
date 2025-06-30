@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CandidateRegistration, login } from '../interfaces/auth.interface';
+import { CandidateRegistration, loginInterface } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, finalize, Observable, of, tap } from 'rxjs';
 import {
   ApiResponce,
@@ -42,7 +42,7 @@ export class UserRegisterService {
   }
 
   candidateLogin(
-    candidate: login
+    candidate: loginInterface
   ): Observable<ApiResponce<UserPartial>> {
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/login`, candidate,{withCredentials: true})
   }
@@ -97,5 +97,10 @@ export class UserRegisterService {
 
   googleLogin(googleId:string,userType:string):Observable<ApiResponce<UserPartial>>{
     return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/google?googleId=${googleId}&role=${userType}`,{withCredentials: true})
+  }
+
+  adminLogin(loginInfo:loginInterface):Observable<ApiResponce<UserPartial>>{
+    console.log("AdminLogin details",loginInfo)
+    return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/admin/login`,loginInfo,{withCredentials: true})
   }
 }
