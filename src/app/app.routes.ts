@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { CandidateLogin } from './features/auth/components/candidates/candidate-login/candidate-login';
-import { CandidateSignup } from './features/auth/components/candidates/candidate-signup/candidate-signup';
+import { CandidateLogin } from './features/auth/components/auth/candidate-login/candidate-login';
+import { CandidateSignup } from './features/auth/components/auth/candidate-signup/candidate-signup';
 import { EmailVerificationFaild } from './features/auth/components/email-verification/email-verification-faild/email-verification-faild';
 import { EmailVerificationSuccess } from './features/auth/components/email-verification/email-verification-success/email-verification-success';
 import { EmailVerification } from './features/auth/components/email-verification/email-verification';
@@ -12,6 +12,8 @@ import { Company } from './features/layout/company/company';
 import { CompanyHome } from './features/company/company.home/company.home';
 import { AdminComponent } from './features/layout/admin-component/admin-component';
 import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
+import { Forgotpasswordcomponent } from './features/layout/forgotpasswordcomponent/forgotpasswordcomponent';
+import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgot.pass.email/forgot.pass.email';
 
 export const routes: Routes = [
     {
@@ -92,6 +94,20 @@ export const routes: Routes = [
             {
                 path: "dashboard",
                 component: AdminDashboard,
+            }
+        ]
+    },
+
+
+    // forgoPassword
+
+    {
+        path:"forgotpassword",
+        component : Forgotpasswordcomponent,
+        children : [
+            {
+                path: "email",
+                component: ForgotPassEmail
             }
         ]
     }

@@ -103,4 +103,8 @@ export class UserRegisterService {
     console.log("AdminLogin details",loginInfo)
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/admin/login`,loginInfo,{withCredentials: true})
   }
+
+  validateFogotpassEmail(email:string){
+
+  }
 }
