@@ -28,3 +28,8 @@ export interface GoogleResponce {
   
 }
 
+export interface PlainResponce {
+  message: string,
+  success:boolean,
+}
+

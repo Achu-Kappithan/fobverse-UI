@@ -14,6 +14,7 @@ import { AdminComponent } from './features/layout/admin-component/admin-componen
 import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
 import { Forgotpasswordcomponent } from './features/layout/forgotpasswordcomponent/forgotpasswordcomponent';
 import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgot.pass.email/forgot.pass.email';
+import { SetNewPassword } from './features/auth/components/forgotPassword/set-new-password/set-new-password';
 
 export const routes: Routes = [
     {
@@ -108,6 +109,10 @@ export const routes: Routes = [
             {
                 path: "email",
                 component: ForgotPassEmail
+            },
+            {
+                path: 'newpassword',
+                component: SetNewPassword
             }
         ]
     }

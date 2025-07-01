@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CandidateRegistration, loginInterface } from '../interfaces/auth.interface';
+import { CandidateRegistration, loginInterface, passwrodUpdte } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, finalize, Observable, of, tap } from 'rxjs';
 import {
   ApiResponce,
   GoogleResponce,
+  PlainResponce,
   User,
   UserPartial,
 } from '../../../shared/interfaces/apiresponce.interface';
@@ -104,7 +105,7 @@ export class UserRegisterService {
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/admin/login`,loginInfo,{withCredentials: true})
   }
 
-  validateFogotpassEmail(email:string){
-
+  validateFogotpassEmail(user:passwrodUpdte):Observable<PlainResponce>{
+    return this.http.post<PlainResponce>(`${this.apiUrl}auth/forgotpassword`,user,{withCredentials: true})
   }
 }

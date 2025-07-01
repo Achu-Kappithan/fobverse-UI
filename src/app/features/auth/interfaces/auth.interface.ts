@@ -12,3 +12,8 @@ export interface  loginInterface {
     role: string
 }
 
+export interface  passwrodUpdte {
+    email:string,
+    role:string
+}
+

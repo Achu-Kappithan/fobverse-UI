@@ -19,6 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     'auth/register',
     'auth/google',
     'auth/admin/login',
+    'auth/forgotpassword'
   ]
 
   const isPublicRequest = publicPaths.some((path)=> req.url.includes(path))

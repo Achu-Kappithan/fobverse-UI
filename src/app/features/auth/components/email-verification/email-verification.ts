@@ -55,7 +55,7 @@ export class EmailVerification implements OnInit {
                 console.log('Component: Raw API response:', response)
               ),
               catchError((error) => {
-                let errorMessage =
+                let errorMessage = 
                   'An unexpected error occurred during verification.';
                 let reason = 'unknown_error';
 
