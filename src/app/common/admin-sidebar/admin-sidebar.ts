@@ -8,16 +8,16 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './admin-sidebar.css'
 })
 export class AdminSidebar {
-@Input() isOpen = true; // Allow the parent to set the initial state
-  @Output() sidebarToggled = new EventEmitter<boolean>(); // Emit the new state
-  selectedItem = 'Dashboard'; // Track the selected item
+  @Input() isOpen = true; 
+  @Output() sidebarToggled = new EventEmitter<boolean>(); 
+  selectedItem = 'Dashboard'; 
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
-    this.sidebarToggled.emit(this.isOpen); // Emit the updated state
+    this.sidebarToggled.emit(this.isOpen); 
   }
 
   setSelectedItem(item: string) {
-    this.selectedItem = item; // Update the selected item
+    this.selectedItem = item; 
   }
 }

@@ -31,6 +31,11 @@ export const routes: Routes = [
                 component: CandidateSignup,
                 data:{userType:'candidate'}
             },
+           {
+                path:"adminlogin",
+                component: CandidateLogin,
+                data: {userType: "admin"}
+            },
             {
                 path: "",
                 redirectTo:'login',
@@ -87,11 +92,6 @@ export const routes: Routes = [
         path:"admin",
         component: AdminComponent,
         children:[
-            {
-                path:"login",
-                component: CandidateLogin,
-                data: {userType: "admin"}
-            },
             {
                 path: "dashboard",
                 component: AdminDashboard,

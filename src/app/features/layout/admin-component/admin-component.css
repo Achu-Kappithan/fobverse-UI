@@ -1,28 +1,88 @@
-/* Default light mode styles */
-body {
-  background-color: #f0f2f5;
-  color: #333;
-}
+/* src/styles.css */
 
-/* Dark mode styles */
+/* ... (Your existing custom color definitions like .bg-purple, .bg-lavender, .text-dark-gray, etc.) ... */
+
+
+/* Dark Mode Overrides for Dashboard Elements */
 html.dark {
+  /* General page and main content background */
   body {
-    background-color: #1a202c; /* Dark background */
-    color: #e2e8f0; /* Light text */
+    background-color: #1a202c !important; /* General dark background for the body */
+    color: #e2e8f0 !important; /* Default text color for dark mode */
   }
 
-  /* Example: Adjust sidebar background in dark mode */
+  /* Override for the main <main> tag background from admin-component.html */
+  /* This ensures the entire content area goes dark */
+  main.bg-white { /* Targeting the main tag with bg-white class */
+    background-color: #1f2937 !important; /* A dark gray for the main content area */
+  }
+
+  /* Fobverse Card / General Cards with .bg-white */
+  .bg-white {
+    background-color: #2d3748 !important; /* Darker background for white cards */
+  }
+
+  /* Job Update Cards with .bg-lavender */
   .bg-lavender {
-    background-color: #2d3748; /* Darker sidebar background */
+    background-color: #2d3748 !important; /* Darker background for lavender cards */
   }
 
-  /* Example: Adjust text color in dark mode */
+  /* Text Colors */
   .text-dark-gray {
-    color: #cbd5e0;
+    color: #cbd5e0 !important; /* Lighter gray for previously dark text */
   }
-  
-  /* Example: Adjust main content background in dark mode */
-  main.bg-white {
-    background-color: #2d3748;
+  .text-gray {
+    color: #a0aec0 !important; /* Lighter gray for previously gray text */
+  }
+  /* For specific text colors like in Job Statistics bars or Job Open summary */
+  .text-gray-700 { /* Example: "122" above bars, "Full Time" labels */
+    color: #cbd5e0 !important;
+  }
+
+  /* Metric Card Backgrounds */
+  .bg-purple {
+    background-color: #5d3fff !important; /* A suitable dark purple */
+  }
+  .bg-green-600 {
+    background-color: #2f855a !important; /* A darker green */
+  }
+  .bg-blue {
+    background-color: #4a3aff !important; /* A suitable dark blue */
+  }
+  .bg-yellow { /* For the Fobverse circle and Job Statistics bar */
+    background-color: #ccac00 !important; /* A darker yellow */
+  }
+
+  /* Specific colors from Job Update Cards / Job Open summary */
+  .bg-green-100 { /* For "Business" tag background */
+    background-color: #14532d !important; /* Darker background */
+  }
+  .text-green-800 { /* For "Business" tag text */
+    color: #4ade80 !important; /* Lighter text */
+  }
+  .bg-red-400 { /* For "Contract" bar */
+    background-color: #b91c1c !important; /* Darker red */
+  }
+
+  /* Borders */
+  .border-gray-300 { /* Used in the settings divider */
+    border-color: #4a5568 !important; /* Darker border color */
+  }
+
+  /* Shadows (if not already handled, ensure they are subtle in dark mode) */
+  .shadow, .shadow-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.24) !important;
+  }
+  .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Custom Scrollbar for Job Open card */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #2d3748; /* Darker track for scrollbar */
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #4a5568; /* Darker thumb for scrollbar */
+    border-color: #2d3748; /* Adjust border to match track or thumb */
   }
 }

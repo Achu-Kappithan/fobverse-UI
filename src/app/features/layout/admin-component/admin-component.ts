@@ -11,21 +11,40 @@ import { CommonModule } from '@angular/common';
   styleUrl: './admin-component.css',
 })
 export class AdminComponent {
+
 isSidebarOpen = true;
   isDarkMode = false;
+
+  constructor() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const savedMode = localStorage.getItem('theme');
+      this.isDarkMode = (savedMode === 'dark');
+      this.applyDarkModeClass(); 
+    }
+  }
+
+  onDarkModeToggle(isDark: boolean): void {
+    this.isDarkMode = isDark;
+    this.applyDarkModeClass(); 
+    
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    }
+  }
+
+  private applyDarkModeClass(): void {
+    if (typeof document !== 'undefined') {
+      if (this.isDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }
 
   onSidebarToggle(isOpen: boolean) {
     this.isSidebarOpen = isOpen;
   }
 
-  onDarkModeToggle(isDark: boolean) {
-    this.isDarkMode = isDark;
-    // You can apply a global class to the body or root element here
-    // For example, if you want to control the entire app's dark mode from here
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
+
 }
