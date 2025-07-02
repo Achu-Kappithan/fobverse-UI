@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CandidateRegistration, loginInterface, passwrodUpdte } from '../interfaces/auth.interface';
+import { CandidateRegistration, loginInterface, passwordUpdate, validateEmailAndRole } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, finalize, Observable, of, tap } from 'rxjs';
 import {
   ApiResponce,
@@ -105,7 +105,11 @@ export class UserRegisterService {
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/admin/login`,loginInfo,{withCredentials: true})
   }
 
-  validateFogotpassEmail(user:passwrodUpdte):Observable<PlainResponce>{
+  validateFogotpassEmail(user:validateEmailAndRole):Observable<PlainResponce>{
     return this.http.post<PlainResponce>(`${this.apiUrl}auth/forgotpassword`,user,{withCredentials: true})
+  }
+
+  updateNewPassword(data:passwordUpdate):Observable<PlainResponce>{
+    return this.http.post<PlainResponce>(`${this.apiUrl}auth/updatepassword`,data,{withCredentials: true})
   }
 }

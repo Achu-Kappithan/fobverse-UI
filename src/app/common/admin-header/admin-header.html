@@ -1,0 +1,24 @@
+<div class="bg-lavender fixed top-0 right-0 z-10 p-4  flex items-center justify-between transition-all duration-300 ease-in-out"
+     [ngClass]="{'left-64': isSidebarOpen, 'left-16': !isSidebarOpen}">
+  <div class="flex items-center">
+    <h1 class="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
+  </div>
+  <div class="flex items-center space-x-4">
+    <button (click)="toggleDarkMode()" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+      <i class="fas" [ngClass]="{'fa-moon': !isDarkMode, 'fa-sun': isDarkMode}"></i>
+    </button>
+
+    <div class="relative">
+      <button (click)="toggleProfileMenu()" class="flex items-center space-x-2 focus:outline-none">
+        <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/150/92c952" alt="Profile">
+        <span class="hidden md:inline text-gray-700">John Doe</span>
+        <i class="fas fa-chevron-down text-sm text-gray-500"></i>
+      </button>
+      <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>

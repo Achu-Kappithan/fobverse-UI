@@ -12,8 +12,13 @@ export interface  loginInterface {
     role: string
 }
 
-export interface  passwrodUpdte {
-    email:string,
+export interface  passwordUpdate {
+    password:string,
+    token:string
+}
+
+export interface validateEmailAndRole {
+    email:string
     role:string
 }
 

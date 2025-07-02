@@ -24,7 +24,7 @@ export class EmailVerification implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserRegisterService,
-    private swal: SweetAlert
+    private swal: SweetAlert,
   ) {}
 
   ngOnInit(): void {
@@ -107,29 +107,24 @@ export class EmailVerification implements OnInit {
           }
         })
       )
-      .subscribe(
-        (response: ApiResponce<UserPartial> & { reason?: string }) => {
+      .subscribe({
+        next:(response)=>{
+           console.log(response)
           if (response.success) {
             this.swal.showSuccessToast('Email verified successfully!');
             this.router.navigate(['/email/success']);
           } else {
             this.swal.showErrorToast(response.message!);
-            const reasonForRoute = response.reason || 'api_generic_failure';
+            const reasonForRoute =  'api_generic_failure';
             this.router.navigate(['/email/failed'], {
               queryParams: { reason: reasonForRoute },
             });
           }
         },
-        (err) => {
-          console.error('Unexpected error in verification subscription:', err);
-          this.swal.showErrorToast(
-            'An unexpected error occurred. Please try again.'
-          );
-          this.router.navigate(['/email/failed'], {
-            queryParams: { reason: 'unhandled_error' },
-          });
+        error:(error)=>{
+          console.log(error)
         }
-      );
+      });
   }
   ngOnDestroy(): void {
     if (this.verificationSubscription) {
@@ -137,3 +132,26 @@ export class EmailVerification implements OnInit {
     }
   }
 }
+
+
+// (response: ApiResponce<UserPartial> & { reason?: string }) => {
+//           if (response.success) {
+//             this.swal.showSuccessToast('Email verified successfully!');
+//             this.router.navigate(['/email/success']);
+//           } else {
+//             this.swal.showErrorToast(response.message!);
+//             const reasonForRoute = response.reason || 'api_generic_failure';
+//             this.router.navigate(['/email/failed'], {
+//               queryParams: { reason: reasonForRoute },
+//             });
+//           }
+//         },
+//         (err) => {
+//           console.error('Unexpected error in verification subscription:', err);
+//           this.swal.showErrorToast(
+//             'An unexpected error occurred. Please try again.'
+//           );
+//           this.router.navigate(['/email/failed'], {
+//             queryParams: { reason: 'unhandled_error' },
+//           });
+//         }

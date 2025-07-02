@@ -1,0 +1,28 @@
+/* Default light mode styles */
+body {
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+/* Dark mode styles */
+html.dark {
+  body {
+    background-color: #1a202c; /* Dark background */
+    color: #e2e8f0; /* Light text */
+  }
+
+  /* Example: Adjust sidebar background in dark mode */
+  .bg-lavender {
+    background-color: #2d3748; /* Darker sidebar background */
+  }
+
+  /* Example: Adjust text color in dark mode */
+  .text-dark-gray {
+    color: #cbd5e0;
+  }
+  
+  /* Example: Adjust main content background in dark mode */
+  main.bg-white {
+    background-color: #2d3748;
+  }
+}

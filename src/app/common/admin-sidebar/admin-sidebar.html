@@ -1,0 +1,88 @@
+
+
+<div class="fixed inset-y-0 left-0 h-full bg-lavender transition-all duration-300 ease-in-out" [ngClass]="{'w-64': isOpen, 'w-16': !isOpen}">
+  <div class="p-4 h-full overflow-y-auto">
+    <button (click)="toggleSidebar()" class="w-full text-dark-gray hover:text-purple flex items-center justify-center mb-4">
+      <i class="fas" [ngClass]="{'fa-times': isOpen, 'fa-bars': !isOpen}"></i>
+    </button>
+    <nav>
+      <ul class="space-y-2">
+        <!-- Expanded State (with text) -->
+        <ng-container *ngIf="isOpen">
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Dashboard')" [ngClass]="{'bg-purple-700': selectedItem === 'Dashboard'}" class="text-white flex items-center p-2 rounded hover:bg-purple-600 transition-colors">
+              <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Company Profile')" [ngClass]="{'bg-purple-700': selectedItem === 'Company Profile'}" class="text-dark-gray flex items-center p-2 rounded hover:bg-lavender/50 transition-colors">
+              <i class="fas fa-building mr-2"></i> Company Profile
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Candidates Profile')" [ngClass]="{'bg-purple-700': selectedItem === 'Candidates Profile'}" class="text-dark-gray flex items-center p-2 rounded hover:bg-lavender/50 transition-colors">
+              <i class="fas fa-users mr-2"></i> Candidates Profile
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Job Listing')" [ngClass]="{'bg-purple-700': selectedItem === 'Job Listing'}" class="text-dark-gray flex items-center p-2 rounded hover:bg-lavender/50 transition-colors">
+              <i class="fas fa-briefcase mr-2"></i> Job Listing
+            </a>
+          </li>
+        </ng-container>
+        <!-- Collapsed State (icons only) -->
+        <ng-container *ngIf="!isOpen">
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Dashboard')" [ngClass]="{'bg-purple-700': selectedItem === 'Dashboard'}" class="text-dark-gray flex items-center justify-center p-2 rounded hover:bg-purple-100 transition-colors">
+              <i class="fas fa-tachometer-alt"></i>
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Company Profile')" [ngClass]="{'bg-purple-700': selectedItem === 'Company Profile'}" class="text-dark-gray flex items-center justify-center p-2 rounded hover:bg-purple-100 transition-colors">
+              <i class="fas fa-building"></i>
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Candidates Profile')" [ngClass]="{'bg-purple-700': selectedItem === 'Candidates Profile'}" class="text-dark-gray flex items-center justify-center p-2 rounded hover:bg-purple-100 transition-colors">
+              <i class="fas fa-users"></i>
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Job Listing')" [ngClass]="{'bg-purple-700': selectedItem === 'Job Listing'}" class="text-dark-gray flex items-center justify-center p-2 rounded hover:bg-purple-100 transition-colors">
+              <i class="fas fa-briefcase"></i>
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+      <div class="mt-6 pt-4 border-t border-gray-300">
+        <h3 *ngIf="isOpen" class="text-dark-gray text-sm font-bold mb-2">SETTINGS</h3>
+        <!-- Expanded State (with text) -->
+        <ul *ngIf="isOpen" class="space-y-2">
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Settings')" [ngClass]="{'bg-purple-700': selectedItem === 'Settings'}" class="text-dark-gray flex items-center p-2 rounded hover:bg-lavender/50 transition-colors">
+              <i class="fas fa-cog mr-2"></i> Settings
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Help Center')" [ngClass]="{'bg-purple-700': selectedItem === 'Help Center'}" class="text-dark-gray flex items-center p-2 rounded hover:bg-lavender/50 transition-colors">
+              <i class="fas fa-question-circle mr-2"></i> Help Center
+            </a>
+          </li>
+        </ul>
+        <!-- Collapsed State (icons only) -->
+        <ul *ngIf="!isOpen" class="space-y-2">
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Settings')" [ngClass]="{'bg-purple-700': selectedItem === 'Settings'}" class="text-dark-gray flex items-center justify-center p-2 rounded hover:bg-purple-100 transition-colors">
+              <i class="fas fa-cog"></i>
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="#" (click)="setSelectedItem('Help Center')" [ngClass]="{'bg-purple-700': selectedItem === 'Help Center'}" class="text-dark-gray flex items-center justify-center p-2 rounded hover:bg-purple-100 transition-colors">
+              <i class="fas fa-question-circle"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>

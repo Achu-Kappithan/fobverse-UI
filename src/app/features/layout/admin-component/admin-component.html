@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<app-admin-header [isSidebarOpen]="isSidebarOpen" (darkModeToggled)="onDarkModeToggle($event)"></app-admin-header>
+
+<app-admin-sidebar [isOpen]="isSidebarOpen" (sidebarToggled)="onSidebarToggle($event)"></app-admin-sidebar>
+
+<main [ngClass]="{'ml-64': isSidebarOpen, 'ml-16': !isSidebarOpen, 'p-4': true, 'min-h-screen': true, 'bg-white': true, 'transition-all': true, 'duration-300': true, 'ease-in-out': true, 'pt-20': true}">
+  <router-outlet></router-outlet>
+</main>
