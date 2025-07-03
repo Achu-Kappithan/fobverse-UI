@@ -101,7 +101,6 @@ export class UserRegisterService {
   }
 
   adminLogin(loginInfo:loginInterface):Observable<ApiResponce<UserPartial>>{
-    console.log("AdminLogin details",loginInfo)
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/admin/login`,loginInfo,{withCredentials: true})
   }
 

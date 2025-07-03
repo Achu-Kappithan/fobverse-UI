@@ -15,6 +15,8 @@ import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard
 import { Forgotpasswordcomponent } from './features/layout/forgotpasswordcomponent/forgotpasswordcomponent';
 import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgot.pass.email/forgot.pass.email';
 import { SetNewPassword } from './features/auth/components/forgotPassword/set-new-password/set-new-password';
+import { AdminListcompanys } from './features/admin/admin-listcompanys/admin-listcompanys';
+import { AdminCandidatesList } from './features/admin/admin-candidates-list/admin-candidates-list';
 
 export const routes: Routes = [
     {
@@ -95,6 +97,14 @@ export const routes: Routes = [
             {
                 path: "dashboard",
                 component: AdminDashboard,
+            },
+            {
+                path:'companys',
+                component: AdminListcompanys
+            },
+            {
+                path: "candidates",
+                component: AdminCandidatesList
             }
         ]
     },

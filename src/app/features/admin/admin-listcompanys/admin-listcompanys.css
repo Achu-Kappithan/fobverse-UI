@@ -1,0 +1,54 @@
+
+        /* Custom button styles for a "cooler" look */
+        .btn-cool {
+            padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+            font-size: 0.875rem; /* text-sm */
+            line-height: 1.25rem; /* leading-5 */
+            border-radius: 0.5rem; /* rounded-lg */
+            font-weight: 500; /* font-medium */
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+        }
+
+        .btn-cool:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-cool:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* blue-500 ring */
+        }
+
+        .btn-blue {
+            background-color: #5A4BFF;
+            color: white;
+        }
+        .btn-blue:hover {
+            background-color: #4A3AFF; /* Darker blue on hover */
+        }
+        .btn-blue:focus {
+            box-shadow: 0 0 0 3px rgba(90, 75, 255, 0.5); /* blue-500 ring */
+        }
+
+        .btn-purple {
+            background-color: #7941B5;
+            color: white;
+        }
+        .btn-purple:hover {
+            background-color: #6A35A0; /* Darker purple on hover */
+        }
+        .btn-purple:focus {
+            box-shadow: 0 0 0 3px rgba(121, 65, 181, 0.5); /* purple-500 ring */
+        }
+
+        .btn-red {
+            background-color: #EF4444; /* red-500 */
+            color: white;
+        }
+        .btn-red:hover {
+            background-color: #DC2626; /* red-600 */
+        }
+        .btn-red:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5); /* red-500 ring */
+        }
