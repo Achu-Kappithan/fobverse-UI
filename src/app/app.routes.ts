@@ -11,119 +11,117 @@ import { EmailComponent } from './features/layout/email-component/email-componen
 import { Company } from './features/layout/company/company';
 import { CompanyHome } from './features/company/company.home/company.home';
 import { AdminComponent } from './features/layout/admin-component/admin-component';
-import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
+import { AdminDashboard } from './features/admin/components/admin-dashboard/admin-dashboard';
 import { Forgotpasswordcomponent } from './features/layout/forgotpasswordcomponent/forgotpasswordcomponent';
 import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgot.pass.email/forgot.pass.email';
 import { SetNewPassword } from './features/auth/components/forgotPassword/set-new-password/set-new-password';
-import { AdminListcompanys } from './features/admin/admin-listcompanys/admin-listcompanys';
-import { AdminCandidatesList } from './features/admin/admin-candidates-list/admin-candidates-list';
+import { AdminListcompanys } from './features/admin/components/admin-listcompanys/admin-listcompanys';
+import { AdminCandidatesList } from './features/admin/components/admin-candidates-list/admin-candidates-list';
 
 export const routes: Routes = [
-    {
-        path:"",
-        component : Authcomponent,
-        children:[
-            {
-                path:"login", 
-                component : CandidateLogin,
-                data:{userType:'candidate'}
-            },
-            {
-                path:"signup",
-                component: CandidateSignup,
-                data:{userType:'candidate'}
-            },
-           {
-                path:"adminlogin",
-                component: CandidateLogin,
-                data: {userType: "admin"}
-            },
-            {
-                path: "",
-                redirectTo:'login',
-                pathMatch:'full'
-            }
-        ]
-    },
-    {
-        path: "email",
-        component: EmailComponent,
-        children: [
-            { path:"verification", component:EmailVerification},
-            { path:"failed", component:EmailVerificationFaild},
-            { path:"success", component:EmailVerificationSuccess},
-        ]
-    },
-    {
-        path:'candidate',
-        component: Candidatecomponent,
-        children:[
-            {
-                path:'home',
-                component: CandidateHome
-            },
-        ]
-    },
+  {
+    path: '',
+    component: Authcomponent,
+    children: [
+      {
+        path: 'login',
+        component: CandidateLogin,
+        data: { userType: 'candidate' },
+      },
+      {
+        path: 'signup',
+        component: CandidateSignup,
+        data: { userType: 'candidate' },
+      },
+      {
+        path: 'adminlogin',
+        component: CandidateLogin,
+        data: { userType: 'admin' },
+      },
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },
+    ],
+  },
+  {
+    path: 'email',
+    component: EmailComponent,
+    children: [
+      { path: 'verification', component: EmailVerification },
+      { path: 'failed', component: EmailVerificationFaild },
+      { path: 'success', component: EmailVerificationSuccess },
+    ],
+  },
+  {
+    path: 'candidate',
+    component: Candidatecomponent,
+    children: [
+      {
+        path: 'home',
+        component: CandidateHome,
+      },
+    ],
+  },
 
+  //company
+  {
+    path: 'company',
+    component: Company,
+    children: [
+      {
+        path: 'login',
+        component: CandidateLogin,
+        data: { userType: 'company' },
+      },
+      {
+        path: 'signup',
+        component: CandidateSignup,
+        data: { userType: 'company' },
+      },
+      {
+        path: 'home',
+        component: CompanyHome,
+      },
+    ],
+  },
 
-    //company
-    {
-        path:'company',
-        component:Company,
-        children:[
-            {
-                path:'login',
-                component:CandidateLogin,
-                data:{userType:'company'}
-            },
-            {
-                path:'signup',
-                component:CandidateSignup,
-                data:{userType:'company'}
-            },
-            {
-                path:'home',
-                component:CompanyHome
-            }
-        ]
-    },
+  // Admin
 
-    // Admin
+  {
+    path: 'admin',
+    component: AdminComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: AdminDashboard,
+      },
+      {
+        path: 'companys',
+        component: AdminListcompanys,
+      },
+      {
+        path: 'candidates',
+        component: AdminCandidatesList,
+      },
+    ],
+  },
 
-    {
-        path:"admin",
-        component: AdminComponent,
-        children:[
-            {
-                path: "dashboard",
-                component: AdminDashboard,
-            },
-            {
-                path:'companys',
-                component: AdminListcompanys
-            },
-            {
-                path: "candidates",
-                component: AdminCandidatesList
-            }
-        ]
-    },
+  // forgoPassword
 
-
-    // forgoPassword
-
-    {
-        path:"forgotpassword",
-        component : Forgotpasswordcomponent,
-        children : [
-            {
-                path: "email",
-                component: ForgotPassEmail
-            },
-            {
-                path: 'newpassword',
-                component: SetNewPassword
-            }
-        ]
-    }
+  {
+    path: 'forgotpassword',
+    component: Forgotpasswordcomponent,
+    children: [
+      {
+        path: 'email',
+        component: ForgotPassEmail,
+      },
+      {
+        path: 'newpassword',
+        component: SetNewPassword,
+      },
+    ],
+  },
 ];
