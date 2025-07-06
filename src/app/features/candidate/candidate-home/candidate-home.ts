@@ -25,7 +25,6 @@ ngOnInit(): void {
       }
     }, 500);
   }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

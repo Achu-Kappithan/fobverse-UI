@@ -1,81 +1,92 @@
-<div class="bg-lavender min-h-screen p-4 md:p-8">
-    <div class="max-w-7xl mx-auto">
-        <!-- Main Header Card (formerly Log Header Card) -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-col md:flex-row justify-between items-center">
-            <h1 class="text-3xl font-bold text-dark-gray mb-4 md:mb-0">Company Dashboard</h1>
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
-                <!-- Search Bar -->
-                <input type="text" id="companySearch" placeholder="Search companies..."
-                       class="w-full md:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent text-dark-gray shadow-sm">
-                
-                <button class="bg-purple text-white px-6 py-2 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 w-full md:w-auto">
-                    Add New Company
-                </button>
-            </div>
+<div class="bg-lavender min-h-screen p-4 md:p-8 font-inter">
+  <div class="max-w-7xl mx-auto">
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-col md:flex-row justify-between items-center">
+      <h1 class="text-3xl font-bold text-dark-gray mb-4 md:mb-0">Company Management Dashboard</h1>
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+        <input
+          type="text"
+          id="companySearch"
+          placeholder="Search companies..."
+          class="w-full md:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent text-dark-gray shadow-sm"
+        />
+        <button
+          class="bg-purple text-white px-6 py-2 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 w-full md:w-auto"
+        >
+          Add New Company
+        </button>
+      </div>
+    </div>
+
+    <div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="!isLoading && companies.length > 0">
+      <div
+        *ngFor="let company of companies"
+        class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between"
+      >
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex flex-col text-left pr-4">
+            <h2 class="text-xl font-semibold text-dark-gray mb-1">{{ company.companyName }}</h2>
+            <p class="text-gray text-sm">Created: {{ company.createdAt | date: 'shortDate' }}</p>
+          </div>
+          <img
+            src="https://via.placeholder.com/80"
+            [alt]="company.companyName + ' Logo'"
+            class="w-20 h-20 rounded-full object-cover flex-shrink-0"
+          />
         </div>
 
-        <!-- Company Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div  class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex flex-col text-left pr-4">
-                        <h2 class="text-xl font-semibold text-dark-gray mb-1"></h2>
-                        <p class="text-gray text-sm">Leading the way in tech innovation.</p>
-                    </div>
-                    <img src="https://placehold.co/80x80/7941B5/FFFFFF?text=C1" alt="Company Logo 1" class="w-20 h-20 rounded-full object-cover flex-shrink-0">
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-auto">
-                <!-- Status -->
-                <div class="flex items-center text-sm">
-                    <span class="font-medium mr-1">Status:</span>
-                    <span class="font-semibold flex items-center">
-                    <i  class="mr-1"></i>
-                    </span>
-                </div>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-auto">
+          <div class="flex items-center text-sm">
+            <span class="font-medium mr-1">Status:</span>
+            <span
+              [ngClass]="{
+                'text-green-600': company.isActive,
+                'text-red-600': !company.isActive
+              }"
+              class="font-semibold flex items-center"
+            >
+              <i
+                [ngClass]="{
+                  'fas fa-check-circle': company.isActive,
+                  'fas fa-times-circle': !company.isActive
+                }"
+                class="mr-1"
+              ></i>
+              {{ company.isActive ? 'Active' : 'Blocked' }}
+            </span>
 
-                <!-- View Profile & Block Button -->
-                <div class="flex items-center gap-3">
-                    <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                    </a>
-                    <button class="bg-purple text-white px-4 py-1 rounded-md text-sm hover:bg-purple-700 transition">
-                    Block
-                    </button>
-                </div>
-                </div>
-            </div>
+          </div>
 
-            <!-- Example Company Card 2
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex flex-col text-left pr-4">
-                        <h2 class="text-xl font-semibold text-dark-gray mb-1">Global Connect Corp.</h2>
-                        <p class="text-gray text-sm">Connecting businesses worldwide.</p>
-                    </div>
-                    <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=C2" alt="Company Logo 2" class="w-20 h-20 rounded-full object-cover flex-shrink-0">
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-auto">
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <span class="text-red-600 font-semibold flex items-center">
-                        <i class="fas fa-times-circle mr-1"></i> Blocked
-                    </span>
-                </div>
-
-                <div class="flex items-center gap-3">
-                    <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                    </a>
-                    <button class="bg-purple text-white px-4 py-1 rounded-md text-sm hover:bg-purple-700 transition">
-                    Block
-                    </button>
-                </div>
-                </div>
-            </div> -->
-
+          <div class="flex items-center gap-3">
+            <a
+              href="#"
+              class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+            >
+              View Profile <i class="fas fa-chevron-right ml-1 text-xs"></i>
+            </a>
+            <button
+              (click)="toggleCompanyStatus(company)"
+              [class.bg-red-500]="company.isActive"
+              [class.hover:bg-red-600]="company.isActive"
+              [class.bg-green-500]="!company.isActive"
+              [class.hover:bg-green-600]="!company.isActive"
+              class="text-white px-4 py-1 rounded-md text-sm transition"
+            >
+              {{ company.isActive ? 'Block' : 'Unblock' }}
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-    <div  class="col-span-full text-center text-gray-500">
-        No companies found.
+
+    <div *ngIf="!isLoading && companies.length === 0" class="col-span-full text-center p-8">
+      <p class="text-gray-600 text-lg">No companies found.</p>
+      <p class="text-gray-500 text-sm mt-2">
+        There might be no companies registered yet, or an error occurred.
+      </p>
     </div>
+  </div>
 </div>

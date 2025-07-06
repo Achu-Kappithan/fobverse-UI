@@ -1,9 +1,9 @@
 
 
 export  interface CompanyInterface {
-  _id: string;
+  _id:{ buffer: any }
 
-  userId: string;
+  userId: { buffer: any }
 
   companyName: string;
 

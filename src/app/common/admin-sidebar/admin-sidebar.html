@@ -10,17 +10,17 @@
       <ul class="space-y-2">
         <ng-container *ngIf="isOpen">
           <li class="mb-2">
-            <a routerLink="/admin/dashboard"  routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
+            <a [routerLink]="['/admin/dashboard']"  routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
               <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
             </a>
           </li>
           <li class="mb-2">
-            <a routerLink="/admin/companys" routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors" >
+            <a [routerLink]="['/admin/companyes']" routerLinkActive="bg-purple text-white"  class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors" >
               <i class="fas fa-building mr-2"></i> Company Profile
             </a>
           </li>
           <li class="mb-2">
-            <a routerLink="/admin/candidates" routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
+            <a [routerLink]="['/admin/candidates']" routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
               <i class="fas fa-users mr-2"></i> Candidates Profile
             </a>
           </li>
@@ -32,12 +32,12 @@
         </ng-container>
         <ng-container *ngIf="!isOpen">
           <li class="mb-2">
-            <a routerLink="/admin/dashboard" routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center justify-center p-2 rounded text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
+            <a [routerLink]="['/admin/dashboard']"  routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center justify-center p-2 rounded text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
               <i class="fas fa-tachometer-alt"></i>
             </a>
           </li>
           <li class="mb-2">
-            <a routerLink="/admin/companys" routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center justify-center p-2 rounded text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors" >
+            <a [routerLink]="['/admin/companyes']" routerLinkActive="bg-purple text-white" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center justify-center p-2 rounded text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors" >
               <i class="fas fa-building"></i>
             </a>
           </li>

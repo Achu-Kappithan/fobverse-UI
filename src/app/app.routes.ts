@@ -98,7 +98,7 @@ export const routes: Routes = [
         component: AdminDashboard,
       },
       {
-        path: 'companys',
+        path: 'companyes',
         component: AdminListcompanys,
       },
       {

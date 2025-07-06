@@ -2,6 +2,6 @@
 
 export interface ApiResponce<T> {
   success: boolean;
-  data: T | null;
+  data: T ,
   message?: string;
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { ApiResponce } from '../../auth/interfaces/api-responce.interface';
 import { CompanyInterface } from '../interfaces/company.interface';
 
@@ -9,13 +9,15 @@ import { CompanyInterface } from '../interfaces/company.interface';
 })
 export class AdminCompanyService {
 private apiUrl = 'http://localhost:3007/api/v1/';
+private _CompnayState = new BehaviorSubject<CompanyInterface[]>([])
+company$ = this._CompnayState.asObservable()
 
 constructor(
   private readonly http : HttpClient
 ){}
 
-getAllCompanies(){
- return this.http.get(`${this.apiUrl}admin/getallcompany`,{withCredentials: true})
+getAllCompanies():Observable<ApiResponce<CompanyInterface[]>>{
+ return this.http.get<ApiResponce<CompanyInterface[]>>(`${this.apiUrl}admin/getallcompany`,{withCredentials: true})
 }
 
 }
