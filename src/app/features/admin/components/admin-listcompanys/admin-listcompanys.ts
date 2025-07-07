@@ -29,7 +29,7 @@ export class AdminListcompanys implements OnInit {
 
   toggleCompanyStatus(company: CompanyInterface): void {
     company.isActive = !company.isActive;
-    console.log(`Company ${company.companyName} status toggled to: ${company.isActive ? 'Active' : 'Blocked'}`);
+    console.log(`Company ${company.name} status toggled to: ${company.isActive ? 'Active' : 'Blocked'}`);
   }
 
   fetchAllcompany(){

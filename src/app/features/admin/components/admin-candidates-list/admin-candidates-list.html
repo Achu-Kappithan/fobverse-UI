@@ -14,16 +14,16 @@
             </div>
         </div>
 
-        <!-- User Cards Grid -->
+        <div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Example User Card 1 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <!-- Dropdown Icon -->
+            <div *ngFor="let can of candidates" class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
                <div (appClickOutside)="closeDropdown()" class="absolute top-4 right-4">
                     <button (click)="toggleDropdown()" class="text-gray-400 group/item hover:text-gray-600 focus:outline-none dropdown-toggle">
                         <i class="fas fa-ellipsis-v text-lg"></i>
                     </button>
-                    <!-- Dropdown Menu -->
                     <div [class.hidden]="!isdorpDownOpen" class="absolute hidden group-hover/item:flex right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10  dropdown-menu">
                         <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white hover:font-medium"><span style="color: red;">Block User</span></a>
                         <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
@@ -31,14 +31,24 @@
                 </div>
 
                 <img src="https://placehold.co/100x100/7941B5/FFFFFF?text=EB" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1">Emma Browning</h2>
-                <p class="text-gray text-sm mb-2">Customer Service Specialist</p>
+                <h2 class="text-xl font-semibold text-dark-gray mb-1">{{can.name}}</h2>
+                <p class="text-gray text-sm mb-2">Created: {{ can.createdAt | date: 'shortDate' }}</p>
                 
-                <!-- User Status -->
                 <div class="flex items-center text-sm mb-2">
                     <span class="font-medium mr-2">Status:</span>
-                    <span class="text-green-600 font-semibold flex items-center">
-                        <i class="fas fa-check-circle mr-1"></i> Active
+                    <span 
+                    [ngClass]="{
+                        'text-green-600': can.isActive,
+                        'text-red-600': !can.isActive
+                    }"
+                    class="text-green-600 font-semibold flex items-center">
+                        <i
+                [ngClass]="{
+                  'fas fa-check-circle': can.isActive,
+                  'fas fa-times-circle': !can.isActive
+                }"
+                class="mr-1"
+              ></i> {{ can.isActive ? 'Active' : 'Blocked' }}
                     </span>
                 </div>
 
@@ -52,223 +62,7 @@
                 </a>
             </div>
 
-            <!-- Example User Card 2 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <!-- Dropdown Icon -->
-                <div class="absolute top-4 right-4">
-                    <button (click)="toggleDropdown()" class="text-gray-400 hover:text-gray-600 focus:outline-none dropdown-toggle">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div [class.hidden]="!isdorpDownOpen" class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10  dropdown-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white hover:font-medium"><span style="color: red;">Block User</span></a>
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
-                    </div>
-                </div>
-
-                <img src="https://placehold.co/100x100/5A4BFF/FFFFFF?text=JD" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-blue">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1">John Doe</h2>
-                <p class="text-gray text-sm mb-2">Business Development Manager</p>
-                
-                <!-- User Status -->
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <span class="text-red-600 font-semibold flex items-center">
-                        <i class="fas fa-times-circle mr-1"></i> Blocked
-                    </span>
-                </div>
-
-                <div class="flex items-center text-gray text-sm mb-4">
-                    <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
-                    <span>Los Angeles, CA</span>
-                </div>
-                <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile
-                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Example User Card 3 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <!-- Dropdown Icon -->
-               <div class="absolute top-4 right-4">
-                    <button (click)="toggleDropdown()" class="text-gray-400 hover:text-gray-600 focus:outline-none dropdown-toggle">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div [class.hidden]="!isdorpDownOpen" class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10  dropdown-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white hover:font-medium"><span style="color: red;">Block User</span></a>
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
-                    </div>
-                </div>
-
-                <img src="https://placehold.co/100x100/1A1A1A/FFFFFF?text=JF" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-dark-gray">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1">John Fischer</h2>
-                <p class="text-gray text-sm mb-2">Financial Analyst</p>
-                
-                <!-- User Status -->
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <span class="text-green-600 font-semibold flex items-center">
-                        <i class="fas fa-check-circle mr-1"></i> Active
-                    </span>
-                </div>
-
-                <div class="flex items-center text-gray text-sm mb-4">
-                    <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
-                    <span>San Diego, CA</span>
-                </div>
-                <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile
-                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Example User Card 4 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <!-- Dropdown Icon -->
-                <div class="absolute top-4 right-4">
-                    <button class="text-gray-400 hover:text-gray-600 focus:outline-none dropdown-toggle">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden dropdown-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Block User</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
-                    </div>
-                </div>
-
-                <img src="https://placehold.co/100x100/B0B0B0/FFFFFF?text=LR" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-gray">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1">Lawrance Roe</h2>
-                <p class="text-gray text-sm mb-2">Certified Medical Assistant</p>
-                
-                <!-- User Status -->
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <span class="text-green-600 font-semibold flex items-center">
-                        <i class="fas fa-check-circle mr-1"></i> Active
-                    </span>
-                </div>
-
-                <div class="flex items-center text-gray text-sm mb-4">
-                    <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
-                    <span>San Francisco, CA</span>
-                </div>
-                <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile
-                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Example User Card 5 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <!-- Dropdown Icon -->
-                <div class="absolute top-4 right-4">
-                    <button class="text-gray-400 hover:text-gray-600 focus:outline-none dropdown-toggle">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden dropdown-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Block User</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
-                    </div>
-                </div>
-
-                <img src="https://placehold.co/100x100/7941B5/FFFFFF?text=MS" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1">Michael Spiers</h2>
-                <p class="text-gray text-sm mb-2">Construction Manager</p>
-                
-                <!-- User Status -->
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <span class="text-green-600 font-semibold flex items-center">
-                        <i class="fas fa-check-circle mr-1"></i> Active
-                    </span>
-                </div>
-
-                <div class="flex items-center text-gray text-sm mb-4">
-                    <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
-                    <span>Los Angeles, CA</span>
-                </div>
-                <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile
-                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Example User Card 6 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <!-- Dropdown Icon -->
-                <div class="absolute top-4 right-4">
-                    <button class="text-gray-400 hover:text-gray-600 focus:outline-none dropdown-toggle">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden dropdown-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Block User</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
-                    </div>
-                </div>
-
-                <img src="https://placehold.co/100x100/5A4BFF/FFFFFF?text=NH" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-blue">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1">Nicolas Hebert</h2>
-                <p class="text-gray text-sm mb-2">Senior Marketing Consultant</p>
-                
-                <!-- User Status -->
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <span class="text-red-600 font-semibold flex items-center">
-                        <i class="fas fa-times-circle mr-1"></i> Blocked
-                    </span>
-                </div>
-
-                <div class="flex items-center text-gray text-sm mb-4">
-                    <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
-                    <span>San Francisco, CA</span>
-                </div>
-                <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile
-                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
-            </div>
         </div>
     </div>
 </div>
 
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-            const dropdownMenus = document.querySelectorAll('.dropdown-menu');
-
-            dropdownToggles.forEach(toggle => {
-                toggle.addEventListener('click', (event) => {
-                    // Prevent the default button action and event bubbling
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    // Find the sibling dropdown menu
-                    const menu = toggle.nextElementSibling;
-
-                    // Close any other open dropdowns
-                    dropdownMenus.forEach(otherMenu => {
-                        if (otherMenu !== menu && !otherMenu.classList.contains('hidden')) {
-                            otherMenu.classList.add('hidden');
-                        }
-                    });
-
-                    // Toggle the visibility of the clicked dropdown
-                    menu.classList.toggle('hidden');
-                });
-            });
-
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', (event) => {
-                dropdownMenus.forEach(menu => {
-                    if (!menu.classList.contains('hidden') && !menu.contains(event.target)) {
-                        menu.classList.add('hidden');
-                    }
-                });
-            });
-        });
-    </script>
