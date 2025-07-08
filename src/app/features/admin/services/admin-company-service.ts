@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { ApiResponce } from '../../auth/interfaces/api-responce.interface';
+import { ApiResponce, PlainResponce } from '../../auth/interfaces/api-responce.interface';
 import {
   CandidateInterface,
   CompanyInterface,
@@ -24,10 +24,8 @@ export class AdminCompanyService {
     );
   }
 
-  getAllCandidates(): Observable<ApiResponce<CandidateInterface[]>> {
-    return this.http.get<ApiResponce<CandidateInterface[]>>(
-      `${this.apiUrl}admin/getallcandidates`,
-      { withCredentials: true }
-    );
+  updateStatus(id:string):Observable<PlainResponce>{
+    return this.http.get<PlainResponce>(`${this.apiUrl}admin/company/updatestatus?id=${id}`,{withCredentials : true})
   }
+
 }

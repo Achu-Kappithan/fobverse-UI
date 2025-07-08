@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside';
 import { AdminCandidate } from '../../services/admin-candidate';
-import { response } from 'express';
 import { CandidateInterface } from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
@@ -13,7 +12,7 @@ import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinn
   styleUrl: './admin-candidates-list.css',
 })
 export class AdminCandidatesList  implements OnInit {
-  isdorpDownOpen: boolean = false;
+  isdorpDownOpen: { [id: string]: boolean } = {};
   isLoading:boolean = false
   candidates:CandidateInterface[] = []
 
@@ -24,6 +23,18 @@ export class AdminCandidatesList  implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllCandidates()
+  }
+
+  UpdateStatus(candidate:CandidateInterface){
+    this._adminCandidateService.updateStatus(candidate.id).subscribe({
+      next:(res)=>{
+        if(res.success){
+          console.log("updated status ",res)
+          candidate.isActive = !candidate.isActive
+          this.cdr.detectChanges()
+        }
+      }
+    })
   }
 
   fetchAllCandidates(){
@@ -51,11 +62,12 @@ export class AdminCandidatesList  implements OnInit {
     })
   }
 
-  toggleDropdown() {
-    this.isdorpDownOpen = !this.isdorpDownOpen;
+   toggleDropdown(id: string) {
+    this.isdorpDownOpen[id] = !this.isdorpDownOpen[id];
+    console.log(this.isdorpDownOpen)
   }
 
-  closeDropdown() {
-    this.isdorpDownOpen = false;
+  closeDropdown(id: string) {
+    this.isdorpDownOpen[id] = false;
   }
 }

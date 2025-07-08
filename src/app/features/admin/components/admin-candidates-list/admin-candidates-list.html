@@ -20,16 +20,21 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div *ngFor="let can of candidates" class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-               <div (appClickOutside)="closeDropdown()" class="absolute top-4 right-4">
-                    <button (click)="toggleDropdown()" class="text-gray-400 group/item hover:text-gray-600 focus:outline-none dropdown-toggle">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
+                <div (appClickOutside)="closeDropdown(can.id)" class="absolute top-4 right-4">
+                    <button (click)="toggleDropdown(can.id)" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                    <i class="fas fa-ellipsis-v text-lg"></i>
                     </button>
-                    <div [class.hidden]="!isdorpDownOpen" class="absolute hidden group-hover/item:flex right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10  dropdown-menu">
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white hover:font-medium"><span style="color: red;">Block User</span></a>
-                        <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
+
+                    <div
+                    [class.hidden]="!isdorpDownOpen[can.id]"
+                    class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10"
+                    >
+                    <a (click)="UpdateStatus(can)" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white font-medium">
+                        <span [ngClass]="{'text-red-600': can.isActive,'text-green-600': !can.isActive}" class="text-red-600">{{can.isActive?'Bolock User': 'Unblock User'}}</span>
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
                     </div>
                 </div>
-
                 <img src="https://placehold.co/100x100/7941B5/FFFFFF?text=EB" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple">
                 <h2 class="text-xl font-semibold text-dark-gray mb-1">{{can.name}}</h2>
                 <p class="text-gray text-sm mb-2">Created: {{ can.createdAt | date: 'shortDate' }}</p>

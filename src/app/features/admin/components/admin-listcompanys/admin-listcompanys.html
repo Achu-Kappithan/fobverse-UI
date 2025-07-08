@@ -68,7 +68,7 @@
               View Profile <i class="fas fa-chevron-right ml-1 text-xs"></i>
             </a>
             <button
-              (click)="toggleCompanyStatus(company)"
+              (click)="UpdateStatus(company)"
               [class.bg-red-500]="company.isActive"
               [class.hover:bg-red-600]="company.isActive"
               [class.bg-green-500]="!company.isActive"

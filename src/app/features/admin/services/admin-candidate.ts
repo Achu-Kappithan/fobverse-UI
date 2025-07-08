@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponce } from '../../auth/interfaces/api-responce.interface';
+import { ApiResponce, PlainResponce } from '../../auth/interfaces/api-responce.interface';
 import { CandidateInterface } from '../interfaces/company.interface';
 
 @Injectable({
@@ -19,5 +19,10 @@ export class AdminCandidate {
         { withCredentials: true }
       );
     }
+
+  updateStatus(id:string):Observable<PlainResponce>{
+    console.log(id)
+    return this.http.get<PlainResponce>(`${this.apiUrl}admin/candidate/updatestatus?id=${id}`,{withCredentials:true})
+  }
   
 }

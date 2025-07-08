@@ -5,6 +5,7 @@ import { ApiResponce } from '../../../auth/interfaces/api-responce.interface';
 import { CompanyInterface } from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { SweetAlert } from '../../../../shared/services/sweet-alert';
 
 @Component({
   selector: 'app-admin-listcompanys',
@@ -19,7 +20,8 @@ export class AdminListcompanys implements OnInit {
 
   constructor(
     private readonly _companyService:AdminCompanyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private readonly _swal: SweetAlert
   ) {}
 
 
@@ -27,9 +29,25 @@ export class AdminListcompanys implements OnInit {
     this.fetchAllcompany()
   }
 
-  toggleCompanyStatus(company: CompanyInterface): void {
-    company.isActive = !company.isActive;
-    console.log(`Company ${company.name} status toggled to: ${company.isActive ? 'Active' : 'Blocked'}`);
+  UpdateStatus(company: CompanyInterface): void {
+    console.log("updatestaus",company._id)
+    this._companyService.updateStatus(company._id).subscribe({
+      next:(res)=>{
+        if(res.success){
+          company.isActive = !company.isActive;
+          this.cdr.detectChanges()
+          this._swal.showSuccessToast(res.message)
+          console.log("status update responce ",res)
+        }else {
+          console.log("error regading updating status",res)
+        }
+      },
+      error:(err)=>{
+        console.log("staus updation faild ",err)
+        this._swal.showErrorToast(err.error.message)
+      }
+    })
+
   }
 
   fetchAllcompany(){
