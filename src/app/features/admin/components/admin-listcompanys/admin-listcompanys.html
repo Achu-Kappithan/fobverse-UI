@@ -28,12 +28,12 @@
       >
         <div class="flex justify-between items-start mb-4">
           <div class="flex flex-col text-left pr-4">
-            <h2 class="text-xl font-semibold text-dark-gray mb-1">{{ company.companyName }}</h2>
+            <h2 class="text-xl font-semibold text-dark-gray mb-1">{{ company.name }}</h2>
             <p class="text-gray text-sm">Created: {{ company.createdAt | date: 'shortDate' }}</p>
           </div>
           <img
             src="https://via.placeholder.com/80"
-            [alt]="company.companyName + ' Logo'"
+            [alt]="company.name + ' Logo'"
             class="w-20 h-20 rounded-full object-cover flex-shrink-0"
           />
         </div>
@@ -41,7 +41,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-auto">
           <div class="flex items-center text-sm">
             <span class="font-medium mr-1">Status:</span>
-            <span
+           <span
               [ngClass]="{
                 'text-green-600': company.isActive,
                 'text-red-600': !company.isActive
@@ -68,7 +68,7 @@
               View Profile <i class="fas fa-chevron-right ml-1 text-xs"></i>
             </a>
             <button
-              (click)="toggleCompanyStatus(company)"
+              (click)="UpdateStatus(company)"
               [class.bg-red-500]="company.isActive"
               [class.hover:bg-red-600]="company.isActive"
               [class.bg-green-500]="!company.isActive"

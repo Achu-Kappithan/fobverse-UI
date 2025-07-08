@@ -1,11 +1,11 @@
 
 
 export  interface CompanyInterface {
-  _id:{ buffer: any }
+  _id:string
 
-  userId: { buffer: any }
+  userId:string
 
-  companyName: string;
+  name: string;
 
   industry?: string;
 
@@ -28,6 +28,46 @@ export  interface CompanyInterface {
   updatedAt: Date;
 
 }
+
+
+export interface ContactInfoInterface {
+  phoneNumber?: string;
+
+  address?: string;
+
+  linkedIn?: string;
+
+  github?: string;
+}
+
+export interface CandidateInterface {
+  id: string;
+
+  userId: string;
+
+  name: string;
+
+  isActive: boolean;
+
+  profileUrl?: string;
+
+  contactInfo?: ContactInfoInterface;
+
+  education?: string[];
+
+  skills?: string[];
+
+  experience?: string[];
+
+  resumeUrl?: string;
+
+  portfolioLinks?: string;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+}
+
 
 
 

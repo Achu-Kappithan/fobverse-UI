@@ -5,3 +5,8 @@ export interface ApiResponce<T> {
   data: T ,
   message?: string;
 }
+
+export interface PlainResponce {
+  success: boolean,
+  message: string
+}
