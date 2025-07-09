@@ -17,6 +17,8 @@ import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgo
 import { SetNewPassword } from './features/auth/components/forgotPassword/set-new-password/set-new-password';
 import { AdminListcompanys } from './features/admin/components/admin-listcompanys/admin-listcompanys';
 import { AdminCandidatesList } from './features/admin/components/admin-candidates-list/admin-candidates-list';
+import { authGuard } from './shared/guards/auth-guard';
+import { isAdminGuard } from './shared/guards/is-admin-guard';
 
 export const routes: Routes = [
   {
@@ -95,14 +97,17 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
+        canActivate: [isAdminGuard],
         component: AdminDashboard,
       },
       {
         path: 'companyes',
+        canActivate: [isAdminGuard],
         component: AdminListcompanys,
       },
       {
         path: 'candidates',
+        canActivate: [isAdminGuard],
         component: AdminCandidatesList,
       },
     ],

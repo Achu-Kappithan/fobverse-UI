@@ -24,9 +24,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
   const isPublicRequest = publicPaths.some((path)=> req.url.includes(path))
 
-if(isPublicRequest) {
-    return next(req);
-}
+  if(isPublicRequest) {
+      return next(req);
+  }
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {

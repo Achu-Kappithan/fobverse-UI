@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CandidateRegistration, loginInterface, passwordUpdate, validateEmailAndRole } from '../interfaces/auth.interface';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
 import {
   ApiResponce,
   PlainResponce,
@@ -18,16 +18,10 @@ export class UserRegisterService {
   private apiUrl = 'http://localhost:3007/api/v1/'; 
   public userSubject = new BehaviorSubject<UserPartial | null>(null)
   user$ = this.userSubject.asObservable()
-  private isLoadingSubject = new BehaviorSubject<boolean>(false)
-  isLoading$ = this.isLoadingSubject.asObservable()
+  public isUserLoaded = new BehaviorSubject<boolean>(false)
+  isLoading$ = this.isUserLoaded.asObservable()
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
-    if (isPlatformBrowser(this.platformId)) {
-      const catchedUser = localStorage.getItem('currentUser')
-      if(catchedUser){
-        this.getCurrentUserDetails().subscribe();
-      }
-    }
   }
 
   registerCandidate(candidate: CandidateRegistration): Observable<any> {
@@ -44,6 +38,13 @@ export class UserRegisterService {
     candidate: loginInterface
   ): Observable<ApiResponce<UserPartial>> {
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/login`, candidate,{withCredentials: true})
+    .pipe(
+      tap(res =>{
+        if(res.success && res.data){
+          this.userSubject.next(res.data)
+        }
+      })
+    )
   }
 
   getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
@@ -51,7 +52,6 @@ export class UserRegisterService {
     return this.http.get<ApiResponce<UserPartial>>(`${this.apiUrl}auth/getuser`,{withCredentials: true})
     .pipe(
       tap(response =>{
-        console.log("current user",response)
         if(response.success && response.data){
           this.userSubject.next(response.data)
           console.log(`${response.data.email} is active user`);  
@@ -59,7 +59,13 @@ export class UserRegisterService {
           this.userSubject.next(null)
           console.log("no active user found")
         }
-      })
+        this.isUserLoaded.next(true)
+      }),
+      catchError(err => {
+      this.userSubject.next(null);
+      this.isUserLoaded.next(true); 
+      return throwError(() => err);
+    })
     )
   }
 
@@ -76,6 +82,11 @@ export class UserRegisterService {
           return of (null)
         })
       );
+  }
+
+  hasRefreshToken():boolean{
+    let refreshtoken = document.cookie.includes('refresh_token=')
+    return refreshtoken
   }
 
   logout(): Observable<any> {
@@ -100,6 +111,14 @@ export class UserRegisterService {
 
   adminLogin(loginInfo:loginInterface):Observable<ApiResponce<UserPartial>>{
     return this.http.post<ApiResponce<UserPartial>>(`${this.apiUrl}auth/admin/login`,loginInfo,{withCredentials: true})
+    .pipe(
+      tap(res=>{
+        if(res.data && res.success){
+          console.log("uuuuuuuuuuuuuuuuu",res.data)
+          this.userSubject.next(res.data)
+        }
+      })
+    )
   }
 
   validateFogotpassEmail(user:validateEmailAndRole):Observable<PlainResponce>{

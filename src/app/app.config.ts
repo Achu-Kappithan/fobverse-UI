@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideEnvironmentInitializer, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -6,6 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule  } from '@abacritt/angularx-social-login';
 import { authInterceptor } from './features/auth/interceptors/auth-interceptor';
+import { initializeUser } from './app.initializer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(),
     withInterceptors([authInterceptor])),
     importProvidersFrom(SocialLoginModule),
+    provideEnvironmentInitializer(initializeUser()),
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
@@ -27,6 +29,6 @@ export const appConfig: ApplicationConfig = {
         ],
         onError: (err: any) => console.error('Social login error:', err)
       } as SocialAuthServiceConfig
-    }
+    },
   ]
 };
