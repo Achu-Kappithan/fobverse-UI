@@ -1,362 +1,361 @@
-    <style>
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #FFFFFF;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 4px;
-            right: 20px;
-            top: 60px;
-        }
-        .dropdown-content a {
-            color: #1A1A1A;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 14px;
-        }
-        .dropdown-content a:hover {
-            background-color: #EDE7FF;
-        }
-        .show {
-            display: block;
-        }
-        body.dark-mode {
-            background-color: #1A1A1A;
-            color: #FFFFFF;
-        }
-        body.dark-mode .navbar {
-            background-color: #333333;
-        }
-        body.dark-mode .dropdown-content {
-            background-color: #333333;
-        }
-        body.dark-mode .dropdown-content a {
-            color: #FFFFFF;
-        }
-        body.dark-mode .dropdown-content a:hover {
-            background-color: #444444;
-        }
-    </style>
-<div style="margin: 0; padding: 0; font-family: sans-serif; transition: background-color 0.3s, color 0.3s;">
-    <!-- Navbar -->
-    <header class="navbar" style="background-color: #7355FF; color: #FFFFFF; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <div style="display: flex; align-items: center;">
-            <i id="toggleSidebar" class="fas fa-bars" style="font-size: 20px; cursor: pointer; margin-right: 20px;"></i>
-            <div style="background-color: #FFD700; height: 24px; width: 24px; border-radius: 50%;"></div>
+<div class="text-dark-gray">
+    <nav class="bg-white shadow-sm p-4">
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <img src="https://placehold.co/30x30/7941B5/FFFFFF?text=C" alt="Company Logo"
+                    class="h-8 w-8 rounded-full">
+                <span class="font-semibold text-dark-gray">Company Nomad</span>
+                <i class="fas fa-chevron-down text-gray text-sm"></i>
+            </div>
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-bell text-gray text-lg"></i>
+                <i class="fas fa-cog text-gray text-lg"></i>
+                <button class="bg-blue text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-plus mr-1"></i> Post a job
+                </button>
+            </div>
         </div>
-        <div style="display: flex; align-items: center;">
-            <button id="themeToggle" style="background-color: #FFFFFF; color: #7355FF; border: none; padding: 8px 12px; border-radius: 4px; margin-right: 15px; cursor: pointer; font-size: 14px;">
-                <i class="fas fa-sun" id="themeIcon"></i> Light
-            </button>
-            <div class="dropdown" style="position: relative;">
-                <img src="https://via.placeholder.com/40" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;" onclick="toggleDropdown()">
-                <div id="dropdownContent" class="dropdown-content">
-                    <a href="#">Profile</a>
-                    <a href="#">Settings</a>
-                    <a href="#">Logout</a>
+    </nav>
+
+    <div class="container mx-auto px-4 py-6 relative bg-white">
+        <div
+            class="absolute top-10 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-1 rounded-full text-xs cursor-pointer">
+            <i class="fas fa-pen"></i>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://placehold.co/100x100/34D399/FFFFFF?text=N" alt="Nomad Logo"
+                    class="w-24 h-24 rounded-2xl mr-6">
+                <div>
+                    <h1 class="text-4xl font-bold text-dark-gray">Nomad</h1>
+                    <p class="text-purple text-base mt-1">https://nomad.com</p>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4">
+                <button
+                    class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-100 transition-colors flex items-center">
+                    <i class="fas fa-eye mr-2"></i> Public View
+                </button>
+                <button
+                    class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
+                    <i class="fas fa-cog mr-2"></i> Profile Settings
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray mt-4">
+            <div class="flex items-center">
+                <i class="fas fa-fire text-blue mr-2"></i>
+                <div>
+                    <span class="font-medium text-dark-gray">Founded</span><br>
+                    July 31, 2011
+                </div>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-users text-blue mr-2"></i>
+                <div>
+                    <span class="font-medium text-dark-gray">Employees</span><br>
+                    4000+
+                </div>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-map-marker-alt text-blue mr-2"></i>
+                <div>
+                    <span class="font-medium text-dark-gray">Location</span><br>
+                    20 countries
+                </div>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-industry text-blue mr-2"></i>
+                <div>
+                    <span class="font-medium text-dark-gray">Industry</span><br>
+                    Social & Non-Profit
                 </div>
             </div>
         </div>
-    </header>
-</div>
-
-    <script>
-        // Dropdown toggle
-        function toggleDropdown() {
-            document.getElementById("dropdownContent").classList.toggle("show");
-        }
-        window.onclick = function(event) {
-            if (!event.target.matches('img')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                themeToggle.textContent = ' Light';
-            } else {
-                body.classList.add('dark-mode');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                themeToggle.textContent = ' Dark';
-            }
-        });
-
-        // Sidebar toggle placeholder (to be integrated with sidebar)
-        const toggleIcon = document.getElementById('toggleSidebar');
-        // Note: Sidebar toggle logic should be integrated with the sidebar HTML
-    </script>
+    </div>
 
 
+    <div class="container mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-dark-gray">Company Profile</h2>
+                    <div class="flex items-center space-x-4 text-gray">
+                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <p class="text-gray leading-relaxed">
+                    Nomad is a software platform for starting and running internet businesses. Millions of businesses,
+                    from daily to 500-company teams, use Nomad to launch, expand globally, and manage their online
+                    operations. Businesses large and small use Nomad to power their online stores. Our mission is to
+                    make commerce better for everyone, so businesses can focus on building and selling their products.
+                    Nomad is a global company, with offices in San Francisco, New York, London, Paris, Berlin, Tokyo,
+                    and Sydney. We are a team of passionate, creative, and driven individuals who are committed to
+                    making a difference in the world. We are looking for talented and motivated individuals to join our
+                    team.
+                </p>
+            </div>
 
-
-
-
-
-
-    <style>
-        .sidebar {
-            transition: width 0.3s;
-        }
-        .main-content {
-            transition: margin-left 0.3s;
-        }
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .sidebar.collapsed {
-                display: none;
-            }
-            .sidebar.visible {
-                display: block;
-            }
-        }
-    </style>
-<div style="margin: 0; padding: 0; font-family: sans-serif;">
-    <div id="sidebar" class="sidebar" style="width: 250px; height: 100vh; background-color: #EDE7FF; position: fixed; padding-top: 70px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
-        <nav style="padding: 0 20px;">
-            <ul style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 15px;">
-                    <a href="#" style="color: #FFFFFF; font-size: 14px; text-decoration: none; display: flex; align-items: center; padding: 10px; border-radius: 4px; background-color: #A28DFF; font-weight: bold; transition: background-color 0.3s;">
-                        <i style="margin-right: 10px;" class="fas fa-tachometer-alt"></i> Dashboard
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-dark-gray">Contact</h2>
+                    <div class="flex items-center space-x-4 text-gray">
+                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#"
+                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
+                        <i class="fab fa-twitter mr-2"></i> twitter.com/nomad
                     </a>
-                </li>
-                <li style="margin-bottom: 15px;">
-                    <a href="#" style="color: #1A1A1A; font-size: 14px; text-decoration: none; display: flex; align-items: center; padding: 10px; border-radius: 4px; transition: background-color 0.3s;">
-                        <i style="margin-right: 10px;" class="fas fa-building"></i> Company Profile
+                    <a href="#"
+                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
+                        <i class="fab fa-facebook mr-2"></i> facebook.com/nomadFG
                     </a>
-                </li>
-                <li style="margin-bottom: 15px;">
-                    <a href="#" style="color: #1A1A1A; font-size: 14px; text-decoration: none; display: flex; align-items: center; padding: 10px; border-radius: 4px; transition: background-color 0.3s;">
-                        <i style="margin-right: 10px;" class="fas fa-users"></i> Candidates Profile
+                    <a href="#"
+                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
+                        <i class="fab fa-linkedin mr-2"></i> linkedin.com/company/nomad
                     </a>
-                </li>
-                <li style="margin-bottom: 15px;">
-                    <a href="#" style="color: #1A1A1A; font-size: 14px; text-decoration: none; display: flex; align-items: center; padding: 10px; border-radius: 4px; transition: background-color 0.3s;">
-                        <i style="margin-right: 10px;" class="fas fa-briefcase"></i> Job Listing
+                    <a href="#"
+                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
+                        <i class="fas fa-envelope mr-2"></i> nomadom
                     </a>
-                </li>
-            </ul>
-            <div style="margin-top: 20px; border-top: 1px solid #B0B0B0; padding-top: 20px;">
-                <h3 style="color: #1A1A1A; font-size: 14px; font-weight: bold; margin: 0 0 15px 0;">SETTINGS</h3>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 15px;">
-                        <a href="#" style="color: #1A1A1A; font-size: 14px; text-decoration: none; display: flex; align-items: center; padding: 10px; border-radius: 4px; transition: background-color 0.3s;">
-                            <i style="margin-right: 10px;" class="fas fa-cog"></i> Settings
-                        </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-dark-gray">Working at Nomad</h2>
+                    <div class="flex items-center space-x-4 text-gray">
+                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <img src="https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1" alt="Office Image 1"
+                        class="w-full h-auto rounded-lg object-cover">
+                    <div class="grid grid-cols-1 gap-4">
+                        <img src="https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2" alt="Office Image 2"
+                            class="w-full h-auto rounded-lg object-cover">
+                        <img src="https://placehold.co/400x120/C0C0C0/909090?text=Office+3" alt="Office Image 3"
+                            class="w-full h-auto rounded-lg object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1 space-y-8">
+            <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center">
+                <button class="bg-blue text-white px-6 py-2 rounded-lg font-medium text-sm mb-4 w-full">
+                    <i class="fas fa-eye mr-1"></i> Public View
+                </button>
+                <button class="bg-purple text-white px-6 py-2 rounded-lg font-medium text-sm w-full">
+                    <i class="fas fa-plus mr-1"></i> Post a job
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-dark-gray">Tech Stack</h2>
+                    <div class="flex items-center space-x-4 text-gray">
+                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col items-center text-center p-3 rounded-lg border border-gray-200">
+                        <img src="https://placehold.co/40x40/FF5733/FFFFFF?text=HT" alt="HTML5" class="w-10 h-10 mb-1">
+                        <p class="text-sm font-medium text-dark-gray">HTML5</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-3 rounded-lg border border-gray-200">
+                        <img src="https://placehold.co/40x40/3366FF/FFFFFF?text=CS" alt="CSS3" class="w-10 h-10 mb-1">
+                        <p class="text-sm font-medium text-dark-gray">CSS3</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-3 rounded-lg border border-gray-200">
+                        <img src="https://placehold.co/40x40/FFD700/000000?text=JS" alt="JavaScript"
+                            class="w-10 h-10 mb-1">
+                        <p class="text-sm font-medium text-dark-gray">JavaScript</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-3 rounded-lg border border-gray-200">
+                        <img src="https://placehold.co/40x40/800080/FFFFFF?text=Py" alt="Python"
+                            class="w-10 h-10 mb-1">
+                        <p class="text-sm font-medium text-dark-gray">Python</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-3 rounded-lg border border-gray-200">
+                        <img src="https://placehold.co/40x40/008080/FFFFFF?text=Re" alt="React" class="w-10 h-10 mb-1">
+                        <p class="text-sm font-medium text-dark-gray">React</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-3 rounded-lg border border-gray-200">
+                        <img src="https://placehold.co/40x40/40E0D0/FFFFFF?text=No" alt="Node.js"
+                            class="w-10 h-10 mb-1">
+                        <p class="text-sm font-medium text-dark-gray">Node.js</p>
+                    </div>
+                </div>
+                <button class="mt-6 text-purple font-medium hover:text-blue transition-colors">View Tech Stack <i
+                        class="fas fa-chevron-right ml-1 text-xs"></i></button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-dark-gray">Office Locations</h2>
+                    <div class="flex items-center space-x-4 text-gray">
+                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-dark-gray">
+                        <img src="https://flagcdn.com/w20/us.png" alt="USA Flag" class="w-5 h-auto mr-2 rounded-sm">
+                        United States
                     </li>
-                    <li style="margin-bottom: 15px;">
-                        <a href="#" style="color: #1A1A1A; font-size: 14px; text-decoration: none; display: flex; align-items: center; padding: 10px; border-radius: 4px; transition: background-color 0.3s;">
-                            <i style="margin-right: 10px;" class="fas fa-question-circle"></i> Help Center
-                        </a>
+                    <li class="flex items-center text-dark-gray">
+                        <img src="https://flagcdn.com/w20/gb.png" alt="UK Flag" class="w-5 h-auto mr-2 rounded-sm">
+                        England
+                    </li>
+                    <li class="flex items-center text-dark-gray">
+                        <img src="https://flagcdn.com/w20/jp.png" alt="Japan Flag" class="w-5 h-auto mr-2 rounded-sm">
+                        Japan
+                    </li>
+                    <li class="flex items-center text-dark-gray">
+                        <img src="https://flagcdn.com/w20/au.png" alt="Australia Flag"
+                            class="w-5 h-auto mr-2 rounded-sm">
+                        Australia
+                    </li>
+                    <li class="flex items-center text-dark-gray">
+                        <img src="https://flagcdn.com/w20/in.png" alt="India Flag" class="w-5 h-auto mr-2 rounded-sm">
+                        India
                     </li>
                 </ul>
+                <button class="mt-4 text-purple font-medium hover:text-blue transition-colors">View more countries <i
+                        class="fas fa-chevron-right ml-1 text-xs"></i></button>
             </div>
-        </nav>
+        </div>
     </div>
-</div>
 
-    <script>
-        const toggleIcon = document.getElementById('toggleSidebar');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-
-        let isSidebarVisible = true;
-
-        toggleIcon.addEventListener('click', () => {
-            isSidebarVisible = !isSidebarVisible;
-            if (isSidebarVisible) {
-                sidebar.style.width = '250px';
-                mainContent.style.marginLeft = '250px';
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.add('visible');
-            } else {
-                sidebar.style.width = '0';
-                mainContent.style.marginLeft = '0';
-                sidebar.classList.remove('visible');
-                sidebar.classList.add('collapsed');
-            }
-        });
-
-        // Hide sidebar on small screens by default, show on toggle
-        if (window.innerWidth <= 768) {
-            sidebar.style.width = '0';
-            mainContent.style.marginLeft = '0';
-            sidebar.classList.add('collapsed');
-            isSidebarVisible = false;
-        }
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth <= 768) {
-                if (isSidebarVisible) {
-                    sidebar.style.width = '0';
-                    mainContent.style.marginLeft = '0';
-                    sidebar.classList.add('collapsed');
-                    isSidebarVisible = false;
-                }
-            } else {
-                sidebar.style.width = '250px';
-                mainContent.style.marginLeft = '250px';
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.add('visible');
-                isSidebarVisible = true;
-            }
-        });
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="bg-lavender font-sans">
-    <div class="container mx-auto p-4 sm:p-6">
-        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
-                <div class="flex items-center mb-4 sm:mb-0">
-                    <div class="bg-yellow h-6 w-6 rounded-full mr-2"></div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-dark-gray">Fobverse</h1>
-                </div>
-                <div class="text-sm sm:text-base text-gray">Jul 19 - Jul 25</div>
+    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Team</h2>
+            <div class="flex items-center space-x-4 text-gray">
+                <i class="fas fa-plus-circle"></i>
+                <i class="fas fa-pen"></i>
+                <i class="fas fa-ellipsis-h"></i>
             </div>
-            <p class="text-gray text-sm sm:text-base mb-4">Good morning, Maria. Here is your job listings statistic report from Jul 19 - Jul 25.</p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <div class="bg-purple text-white p-4 rounded-lg">
-                    <p class="text-xs sm:text-sm">Total no of Candidates</p>
-                    <p class="text-lg sm:text-xl font-bold">76</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <img src="https://placehold.co/80x80/7941B5/FFFFFF?text=CG" alt="Celeste Grivier"
+                    class="w-20 h-20 rounded-full object-cover mb-2">
+                <h3 class="font-semibold text-dark-gray">Celeste Grivier</h3>
+                <p class="text-gray text-sm">Co-Founder</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG" alt="Regina Gaubert"
+                    class="w-20 h-20 rounded-full object-cover mb-2">
+                <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
+                <p class="text-gray text-sm">Co-Founder</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <img src="https://placehold.co/80x80/1A1A1A/FFFFFF?text=SQ" alt="Sabine Qun"
+                    class="w-20 h-20 rounded-full object-cover mb-2">
+                <h3 class="font-semibold text-dark-gray">Sabine Qun</h3>
+                <p class="text-gray text-sm">Managing Director</p>
+            </div>
+             <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG" alt="Regina Gaubert"
+                    class="w-20 h-20 rounded-full object-cover mb-2">
+                <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
+                <p class="text-gray text-sm">Co-Founder</p>
+            </div>
+        </div>
+        <button class="mt-6 text-purple font-medium hover:text-blue transition-colors">View all core teams <i
+                class="fas fa-chevron-right ml-1 text-xs"></i></button>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
+            <div class="flex items-center space-x-4 text-gray">
+                <i class="fas fa-plus-circle"></i>
+                <i class="fas fa-pen"></i>
+                <i class="fas fa-ellipsis-h"></i>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <i class="fas fa-hospital-alt text-purple text-3xl mb-2"></i>
+                <h3 class="font-semibold text-dark-gray">Full Healthcare</h3>
+                <p class="text-gray text-sm">We believe you should have the peace of mind to focus on your work.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <i class="fas fa-home text-purple text-3xl mb-2"></i>
+                <h3 class="font-semibold text-dark-gray">Remote Work</h3>
+                <p class="text-gray text-sm">Work from anywhere, anytime, space for family, friends, and you.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <i class="fas fa-child text-purple text-3xl mb-2"></i>
+                <h3 class="font-semibold text-dark-gray">Family Support</h3>
+                <p class="text-gray text-sm">We believe in always putting our employees first, and helping them achieve
+                    their goals.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <i class="fas fa-money-bill-wave text-purple text-3xl mb-2"></i>
+                <h3 class="font-semibold text-dark-gray">Paid Time Off</h3>
+                <p class="text-gray text-sm">Every 6 months we have a company-wide paid time off to have fun, reflect,
+                    and plan for the upcoming quarter.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <i class="fas fa-mug-hot text-purple text-3xl mb-2"></i>
+                <h3 class="font-semibold text-dark-gray">Free Coffee & Snacks</h3>
+                <p class="text-gray text-sm">You know how you perform better with a full stomach. Free coffee shop or
+                    anywhere you buy that has it.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-lg border border-gray-200">
+                <i class="fas fa-gift text-purple text-3xl mb-2"></i>
+                <h3 class="font-semibold text-dark-gray">Birthday Bonus</h3>
+                <p class="text-gray text-sm">We're grateful for all the hard work and dedication our team member puts
+                    into getting to our company goals.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Open Positions</h2>
+            <a href="#" class="text-purple font-medium hover:text-blue transition-colors">Show all jobs <i
+                    class="fas fa-chevron-right ml-1 text-xs"></i></a>
+        </div>
+        <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+                <div>
+                    <h3 class="font-semibold text-dark-gray">Social Media Assistant</h3>
+                    <p class="text-gray text-sm">Full-time . Marketing . Design</p>
                 </div>
-                <div class="bg-green-600 text-white p-4 rounded-lg">
-                    <p class="text-xs sm:text-sm">Total Number of Companies</p>
-                    <p class="text-lg sm:text-xl font-bold">89</p>
-                </div>
-                <div class="bg-blue text-white p-4 rounded-lg">
-                    <p class="text-xs sm:text-sm">Total number of application</p>
-                    <p class="text-lg sm:text-xl font-bold">289</p>
+                <div class="flex items-center space-x-2 text-gray">
+                    <i class="fas fa-bookmark"></i>
+                    <i class="fas fa-ellipsis-h"></i>
                 </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <div class="flex flex-col sm:flex-row justify-between mb-2">
-                        <span class="text-sm sm:text-base text-dark-gray">Job statistics Jul 19-25</span>
-                        <div class="flex space-x-2 mt-2 sm:mt-0">
-                            <button class="text-sm sm:text-base text-purple">Week</button>
-                            <button class="text-sm sm:text-base text-purple">Month</button>
-                            <button class="text-sm sm:text-base text-purple">Year</button>
-                        </div>
-                    </div>
-                    <div class="h-32 sm:h-40 flex items-end justify-between">
-                        <div class="flex flex-col items-center">
-                            <div class="bg-yellow w-8 sm:w-10 h-24 sm:h-32 rounded-t"></div>
-                            <span class="text-xs sm:text-sm text-gray">122</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <div class="bg-blue w-8 sm:w-10 h-28 sm:h-32 rounded-t"></div>
-                            <span class="text-xs sm:text-sm text-gray">34</span>
-                        </div>
-                        <span class="text-xs sm:text-sm text-gray">Mon Tue Wed Thu Fri Sat Sun</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray">Job View Job Applied</p>
+            <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+                <div>
+                    <h3 class="font-semibold text-dark-gray">Brand Designer</h3>
+                    <p class="text-gray text-sm">Full-time . Marketing . USB</p>
                 </div>
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <p class="text-lg sm:text-xl font-semibold text-dark-gray">Job Views</p>
-                    <p class="text-2xl font-bold text-dark-gray">2,342</p>
-                    <p class="text-sm text-green-600">This Week 6.4%</p>
-                    <p class="text-lg sm:text-xl font-semibold text-dark-gray mt-4">Job Applied</p>
-                    <p class="text-2xl font-bold text-dark-gray">654</p>
-                    <p class="text-sm text-green-600">This Week 0.5%</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <p class="text-lg sm:text-xl font-semibold text-dark-gray">Job Open</p>
-                    <p class="text-2xl font-bold text-dark-gray">12</p>
-                    <p class="text-lg sm:text-xl font-semibold text-dark-gray mt-4">Applicants Summary</p>
-                    <p class="text-2xl font-bold text-dark-gray">67</p>
-                    <div class="flex space-x-1 mt-2">
-                        <div class="bg-purple h-2 flex-1"></div>
-                        <div class="bg-yellow h-2 flex-1"></div>
-                        <div class="bg-green-400 h-2 flex-1"></div>
-                        <div class="bg-red-400 h-2 flex-1"></div>
-                        <div class="bg-blue h-2 flex-1"></div>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray mt-1">Full Time: 45 | Internship: 32 | Part-time: 24 | Contract: 30 | Remote: 22</p>
+                <div class="flex items-center space-x-2 text-gray">
+                    <i class="fas fa-bookmark"></i>
+                    <i class="fas fa-ellipsis-h"></i>
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
-            <h2 class="text-lg sm:text-xl font-semibold text-dark-gray mb-4">Job Updates</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-lavender p-3 sm:p-4 rounded-lg shadow">
-                    <img src="https://via.placeholder.com/40" alt="Company Logo" class="mb-2">
-                    <p class="text-sm sm:text-base text-dark-gray">Social Media Assistant</p>
-                    <p class="text-xs sm:text-sm text-gray">Nomad - Paris, France</p>
-                    <div class="flex space-x-2 mt-2">
-                        <span class="bg-purple text-white text-xs px-2 py-1 rounded">Marketing</span>
-                        <span class="bg-blue text-white text-xs px-2 py-1 rounded">Design</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray mt-2">5 applied of 10 capacity</p>
-                </div>
-                <div class="bg-lavender p-3 sm:p-4 rounded-lg shadow">
-                    <img src="https://via.placeholder.com/40" alt="Company Logo" class="mb-2">
-                    <p class="text-sm sm:text-base text-dark-gray">Brand Designer</p>
-                    <p class="text-xs sm:text-sm text-gray">Nomad - Paris, France</p>
-                    <div class="flex space-x-2 mt-2">
-                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Business</span>
-                        <span class="bg-blue text-white text-xs px-2 py-1 rounded">Design</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray mt-2">5 applied of 10 capacity</p>
-                </div>
-                <div class="bg-lavender p-3 sm:p-4 rounded-lg shadow">
-                    <img src="https://via.placeholder.com/40" alt="Company Logo" class="mb-2">
-                    <p class="text-sm sm:text-base text-dark-gray">Interactive Developer</p>
-                    <p class="text-xs sm:text-sm text-gray">Terraform - Berlin, Germany</p>
-                    <div class="flex space-x-2 mt-2">
-                        <span class="bg-yellow text-dark-gray text-xs px-2 py-1 rounded">Marketing</span>
-                        <span class="bg-blue text-white text-xs px-2 py-1 rounded">Design</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray mt-2">5 applied of 10 capacity</p>
-                </div>
-                <div class="bg-lavender p-3 sm:p-4 rounded-lg shadow">
-                    <img src="https://via.placeholder.com/40" alt="Company Logo" class="mb-2">
-                    <p class="text-sm sm:text-base text-dark-gray">Product Designer</p>
-                    <p class="text-xs sm:text-sm text-gray">ClassPass - Berlin, Germ.</p>
-                    <div class="flex space-x-2 mt-2">
-                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Business</span>
-                        <span class="bg-blue text-white text-xs px-2 py-1 rounded">Design</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray mt-2">5 applied of 10 capacity</p>
-                </div>
-            </div>
-            <a href="#" class="text-purple text-sm sm:text-base mt-4 inline-block">View All →</a>
-        </div>
     </div>
 </div>
-

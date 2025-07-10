@@ -8,7 +8,6 @@ import { Candidatecomponent } from './features/layout/candidatecomponent/candida
 import { CandidateHome } from './features/candidate/candidate-home/candidate-home';
 import { Authcomponent } from './features/layout/authcomponent/authcomponent';
 import { EmailComponent } from './features/layout/email-component/email-component';
-import { Company } from './features/layout/company/company';
 import { CompanyHome } from './features/company/company.home/company.home';
 import { AdminComponent } from './features/layout/admin-component/admin-component';
 import { AdminDashboard } from './features/admin/components/admin-dashboard/admin-dashboard';
@@ -19,6 +18,7 @@ import { AdminListcompanys } from './features/admin/components/admin-listcompany
 import { AdminCandidatesList } from './features/admin/components/admin-candidates-list/admin-candidates-list';
 import { authGuard } from './shared/guards/auth-guard';
 import { isAdminGuard } from './shared/guards/is-admin-guard';
+import { CompanyComponent } from './features/layout/company-component/company-component';
 
 export const routes: Routes = [
   {
@@ -39,6 +39,16 @@ export const routes: Routes = [
         path: 'adminlogin',
         component: CandidateLogin,
         data: { userType: 'admin' },
+      },
+      {
+        path: 'companylogin',
+        component: CandidateLogin,
+        data: { userType: 'company' },
+      },
+      {
+        path: 'companysignup',
+        component: CandidateSignup,
+        data: { userType: 'company' },
       },
       {
         path: '',
@@ -70,18 +80,8 @@ export const routes: Routes = [
   //company
   {
     path: 'company',
-    component: Company,
+    component: CompanyComponent,
     children: [
-      {
-        path: 'login',
-        component: CandidateLogin,
-        data: { userType: 'company' },
-      },
-      {
-        path: 'signup',
-        component: CandidateSignup,
-        data: { userType: 'company' },
-      },
       {
         path: 'home',
         component: CompanyHome,

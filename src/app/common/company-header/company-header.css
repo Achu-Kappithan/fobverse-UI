@@ -1,0 +1,26 @@
+/* src/app/admin-header/admin-header.component.css */
+/* Custom Tailwind Colors - Replicated for consistency */
+.bg-purple { background-color: #7941B5; }
+.text-purple { color: #7941B5; }
+.bg-lavender { background-color: #EDE7FF; }
+.text-dark-gray { color: #1A1A1A; }
+.text-gray { color: #B0B0B0; }
+.bg-blue { background-color: #5A4BFF; }
+/* Dark Mode Colors */
+.bg-dark-lavender { background-color: #2D3748; }
+.text-dark-text { color: #CBD5E0; }
+.text-dark-gray-light { color: #A0AEC0; }
+.bg-dark-purple { background-color: #6A35A0; }
+.bg-dark-blue { background-color: #4A3AFF; }
+
+/* Dark mode specific styles */
+.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
+.dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
+.dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */
+.dark .bg-white { background-color: #1A202C; } /* Darker background for cards/elements */
+.dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15); }
+.dark .border-gray-300 { border-color: #4A5568; } /* Darker border */
+.dark .text-gray-400 { color: #718096; } /* Darker icon color */
+.dark .hover\:bg-lavender:hover { background-color: #4A5568; } /* Darker hover for dropdowns */
+.dark .text-purple { color: #9F7AEA; } /* Adjust purple for dark mode visibility */
+.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility */

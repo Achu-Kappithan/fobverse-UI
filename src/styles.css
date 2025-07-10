@@ -1,4 +1,4 @@
-/* Custom Colors */
+Custom Colors
 .bg-purple { background-color: #7941B5; }
 .text-purple { color: #7941B5; }
 .bg-lavender { background-color: #EDE7FF; }
@@ -63,23 +63,38 @@
   background: #555;
 }
 
-/* Dark Mode Overrides */
-html.dark {
-  body {
-    background-color: #1a202c !important;
-    color: #e2e8f0 !important;
-  }
-  .bg-white { background-color: #2D3748 !important; }
-  .bg-lavender { background-color: #2D3748 !important; }
-  .text-dark-gray { color: #CBD5E0 !important; }
-  .text-gray { color: #A0AEC0 !important; }
-  .bg-purple { background-color: #6A35A0 !important; }
-  .bg-green-600 { background-color: #2F855A !important; }
-  .bg-blue { background-color: #4A3AFF !important; }
-  .bg-yellow { background-color: #CCAC00 !important; }
-  .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.24) !important; }
-  .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.29) !important; }
-  .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.25) !important; }
-  .custom-scrollbar::-webkit-scrollbar-track { background: #2D3748; }
-  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #4A5568; }
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Dark mode specific global styles for the HTML element */
+html.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
+html.dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
+html.dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */
+html.dark .bg-white { background-color: #1A202C; } /* Darker background for cards/elements */
+html.dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15); }
+html.dark .border-gray-300 { border-color: #4A5568; } /* Darker border */
+html.dark .text-gray-400 { color: #718096; } /* Darker icon color */
+html.dark .hover\:bg-lavender:hover { background-color: #4A5568; } /* Darker hover for dropdowns */
+html.dark .text-purple { color: #9F7AEA; } /* Adjust purple for dark mode visibility */
+html.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility */
+
+/* You might want to define the custom-scrollbar styles here too if you use it widely */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

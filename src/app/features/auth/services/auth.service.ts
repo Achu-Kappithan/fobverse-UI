@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CandidateRegistration, loginInterface, passwordUpdate, validateEmailAndRole } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../../shared/interfaces/apiresponce.interface';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class UserRegisterService {
   user$ = this.userSubject.asObservable()
   public isUserLoaded = new BehaviorSubject<boolean>(false)
   isLoading$ = this.isUserLoaded.asObservable()
+  private _router = inject(Router)
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
   }
@@ -89,20 +91,15 @@ export class UserRegisterService {
     return refreshtoken
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}auth/logout`, {}, { withCredentials: true }).pipe(
-      tap(() => {
-        this.userSubject.next(null);
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.removeItem('currentUser');
-        }
-        console.log('User logged out');
-      }),
-      catchError((error) => {
-        console.error('Logout failed:', error);
-        return of(null);
-      })
-    );
+  logoutUser(): void {
+    this.http.post(`${this.apiUrl}auth/logout`, {}, { withCredentials: true }).subscribe({
+      next:(res)=>{
+        this.userSubject.next(null)
+        this.isUserLoaded.next(true)
+        this._router.navigate(['/login'])
+      }
+    })
+
   }
 
   googleLogin(googleId:string,userType:string):Observable<ApiResponce<UserPartial>>{

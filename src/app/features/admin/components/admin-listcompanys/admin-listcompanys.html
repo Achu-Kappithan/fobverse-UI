@@ -32,7 +32,7 @@
             <p class="text-gray text-sm">Created: {{ company.createdAt | date: 'shortDate' }}</p>
           </div>
           <img
-            src="https://via.placeholder.com/80"
+            [src]="logoUrl"
             [alt]="company.name + ' Logo'"
             class="w-20 h-20 rounded-full object-cover flex-shrink-0"
           />

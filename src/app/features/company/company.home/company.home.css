@@ -1,0 +1,38 @@
+        /* Custom Tailwind Colors (from previous requests, ensuring consistency) */
+        .bg-purple { background-color: #7941B5; }
+        .text-purple { color: #7941B5; }
+        .bg-lavender { background-color: #EDE7FF; }
+        .text-dark-gray { color: #1A1A1A; }
+        .text-gray { color: #B0B0B0; }
+        .bg-blue { background-color: #5A4BFF; }
+        /* Dark Mode Colors (for future compatibility, if needed) */
+        .bg-dark-lavender { background-color: #2D3748; }
+        .text-dark-text { color: #CBD5E0; }
+        .text-dark-gray-light { color: #A0AEC0; }
+        .bg-dark-purple { background-color: #6A35A0; }
+        .bg-dark-blue { background-color: #4A3AFF; }
+
+        /* Custom font for better aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F8F8; /* A very light gray background for the overall page */
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }

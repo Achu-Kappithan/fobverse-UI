@@ -35,7 +35,7 @@
                     <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
                     </div>
                 </div>
-                <img src="https://placehold.co/100x100/7941B5/FFFFFF?text=EB" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple">
+                <img [src]="profileImage" alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple">
                 <h2 class="text-xl font-semibold text-dark-gray mb-1">{{can.name}}</h2>
                 <p class="text-gray text-sm mb-2">Created: {{ can.createdAt | date: 'shortDate' }}</p>
                 

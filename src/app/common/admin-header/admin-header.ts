@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { UserRegisterService } from '../../features/auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-header',
@@ -14,6 +15,7 @@ export class AdminHeader implements OnInit {
 
   isDarkMode: boolean = false;
   isProfileMenuOpen: boolean = false;
+  private _router = inject(Router)
 
   constructor(
     private readonly _authService: UserRegisterService
@@ -26,11 +28,16 @@ export class AdminHeader implements OnInit {
   }
 
   toggleDarkMode() {
+    console.log('darkmode')
     this.isDarkMode = !this.isDarkMode;
     document.body.classList.toggle('dark', this.isDarkMode); 
   }
 
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  logoutUser(){
+    this._authService.logoutUser()
   }
 }
