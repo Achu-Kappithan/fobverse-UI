@@ -1,20 +1,19 @@
 <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2 bg-white dark:bg-dark-lavender shadow-md transition-colors duration-300 ease-in-out">
   <div class="flex items-center">
     <img src="/logo/logo.png" alt="Fobverse Logo" class="h-10 mr-4">
-    <!-- <h1 class="text-xl font-bold text-dark-gray dark:text-dark-text">Admin Dashboard</h1> -->
   </div>
   <div class="flex items-center space-x-4">
-    <button (click)="toggleDarkMode()" class="p-2 rounded-full transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700" aria-label="Toggle dark mode">
+    <button (click)="toggleDarkMode()" class="p-2 rounded-full transition-colors duration-200 hover:bg-purple-100 dark:hover:bg-purple-700" aria-label="Toggle dark mode">
       <i class="fas" [ngClass]="{'fa-moon text-gray': !isDarkMode, 'fa-sun text-white': isDarkMode}"></i>
     </button>
     <div class="relative">
-      <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-        <img src="https://via.placeholder.com/32" alt="User Avatar" class="h-8 w-8 rounded-full">
+      <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover:bg-purple-100 dark:hover:bg-purple-700">
+        <img src="/profileimages/defaultProfile.jpg" alt="User Avatar" class="h-8 w-8 rounded-full">
       </button>
       <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-lavender rounded-md shadow-lg py-1 z-10">
-        <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-600">Profile</a>
-        <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-600">Settings</a>
-        <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-600">Logout</a>
+        <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-purple-100 dark:hover:bg-purple-700">Profile</a>
+        <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-purple-100 dark:hover:bg-purple-700">Settings</a>
+        <a (click)="logoutUser()" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-purple-100 dark:hover:bg-purple-700">Logout</a>
       </div>
     </div>
   </div>

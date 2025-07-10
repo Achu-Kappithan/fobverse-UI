@@ -1,0 +1,73 @@
+.bg-purple { background-color: #7941B5; }
+.text-purple { color: #7941B5; }
+.bg-lavender { background-color: #EDE7FF; }
+.text-dark-gray { color: #1A1A1A; }
+.text-gray { color: #B0B0B0; }
+.bg-blue { background-color: #5A4BFF; }
+/* Dark Mode Colors */
+.bg-dark-lavender { background-color: #2D3748; }
+.text-dark-text { color: #CBD5E0; }
+.text-dark-gray-light { color: #A0AEC0; }
+.bg-dark-purple { background-color: #6A35A0; }
+.bg-dark-blue { background-color: #4A3AFF; }
+
+/* Dark mode specific styles */
+.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
+.dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
+.dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */
+.dark .bg-white { background-color: #1A202C; } /* Darker background for cards/elements */
+.dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15); }
+.dark .border-gray-300 { border-color: #4A5568; } /* Darker border */
+.dark .text-gray-400 { color: #718096; } /* Darker icon color */
+.dark .hover\:bg-lavender:hover { background-color: #4A5568; } /* Darker hover for dropdowns */
+.dark .text-purple { color: #9F7AEA; } /* Adjust purple for dark mode visibility */
+.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility */
+
+/* Custom scrollbar for better aesthetics */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Sidebar specific styles */
+.sidebar {
+    width: 250px; /* Expanded width */
+    transition: width 0.3s ease-in-out;
+}
+
+.sidebar.collapsed {
+    width: 80px; /* Collapsed width */
+}
+
+.sidebar-item-text {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow when collapsed */
+    width: auto; /* Ensure text takes up space when open */
+}
+
+.sidebar.collapsed .sidebar-item-text {
+    opacity: 0;
+    width: 0; /* Collapse text width */
+    margin-right: 0 !important; /* Remove any lingering margin */
+}
+
+/* Adjust margin for icons when sidebar is collapsed */
+.sidebar.collapsed .fas.mr-2 {
+    margin-right: 0 !important;
+}

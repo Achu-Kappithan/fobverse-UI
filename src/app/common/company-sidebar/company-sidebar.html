@@ -1,0 +1,97 @@
+<div class="fixed left-0 top-16 bottom-0 bg-white dark:bg-dark-lavender transition-all duration-300 ease-in-out custom-scrollbar z-10"
+     [ngClass]="{'w-64': isOpen, 'w-16': !isOpen}">
+    <div class="p-4 h-full overflow-y-auto">
+        <div class="flex items-center mb-4" [ngClass]="{'justify-end': isOpen, 'justify-center': !isOpen}">
+            <button (click)="toggleSidebar()" class="text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender p-2 rounded transition-colors" [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'">
+                <i class="fas" [ngClass]="{'fa-chevron-left': isOpen, 'fa-bars': !isOpen}"></i>
+            </button>
+        </div>
+        <nav>
+            <ul class="space-y-2">
+                <!-- Dashboard -->
+                <li>
+                    <a [routerLink]="['/company/home']" [routerLinkActive]="'bg-purple text-white'"
+                       class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                       [ngClass]="{'justify-center': !isOpen}">
+                        <i class="fas fa-tachometer-alt" [ngClass]="{'mr-2': isOpen}"></i>
+                        <ng-container *ngIf="isOpen">
+                            <span class="sidebar-item-text">Dashboard</span>
+                        </ng-container>
+                    </a>
+                </li>
+                <!-- Company Profile -->
+                <li>
+                    <a [routerLink]="['/company/profile']" [routerLinkActive]="'bg-purple text-white'"
+                       class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                       [ngClass]="{'justify-center': !isOpen}">
+                        <i class="fas fa-building" [ngClass]="{'mr-2': isOpen}"></i>
+                        <ng-container *ngIf="isOpen">
+                            <span class="sidebar-item-text">Company Profile</span>
+                        </ng-container>
+                    </a>
+                </li>
+                <!-- Candidates Profile -->
+                <li>
+                    <a
+                       class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                       [ngClass]="{'justify-center': !isOpen}">
+                        <i class="fas fa-users" [ngClass]="{'mr-2': isOpen}"></i>
+                        <ng-container *ngIf="isOpen">
+                            <span class="sidebar-item-text">Candidates Profile</span>
+                        </ng-container>
+                    </a>
+                </li>
+                <!-- Job Listing -->
+                <li>
+                    <a
+                       class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                       [ngClass]="{'justify-center': !isOpen}">
+                        <i class="fas fa-briefcase" [ngClass]="{'mr-2': isOpen}"></i>
+                        <ng-container *ngIf="isOpen">
+                            <span class="sidebar-item-text">Job Listing</span>
+                        </ng-container>
+                    </a>
+                </li>
+                 <!-- My Schedule -->
+                 <li>
+                    <a 
+                       class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                       [ngClass]="{'justify-center': !isOpen}">
+                        <i class="fas fa-calendar-alt" [ngClass]="{'mr-2': isOpen}"></i>
+                        <ng-container *ngIf="isOpen">
+                            <span class="sidebar-item-text">My Schedule</span>
+                        </ng-container>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mt-6 pt-4 border-t border-gray dark:border-dark-gray-light">
+                <h3 *ngIf="isOpen" class="text-dark-gray dark:text-dark-text text-sm font-bold mb-2 pl-2">SETTINGS</h3>
+                <ul class="space-y-2">
+                    <!-- Settings -->
+                    <li>
+                        <a
+                           class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                           [ngClass]="{'justify-center': !isOpen}">
+                            <i class="fas fa-cog" [ngClass]="{'mr-2': isOpen}"></i>
+                            <ng-container *ngIf="isOpen">
+                                <span class="sidebar-item-text">Settings</span>
+                            </ng-container>
+                        </a>
+                    </li>
+                    <!-- Help Center -->
+                    <li>
+                        <a
+                           class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                           [ngClass]="{'justify-center': !isOpen}">
+                            <i class="fas fa-question-circle" [ngClass]="{'mr-2': isOpen}"></i>
+                            <ng-container *ngIf="isOpen">
+                                <span class="sidebar-item-text">Help Center</span>
+                            </ng-container>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

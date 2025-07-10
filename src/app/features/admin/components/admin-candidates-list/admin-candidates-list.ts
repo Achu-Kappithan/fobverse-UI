@@ -15,6 +15,7 @@ export class AdminCandidatesList  implements OnInit {
   isdorpDownOpen: { [id: string]: boolean } = {};
   isLoading:boolean = false
   candidates:CandidateInterface[] = []
+  profileImage:string ='/profileimages/defaultProfile.jpg'
 
   constructor( 
     private readonly _adminCandidateService:AdminCandidate,

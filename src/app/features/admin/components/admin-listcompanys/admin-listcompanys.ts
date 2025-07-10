@@ -17,6 +17,7 @@ export class AdminListcompanys implements OnInit {
 
   companies:CompanyInterface[] = []
   isLoading:boolean = false
+  logoUrl:string ='/profileimages/logodefault.jpg'
 
   constructor(
     private readonly _companyService:AdminCompanyService,
