@@ -1,11 +1,11 @@
-<div class="text-dark-gray">
+<div *ngIf="!isLoading" class="text-dark-gray">
 
     <div class="container mx-auto px-4 py-6 relative rounded-xl bg-white">
         <div class="container mx-auto px-4 py-2 flex items-center pb-6 justify-between">
             <div class="flex items-center space-x-2">
                 <img src="https://placehold.co/30x30/7941B5/FFFFFF?text=C" alt="Company Logo"
                     class="h-8 w-8 rounded-full">
-                <span class="font-semibold text-dark-gray">Company Nomad</span>
+                <span class="font-semibold text-dark-gray">{{comapny?.name}}</span>
                 <i class="fas fa-chevron-down text-gray text-sm"></i>
             </div>
             <div class="flex items-center space-x-4">
@@ -26,7 +26,7 @@
                 <img src="https://placehold.co/100x100/34D399/FFFFFF?text=N" alt="Nomad Logo"
                     class="w-24 h-24 rounded-2xl mr-6">
                 <div>
-                    <h1 class="text-4xl font-bold text-dark-gray">Nomad</h1>
+                    <h1 class="text-4xl font-bold text-dark-gray">{{comapny?.name}}</h1>
                     <p class="text-purple text-base mt-1">https://nomad.com</p>
                 </div>
             </div>
@@ -170,29 +170,29 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                         <img src="https://placehold.co/40x40/FF5733/FFFFFF?text=HT" alt="HTML5" class="w-10 h-10 mb-1">
                         <p class="text-sm font-medium text-dark-gray">HTML5</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                         <img src="https://placehold.co/40x40/3366FF/FFFFFF?text=CS" alt="CSS3" class="w-10 h-10 mb-1">
                         <p class="text-sm font-medium text-dark-gray">CSS3</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                         <img src="https://placehold.co/40x40/FFD700/000000?text=JS" alt="JavaScript"
                             class="w-10 h-10 mb-1">
                         <p class="text-sm font-medium text-dark-gray">JavaScript</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                         <img src="https://placehold.co/40x40/800080/FFFFFF?text=Py" alt="Python"
                             class="w-10 h-10 mb-1">
                         <p class="text-sm font-medium text-dark-gray">Python</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                         <img src="https://placehold.co/40x40/008080/FFFFFF?text=Re" alt="React" class="w-10 h-10 mb-1">
                         <p class="text-sm font-medium text-dark-gray">React</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                         <img src="https://placehold.co/40x40/40E0D0/FFFFFF?text=No" alt="Node.js"
                             class="w-10 h-10 mb-1">
                         <p class="text-sm font-medium text-dark-gray">Node.js</p>
@@ -250,25 +250,25 @@
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <img src="https://placehold.co/80x80/7941B5/FFFFFF?text=CG" alt="Celeste Grivier"
                     class="w-20 h-20 rounded-full object-cover mb-2">
                 <h3 class="font-semibold text-dark-gray">Celeste Grivier</h3>
                 <p class="text-gray text-sm">Co-Founder</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG" alt="Regina Gaubert"
                     class="w-20 h-20 rounded-full object-cover mb-2">
                 <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
                 <p class="text-gray text-sm">Co-Founder</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <img src="https://placehold.co/80x80/1A1A1A/FFFFFF?text=SQ" alt="Sabine Qun"
                     class="w-20 h-20 rounded-full object-cover mb-2">
                 <h3 class="font-semibold text-dark-gray">Sabine Qun</h3>
                 <p class="text-gray text-sm">Managing Director</p>
             </div>
-             <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+             <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG" alt="Regina Gaubert"
                     class="w-20 h-20 rounded-full object-cover mb-2">
                 <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
@@ -289,35 +289,35 @@
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <i class="fas fa-hospital-alt text-purple text-3xl mb-2"></i>
                 <h3 class="font-semibold text-dark-gray">Full Healthcare</h3>
                 <p class="text-gray text-sm">We believe you should have the peace of mind to focus on your work.</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <i class="fas fa-home text-purple text-3xl mb-2"></i>
                 <h3 class="font-semibold text-dark-gray">Remote Work</h3>
                 <p class="text-gray text-sm">Work from anywhere, anytime, space for family, friends, and you.</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <i class="fas fa-child text-purple text-3xl mb-2"></i>
                 <h3 class="font-semibold text-dark-gray">Family Support</h3>
                 <p class="text-gray text-sm">We believe in always putting our employees first, and helping them achieve
                     their goals.</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <i class="fas fa-money-bill-wave text-purple text-3xl mb-2"></i>
                 <h3 class="font-semibold text-dark-gray">Paid Time Off</h3>
                 <p class="text-gray text-sm">Every 6 months we have a company-wide paid time off to have fun, reflect,
                     and plan for the upcoming quarter.</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <i class="fas fa-mug-hot text-purple text-3xl mb-2"></i>
                 <h3 class="font-semibold text-dark-gray">Free Coffee & Snacks</h3>
                 <p class="text-gray text-sm">You know how you perform better with a full stomach. Free coffee shop or
                     anywhere you buy that has it.</p>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow">
+            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
                 <i class="fas fa-gift text-purple text-3xl mb-2"></i>
                 <h3 class="font-semibold text-dark-gray">Birthday Bonus</h3>
                 <p class="text-gray text-sm">We're grateful for all the hard work and dedication our team member puts
@@ -356,4 +356,8 @@
             </div>
         </div>
     </div>
+</div>
+
+ <div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
 </div>

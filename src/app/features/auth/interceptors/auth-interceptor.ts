@@ -58,7 +58,7 @@ function handle401Error(
       }),
       catchError((error) => {
         isRefreshing = false;
-        authService.userSubject.next(null);
+        authService.adminSubject.next(null);
         router.navigate(['/login']);
         return throwError(() => error);
       }),

@@ -47,26 +47,7 @@ Custom Colors
   color: #4caf50 !important;
 }
 
-/* Custom Scrollbar */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-  border: 2px solid #f1f1f1;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
 
-
-body {
-    font-family: 'Inter', sans-serif;
-}
 
 /* Dark mode specific global styles for the HTML element */
 html.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
@@ -97,4 +78,15 @@ html.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+
+/* Light hover */
+.hover-bg-light:hover {
+  background-color: #e2dfe4;
+}
+
+/* Dark hover */
+html.dark .hover-bg-light:hover {
+  background-color: #4A5568;
 }

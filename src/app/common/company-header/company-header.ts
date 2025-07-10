@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { UserRegisterService } from '../../features/auth/services/auth.service';
 
 @Component({
   selector: 'app-company-header',
@@ -13,7 +14,14 @@ export class CompanyHeader implements OnInit {
 
   isProfileMenuOpen: boolean = false;
 
+  constructor(private readonly _authService : UserRegisterService){}
+
   ngOnInit(): void {
+    this._authService.company$.subscribe({
+      next:(comp)=>{
+        console.log(comp)
+      }
+    })
     const saveTheme = localStorage.getItem('theme')
     if(saveTheme == 'dark'){
       this.isDarkMode = true

@@ -13,7 +13,7 @@ export function initializeUser() {
     if (hasRefresh) {
       return firstValueFrom(authService.getCurrentUserDetails());
     } else {
-      authService.userSubject.next(null);
+      authService.adminSubject.next(null);
       authService.isUserLoaded.next(true);
       return Promise.resolve();
     }

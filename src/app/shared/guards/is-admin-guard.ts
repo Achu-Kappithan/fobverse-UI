@@ -11,7 +11,7 @@ export const isAdminGuard: CanActivateFn = (route, state) => {
     filter(loaded => {
       return loaded === true;
     }),
-    switchMap(() => _authService.user$),
+    switchMap(() => _authService.admin$),
     take(1),
     map(user => {
 

@@ -8,7 +8,7 @@ import { Candidatecomponent } from './features/layout/candidatecomponent/candida
 import { CandidateHome } from './features/candidate/candidate-home/candidate-home';
 import { Authcomponent } from './features/layout/authcomponent/authcomponent';
 import { EmailComponent } from './features/layout/email-component/email-component';
-import { CompanyHome } from './features/company/company.home/company.home';
+import { CompanyHome } from './features/company/components/company.home/company.home';
 import { AdminComponent } from './features/layout/admin-component/admin-component';
 import { AdminDashboard } from './features/admin/components/admin-dashboard/admin-dashboard';
 import { Forgotpasswordcomponent } from './features/layout/forgotpasswordcomponent/forgotpasswordcomponent';
@@ -19,6 +19,7 @@ import { AdminCandidatesList } from './features/admin/components/admin-candidate
 import { authGuard } from './shared/guards/auth-guard';
 import { isAdminGuard } from './shared/guards/is-admin-guard';
 import { CompanyComponent } from './features/layout/company-component/company-component';
+import { CompanyProfile } from './features/company/components/company-profile/company-profile';
 
 export const routes: Routes = [
   {
@@ -86,6 +87,10 @@ export const routes: Routes = [
         path: 'home',
         component: CompanyHome,
       },
+      {
+        path: 'profile',
+        component: CompanyProfile
+      }
     ],
   },
 

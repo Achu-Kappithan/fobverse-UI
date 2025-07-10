@@ -22,7 +22,7 @@ export class AdminHeader implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this._authService.user$.subscribe(val=>{
+    this._authService.admin$.subscribe(val=>{
       console.log("current user in state",val)
     })
   }

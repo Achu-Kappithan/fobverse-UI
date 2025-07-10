@@ -9,7 +9,6 @@ import {
   UserPartial,
 } from '../../../shared/interfaces/apiresponce.interface';
 import { PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -17,8 +16,10 @@ import { Router } from '@angular/router';
 })
 export class UserRegisterService {
   private apiUrl = 'http://localhost:3007/api/v1/'; 
-  public userSubject = new BehaviorSubject<UserPartial | null>(null)
-  user$ = this.userSubject.asObservable()
+  public adminSubject = new BehaviorSubject<UserPartial | null>(null)
+  admin$ = this.adminSubject.asObservable()
+  public CompanySubject = new BehaviorSubject<UserPartial | null>(null)
+  company$ = this.CompanySubject.asObservable()
   public isUserLoaded = new BehaviorSubject<boolean>(false)
   isLoading$ = this.isUserLoaded.asObservable()
   private _router = inject(Router)
@@ -43,7 +44,12 @@ export class UserRegisterService {
     .pipe(
       tap(res =>{
         if(res.success && res.data){
-          this.userSubject.next(res.data)
+          console.log("responce service data",res.data)
+          if(res.data.role == 'admin'){
+            this.adminSubject.next(res.data)
+          }else if(res.data.role == 'company'){
+            this.CompanySubject.next(res.data)
+          }
         }
       })
     )
@@ -55,16 +61,21 @@ export class UserRegisterService {
     .pipe(
       tap(response =>{
         if(response.success && response.data){
-          this.userSubject.next(response.data)
-          console.log(`${response.data.email} is active user`);  
+          console.log(response.data)
+          if(response.data.role == 'admin'){
+          this.adminSubject.next(response.data)
+          }else if(response.data.role == 'company'){
+            this.CompanySubject.next(response.data)
+            console.log(`${response.data.email} is active company`); 
+          }
         }else{
-          this.userSubject.next(null)
+          this.adminSubject.next(null)
           console.log("no active user found")
         }
         this.isUserLoaded.next(true)
       }),
       catchError(err => {
-      this.userSubject.next(null);
+      this.adminSubject.next(null);
       this.isUserLoaded.next(true); 
       return throwError(() => err);
     })
@@ -80,7 +91,7 @@ export class UserRegisterService {
         }),
         catchError(error => {
           console.error('Refresh token failed:', error);
-          this.userSubject.next(null); 
+          this.adminSubject.next(null); 
           return of (null)
         })
       );
@@ -94,7 +105,7 @@ export class UserRegisterService {
   logoutUser(): void {
     this.http.post(`${this.apiUrl}auth/logout`, {}, { withCredentials: true }).subscribe({
       next:(res)=>{
-        this.userSubject.next(null)
+        this.adminSubject.next(null)
         this.isUserLoaded.next(true)
         this._router.navigate(['/login'])
       }
@@ -112,7 +123,7 @@ export class UserRegisterService {
       tap(res=>{
         if(res.data && res.success){
           console.log("uuuuuuuuuuuuuuuuu",res.data)
-          this.userSubject.next(res.data)
+          this.adminSubject.next(res.data)
         }
       })
     )
