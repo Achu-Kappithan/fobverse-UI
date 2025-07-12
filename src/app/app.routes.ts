@@ -20,6 +20,7 @@ import { authGuard } from './shared/guards/auth-guard';
 import { isAdminGuard } from './shared/guards/is-admin-guard';
 import { CompanyComponent } from './features/layout/company-component/company-component';
 import { CompanyProfile } from './features/company/components/company-profile/company-profile';
+import { UpdateProfileinfo } from './features/company/components/update-profileinfo/update-profileinfo';
 
 export const routes: Routes = [
   {
@@ -89,7 +90,13 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        component: CompanyProfile
+        component: CompanyProfile,
+        children: [
+          {
+            path:'updateprofile',
+            component: UpdateProfileinfo
+          }
+        ]
       }
     ],
   },

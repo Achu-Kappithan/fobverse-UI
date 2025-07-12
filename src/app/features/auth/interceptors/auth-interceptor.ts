@@ -18,7 +18,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     'auth/login',
     'auth/register',
     'auth/google',
-    'auth/admin/login',
+    'auth/adminlogin',
     'auth/forgotpassword'
   ]
 

@@ -1,363 +1,566 @@
+
 <div *ngIf="!isLoading" class="text-dark-gray">
 
-    <div class="container mx-auto px-4 py-6 relative rounded-xl bg-white">
-        <div class="container mx-auto px-4 py-2 flex items-center pb-6 justify-between">
-            <div class="flex items-center space-x-2">
-                <img src="https://placehold.co/30x30/7941B5/FFFFFF?text=C" alt="Company Logo"
-                    class="h-8 w-8 rounded-full">
-                <span class="font-semibold text-dark-gray">{{comapny?.name}}</span>
-                <i class="fas fa-chevron-down text-gray text-sm"></i>
-            </div>
-            <div class="flex items-center space-x-4">
-                <i class="fas fa-bell text-gray text-lg"></i>
-                <i class="fas fa-cog text-gray text-lg"></i>
-                <button class="bg-blue text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition-colors">
-                    <i class="fas fa-plus mr-1"></i> Post a job
-                </button>
-            </div>
-        </div>
-        <div
-            class="absolute top-10 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-1 rounded-full text-xs cursor-pointer">
-            <i class="fas fa-pen"></i>
-        </div>
-
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
-            <div class="flex items-center mb-4 md:mb-0">
-                <img src="https://placehold.co/100x100/34D399/FFFFFF?text=N" alt="Nomad Logo"
-                    class="w-24 h-24 rounded-2xl mr-6">
-                <div>
-                    <h1 class="text-4xl font-bold text-dark-gray">{{comapny?.name}}</h1>
-                    <p class="text-purple text-base mt-1">https://nomad.com</p>
-                </div>
-            </div>
-            <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4">
-                <button
-                    class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-100 transition-colors flex items-center">
-                    <i class="fas fa-eye mr-2"></i> Public View
-                </button>
-                <button
-                    class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
-                    <i class="fas fa-cog mr-2"></i> Profile Settings
-                </button>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray mt-4">
-            <div class="flex items-center">
-                <i class="fas fa-fire text-blue mr-2"></i>
-                <div>
-                    <span class="font-medium text-dark-gray">Founded</span><br>
-                    July 31, 2011
-                </div>
-            </div>
-            <div class="flex items-center">
-                <i class="fas fa-users text-blue mr-2"></i>
-                <div>
-                    <span class="font-medium text-dark-gray">Employees</span><br>
-                    4000+
-                </div>
-            </div>
-            <div class="flex items-center">
-                <i class="fas fa-map-marker-alt text-blue mr-2"></i>
-                <div>
-                    <span class="font-medium text-dark-gray">Location</span><br>
-                    20 countries
-                </div>
-            </div>
-            <div class="flex items-center">
-                <i class="fas fa-industry text-blue mr-2"></i>
-                <div>
-                    <span class="font-medium text-dark-gray">Industry</span><br>
-                    Social & Non-Profit
-                </div>
-            </div>
-        </div>
+  <div *ngIf="isChaildRouteActivate()">
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="!isChaildRouteActivate()">
+  <div 
+    class="container relative mx-auto px-4 py-6 relative rounded-xl bg-white"
+  >
+    <div
+      class="container mx-auto px-4 py-2 flex items-center pb-6 justify-between"
+    >
+      <div class="flex items-center space-x-2">
+        <img
+          src="https://placehold.co/30x30/7941B5/FFFFFF?text=C"
+          alt="Company Logo"
+          class="h-8 w-8 rounded-full"
+        />
+        <span class="font-semibold text-dark-gray">{{comapny$?.name}}</span>
+        <i class="fas fa-chevron-down text-gray text-sm"></i>
+      </div>
+      <div class="flex items-center space-x-4">
+        <i class="fas fa-bell text-gray text-lg"></i>
+        <i class="fas fa-cog text-gray text-lg"></i>
+        <button
+          class="bg-blue text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition-colors"
+        >
+          <i class="fas fa-plus mr-1"></i> Post a job
+        </button>
+      </div>
     </div>
+    <div
+      class="absolute top-10 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-1 rounded-full text-xs cursor-pointer"
+    >
+      <i class="fas fa-pen"></i>
+    </div>
+
+    <div
+      class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6"
+    >
+      <div class="flex items-center mb-4 md:mb-0">
+        <img
+          src="https://placehold.co/100x100/34D399/FFFFFF?text=N"
+          alt="Nomad Logo"
+          class="w-24 h-24 rounded-2xl mr-6"
+        />
+        <div>
+          <h1 class="text-4xl font-bold text-dark-gray">{{comapny$?.name}}</h1>
+          <p class="text-purple text-base mt-1">https://nomad.com</p>
+        </div>
+      </div>
+      <div
+        class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4"
+      >
+        <!-- <button
+          class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-100 transition-colors flex items-center"
+        >
+          <i class="fas fa-eye mr-2"></i> Public View
+        </button> -->
+        <a [routerLink]="['updateprofile']"
+          class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
+          <i class="fas fa-cog mr-2"></i> Update Profile
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray mt-4">
+      <div class="flex items-center">
+        <i class="fas fa-fire text-blue mr-2"></i>
+        <div>
+          <span class="font-medium text-dark-gray">Founded</span><br />
+          July 31, 2011
+        </div>
+      </div>
+      <div class="flex items-center">
+        <i class="fas fa-users text-blue mr-2"></i>
+        <div>
+          <span class="font-medium text-dark-gray">Employees</span><br />
+          4000+
+        </div>
+      </div>
+      <div class="flex items-center">
+        <i class="fas fa-map-marker-alt text-blue mr-2"></i>
+        <div>
+          <span class="font-medium text-dark-gray">Location</span><br />
+          20 countries
+        </div>
+      </div>
+      <div class="flex items-center">
+        <i class="fas fa-industry text-blue mr-2"></i>
+        <div>
+          <span class="font-medium text-dark-gray">Industry</span><br />
+          Social & Non-Profit
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
     <div class="container py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2 flex flex-col space-y-8">
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-dark-gray">Company Profile</h2>
-                    <div class="flex items-center space-x-4 text-gray">
-                        <i class="fas fa-plus-circle"></i>
-                        <i class="fas fa-pen"></i>
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>
-                <p class="text-gray leading-relaxed">
-                    Nomad is a software platform for starting and running internet businesses. Millions of businesses,
-                    from daily to 500-company teams, use Nomad to launch, expand globally, and manage their online
-                    operations. Businesses large and small use Nomad to power their online stores. Our mission is to
-                    make commerce better for everyone, so businesses can focus on building and selling their products.
-                    Nomad is a global company, with offices in San Francisco, New York, London, Paris, Berlin, Tokyo,
-                    and Sydney. We are a team of passionate, creative, and driven individuals who are committed to
-                    making a difference in the world. We are looking for talented and motivated individuals to join our
-                    team.
-                </p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-dark-gray">Contact</h2>
-                    <div class="flex items-center space-x-4 text-gray">
-                        <i class="fas fa-plus-circle"></i>
-                        <i class="fas fa-pen"></i>
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-1">
-                    <a href="#"
-                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
-                        <i class="fab fa-twitter mr-2"></i> twitter.com/nomad
-                    </a>
-                    <a href="#"
-                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
-                        <i class="fab fa-facebook mr-2"></i> facebook.com/nomadFG
-                    </a>
-                    <a href="#"
-                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
-                        <i class="fab fa-linkedin mr-2"></i> linkedin.com/company/nomad
-                    </a>
-                    <a href="#"
-                        class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors">
-                        <i class="fas fa-envelope mr-2"></i> nomadom
-                    </a>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-md flex-1 p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-dark-gray">Working at Nomad</h2>
-                    <div class="flex items-center space-x-4 text-gray">
-                        <i class="fas fa-plus-circle"></i>
-                        <i class="fas fa-pen"></i>
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full pb-10">
-                    <img src="https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1" alt="Office Image 1"
-                        class="w-full h-full rounded-lg object-cover">
-                    <div class="grid grid-cols-1 gap-4">
-                        <img src="https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2" alt="Office Image 2"
-                            class="w-full h-full rounded-lg object-cover">
-                        <img src="https://placehold.co/400x120/C0C0C0/909090?text=Office+3" alt="Office Image 3"
-                            class="w-full h-full rounded-lg object-cover">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-1 space-y-8">
-            <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center">
-                <button class="bg-blue text-white px-6 py-2 rounded-lg font-medium text-sm mb-4 w-full">
-                    <i class="fas fa-eye mr-1"></i> Public View
-                </button>
-                <button class="bg-purple text-white px-6 py-2 rounded-lg font-medium text-sm w-full">
-                    <i class="fas fa-plus mr-1"></i> Post a job
-                </button>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-dark-gray">Tech Stack</h2>
-                    <div class="flex items-center space-x-4 text-gray">
-                        <i class="fas fa-plus-circle"></i>
-                        <i class="fas fa-pen"></i>
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                        <img src="https://placehold.co/40x40/FF5733/FFFFFF?text=HT" alt="HTML5" class="w-10 h-10 mb-1">
-                        <p class="text-sm font-medium text-dark-gray">HTML5</p>
-                    </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                        <img src="https://placehold.co/40x40/3366FF/FFFFFF?text=CS" alt="CSS3" class="w-10 h-10 mb-1">
-                        <p class="text-sm font-medium text-dark-gray">CSS3</p>
-                    </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                        <img src="https://placehold.co/40x40/FFD700/000000?text=JS" alt="JavaScript"
-                            class="w-10 h-10 mb-1">
-                        <p class="text-sm font-medium text-dark-gray">JavaScript</p>
-                    </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                        <img src="https://placehold.co/40x40/800080/FFFFFF?text=Py" alt="Python"
-                            class="w-10 h-10 mb-1">
-                        <p class="text-sm font-medium text-dark-gray">Python</p>
-                    </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                        <img src="https://placehold.co/40x40/008080/FFFFFF?text=Re" alt="React" class="w-10 h-10 mb-1">
-                        <p class="text-sm font-medium text-dark-gray">React</p>
-                    </div>
-                    <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                        <img src="https://placehold.co/40x40/40E0D0/FFFFFF?text=No" alt="Node.js"
-                            class="w-10 h-10 mb-1">
-                        <p class="text-sm font-medium text-dark-gray">Node.js</p>
-                    </div>
-                </div>
-                <button class="mt-6 text-purple font-medium hover:text-blue transition-colors">View Tech Stack <i
-                        class="fas fa-chevron-right ml-1 text-xs"></i></button>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-dark-gray">Office Locations</h2>
-                    <div class="flex items-center space-x-4 text-gray">
-                        <i class="fas fa-plus-circle"></i>
-                        <i class="fas fa-pen"></i>
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>
-                <ul class="space-y-3">
-                    <li class="flex items-center text-dark-gray">
-                        <img src="https://flagcdn.com/w20/us.png" alt="USA Flag" class="w-5 h-auto mr-2 rounded-sm">
-                        United States
-                    </li>
-                    <li class="flex items-center text-dark-gray">
-                        <img src="https://flagcdn.com/w20/gb.png" alt="UK Flag" class="w-5 h-auto mr-2 rounded-sm">
-                        England
-                    </li>
-                    <li class="flex items-center text-dark-gray">
-                        <img src="https://flagcdn.com/w20/jp.png" alt="Japan Flag" class="w-5 h-auto mr-2 rounded-sm">
-                        Japan
-                    </li>
-                    <li class="flex items-center text-dark-gray">
-                        <img src="https://flagcdn.com/w20/au.png" alt="Australia Flag"
-                            class="w-5 h-auto mr-2 rounded-sm">
-                        Australia
-                    </li>
-                    <li class="flex items-center text-dark-gray">
-                        <img src="https://flagcdn.com/w20/in.png" alt="India Flag" class="w-5 h-auto mr-2 rounded-sm">
-                        India
-                    </li>
-                </ul>
-                <button class="mt-4 text-purple font-medium hover:text-blue transition-colors">View more countries <i
-                        class="fas fa-chevron-right ml-1 text-xs"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-dark-gray">Team</h2>
+      <div class="lg:col-span-2 flex flex-col space-y-8">
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Company Profile</h2>
             <div class="flex items-center space-x-4 text-gray">
-                <i class="fas fa-plus-circle"></i>
-                <i class="fas fa-pen"></i>
-                <i class="fas fa-ellipsis-h"></i>
+              <i
+                (click)="openModal('ComapnyDiscription')"
+                class="fas fa-plus-circle cursor-pointer text-gray hover:text-blue-500 hover:scale-110 transform transition-transform"
+              ></i>
+              <i class="fas fa-pen"></i>
+              <i class="fas fa-ellipsis-h"></i>
             </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <img src="https://placehold.co/80x80/7941B5/FFFFFF?text=CG" alt="Celeste Grivier"
-                    class="w-20 h-20 rounded-full object-cover mb-2">
-                <h3 class="font-semibold text-dark-gray">Celeste Grivier</h3>
-                <p class="text-gray text-sm">Co-Founder</p>
+          </div>
+          <!-- Modal -->
+          <div
+            *ngIf="isModalOpen('ComapnyDiscription')"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          >
+            <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-dark-gray">
+                  Edit Company Profile
+                </h2>
+                <button
+                  (click)="closeModal()"
+                  class="text-gray-500 hover:text-red-500 text-xl font-bold"
+                >
+                  &times;
+                </button>
+              </div>
+              <form id="companyProfileForm">
+                <textarea
+                  id="companyProfileInput"
+                  class="w-full border border-gray-300 rounded-lg p-3 text-sm text-dark-gray"
+                  rows="6"
+                  placeholder="Update company profile..."
+                ></textarea>
+                <div class="flex justify-end mt-4">
+                  <button
+                    type="submit"
+                    class="px-4 py-2 rounded-lg bg-purple-100 hover:bg-purple-700 text-sm"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
             </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG" alt="Regina Gaubert"
-                    class="w-20 h-20 rounded-full object-cover mb-2">
-                <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
-                <p class="text-gray text-sm">Co-Founder</p>
-            </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <img src="https://placehold.co/80x80/1A1A1A/FFFFFF?text=SQ" alt="Sabine Qun"
-                    class="w-20 h-20 rounded-full object-cover mb-2">
-                <h3 class="font-semibold text-dark-gray">Sabine Qun</h3>
-                <p class="text-gray text-sm">Managing Director</p>
-            </div>
-             <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <img src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG" alt="Regina Gaubert"
-                    class="w-20 h-20 rounded-full object-cover mb-2">
-                <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
-                <p class="text-gray text-sm">Co-Founder</p>
-            </div>
-        </div>
-        <button class="mt-6 text-purple font-medium hover:text-blue transition-colors">View all core teams <i
-                class="fas fa-chevron-right ml-1 text-xs"></i></button>
-    </div>
+          </div>
 
-    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
+          <p class="text-gray leading-relaxed">
+            Nomad is a software platform for starting and running internet
+            businesses. Millions of businesses, from daily to 500-company teams,
+            use Nomad to launch, expand globally, and manage their online
+            operations. Businesses large and small use Nomad to power their
+            online stores. Our mission is to make commerce better for everyone,
+            so businesses can focus on building and selling their products.
+            Nomad is a global company, with offices in San Francisco, New York,
+            London, Paris, Berlin, Tokyo, and Sydney. We are a team of
+            passionate, creative, and driven individuals who are committed to
+            making a difference in the world. We are looking for talented and
+            motivated individuals to join our team.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Contact</h2>
             <div class="flex items-center space-x-4 text-gray">
-                <i class="fas fa-plus-circle"></i>
-                <i class="fas fa-pen"></i>
-                <i class="fas fa-ellipsis-h"></i>
+              <i class="fas fa-plus-circle"></i>
+              <i class="fas fa-pen"></i>
+              <i class="fas fa-ellipsis-h"></i>
             </div>
+          </div>
+          <div class="flex flex-wrap gap-1">
+            <a
+              href="#"
+              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+            >
+              <i class="fab fa-twitter mr-2"></i> twitter.com/nomad
+            </a>
+            <a
+              href="#"
+              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+            >
+              <i class="fab fa-facebook mr-2"></i> facebook.com/nomadFG
+            </a>
+            <a
+              href="#"
+              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+            >
+              <i class="fab fa-linkedin mr-2"></i> linkedin.com/company/nomad
+            </a>
+            <a
+              href="#"
+              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+            >
+              <i class="fas fa-envelope mr-2"></i> nomadom
+            </a>
+          </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <i class="fas fa-hospital-alt text-purple text-3xl mb-2"></i>
-                <h3 class="font-semibold text-dark-gray">Full Healthcare</h3>
-                <p class="text-gray text-sm">We believe you should have the peace of mind to focus on your work.</p>
-            </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <i class="fas fa-home text-purple text-3xl mb-2"></i>
-                <h3 class="font-semibold text-dark-gray">Remote Work</h3>
-                <p class="text-gray text-sm">Work from anywhere, anytime, space for family, friends, and you.</p>
-            </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <i class="fas fa-child text-purple text-3xl mb-2"></i>
-                <h3 class="font-semibold text-dark-gray">Family Support</h3>
-                <p class="text-gray text-sm">We believe in always putting our employees first, and helping them achieve
-                    their goals.</p>
-            </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <i class="fas fa-money-bill-wave text-purple text-3xl mb-2"></i>
-                <h3 class="font-semibold text-dark-gray">Paid Time Off</h3>
-                <p class="text-gray text-sm">Every 6 months we have a company-wide paid time off to have fun, reflect,
-                    and plan for the upcoming quarter.</p>
-            </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <i class="fas fa-mug-hot text-purple text-3xl mb-2"></i>
-                <h3 class="font-semibold text-dark-gray">Free Coffee & Snacks</h3>
-                <p class="text-gray text-sm">You know how you perform better with a full stomach. Free coffee shop or
-                    anywhere you buy that has it.</p>
-            </div>
-            <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center">
-                <i class="fas fa-gift text-purple text-3xl mb-2"></i>
-                <h3 class="font-semibold text-dark-gray">Birthday Bonus</h3>
-                <p class="text-gray text-sm">We're grateful for all the hard work and dedication our team member puts
-                    into getting to our company goals.</p>
-            </div>
-        </div>
-    </div>
 
+        <div class="bg-white rounded-xl shadow-md flex-1 p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Working at Nomad</h2>
+            <div class="flex items-center space-x-4 text-gray">
+              <i class="fas fa-plus-circle"></i>
+              <i class="fas fa-pen"></i>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full pb-10">
+            <img
+              src="https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1"
+              alt="Office Image 1"
+              class="w-full h-full rounded-lg object-cover"
+            />
+            <div class="grid grid-cols-1 gap-4">
+              <img
+                src="https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2"
+                alt="Office Image 2"
+                class="w-full h-full rounded-lg object-cover"
+              />
+              <img
+                src="https://placehold.co/400x120/C0C0C0/909090?text=Office+3"
+                alt="Office Image 3"
+                class="w-full h-full rounded-lg object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-1 space-y-8">
+        <div
+          class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center"
+        >
+          <button
+            class="bg-blue text-white px-6 py-2 rounded-lg font-medium text-sm mb-4 w-full"
+          >
+            <i class="fas fa-eye mr-1"></i> Public View
+          </button>
+          <button
+            class="bg-purple text-white px-6 py-2 rounded-lg font-medium text-sm w-full"
+          >
+            <i class="fas fa-plus mr-1"></i> Post a job
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Tech Stack</h2>
+            <div class="flex items-center space-x-4 text-gray">
+              <i class="fas fa-plus-circle"></i>
+              <i class="fas fa-pen"></i>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div
+              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+            >
+              <img
+                src="https://placehold.co/40x40/FF5733/FFFFFF?text=HT"
+                alt="HTML5"
+                class="w-10 h-10 mb-1"
+              />
+              <p class="text-sm font-medium text-dark-gray">HTML5</p>
+            </div>
+            <div
+              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+            >
+              <img
+                src="https://placehold.co/40x40/3366FF/FFFFFF?text=CS"
+                alt="CSS3"
+                class="w-10 h-10 mb-1"
+              />
+              <p class="text-sm font-medium text-dark-gray">CSS3</p>
+            </div>
+            <div
+              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+            >
+              <img
+                src="https://placehold.co/40x40/FFD700/000000?text=JS"
+                alt="JavaScript"
+                class="w-10 h-10 mb-1"
+              />
+              <p class="text-sm font-medium text-dark-gray">JavaScript</p>
+            </div>
+            <div
+              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+            >
+              <img
+                src="https://placehold.co/40x40/800080/FFFFFF?text=Py"
+                alt="Python"
+                class="w-10 h-10 mb-1"
+              />
+              <p class="text-sm font-medium text-dark-gray">Python</p>
+            </div>
+            <div
+              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+            >
+              <img
+                src="https://placehold.co/40x40/008080/FFFFFF?text=Re"
+                alt="React"
+                class="w-10 h-10 mb-1"
+              />
+              <p class="text-sm font-medium text-dark-gray">React</p>
+            </div>
+            <div
+              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+            >
+              <img
+                src="https://placehold.co/40x40/40E0D0/FFFFFF?text=No"
+                alt="Node.js"
+                class="w-10 h-10 mb-1"
+              />
+              <p class="text-sm font-medium text-dark-gray">Node.js</p>
+            </div>
+          </div>
+          <button
+            class="mt-6 text-purple font-medium hover:text-blue transition-colors"
+          >
+            View Tech Stack <i class="fas fa-chevron-right ml-1 text-xs"></i>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-dark-gray">Office Locations</h2>
+            <div class="flex items-center space-x-4 text-gray">
+              <i class="fas fa-plus-circle"></i>
+              <i class="fas fa-pen"></i>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+          </div>
+          <ul class="space-y-3">
+            <li class="flex items-center text-dark-gray">
+              <img
+                src="https://flagcdn.com/w20/us.png"
+                alt="USA Flag"
+                class="w-5 h-auto mr-2 rounded-sm"
+              />
+              United States
+            </li>
+            <li class="flex items-center text-dark-gray">
+              <img
+                src="https://flagcdn.com/w20/gb.png"
+                alt="UK Flag"
+                class="w-5 h-auto mr-2 rounded-sm"
+              />
+              England
+            </li>
+            <li class="flex items-center text-dark-gray">
+              <img
+                src="https://flagcdn.com/w20/jp.png"
+                alt="Japan Flag"
+                class="w-5 h-auto mr-2 rounded-sm"
+              />
+              Japan
+            </li>
+            <li class="flex items-center text-dark-gray">
+              <img
+                src="https://flagcdn.com/w20/au.png"
+                alt="Australia Flag"
+                class="w-5 h-auto mr-2 rounded-sm"
+              />
+              Australia
+            </li>
+            <li class="flex items-center text-dark-gray">
+              <img
+                src="https://flagcdn.com/w20/in.png"
+                alt="India Flag"
+                class="w-5 h-auto mr-2 rounded-sm"
+              />
+              India
+            </li>
+          </ul>
+          <button
+            class="mt-4 text-purple font-medium hover:text-blue transition-colors"
+          >
+            View more countries
+            <i class="fas fa-chevron-right ml-1 text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-dark-gray">Open Positions</h2>
-            <a href="#" class="text-purple font-medium hover:text-blue transition-colors">Show all jobs <i
-                    class="fas fa-chevron-right ml-1 text-xs"></i></a>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-dark-gray">Team</h2>
+        <div class="flex items-center space-x-4 text-gray">
+          <i class="fas fa-plus-circle"></i>
+          <i class="fas fa-pen"></i>
+          <i class="fas fa-ellipsis-h"></i>
         </div>
-        <div class="space-y-4">
-            <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-                <div>
-                    <h3 class="font-semibold text-dark-gray">Social Media Assistant</h3>
-                    <p class="text-gray text-sm">Full-time . Marketing . Design</p>
-                </div>
-                <div class="flex items-center space-x-2 text-gray">
-                    <i class="fas fa-bookmark"></i>
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
-            <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-                <div>
-                    <h3 class="font-semibold text-dark-gray">Brand Designer</h3>
-                    <p class="text-gray text-sm">Full-time . Marketing . USB</p>
-                </div>
-                <div class="flex items-center space-x-2 text-gray">
-                    <i class="fas fa-bookmark"></i>
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <img
+            src="https://placehold.co/80x80/7941B5/FFFFFF?text=CG"
+            alt="Celeste Grivier"
+            class="w-20 h-20 rounded-full object-cover mb-2"
+          />
+          <h3 class="font-semibold text-dark-gray">Celeste Grivier</h3>
+          <p class="text-gray text-sm">Co-Founder</p>
         </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <img
+            src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG"
+            alt="Regina Gaubert"
+            class="w-20 h-20 rounded-full object-cover mb-2"
+          />
+          <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
+          <p class="text-gray text-sm">Co-Founder</p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <img
+            src="https://placehold.co/80x80/1A1A1A/FFFFFF?text=SQ"
+            alt="Sabine Qun"
+            class="w-20 h-20 rounded-full object-cover mb-2"
+          />
+          <h3 class="font-semibold text-dark-gray">Sabine Qun</h3>
+          <p class="text-gray text-sm">Managing Director</p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <img
+            src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG"
+            alt="Regina Gaubert"
+            class="w-20 h-20 rounded-full object-cover mb-2"
+          />
+          <h3 class="font-semibold text-dark-gray">Regina Gaubert</h3>
+          <p class="text-gray text-sm">Co-Founder</p>
+        </div>
+      </div>
+      <button
+        class="mt-6 text-purple font-medium hover:text-blue transition-colors"
+      >
+        View all core teams <i class="fas fa-chevron-right ml-1 text-xs"></i>
+      </button>
     </div>
-</div>
 
- <div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
-    <app-loading-spinner></app-loading-spinner>
+    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
+        <div class="flex items-center space-x-4 text-gray">
+          <i class="fas fa-plus-circle"></i>
+          <i class="fas fa-pen"></i>
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <i class="fas fa-hospital-alt text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Full Healthcare</h3>
+          <p class="text-gray text-sm">
+            We believe you should have the peace of mind to focus on your work.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <i class="fas fa-home text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Remote Work</h3>
+          <p class="text-gray text-sm">
+            Work from anywhere, anytime, space for family, friends, and you.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <i class="fas fa-child text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Family Support</h3>
+          <p class="text-gray text-sm">
+            We believe in always putting our employees first, and helping them
+            achieve their goals.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <i class="fas fa-money-bill-wave text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Paid Time Off</h3>
+          <p class="text-gray text-sm">
+            Every 6 months we have a company-wide paid time off to have fun,
+            reflect, and plan for the upcoming quarter.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <i class="fas fa-mug-hot text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Free Coffee & Snacks</h3>
+          <p class="text-gray text-sm">
+            You know how you perform better with a full stomach. Free coffee
+            shop or anywhere you buy that has it.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
+        >
+          <i class="fas fa-gift text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Birthday Bonus</h3>
+          <p class="text-gray text-sm">
+            We're grateful for all the hard work and dedication our team member
+            puts into getting to our company goals.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-dark-gray">Open Positions</h2>
+        <a
+          href="#"
+          class="text-purple font-medium hover:text-blue transition-colors"
+          >Show all jobs <i class="fas fa-chevron-right ml-1 text-xs"></i
+        ></a>
+      </div>
+      <div class="space-y-4">
+        <div
+          class="border border-gray-200 rounded-lg p-4 flex items-center justify-between"
+        >
+          <div>
+            <h3 class="font-semibold text-dark-gray">Social Media Assistant</h3>
+            <p class="text-gray text-sm">Full-time . Marketing . Design</p>
+          </div>
+          <div class="flex items-center space-x-2 text-gray">
+            <i class="fas fa-bookmark"></i>
+            <i class="fas fa-ellipsis-h"></i>
+          </div>
+        </div>
+        <div
+          class="border border-gray-200 rounded-lg p-4 flex items-center justify-between"
+        >
+          <div>
+            <h3 class="font-semibold text-dark-gray">Brand Designer</h3>
+            <p class="text-gray text-sm">Full-time . Marketing . USB</p>
+          </div>
+          <div class="flex items-center space-x-2 text-gray">
+            <i class="fas fa-bookmark"></i>
+            <i class="fas fa-ellipsis-h"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
+
+
+<div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
 </div>

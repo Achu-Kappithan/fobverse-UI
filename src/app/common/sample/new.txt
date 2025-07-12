@@ -1,0 +1,175 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-sample',
+  imports: [],
+  templateUrl: './sample.html',
+  styleUrl: './sample.css'
+})
+export class Sample {
+
+}
+
+
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
+
+@Component({
+  selector: 'app-update-profileinfo',
+  imports: [CommonModule,ReactiveFormsModule],
+  templateUrl: './update-profileinfo.html',
+  styleUrl: './update-profileinfo.css'
+})
+export class UpdateProfileinfo {
+  companyProfileForm!: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.companyProfileForm = this.fb.group({
+      name: ['', Validators.required],
+      industry: [''],
+      logoUrl: [''],
+      description: [''],
+      contactInfo: this.fb.array([]),
+      officeLocation: this.fb.array([]),
+      techStack: this.fb.array([]),
+      imageGallery: this.fb.array([]),
+      benefits: this.fb.array([])
+    });
+
+    // Simulate loading existing company data
+    this.loadCompanyProfileData();
+  }
+
+  // --- Getters for FormArrays ---
+  get contactInfo(): FormArray {
+    return this.companyProfileForm.get('contactInfo') as FormArray;
+  }
+
+  get officeLocation(): FormArray {
+    return this.companyProfileForm.get('officeLocation') as FormArray;
+  }
+
+  get techStack(): FormArray {
+    return this.companyProfileForm.get('techStack') as FormArray;
+  }
+
+  get imageGallery(): FormArray {
+    return this.companyProfileForm.get('imageGallery') as FormArray;
+  }
+
+  get benefits(): FormArray {
+    return this.companyProfileForm.get('benefits') as FormArray;
+  }
+
+  // --- Simulate Loading Existing Data ---
+  loadCompanyProfileData(): void {
+    // In a real application, you would fetch this data from a service:
+    // this.companyService.getCompanyProfile(companyId).subscribe(data => { ... });
+
+    const existingData: Partial<ComapnyProfileInterface> = {
+      name: 'Nomad Inc.',
+      industry: 'Software, Social & Non-Profit',
+      logoUrl: 'https://placehold.co/100x100/34D399/FFFFFF?text=N',
+      description: 'Nomad is a software platform for starting and running internet businesses. Millions of businesses, from daily to 500-company teams, use Nomad to launch, expand globally, and manage their online operations. Businesses large and small use Nomad to power their online stores. Our mission is to make commerce better for everyone, so businesses can focus on building and selling their products. Nomad is a global company, with offices in San Francisco, New York, London, Paris, Berlin, Tokyo, and Sydney. We are a team of passionate, creative, and driven individuals who are committed to making a difference in the world. We are looking for talented and motivated individuals to join our team.',
+      contactInfo: [
+        { type: 'Email', value: 'contact@nomad.com' },
+        { type: 'Twitter', value: 'twitter.com/nomad' },
+        { type: 'LinkedIn', value: 'linkedin.com/company/nomad' }
+      ],
+      officeLocation: ['United States', 'England', 'Japan', 'Australia', 'India'],
+      techStack: ['HTML5', 'CSS3', 'JavaScript', 'Python', 'React', 'Node.js'],
+      imageGallery: [
+        'https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1',
+        'https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2',
+        'https://placehold.co/400x120/C0C0C0/909090?text=Office+3'
+      ],
+      benafits: [
+        'Full Healthcare',
+        'Remote Work',
+        'Family Support',
+        'Paid Time Off',
+        'Free Coffee & Snacks',
+        'Birthday Bonus'
+      ]
+    };
+
+    // Patch the main form values
+    this.companyProfileForm.patchValue({
+      name: existingData.name,
+      industry: existingData.industry,
+      logoUrl: existingData.logoUrl,
+      description: existingData.description
+    });
+
+    // Populate FormArrays
+    existingData.contactInfo?.forEach(item => {
+      this.contactInfo.push(this.fb.group(item));
+    });
+    existingData.officeLocation?.forEach(item => {
+      this.officeLocation.push(this.fb.control(item));
+    });
+    existingData.techStack?.forEach(item => {
+      this.techStack.push(this.fb.control(item));
+    });
+    existingData.imageGallery?.forEach(item => {
+      this.imageGallery.push(this.fb.control(item));
+    });
+    existingData.benafits?.forEach(item => {
+      this.benefits.push(this.fb.control(item));
+    });
+  }
+
+  // --- Methods for Contact Info (Array of Objects) ---
+  addContactInfo(): void {
+    this.contactInfo.push(this.fb.group({
+      type: ['', Validators.required],
+      value: ['', Validators.required]
+    }));
+  }
+
+  removeContactInfo(index: number): void {
+    this.contactInfo.removeAt(index);
+  }
+
+  // --- Methods for String Arrays (Office Location, Tech Stack, Image Gallery, Benefits) ---
+  addStringItem(formArray: FormArray, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.trim();
+    if (value) {
+      formArray.push(this.fb.control(value));
+      input.value = ''; // Clear the input field
+    }
+  }
+
+  removeStringItem(formArray: FormArray, index: number): void {
+    formArray.removeAt(index);
+  }
+
+  // --- Form Submission ---
+  onSubmit(): void {
+    if (this.companyProfileForm.valid) {
+      const updatedData: ComapnyProfileInterface = this.companyProfileForm.value;
+      console.log('Updating Company Profile Data:', updatedData);
+      // Here you would typically send this data to your backend service for update
+      alert('Company Profile Updated! Check console for data.');
+    } else {
+      console.error('Form is invalid. Please check all fields.');
+      alert('Please fill out all required fields and ensure data is valid.');
+      this.markAllAsTouched(this.companyProfileForm);
+    }
+  }
+
+  // Helper to mark all controls as touched to show validation errors
+  private markAllAsTouched(formGroup: FormGroup | FormArray): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markAllAsTouched(control);
+      }
+    });
+  }
+}

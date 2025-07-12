@@ -1,30 +1,35 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../services/company-service';
-import { ComapnyProfile } from '../../interfaces/company.responce.interface';
-import { copyFileSync } from 'fs';
+import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { UpdateProfileinfo } from '../update-profileinfo/update-profileinfo';
 
 @Component({
   selector: 'app-company-profile',
-  imports: [CommonModule,LoadingSpinner],
+  imports: [CommonModule,LoadingSpinner,RouterModule],
   templateUrl: './company-profile.html',
   styleUrl: './company-profile.css'
 })
 export class CompanyProfile implements OnInit {
 
   isLoading:boolean = false
-  comapny:ComapnyProfile | null = null
+  comapny$:ComapnyProfileInterface | null = null
+  activeModalId:string | null = null
+
+
   constructor(
     private readonly _companyService:CompanyService,
-    private readonly cdr:ChangeDetectorRef
+    private readonly cdr:ChangeDetectorRef,
+    private readonly _router : Router,
   ){}
 
   ngOnInit(): void {
     this.isLoading = true
     this._companyService.getProfile().subscribe({
       next:(res =>{
-        this.comapny = res.data
+        this.comapny$ = res.data
         this.isLoading = false
         this.cdr.detectChanges()
       }),
@@ -35,4 +40,28 @@ export class CompanyProfile implements OnInit {
       }
     })
   }
+
+  openModal(id:string){
+    this.activeModalId = id
+  }
+
+  closeModal(){
+    this.activeModalId = null
+  }
+
+  isModalOpen(id:string){
+    return this.activeModalId ===id
+  }
+
+  isChaildRouteActivate(){
+    return this._router.isActive('/company/profile/updateprofile',{
+    paths: 'exact',
+    queryParams: 'ignored',
+    fragment: 'ignored',
+    matrixParams: 'ignored'
+    })
+  }
+
+  
+
 }
