@@ -3,8 +3,8 @@ import { CompanyService } from '../../services/company-service';
 import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
-import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
-import { UpdateProfileinfo } from '../update-profileinfo/update-profileinfo';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-company-profile',
@@ -15,21 +15,38 @@ import { UpdateProfileinfo } from '../update-profileinfo/update-profileinfo';
 export class CompanyProfile implements OnInit {
 
   isLoading:boolean = false
-  comapny$:ComapnyProfileInterface | null = null
+  company$:ComapnyProfileInterface | null = null
   activeModalId:string | null = null
+  ChildRouteActive = false
+  logoUrl:string = "/profileimages/logodefault.jpg"
+
+  private destroy$ = new Subject<void>()
 
 
   constructor(
     private readonly _companyService:CompanyService,
     private readonly cdr:ChangeDetectorRef,
     private readonly _router : Router,
+    private readonly _route: ActivatedRoute
   ){}
 
   ngOnInit(): void {
+    this.checkChildRouteStatus()
+
+      this._router.events
+      .pipe(filter((event) => event instanceof NavigationEnd),
+      takeUntil(this.destroy$)
+    )
+      .subscribe(() => {
+        this.checkChildRouteStatus();
+        this.cdr.detectChanges()
+      });
+
     this.isLoading = true
     this._companyService.getProfile().subscribe({
       next:(res =>{
-        this.comapny$ = res.data
+        this.company$ = res.data
+        this.logoUrl = res.data.logoUrl ?? "/profileimages/logodefault.jpg"
         this.isLoading = false
         this.cdr.detectChanges()
       }),
@@ -53,15 +70,12 @@ export class CompanyProfile implements OnInit {
     return this.activeModalId ===id
   }
 
-  isChaildRouteActivate(){
-    return this._router.isActive('/company/profile/updateprofile',{
-    paths: 'exact',
-    queryParams: 'ignored',
-    fragment: 'ignored',
-    matrixParams: 'ignored'
-    })
+  private checkChildRouteStatus(): void {
+    this.ChildRouteActive = this._route.firstChild !== null;
   }
 
-  
-
+  ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+  }
 }

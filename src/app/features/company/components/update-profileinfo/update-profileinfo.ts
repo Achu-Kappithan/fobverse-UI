@@ -1,72 +1,62 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ComapnyProfileInterface, ContactInfoItem } from '../../interfaces/company.responce.interface';
-import { CompanyProfile } from '../company-profile/company-profile';
 import { CompanyService } from '../../services/company-service';
+import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { GalleryImageDisplay } from '../../interfaces/cloudinarysignature.responce.interface';
+import { catchError, filter, forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-update-profileinfo',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,RouterModule],
   templateUrl: './update-profileinfo.html',
   styleUrl: './update-profileinfo.css'
 })
-export class UpdateProfileinfo {
+export class UpdateProfileinfo implements OnInit ,OnDestroy {
  companyProfileForm!: FormGroup;
  profileData:ComapnyProfileInterface | null = null
+ loading:boolean = false
 
   selectedLogoFile: File | null = null;
-  logoPreviewUrl: string | ArrayBuffer | null = null;
+  logoPreviewUrl: string | ArrayBuffer | null = null
 
-  selectedGalleryFiles: { file: File, previewUrl: string | ArrayBuffer | null }[] = [];
+  imageGalleryDisplay: GalleryImageDisplay[] = [];
 
-  currentCompanyProfile:Partial<ComapnyProfileInterface> = {
-    name: 'BrotoType',
-    logoUrl: 'https://via.placeholder.com/150/92c953',
-    description: 'BrotoType is a software platform for starting and running internet businesses. Millions of businesses, from daily to 500-company teams, use BrotoType to securely manage online transactions, get paid, and automate financial processes. We believe that by creating more economic prosperity for everyone, so businesses can focus on building and selling their products. Nomad is a global company. We have teams globally. We are looking for talented and motivated individuals to join our team.',
-    industry: 'Software & Non-Profit',
-    contactInfo: [
-      { type: 'twitter', value: 'twitter.com/nomad' },
-      { type: 'facebook', value: 'facebook.com/nomadPG' },
-      { type: 'linkedin', value: 'linkedin.com/company/nomad' },
-      { type: 'website', value: 'nomad.com' }
-    ],
-    officeLocation: ['United States', 'England', 'Japan', 'Australia', 'India'],
-    techStack: ['HTML', 'CSS', 'JavaScript', 'Python', 'React', 'Node.js'],
-    imageGallery: [
-    ],
-    benafits: [
-      'Full Healthcare',
-      'Remote Work',
-      'Family Support',
-      'Paid Time Off',
-      'Free Coffee & Snacks',
-      'Birthday Bonus'
-    ]
-  };
+  private destroy$ = new Subject<void>()
 
   constructor(
-    private fb: FormBuilder,
-    private readonly _companyService:CompanyService
+    private  fb: FormBuilder,
+    private readonly _companyService:CompanyService,
+    private readonly cdr : ChangeDetectorRef,
+    private readonly swal : SweetAlert,
+    private readonly _router :Router,
+    private readonly _route :ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    console.log("works")
+      this.initForm();
       this._companyService.company$.subscribe((val)=>{
         if (val) {
         this.profileData = val;
         console.log("state Profiledata", this.profileData);
-        this.initForm();     
-        this.populateForm();    
+        this.populateForm();
+        this.cdr.detectChanges()   
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initForm(): void {
     this.companyProfileForm = this.fb.group({
       name: [null, Validators.required],
       logoUrl: [null],
-      description: [null, Validators.required],
+      description: [null,Validators.required],
       industry: [null],
       contactInfo: this.fb.array([]),
       officeLocation: this.fb.array([]),
@@ -84,6 +74,13 @@ export class UpdateProfileinfo {
         industry: this.profileData.industry
       });
 
+      this.contactInfo.clear();
+      this.officeLocation.clear();
+      this.techStack.clear();
+      this.benafits.clear();
+      this.imageGallery.clear(); 
+      this.imageGalleryDisplay = [];
+
       if (this.profileData.logoUrl) { 
         this.logoPreviewUrl = this.profileData.logoUrl;
         this.companyProfileForm.get('logoUrl')?.setValue(this.profileData.logoUrl); 
@@ -94,11 +91,20 @@ export class UpdateProfileinfo {
       this.profileData.techStack?.forEach(tech => this.addTechStack(tech));
       this.profileData.benafits?.forEach(benefit => this.addBenefit(benefit));
 
-      this.currentCompanyProfile.imageGallery?.forEach(imgUrl => {
-        this.selectedGalleryFiles.push({ file: new File([], ''), previewUrl: imgUrl });
-        this.imageGallery.push(this.fb.control(imgUrl)); 
+      this.profileData.imageGallery?.forEach(imgUrl => {
+        this.imageGallery.push(this.fb.control(imgUrl));
+        this.imageGalleryDisplay.push({file:null,publicId:this.extractPublicId(imgUrl), url: imgUrl, isNew: false })
       });
     }
+  }
+
+  private extractPublicId(url: string): string | null {
+    const match = url.match(/v\d+\/(.+)\.\w+$/);
+    if (match && match[1]) {
+      return match[1];
+    }
+    console.warn('Could not extract publicId from URL:', url);
+    return null;
   }
 
   onLogoSelected(event: Event): void {
@@ -108,13 +114,11 @@ export class UpdateProfileinfo {
       const reader = new FileReader();
       reader.onload = () => {
         this.logoPreviewUrl = reader.result;
-        this.companyProfileForm.get('logoUrl')?.setValue(reader.result); 
+        this.cdr.detectChanges() 
       };
       reader.readAsDataURL(this.selectedLogoFile);
     } else {
-      this.selectedLogoFile = null;
-      this.logoPreviewUrl = null;
-      this.companyProfileForm.get('logoUrl')?.setValue(null);
+      this.removeLogo()
     }
   }
 
@@ -126,6 +130,7 @@ export class UpdateProfileinfo {
     if (logoInput) {
       logoInput.value = '';
     }
+    this.cdr.detectChanges()
   }
 
   onImageGallerySelected(event: Event): void {
@@ -136,20 +141,29 @@ export class UpdateProfileinfo {
         const reader = new FileReader();
         reader.onload = () => {
           const previewUrl = reader.result;
-          this.selectedGalleryFiles.push({ file: file, previewUrl: previewUrl });
-          this.imageGallery.push(this.fb.control(previewUrl)); 
+          this.imageGalleryDisplay.push({ file: file, publicId: null, url: previewUrl, isNew: true });
+          this.cdr.detectChanges()
         };
         reader.readAsDataURL(file);
-      }
+        }
       input.value = '';
     }
   }
 
   removeGalleryImage(index: number): void {
-    this.selectedGalleryFiles.splice(index, 1);
-    this.imageGallery.removeAt(index);
+    const removedImage = this.imageGalleryDisplay[index];
+    this.imageGalleryDisplay.splice(index, 1);
+    this.rebuildImageGalleryFormArray();
+    this.cdr.detectChanges()
   }
 
+    private rebuildImageGalleryFormArray(): void {
+    this.imageGallery.clear(); 
+    this.imageGalleryDisplay
+      .filter(item => !item.isNew && item.url) 
+      .map(item => item.url as string)
+      .forEach(url => this.imageGallery.push(new FormControl(url)));
+  }
 
   get contactInfo(): FormArray {
     return this.companyProfileForm.get('contactInfo') as FormArray;
@@ -176,6 +190,7 @@ export class UpdateProfileinfo {
       type: [info ? info.type : '', Validators.required],
       value: [info ? info.value : '', Validators.required]
     }));
+    this.cdr.detectChanges()
   }
 
   removeContactInfo(index: number): void {
@@ -198,14 +213,6 @@ export class UpdateProfileinfo {
     this.techStack.removeAt(index);
   }
 
-  addImageGallery(image?: string): void {
-    if (image) {
-      this.selectedGalleryFiles.push({ file: new File([], ''), previewUrl: image });
-      this.imageGallery.push(this.fb.control(image));
-    }
-  }
-
-
   addBenefit(benefit?: string): void {
     this.benafits.push(this.fb.control(benefit || '', Validators.required));
   }
@@ -214,52 +221,129 @@ export class UpdateProfileinfo {
     this.benafits.removeAt(index);
   }
 
-  // --- Form Submission ---
-  onSubmit(): void {
-    if (this.companyProfileForm.valid) {
-      const formData = new FormData();
+  async onSubmit():Promise<void> {
+    if (this.companyProfileForm.invalid) {
+      this.swal.showErrorToast('Please fill in all required fields')
+      this.companyProfileForm.markAllAsTouched()
+      return
+    }
+    this.loading = true
+    this.swal.showLoadingToast('Uploading images and updating profile....')
 
-      // Append logo file if selected
+ try {
+      const uploadObservables: Observable<any>[] = [];
+      const uploadedImageResults: { url: string | null, publicId: string | null, isLogo: boolean, originalFileRef?: File }[] = [];
+
       if (this.selectedLogoFile) {
-        formData.append('logo', this.selectedLogoFile, this.selectedLogoFile.name);
+        const companyNameSlug = this.companyProfileForm.get('name')?.value?.toLowerCase().replace(/\s/g, '_') || 'default';
+        const logoUpload$ = this._companyService.getCloudinarySignature({
+          folder: 'company_logos',
+          publicIdPrefix: `${companyNameSlug}_logo_${Date.now()}`
+        }).pipe(
+          switchMap(resSignature =>
+            this._companyService.uploadFileToCloudinary(
+              this.selectedLogoFile!,
+              resSignature.data,
+              'company_logos',
+              resSignature.data.publicId || `${companyNameSlug}_logo_${Date.now()}`
+            )
+          ),
+          catchError(error => {
+            console.error('Logo upload failed:', error);
+            this.swal.showErrorToast('Failed to upload company logo.');
+            return of(null); 
+          })
+        );
+        uploadObservables.push(logoUpload$.pipe(
+          switchMap(result => of({ ...result, isLogo: true, originalFileRef: this.selectedLogoFile }))
+        ));
       }
-      // If there's an existing logoUrl and no new file, send the URL
-      else if (this.currentCompanyProfile.logoUrl && !this.selectedLogoFile) {
-        formData.append('logoUrl', this.currentCompanyProfile.logoUrl);
+
+      this.imageGalleryDisplay.filter(item => item.isNew && item.file).forEach((item, index) => {
+        const companyNameSlug = this.companyProfileForm.get('name')?.value?.toLowerCase().replace(/\s/g, '_') || 'default';
+        const galleryUpload$ = this._companyService.getCloudinarySignature({
+          folder: 'company_gallery',
+          publicIdPrefix: `${companyNameSlug}_gallery_${Date.now()}_${index}`
+        }).pipe(
+          switchMap(resSignature =>
+            this._companyService.uploadFileToCloudinary(
+              item.file!,
+              resSignature.data,
+              'company_gallery',
+              resSignature.data.publicId || `${companyNameSlug}_gallery_${Date.now()}_${index}`
+            )
+          ),
+          catchError(error => {
+            console.error(`Gallery image ${index} upload failed:`, error);
+            this.swal.showErrorToast(`Failed to upload gallery image ${index + 1}.`);
+            return of(null);
+          })
+        );
+        uploadObservables.push(galleryUpload$.pipe(
+          switchMap(result => of({ ...result, isLogo: false, originalFileRef: item.file }))
+        ));
+      });
+
+      if (uploadObservables.length > 0) {
+        const rawUploadResults = await forkJoin(uploadObservables).pipe(takeUntil(this.destroy$)).toPromise();
+        rawUploadResults?.forEach(result => {
+          if (result && result.secure_url) {
+            uploadedImageResults.push({
+              url: result.secure_url,
+              publicId: result.public_id,
+              isLogo: result.isLogo,
+              originalFileRef: result.originalFileRef 
+            });
+          }
+        });
       }
 
-      const formValue = this.companyProfileForm.value;
-      delete formValue.logoUrl; // Don't send this if you're sending the file
-      delete formValue.imageGallery; // Don't send this directly if files are sent separately
+      const finalFormData = { ...this.companyProfileForm.value };
 
-      // Append other form fields as JSON string or individual fields
-      formData.append('companyProfileData', JSON.stringify(formValue));
+      const newLogoResult = uploadedImageResults.find(r => r.isLogo);
+      if (newLogoResult?.url) {
+        finalFormData.logoUrl = newLogoResult.url;
+        this.selectedLogoFile = null;
+        this.logoPreviewUrl = newLogoResult.url;
+      } else if (!this.selectedLogoFile && this.companyProfileForm.get('logoUrl')?.value) {
+        finalFormData.logoUrl = this.companyProfileForm.get('logoUrl')?.value;
+      } else {
+        finalFormData.logoUrl = null; 
+      }
 
+      const existingGalleryItems = this.imageGalleryDisplay.filter(item => !item.isNew);
+      const newGalleryResults = uploadedImageResults.filter(r => !r.isLogo && r.url);
 
-      // Append gallery images
-      // this.selectedGalleryFiles.forEach((item, index) => {
-      //   if (item.file && item.file.name) { // Check if it's a new file, not just a pre-existing URL
-      //      formData.append(`galleryImage${index}`, item.file, item.file.name);
-      //   } else if (item.previewUrl) { // Existing image URL
-      //      formData.append(`existingGalleryImageUrls`, item.previewUrl);
-      //   }
-      // });
+      const combinedGalleryItems: GalleryImageDisplay[] = [
+        ...existingGalleryItems,
+        ...newGalleryResults.map(r => ({ file: null, publicId: r.publicId, url: r.url, isNew: false }))
+      ];
 
+      finalFormData.imageGallery = combinedGalleryItems.map(item => item.url);
+      this.imageGalleryDisplay = combinedGalleryItems;
 
-      console.log('Form Submitted!', this.companyProfileForm.value);
-      console.log('Selected Logo File:', this.selectedLogoFile);
-      console.log('Selected Gallery Files:', this.selectedGalleryFiles.map(f => f.file?.name || f.previewUrl));
+      this.imageGallery.clear(); 
+      finalFormData.imageGallery.forEach((url: string) => this.imageGallery.push(new FormControl(url)));
+      this.companyProfileForm.get('logoUrl')?.setValue(finalFormData.logoUrl);
 
-      // Example of how you might send data (using HttpClient service)
-      // this.yourApiService.updateCompanyProfile(formData).subscribe(response => {
-      //   console.log('Update successful', response);
-      // }, error => {
-      //   console.error('Update failed', error);
-      // });
+      const res = await this._companyService.updateProfile(finalFormData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-    } else {
-      console.log('Form is invalid. Please check the fields.');
-      this.companyProfileForm.markAllAsTouched();
+      if (res && res.success) {
+        this.swal.showSuccessToast(res.message);
+        this._router.navigate(["../"],{ relativeTo: this._route })
+      } else {
+        this.swal.showErrorToast(res!.message);
+      }
+
+    } catch (error: any) {
+      console.error("Profile update failed:", error);
+      this.swal.showErrorToast(error.error?.message || 'An unexpected error occurred during profile update.');
+    } finally {
+      this.loading = false;
+      this.swal.closeToast(); 
+      this.cdr.detectChanges(); 
     }
   }
 }

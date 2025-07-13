@@ -1,10 +1,10 @@
 
 <div *ngIf="!isLoading" class="text-dark-gray">
 
-  <div *ngIf="isChaildRouteActivate()">
+  <div *ngIf="ChildRouteActive">
     <router-outlet></router-outlet>
   </div>
-  <div *ngIf="!isChaildRouteActivate()">
+  <div *ngIf="!ChildRouteActive">
   <div 
     class="container relative mx-auto px-4 py-6 relative rounded-xl bg-white"
   >
@@ -13,11 +13,11 @@
     >
       <div class="flex items-center space-x-2">
         <img
-          src="https://placehold.co/30x30/7941B5/FFFFFF?text=C"
+          [src]="logoUrl"
           alt="Company Logo"
           class="h-8 w-8 rounded-full"
         />
-        <span class="font-semibold text-dark-gray">{{comapny$?.name}}</span>
+        <span class="font-semibold text-dark-gray">{{company$?.name}}</span>
         <i class="fas fa-chevron-down text-gray text-sm"></i>
       </div>
       <div class="flex items-center space-x-4">
@@ -41,12 +41,12 @@
     >
       <div class="flex items-center mb-4 md:mb-0">
         <img
-          src="https://placehold.co/100x100/34D399/FFFFFF?text=N"
+          [src]="logoUrl"
           alt="Nomad Logo"
           class="w-24 h-24 rounded-2xl mr-6"
         />
         <div>
-          <h1 class="text-4xl font-bold text-dark-gray">{{comapny$?.name}}</h1>
+          <h1 class="text-4xl font-bold text-dark-gray">{{company$?.name}}</h1>
           <p class="text-purple text-base mt-1">https://nomad.com</p>
         </div>
       </div>
@@ -149,19 +149,13 @@
             </div>
           </div>
 
-          <p class="text-gray leading-relaxed">
-            Nomad is a software platform for starting and running internet
-            businesses. Millions of businesses, from daily to 500-company teams,
-            use Nomad to launch, expand globally, and manage their online
-            operations. Businesses large and small use Nomad to power their
-            online stores. Our mission is to make commerce better for everyone,
-            so businesses can focus on building and selling their products.
-            Nomad is a global company, with offices in San Francisco, New York,
-            London, Paris, Berlin, Tokyo, and Sydney. We are a team of
-            passionate, creative, and driven individuals who are committed to
-            making a difference in the world. We are looking for talented and
-            motivated individuals to join our team.
-          </p>
+          <p *ngIf="company$?.description; else noDescription" class="text-gray leading-relaxed">
+              {{ company$?.description }}
+            </p>
+
+            <ng-template #noDescription>
+              <p class="text-sm text-gray-400 italic">No description has been added yet.</p>
+            </ng-template>
         </div>
 
         <div class="bg-white rounded-xl shadow-md p-6">
@@ -211,22 +205,24 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full pb-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="md:col-span-2">
             <img
-              src="https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1"
+              [src]="company$?.imageGallery?.[0] || 'https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1' "
               alt="Office Image 1"
-              class="w-full h-full rounded-lg object-cover"
+              class="w-full h-[400px] rounded-lg object-cover"
             />
-            <div class="grid grid-cols-1 gap-4">
+            </div>
+            <div class="flex flex-col gap-4">
               <img
-                src="https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2"
+                [src]="company$?.imageGallery?.[1] || 'https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2'"
                 alt="Office Image 2"
-                class="w-full h-full rounded-lg object-cover"
+                class="w-full h-[190px] rounded-lg object-cover"
               />
               <img
-                src="https://placehold.co/400x120/C0C0C0/909090?text=Office+3"
+                [src]="company$?.imageGallery?.[2] || 'https://placehold.co/400x120/C0C0C0/909090?text=Office+3'"
                 alt="Office Image 3"
-                class="w-full h-full rounded-lg object-cover"
+                class="w-full h-[190px] rounded-lg object-cover"
               />
             </div>
           </div>
@@ -413,7 +409,7 @@
           class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
         >
           <img
-            src="https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG"
+            src='https://placehold.co/80x80/5A4BFF/FFFFFF?text=RG'
             alt="Regina Gaubert"
             class="w-20 h-20 rounded-full object-cover mb-2"
           />
