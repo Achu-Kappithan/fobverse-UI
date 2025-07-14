@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, UpperCasePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ComapnyProfileInterface, ContactInfoItem } from '../../interfaces/company.responce.interface';
@@ -92,8 +92,8 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       this.profileData.benafits?.forEach(benefit => this.addBenefit(benefit));
 
       this.profileData.imageGallery?.forEach(imgUrl => {
-        this.imageGallery.push(this.fb.control(imgUrl));
-        this.imageGalleryDisplay.push({file:null,publicId:this.extractPublicId(imgUrl), url: imgUrl, isNew: false })
+      this.imageGallery.push(this.fb.control(imgUrl));
+      this.imageGalleryDisplay.push({file:null,publicId:this.extractPublicId(imgUrl), url: imgUrl, isNew: false })
       });
     }
   }
@@ -157,7 +157,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     this.cdr.detectChanges()
   }
 
-    private rebuildImageGalleryFormArray(): void {
+  private rebuildImageGalleryFormArray(): void {
     this.imageGallery.clear(); 
     this.imageGalleryDisplay
       .filter(item => !item.isNew && item.url) 

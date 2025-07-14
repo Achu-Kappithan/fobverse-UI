@@ -4,29 +4,25 @@ import { CandidateSignup } from './features/auth/components/auth/candidate-signu
 import { EmailVerificationFaild } from './features/auth/components/email-verification/email-verification-faild/email-verification-faild';
 import { EmailVerificationSuccess } from './features/auth/components/email-verification/email-verification-success/email-verification-success';
 import { EmailVerification } from './features/auth/components/email-verification/email-verification';
-import { Candidatecomponent } from './features/layout/candidatecomponent/candidatecomponent';
 import { CandidateHome } from './features/candidate/candidate-home/candidate-home';
 import { Authcomponent } from './features/layout/authcomponent/authcomponent';
-import { EmailComponent } from './features/layout/email-component/email-component';
 import { CompanyHome } from './features/company/components/company.home/company.home';
-import { AdminComponent } from './features/layout/admin-component/admin-component';
-import { AdminDashboard } from './features/admin/components/admin-dashboard/admin-dashboard';
-import { Forgotpasswordcomponent } from './features/layout/forgotpasswordcomponent/forgotpasswordcomponent';
 import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgot.pass.email/forgot.pass.email';
 import { SetNewPassword } from './features/auth/components/forgotPassword/set-new-password/set-new-password';
-import { AdminListcompanys } from './features/admin/components/admin-listcompanys/admin-listcompanys';
-import { AdminCandidatesList } from './features/admin/components/admin-candidates-list/admin-candidates-list';
-import { authGuard } from './shared/guards/auth-guard';
-import { isAdminGuard } from './shared/guards/is-admin-guard';
-import { CompanyComponent } from './features/layout/company-component/company-component';
-import { CompanyProfile } from './features/company/components/company-profile/company-profile';
 import { UpdateProfileinfo } from './features/company/components/update-profileinfo/update-profileinfo';
+
+// gurards 
+import { isAdminGuard } from './shared/guards/is-admin-guard';
+
 
 export const routes: Routes = [
   {
     path: '',
     component: Authcomponent,
     children: [
+
+      // Auth
+
       {
         path: 'login',
         component: CandidateLogin,
@@ -59,18 +55,26 @@ export const routes: Routes = [
       },
     ],
   },
+
+  // email 
+
   {
     path: 'email',
-    component: EmailComponent,
+    loadComponent:()=> import ('./features/layout/email-component/email-component')
+    .then(m =>m.EmailComponent),
     children: [
       { path: 'verification', component: EmailVerification },
       { path: 'failed', component: EmailVerificationFaild },
       { path: 'success', component: EmailVerificationSuccess },
     ],
   },
+
+  // candidate 
+
   {
     path: 'candidate',
-    component: Candidatecomponent,
+    loadComponent: ()=> import('./features/layout/candidatecomponent/candidatecomponent')
+    .then(m =>m.Candidatecomponent),
     children: [
       {
         path: 'home',
@@ -80,9 +84,11 @@ export const routes: Routes = [
   },
 
   //company
+
   {
     path: 'company',
-    component: CompanyComponent,
+    loadComponent:()=> import('./features/layout/company-component/company-component')
+    .then (m => m.CompanyComponent),
     children: [
       {
         path: 'home',
@@ -90,7 +96,8 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        component: CompanyProfile,
+        loadComponent: ()=> import ('./features/company/components/company-profile/company-profile')
+        .then(m => m.CompanyProfile),
         children: [
           {
             path:'updateprofile',
@@ -105,22 +112,26 @@ export const routes: Routes = [
 
   {
     path: 'admin',
-    component: AdminComponent,
+    loadComponent: ()=> import ('./features/layout/admin-component/admin-component')
+    .then(m => m.AdminComponent),
     children: [
       {
         path: 'dashboard',
         canActivate: [isAdminGuard],
-        component: AdminDashboard,
+        loadComponent:()=> import ('./features/admin/components/admin-dashboard/admin-dashboard')
+        .then (m => m.AdminDashboard),
       },
       {
         path: 'companyes',
         canActivate: [isAdminGuard],
-        component: AdminListcompanys,
+        loadComponent: ()=> import ('./features/admin/components/admin-listcompanys/admin-listcompanys')
+        .then (m => m.AdminListcompanys)
       },
       {
         path: 'candidates',
         canActivate: [isAdminGuard],
-        component: AdminCandidatesList,
+        loadComponent: ()=> import ('./features/admin/components/admin-candidates-list/admin-candidates-list')
+        .then (m => m.AdminCandidatesList)
       },
     ],
   },
@@ -129,7 +140,8 @@ export const routes: Routes = [
 
   {
     path: 'forgotpassword',
-    component: Forgotpasswordcomponent,
+    loadComponent: ()=> import ('./features/layout/forgotpasswordcomponent/forgotpasswordcomponent')
+    .then (m => m.Forgotpasswordcomponent),
     children: [
       {
         path: 'email',

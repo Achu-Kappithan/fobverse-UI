@@ -114,7 +114,7 @@ export class SweetAlert {
       icon: 'swal2-toast-icon',
       timerProgressBar: 'swal2-toast-progress',
     },
-    width: 'auto', // Adjust width automatically based on content
+    width: 'auto', 
   };
 
   showSuccessToast(
@@ -123,12 +123,11 @@ export class SweetAlert {
     timer: number = 7000
   ): void {
     Swal.fire({
-      ...this.baseToastOptions, // Spread base options
+      ...this.baseToastOptions, 
       icon: 'success',
       title: title,
       text: text,
       timer: timer,
-      // Specific class for success toast background/border
       customClass: {
         ...this.baseToastOptions.customClass,
         popup: `${this.baseToastOptions.customClass?.popup} swal2-toast-success`,
@@ -171,11 +170,10 @@ export class SweetAlert {
       text: text,
       allowOutsideClick: false,
       allowEscapeKey: false,
-      timer: undefined, // No auto-close for loading
-      timerProgressBar: false, // No progress bar for loading
+      timer: undefined,
+      timerProgressBar: false,
       didOpen: (toast) => {
         Swal.showLoading();
-        // Remove event listeners for loading toast as it's not timer-based
         toast.removeEventListener('mouseenter', Swal.stopTimer);
         toast.removeEventListener('mouseleave', Swal.resumeTimer);
       },
@@ -190,7 +188,6 @@ export class SweetAlert {
     Swal.close();
   }
 
-  // --- Existing Alert Methods (not changed for toast styling) ---
   showAlert(
     icon: SweetAlertIcon,
     title: string,

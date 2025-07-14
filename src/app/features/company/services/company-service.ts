@@ -8,7 +8,6 @@ import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.r
   providedIn: 'root'
 })
 export class CompanyService {
-  private apiUrl = 'http://localhost:3007/api/v1/'; 
   public ComapnySubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
   company$ = this.ComapnySubject.asObservable()
 
@@ -17,7 +16,7 @@ export class CompanyService {
   ){}
 
   getProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this.http.get<ApiResponce<ComapnyProfileInterface>>(`${this.apiUrl}company/profile`,{withCredentials: true}).pipe(
+    return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
           console.log("company responce",res)
@@ -32,7 +31,7 @@ export class CompanyService {
   }
 
   updateProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`${this.apiUrl}company/updateprofile`,formData,{withCredentials:true})
+    return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData,{withCredentials:true})
     .pipe(
       tap(res =>{
         if(res.success){
@@ -47,7 +46,7 @@ export class CompanyService {
 
     getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
       console.log("start get cloudinary",params)
-    return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`${this.apiUrl}cloudinary/sign-upload`, params,{withCredentials: true})
+    return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params,{withCredentials: true})
     .pipe(
       tap(res=>[
         console.log("responce get get cludinarySignature",res)

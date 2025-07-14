@@ -4,8 +4,6 @@ import { firstValueFrom } from 'rxjs';
 
 export function initializeUser() {
   return () => {
-    console.log("initializer works");
-
     const authService = inject(UserRegisterService);
     const hasRefresh = document.cookie.includes('refresh_token');
     console.log("refresh:", hasRefresh);

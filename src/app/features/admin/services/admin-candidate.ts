@@ -9,20 +9,19 @@ import { CandidateInterface } from '../interfaces/company.interface';
 })
 export class AdminCandidate {
 
-    private apiUrl = 'http://localhost:3007/api/v1/';
   
     constructor(private readonly http: HttpClient) {}
   
     getAllCandidates(): Observable<ApiResponce<CandidateInterface[]>> {
       return this.http.get<ApiResponce<CandidateInterface[]>>(
-        `${this.apiUrl}admin/getAllcandidates`,
+        `/api/admin/getAllcandidates`,
         { withCredentials: true }
       );
     }
 
   updateStatus(id:string):Observable<PlainResponce>{
     console.log(id)
-    return this.http.get<PlainResponce>(`${this.apiUrl}admin/candidate/updatestatus?id=${id}`,{withCredentials:true})
+    return this.http.get<PlainResponce>(`/api/admin/candidate/updatestatus?id=${id}`,{withCredentials:true})
   }
   
 }

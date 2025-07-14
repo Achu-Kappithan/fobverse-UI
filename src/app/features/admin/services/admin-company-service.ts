@@ -11,7 +11,6 @@ import {
   providedIn: 'root',
 })
 export class AdminCompanyService {
-  private apiUrl = 'http://localhost:3007/api/v1/';
   private _CompnayState = new BehaviorSubject<CompanyInterface[]>([]);
   company$ = this._CompnayState.asObservable();
 
@@ -19,13 +18,13 @@ export class AdminCompanyService {
 
   getAllCompanies(): Observable<ApiResponce<CompanyInterface[]>> {
     return this.http.get<ApiResponce<CompanyInterface[]>>(
-      `${this.apiUrl}admin/getallcompany`,
+      `/api/admin/getallcompany`,
       { withCredentials: true }
     );
   }
 
   updateStatus(id:string):Observable<PlainResponce>{
-    return this.http.get<PlainResponce>(`${this.apiUrl}admin/company/updatestatus?id=${id}`,{withCredentials : true})
+    return this.http.get<PlainResponce>(`/api/admin/company/updatestatus?id=${id}`,{withCredentials : true})
   }
 
 }
