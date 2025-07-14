@@ -1,21 +1,49 @@
 
 
-export  interface CompanyInterface {
-  _id:string
+export interface InternalUser {
+  name: string;
 
-  userId:string
+  email: string;
+
+  role: string;
+
+  profilePic?: string;
+
+  password: string;
+}
+
+export interface TeamMember {
+  name: string;
+
+  role: string;
+
+  image: string;
+}
+
+export interface CompanyContactInfoItem {
+  type: string;
+
+  value: string;
+}
+
+
+
+export  interface CompanyInterface {
+  _id: string;
+
+  userId: string;
 
   name: string;
 
   industry?: string;
 
-  contactInfo?: string[];
+  contactInfo?: CompanyContactInfoItem[];
 
   officeLocation?: string[];
 
   techStack?: string[];
 
-  location?: string;
+  imageGallery?:string[]
 
   logoUrl?: string;
 
@@ -27,7 +55,15 @@ export  interface CompanyInterface {
 
   updatedAt: Date;
 
+  teamMembers?: TeamMember[];
+
+  internalUsers?: InternalUser[];
+
+  benafits?:string[]
+
 }
+
+
 
 
 export interface ContactInfoInterface {

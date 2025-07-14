@@ -11,9 +11,10 @@ import { Router } from '@angular/router';
 })
 export class AdminHeader implements OnInit {
   @Input() isSidebarOpen: boolean = true;
+
+  @Input() isDarkMode: boolean = false
   @Output() darkModeToggled = new EventEmitter<boolean>();
 
-  isDarkMode: boolean = false;
   isProfileMenuOpen: boolean = false;
   private _router = inject(Router)
 
@@ -25,12 +26,26 @@ export class AdminHeader implements OnInit {
     this._authService.admin$.subscribe(val=>{
       console.log("current user in state",val)
     })
+    const saveTheme = localStorage.getItem('theme')
+    if(saveTheme == 'dark'){
+      this.isDarkMode = true
+      document.documentElement.classList.add('dark')
+    }else{
+      this.isDarkMode = false
+      document.documentElement.classList.remove('dark')
+    }
   }
 
   toggleDarkMode() {
-    console.log('darkmode')
     this.isDarkMode = !this.isDarkMode;
-    document.body.classList.toggle('dark', this.isDarkMode); 
+    if(this.isDarkMode){
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme','dark')
+    }else{
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme','light')
+    }
+    this.darkModeToggled.emit(this.isDarkMode)
   }
 
   toggleProfileMenu() {

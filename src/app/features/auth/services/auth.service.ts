@@ -110,7 +110,6 @@ export class UserRegisterService {
         this._router.navigate(['/login'])
       }
     })
-
   }
 
   googleLogin(googleId:string,userType:string):Observable<ApiResponce<UserPartial>>{
@@ -122,7 +121,6 @@ export class UserRegisterService {
     .pipe(
       tap(res=>{
         if(res.data && res.success){
-          console.log("uuuuuuuuuuuuuuuuu",res.data)
           this.adminSubject.next(res.data)
         }
       })

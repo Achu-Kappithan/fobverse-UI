@@ -9,70 +9,70 @@ import { SweetAlert } from '../../../../shared/services/sweet-alert';
 
 @Component({
   selector: 'app-admin-listcompanys',
-  imports: [CommonModule,LoadingSpinner],
+  imports: [CommonModule, LoadingSpinner],
   templateUrl: './admin-listcompanys.html',
-  styleUrl: './admin-listcompanys.css'
+  styleUrl: './admin-listcompanys.css',
 })
 export class AdminListcompanys implements OnInit {
-
-  companies:CompanyInterface[] = []
-  isLoading:boolean = false
-  logoUrl:string ='/profileimages/logodefault.jpg'
+  companies: CompanyInterface[] = [];
+  isLoading: boolean = false;
+  logoUrl: string = '/profileimages/logodefault.jpg';
 
   constructor(
-    private readonly _companyService:AdminCompanyService,
+    private readonly _companyService: AdminCompanyService,
     private cdr: ChangeDetectorRef,
     private readonly _swal: SweetAlert
   ) {}
 
-
   ngOnInit(): void {
-    this.fetchAllcompany()
+    this.fetchAllcompany();
   }
 
   UpdateStatus(company: CompanyInterface): void {
-    console.log("updatestaus",company._id)
+    console.log('updatestaus', company._id);
     this._companyService.updateStatus(company._id).subscribe({
-      next:(res)=>{
-        if(res.success){
+      next: (res) => {
+        if (res.success) {
           company.isActive = !company.isActive;
-          this.cdr.detectChanges()
-          this._swal.showSuccessToast(res.message)
-          console.log("status update responce ",res)
-        }else {
-          console.log("error regading updating status",res)
+          this.cdr.detectChanges();
+          this._swal.showSuccessToast(res.message);
+          console.log('status update responce ', res);
+        } else {
+          console.log('error regading updating status', res);
         }
       },
-      error:(err)=>{
-        console.log("staus updation faild ",err)
-        this._swal.showErrorToast(err.error.message)
-      }
-    })
-
+      error: (err) => {
+        console.log('staus updation faild ', err);
+        this._swal.showErrorToast(err.error.message);
+      },
+    });
   }
 
-  fetchAllcompany(){
-      this.isLoading = true
-      setTimeout(()=>{
-        this._companyService.getAllCompanies().subscribe({
-          next: (response) => {
+  fetchAllcompany() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this._companyService.getAllCompanies().subscribe({
+        next: (response) => {
           if (response && response.success) {
             this.companies = response.data ?? [];
-            console.log("assigneddata", this.companies);
+            console.log('assigneddata', this.companies);
           } else {
-            console.error("Failed to fetch companies or data is unsuccessful:", response);
+            console.error(
+              'Failed to fetch companies or data is unsuccessful:',
+              response
+            );
             this.companies = [];
           }
-          this.isLoading = false
-          this.cdr.detectChanges()
+          this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error("Error fetching companies:", err);
+          console.error('Error fetching companies:', err);
           this.companies = [];
-          this.isLoading = false
-          this.cdr.detectChanges()
-        }
-      })
-    })
- }
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+      });
+    });
+  }
 }

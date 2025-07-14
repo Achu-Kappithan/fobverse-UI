@@ -1,19 +1,19 @@
 
 <div class="flex flex-col min-h-screen">
-    <!-- Admin Header -->
     <app-company-header
         [isDarkMode]="isDarkMode"
         (darkModeToggled)="onDarkModeToggle($event)">
     </app-company-header>
 
-    <div class="flex flex-1" [ngClass]="{'mt-16': true}"> <!-- mt-16 to account for fixed header height -->
-        <!-- Admin Sidebar -->
+    <div class="flex flex-1" [ngClass]="{'mt-16': true}">
         <app-company-sidebar
             [isOpen]="isSidebarOpen"
-            (sidebarToggled)="onSidebarToggle($event)">
+            (sidebarToggled)="onSidebarToggle($event)"
+            appAutoCollapseSidebar
+            [isOpen]="isSidebarOpen"
+            (isOpenChange)="handleSidebarStateChange($event)">
         </app-company-sidebar>
 
-        <!-- Main Content Area -->
         <main [ngClass]="{'ml-64': isSidebarOpen, 'ml-16': !isSidebarOpen}"
               class="flex-1 p-4 md:p-8 transition-all duration-300 ease-in-out bg-lavender dark:bg-dark-lavender">
             <div class="container mx-auto">
