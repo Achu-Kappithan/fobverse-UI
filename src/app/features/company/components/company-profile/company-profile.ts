@@ -74,6 +74,18 @@ export class CompanyProfile implements OnInit {
     this.ChildRouteActive = this._route.firstChild !== null;
   }
 
+  getContactIcon(type: string): string {
+    switch (type) {
+      case 'linkedin': return 'fab fa-linkedin';
+      case 'twitter': return 'fab fa-twitter';
+      case 'facebook': return 'fab fa-facebook';
+      case 'email': return 'fas fa-envelope';
+      case 'website': return 'fas fa-globe';
+      case 'phone': return 'fas fa-phone';
+      default: return 'fas fa-link'; // fallback icon
+    }
+  }
+
   ngOnDestroy(): void {
   this.destroy$.next();
   this.destroy$.complete();

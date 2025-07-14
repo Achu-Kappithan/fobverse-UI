@@ -9,9 +9,9 @@ import { UserRegisterService } from '../../features/auth/services/auth.service';
   styleUrl: './company-header.css'
 })
 export class CompanyHeader implements OnInit {
+
   @Input() isDarkMode: boolean = false
   @Output() darkModeToggled = new EventEmitter<boolean>();
-
   isProfileMenuOpen: boolean = false;
 
   constructor(private readonly _authService : UserRegisterService){}
@@ -36,7 +36,6 @@ export class CompanyHeader implements OnInit {
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     if(this.isDarkMode){
-
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme','dark')
     }else{

@@ -1,5 +1,11 @@
 <app-admin-header [isSidebarOpen]="isSidebarOpen" (darkModeToggled)="onDarkModeToggle($event)"></app-admin-header>
-<app-admin-sidebar [isOpen]="isSidebarOpen" (sidebarToggled)="onSidebarToggle($event)"></app-admin-sidebar>
+<app-admin-sidebar 
+[isOpen]="isSidebarOpen"
+    (sidebarToggled)="handleSidebarStateChange($event)"
+    appAutoCollapseSidebar
+    [isOpen]="isSidebarOpen"
+    (isOpenChange)="handleSidebarStateChange($event)"
+ ></app-admin-sidebar>
 <main class="min-h-screen bg-white dark:bg-dark-lavender transition-all duration-300 ease-in-out pt-20"
       [ngClass]="{'ml-64': isSidebarOpen, 'ml-16': !isSidebarOpen}">
   <div class="container mx-auto px-4 sm:px-6 py-4">

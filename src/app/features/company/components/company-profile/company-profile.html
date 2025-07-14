@@ -90,7 +90,7 @@
       <div class="flex items-center">
         <i class="fas fa-industry text-blue mr-2"></i>
         <div>
-          <span class="font-medium text-dark-gray">Industry</span><br />
+          <span class="font-medium text-dark-gray">{{company$?.industry}}</span><br />
           Social & Non-Profit
         </div>
       </div>
@@ -167,31 +167,19 @@
               <i class="fas fa-ellipsis-h"></i>
             </div>
           </div>
-          <div class="flex flex-wrap gap-1">
-            <a
-              href="#"
-              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-            >
-              <i class="fab fa-twitter mr-2"></i> twitter.com/nomad
-            </a>
-            <a
-              href="#"
-              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-            >
-              <i class="fab fa-facebook mr-2"></i> facebook.com/nomadFG
-            </a>
-            <a
-              href="#"
-              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-            >
-              <i class="fab fa-linkedin mr-2"></i> linkedin.com/company/nomad
-            </a>
-            <a
-              href="#"
-              class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-            >
-              <i class="fas fa-envelope mr-2"></i> nomadom
-            </a>
+          <div class="flex flex-wrap gap-2">
+            <ng-container *ngFor="let contact of company$?.contactInfo">
+              <a
+                *ngIf="contact?.value?.trim()"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+              >
+              <!-- [href]="getContactHref(contact)" -->
+                <i [ngClass]="getContactIcon(contact.type)" class="mr-2"></i>
+                {{ contact.value.trim() }}
+              </a>
+            </ng-container>
           </div>
         </div>
 

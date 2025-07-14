@@ -8,7 +8,10 @@
     <div class="flex flex-1" [ngClass]="{'mt-16': true}">
         <app-company-sidebar
             [isOpen]="isSidebarOpen"
-            (sidebarToggled)="onSidebarToggle($event)">
+            (sidebarToggled)="onSidebarToggle($event)"
+            appAutoCollapseSidebar
+            [isOpen]="isSidebarOpen"
+            (isOpenChange)="handleSidebarStateChange($event)">
         </app-company-sidebar>
 
         <main [ngClass]="{'ml-64': isSidebarOpen, 'ml-16': !isSidebarOpen}"
