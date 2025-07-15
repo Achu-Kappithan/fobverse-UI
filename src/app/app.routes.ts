@@ -13,6 +13,8 @@ import { UpdateProfileinfo } from './features/company/components/update-profilei
 
 // gurards 
 import { isAdminGuard } from './shared/guards/is-admin-guard';
+import { AddInternalUserComponent } from './features/company/components/internal-user.component/add-internal-user.component/add-internal-user.component';
+import { UserListComponent } from './features/company/components/internal-user.component/user-list.component/user-list.component';
 
 
 export const routes: Routes = [
@@ -102,6 +104,21 @@ export const routes: Routes = [
           {
             path:'updateprofile',
             component: UpdateProfileinfo
+          }
+        ]
+      },
+      {
+        path: 'internalusers',
+        loadComponent : ()=> import ('./features/company/components/internal-user.component/internal-user.component')
+        .then (m => m.InternalUserComponent),
+        children:[
+          {
+            path: '',
+            component: UserListComponent
+          },
+          {
+            path: 'createuser',
+            component: AddInternalUserComponent
           }
         ]
       }

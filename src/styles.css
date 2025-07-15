@@ -1,112 +1,138 @@
-Custom Colors
-.bg-purple { background-color: #7941B5; }
-.text-purple { color: #7941B5; }
-.bg-lavender { background-color: #EDE7FF; }
-.text-dark-gray { color: #1A1A1A; }
-.text-gray { color: #B0B0B0; }
-.bg-yellow { background-color: #FFD700; }
-.bg-blue { background-color: #5A4BFF; }
-.bg-green-600 { background-color: #38A169; }
-.bg-red-400 { background-color: #EF4444; }
+        /* Global Font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-.bg-dark-lavender { background-color: #2D3748; }
-.text-dark-text { color: #CBD5E0; }
-.text-dark-gray-light { color: #A0AEC0; }
-.bg-dark-purple { background-color: #6A35A0; }
-.bg-dark-blue { background-color: #4A3AFF; }
-.bg-dark-yellow { background-color: #CCAC00; }
-.bg-dark-green { background-color: #2F855A; }
+        /* Custom Colors */
+        .bg-purple { background-color: #7941B5; }
+        .text-purple { color: #7941B5; }
+        .bg-lavender { background-color: #EDE7FF; }
+        .text-dark-gray { color: #1A1A1A; }
+        .text-gray { color: #B0B0B0; }
+        .bg-yellow { background-color: #FFD700; }
+        .bg-blue { background-color: #5A4BFF; }
+        .bg-green-600 { background-color: #38A169; }
+        .bg-red-400 { background-color: #EF4444; }
 
-@keyframes borderProgress {
-  0% { border-image-slice: 0; }
-  100% { border-image-slice: 1; }
-}
+        .bg-dark-lavender { background-color: #2D3748; }
+        .text-dark-text { color: #CBD5E0; }
+        .text-dark-gray-light { color: #A0AEC0; }
+        .bg-dark-purple { background-color: #6A35A0; }
+        .bg-dark-blue { background-color: #4A3AFF; }
+        .bg-dark-yellow { background-color: #CCAC00; }
+        .bg-dark-green { background-color: #2F855A; }
 
-.custom-border-toast {
-  background-color: #f0fff4 !important;
-  border: 5px solid;
-  border-image-source: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
-  border-image-slice: 1;
-  border-width: 4px;
-  border-radius: 12px;
-  padding: 1rem;
-  animation: borderProgress 3s linear forwards;
-  box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
-  position: relative;
-}
+        @keyframes borderProgress {
+            0% { border-image-slice: 0; }
+            100% { border-image-slice: 1; }
+        }
 
-.custom-toast-title {
-  color: #2e7d32;
-  font-weight: 600;
-  font-size: 1rem;
-}
+        .custom-border-toast {
+            background-color: #f0fff4 !important;
+            border: 5px solid;
+            border-image-source: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
+            border-image-slice: 1;
+            border-width: 4px;
+            border-radius: 12px;
+            padding: 1rem;
+            animation: borderProgress 3s linear forwards;
+            box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
+            position: relative;
+        }
 
-.custom-toast-icon {
-  color: #4caf50 !important;
-}
+        .custom-toast-title {
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 1rem;
+        }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-  border: 2px solid #f1f1f1;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+        .custom-toast-icon {
+            color: #4caf50 !important;
+        }
 
-/* Custom Tailwind Colors - Define globally */
-.bg-purple { background-color: #7941B5; }
-.text-purple { color: #7941B5; }
-.bg-lavender { background-color: #EDE7FF; }
-.text-dark-gray { color: #1A1A1A; }
-.text-gray { color: #B0B0B0; }
-.bg-blue { background-color: #5A4BFF; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+            border: 2px solid #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
 
-/* Dark Mode Colors */
-.bg-dark-lavender { background-color: #2D3748; }
-.text-dark-text { color: #CBD5E0; }
-.text-dark-gray-light { color: #A0AEC0; }
-.bg-dark-purple { background-color: #6A35A0; }
-.bg-dark-blue { background-color: #4A3AFF; }
+        /* Custom Tailwind Colors - Define globally (re-defined for clarity, can be merged) */
+        /* These are already defined above, keeping them here as per user's provided block */
+        .bg-purple { background-color: #7941B5; }
+        .text-purple { color: #7941B5; }
+        .bg-lavender { background-color: #EDE7FF; }
+        .text-dark-gray { color: #1A1A1A; }
+        .text-gray { color: #B0B0B0; }
+        .bg-blue { background-color: #5A4BFF; }
 
-/* Global Font */
-body {
-    font-family: 'Inter', sans-serif;
-}
+        /* Dark Mode Colors (re-defined for clarity, can be merged) */
+        /* These are already defined above, keeping them here as per user's provided block */
+        .bg-dark-lavender { background-color: #2D3748; }
+        .text-dark-text { color: #CBD5E0; }
+        .text-dark-gray-light { color: #A0AEC0; }
+        .bg-dark-purple { background-color: #6A35A0; }
+        .bg-dark-blue { background-color: #4A3AFF; }
 
-/* Dark mode specific global styles for the HTML element */
-html.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
-html.dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
-html.dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */
-html.dark .bg-white { background-color: #1A202C; } /* Darker background for cards/elements */
-html.dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15); }
-html.dark .border-gray-300 { border-color: #4A5568; } /* Darker border */
-html.dark .text-gray-400 { color: #718096; } /* Darker icon color */
-html.dark .hover\:bg-lavender:hover { background-color: #4A5568; } /* Darker hover for dropdowns */
-html.dark .text-purple { color: #9F7AEA; } /* Adjust purple for dark mode visibility */
-html.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility */
+        /* Global Font (re-defined for clarity, can be merged) */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-/* You might want to define the custom-scrollbar styles here too if you use it widely */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-}
+        /* Dark mode specific global styles for the HTML element */
+        html.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
+        html.dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
+        html.dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */
+        html.dark .bg-white { background-color: #1A202C; } /* Darker background for cards/elements */
+        html.dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15); }
+        html.dark .border-gray-300 { border-color: #4A5568; } /* Darker border */
+        html.dark .text-gray-400 { color: #718096; } /* Darker icon color */
+        html.dark .hover\:bg-lavender:hover { background-color: #4A5568; } /* Darker hover for dropdowns */
+        html.dark .text-purple { color: #9F7AEA; } /* Adjust purple for dark mode visibility */
+        html.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility */
 
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
+        /* Custom scrollbar styles (re-defined for clarity, can be merged) */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Ensure light mode input background is distinct */
+        html:not(.dark) input[type="text"],
+        html:not(.dark) input[type="email"],
+        html:not(.dark) input[type="password"],
+        html:not(.dark) select {
+            background-color: #F3F4F6; /* Tailwind gray-100 for light mode inputs */
+        }
+
+        /* Dark mode specific scrollbar styles */
+        html.dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #4A5568; /* Darker track in dark mode */
+        }
+        html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #718096; /* Darker thumb in dark mode */
+        }
+        html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #A0AEC0; /* Darker hover thumb in dark mode */
+        }

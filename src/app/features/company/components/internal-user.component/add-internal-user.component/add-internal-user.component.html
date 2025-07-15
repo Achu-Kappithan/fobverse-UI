@@ -1,0 +1,140 @@
+<div class="bg-lavender text-dark-gray min-h-screen flex flex-col items-center justify-center py-8 px-4 custom-scrollbar transition-colors duration-300">
+
+  <!-- Dark Mode Toggle -->
+  <div class="absolute top-4 right-4">
+    <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg transition-all duration-300">
+      <i class="fas fa-moon dark:hidden"></i>
+      <i class="fas fa-sun hidden dark:inline"></i>
+    </button>
+  </div>
+
+  <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 space-y-6 border border-gray-300 transition-colors duration-300">
+    <h2 class="text-3xl font-bold text-center text-purple">Add New Internal User</h2>
+
+    <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Role and Name -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Role -->
+        <div>
+          <label for="role" class="block text-sm font-medium text-dark-gray mb-1">Role</label>
+          <select
+            id="role"
+            formControlName="role"
+            class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm transition-colors duration-300
+            focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300 dark:text-dark-text
+            dark:focus:ring-dark-purple dark:focus:border-dark-purple"
+            [ngClass]="{'border-red-500': getControl('role')?.invalid && getControl('role')?.touched}"
+            required>
+            <option value="">Select a role</option>
+            <option value="hr">HR</option>
+            <option value="interviewer">Interviewer</option>
+          </select>
+          <p *ngIf="getControl('role')?.invalid && getControl('role')?.touched" class="text-red-500 text-xs mt-1">
+            Role is required.
+          </p>
+        </div>
+
+        <!-- Name -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-dark-gray mb-1">Name</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="Enter user's full name"
+            class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
+            transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+            dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
+            [ngClass]="{'border-red-500': getControl('name')?.invalid && getControl('name')?.touched}"
+          />
+          <p *ngIf="getControl('name')?.invalid && getControl('name')?.touched" class="text-red-500 text-xs mt-1">
+            Name is required.
+          </p>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-dark-gray mb-1">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="user@company.com"
+          class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
+          transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+          dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
+          [ngClass]="{'border-red-500': getControl('email')?.invalid && getControl('email')?.touched}"
+        />
+        <p *ngIf="getControl('email')?.invalid && getControl('email')?.touched" class="text-red-500 text-xs mt-1">
+          Valid email is required.
+        </p>
+      </div>
+
+      <!-- Password and Confirm Password -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Password -->
+        <div class="relative">
+          <label for="password" class="block text-sm font-medium text-dark-gray mb-1">Password</label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Enter password"
+            class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
+            transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+            dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
+            [ngClass]="{'border-red-500': getControl('password')?.invalid && getControl('password')?.touched}"
+          />
+          <i
+            class="fas cursor-pointer absolute right-3 top-10 text-gray-500"
+            [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+            (click)="togglePasswordVisibility()"
+          ></i>
+          <p *ngIf="getControl('password')?.invalid && getControl('password')?.touched" class="text-red-500 text-xs mt-1">
+            Must contain uppercase, lowercase, number & symbol (min 8 chars).
+          </p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="relative">
+          <label for="confirmPassword" class="block text-sm font-medium text-dark-gray mb-1">Confirm Password</label>
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirm password"
+            class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
+            transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+            dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
+            [ngClass]="{
+              'border-red-500':
+                (getControl('confirmPassword')?.invalid && getControl('confirmPassword')?.touched)
+                || createUserForm.hasError('mismatch')
+            }"
+          />
+          <i
+            class="fas cursor-pointer absolute right-3 top-10 text-gray-500"
+            [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+            (click)="toggleConfirmPasswordVisibility()"
+          ></i>
+          <p *ngIf="createUserForm.hasError('mismatch') && getControl('confirmPassword')?.touched" class="text-red-500 text-xs mt-1">
+            Passwords do not match.
+          </p>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm
+          text-sm font-medium text-white bg-purple hover:bg-dark-purple focus:outline-none focus:ring-2
+          focus:ring-offset-2 focus:ring-purple transition-all duration-300">
+          Add User
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

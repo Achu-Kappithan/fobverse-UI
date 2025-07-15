@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface } from '../interfaces/company.responce.interface';
+import { ApiResponce, ComapnyProfileInterface, InternalUser } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class CompanyService {
   constructor(
     private readonly http: HttpClient
   ){}
+
 
   getProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
@@ -30,6 +31,7 @@ export class CompanyService {
     )
   }
 
+
   updateProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData,{withCredentials:true})
     .pipe(
@@ -44,7 +46,8 @@ export class CompanyService {
     )
   }
 
-    getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
+
+  getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
       console.log("start get cloudinary",params)
     return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params,{withCredentials: true})
     .pipe(
@@ -53,6 +56,7 @@ export class CompanyService {
       ])
     )
   }
+
 
   uploadFileToCloudinary(
     file:File,
@@ -74,5 +78,17 @@ export class CompanyService {
         console.log("get responce upload file cludinary",res)
       })
      )
+  }
+
+
+  createUser(user:InternalUser):Observable<ApiResponce<ComapnyProfileInterface>>{
+    return  this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user,{withCredentials:true})
+    .pipe(
+      tap(res =>{
+        if(res.success){
+          this.ComapnySubject.next(res.data)
+        }
+      })
+    )
   }
 }
