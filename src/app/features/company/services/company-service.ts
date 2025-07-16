@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface } from '../interfaces/company.responce.interface';
+import { ApiResponce, ComapnyProfileInterface, InternalUser } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-  private apiUrl = 'http://localhost:3007/api/v1/'; 
   public ComapnySubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
   company$ = this.ComapnySubject.asObservable()
 
@@ -16,8 +15,9 @@ export class CompanyService {
     private readonly http: HttpClient
   ){}
 
+
   getProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this.http.get<ApiResponce<ComapnyProfileInterface>>(`${this.apiUrl}company/profile`,{withCredentials: true}).pipe(
+    return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
           console.log("company responce",res)
@@ -31,8 +31,9 @@ export class CompanyService {
     )
   }
 
+
   updateProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`${this.apiUrl}company/updateprofile`,formData,{withCredentials:true})
+    return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData,{withCredentials:true})
     .pipe(
       tap(res =>{
         if(res.success){
@@ -45,15 +46,17 @@ export class CompanyService {
     )
   }
 
-    getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
+
+  getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
       console.log("start get cloudinary",params)
-    return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`${this.apiUrl}cloudinary/sign-upload`, params,{withCredentials: true})
+    return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params,{withCredentials: true})
     .pipe(
       tap(res=>[
         console.log("responce get get cludinarySignature",res)
       ])
     )
   }
+
 
   uploadFileToCloudinary(
     file:File,
@@ -75,5 +78,17 @@ export class CompanyService {
         console.log("get responce upload file cludinary",res)
       })
      )
+  }
+
+
+  createUser(user:InternalUser):Observable<ApiResponce<ComapnyProfileInterface>>{
+    return  this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user,{withCredentials:true})
+    .pipe(
+      tap(res =>{
+        if(res.success){
+          this.ComapnySubject.next(res.data)
+        }
+      })
+    )
   }
 }

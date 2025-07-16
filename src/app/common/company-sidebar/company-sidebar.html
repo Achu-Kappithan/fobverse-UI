@@ -52,6 +52,17 @@
                         </ng-container>
                     </a>
                 </li>
+                <li>
+                    <a  [routerLink]="['/company/internalusers']" [routerLinkActive]="'bg-purple text-white'"
+                        class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
+                        [ngClass]="{'justify-center': !isOpen}"
+                    >
+                        <i class="fas fa-user-friends" [ngClass]="{'mr-2': isOpen}"></i>
+                        <ng-container *ngIf="isOpen">
+                            <span class="sidebar-item-text">Internal Users</span>
+                        </ng-container>
+                    </a>
+                </li>
                  <!-- My Schedule -->
                  <li>
                     <a 

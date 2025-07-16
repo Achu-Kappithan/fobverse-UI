@@ -97,8 +97,6 @@
     </div>
   </div>
 
-
-
     <div class="container py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2 flex flex-col space-y-8">
         <div class="bg-white rounded-xl shadow-md p-6">
@@ -161,11 +159,6 @@
         <div class="bg-white rounded-xl shadow-md p-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-dark-gray">Contact</h2>
-            <div class="flex items-center space-x-4 text-gray">
-              <i class="fas fa-plus-circle"></i>
-              <i class="fas fa-pen"></i>
-              <i class="fas fa-ellipsis-h"></i>
-            </div>
           </div>
           <div class="flex flex-wrap gap-2">
             <ng-container *ngFor="let contact of company$?.contactInfo">
@@ -185,12 +178,7 @@
 
         <div class="bg-white rounded-xl shadow-md flex-1 p-6">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-dark-gray">Working at Nomad</h2>
-            <div class="flex items-center space-x-4 text-gray">
-              <i class="fas fa-plus-circle"></i>
-              <i class="fas fa-pen"></i>
-              <i class="fas fa-ellipsis-h"></i>
-            </div>
+            <h2 class="text-xl font-bold text-dark-gray">Working at {{company$?.name}}</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -236,72 +224,28 @@
         <div class="bg-white rounded-xl shadow-md p-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-dark-gray">Tech Stack</h2>
-            <div class="flex items-center space-x-4 text-gray">
-              <i class="fas fa-plus-circle"></i>
-              <i class="fas fa-pen"></i>
-              <i class="fas fa-ellipsis-h"></i>
-            </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
-            <div
+            <div *ngFor="let tech of company$?.techStack"
               class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
             >
-              <img
-                src="https://placehold.co/40x40/FF5733/FFFFFF?text=HT"
-                alt="HTML5"
-                class="w-10 h-10 mb-1"
-              />
-              <p class="text-sm font-medium text-dark-gray">HTML5</p>
-            </div>
-            <div
-              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
-            >
-              <img
-                src="https://placehold.co/40x40/3366FF/FFFFFF?text=CS"
-                alt="CSS3"
-                class="w-10 h-10 mb-1"
-              />
-              <p class="text-sm font-medium text-dark-gray">CSS3</p>
-            </div>
-            <div
-              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
-            >
-              <img
-                src="https://placehold.co/40x40/FFD700/000000?text=JS"
-                alt="JavaScript"
-                class="w-10 h-10 mb-1"
-              />
-              <p class="text-sm font-medium text-dark-gray">JavaScript</p>
-            </div>
-            <div
-              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
-            >
-              <img
-                src="https://placehold.co/40x40/800080/FFFFFF?text=Py"
-                alt="Python"
-                class="w-10 h-10 mb-1"
-              />
-              <p class="text-sm font-medium text-dark-gray">Python</p>
-            </div>
-            <div
-              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
-            >
-              <img
-                src="https://placehold.co/40x40/008080/FFFFFF?text=Re"
-                alt="React"
-                class="w-10 h-10 mb-1"
-              />
-              <p class="text-sm font-medium text-dark-gray">React</p>
-            </div>
-            <div
-              class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center"
-            >
-              <img
-                src="https://placehold.co/40x40/40E0D0/FFFFFF?text=No"
-                alt="Node.js"
-                class="w-10 h-10 mb-1"
-              />
-              <p class="text-sm font-medium text-dark-gray">Node.js</p>
+            <ng-container *ngIf="(tech | techLogo) as logoData">
+              <div *ngIf="logoData.type === 'image'" class="w-10 h-10 flex items-center justify-center mb-1">
+                <img
+                  [src]="logoData.src"
+                  [alt]="logoData.name + ' logo'"
+                  class="w-full h-full object-contain"
+                />
+              </div>
+              <div
+                  *ngIf="logoData.type === 'initials'"
+                  class="w-10 h-10 flex items-center justify-center rounded-full text-white font-bold text-base mb-1"
+                  [ngStyle]="{'background-color': logoData.backgroundColor}"
+                >
+                  {{ logoData.initials }}
+                </div>
+              <p class="text-sm font-medium text-dark-gray">{{logoData.name}}</p>
+            </ng-container>
             </div>
           </div>
           <button
@@ -314,11 +258,6 @@
         <div class="bg-white rounded-xl shadow-md p-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-dark-gray">Office Locations</h2>
-            <div class="flex items-center space-x-4 text-gray">
-              <i class="fas fa-plus-circle"></i>
-              <i class="fas fa-pen"></i>
-              <i class="fas fa-ellipsis-h"></i>
-            </div>
           </div>
           <ul class="space-y-3">
             <li class="flex items-center text-dark-gray">

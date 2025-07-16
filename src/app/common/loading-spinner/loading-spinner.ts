@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -9,5 +9,4 @@ import { Component, Input } from '@angular/core';
 })
 export class LoadingSpinner {
 
-  constructor() { }
 }

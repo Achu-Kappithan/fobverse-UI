@@ -56,7 +56,8 @@
               "buildTarget": "fobverse:build:production"
             },
             "development": {
-              "buildTarget": "fobverse:build:development"
+              "buildTarget": "fobverse:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

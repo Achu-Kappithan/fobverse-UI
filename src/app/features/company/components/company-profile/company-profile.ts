@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
+import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
 
 @Component({
   selector: 'app-company-profile',
-  imports: [CommonModule,LoadingSpinner,RouterModule],
+  imports: [CommonModule,LoadingSpinner,RouterModule,TechLogoPipe],
   templateUrl: './company-profile.html',
   styleUrl: './company-profile.css'
 })
@@ -22,17 +23,16 @@ export class CompanyProfile implements OnInit {
 
   private destroy$ = new Subject<void>()
 
-
   constructor(
     private readonly _companyService:CompanyService,
     private readonly cdr:ChangeDetectorRef,
     private readonly _router : Router,
     private readonly _route: ActivatedRoute
-  ){}
+  ){
+  }
 
   ngOnInit(): void {
     this.checkChildRouteStatus()
-
       this._router.events
       .pipe(filter((event) => event instanceof NavigationEnd),
       takeUntil(this.destroy$)
@@ -82,7 +82,7 @@ export class CompanyProfile implements OnInit {
       case 'email': return 'fas fa-envelope';
       case 'website': return 'fas fa-globe';
       case 'phone': return 'fas fa-phone';
-      default: return 'fas fa-link'; // fallback icon
+      default: return 'fas fa-link'; 
     }
   }
 
