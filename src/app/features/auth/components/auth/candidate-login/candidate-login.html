@@ -71,7 +71,7 @@
               <button
                [routerLink]="['/companylogin']"
                 class="text-[#6A45F5] hover:underline"
-                [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'company'}"
+                [ngClass]="{'text-[#6A45F5] hover:underline': true, 'bg-[#F0EDFF] px-3 py-1 rounded': userType === 'company_admin'}"
                 >Company</button>
             </div>
 
@@ -80,11 +80,7 @@
             </div>
 
             <!-- Google Sign Up -->
-            <div *ngIf="userType !=='admin'" class="flex justify-center">
-              <!-- <button (click)="signInWithGoogle()" class="flex items-center justify-center gap-2 w-full max-w-[356px] h-[48px] px-4 border border-[#D1D5FF] rounded-md">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" class="w-4 h-4">
-                <span class="text-[#3D5AFE] text-sm md:text-base font-semibold">Login with Google</span>
-              </button> -->
+            <div *ngIf="userType =='candidate'" class="flex justify-center">
               <asl-google-signin-button type='standard' size='large'>
               </asl-google-signin-button>
             </div>
@@ -98,8 +94,30 @@
 
             <!-- Form -->
             <form class="space-y-5" [formGroup]="loginForm" (ngSubmit)="handleFormSubmit()">
-                
-                <!-- Email Field -->
+
+                <div *ngIf="userType === 'company_admin'" class="space-y-2">
+                  <label for="role" class="block text-gray-700 text-sm font-medium">Select Role</label>
+                  <div class="relative">
+                    <select
+                      id="role"
+                      name="role"
+                      formControlName="role"
+                      class="block w-full py-2 pl-3 pr-10 border border-gray-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-pointer
+                      {{ loginForm.get('role')?.invalid && loginForm.get('role')?.touched ? 'border-red-500' : '' }}"
+                    >
+                      <option value="company_admin">Admin</option>
+                      <option value="hr_user">HR Executive</option>
+                      <option value="interviewer_user">Interviewer</option>
+
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15 8.563l-1.414-1.414L10 10.83l-3.586-3.587L5 8.563l4.293 4.293z"/></svg>
+                    </div>
+                  </div>
+                  <div *ngIf="loginForm.get('role')?.invalid && (loginForm.get('role')?.touched || loginForm.touched)" class="text-red-600 text-xs mt-1">
+                    Role is required.
+                  </div>
+                </div>
                 <div class="space-y-2">
                   <label for="email" class="block text-[#252F4A] text-base">Email Address</label>
                   <div class="relative">
@@ -123,7 +141,7 @@
                     />
                   </div>
                   <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.touched)" class="text-red-500 text-sm">
-                    <div> Email is required.</div><br>
+                    <div> Email is required.</div>
                     <span *ngIf="loginForm.get('email')?.errors?.['email']" class="text-red-500 text-sm"> Enter a valid email.</span>
                 </div>
                 </div>

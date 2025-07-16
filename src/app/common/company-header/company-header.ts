@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { UserRegisterService } from '../../features/auth/services/auth.service';
+import { CompanyService } from '../../features/company/services/company-service';
 
 @Component({
   selector: 'app-company-header',
@@ -14,13 +15,22 @@ export class CompanyHeader implements OnInit {
   @Output() darkModeToggled = new EventEmitter<boolean>();
   isProfileMenuOpen: boolean = false;
 
-  constructor(private readonly _authService : UserRegisterService){}
+  constructor(
+    private readonly _authService : UserRegisterService,
+    private readonly _CompanyService : CompanyService
+  ){}
 
   ngOnInit(): void {
     this._authService.company$.subscribe({
       next:(comp)=>{
-        console.log(comp)
+        console.log("active user",comp)
       }
+    })
+    this._CompanyService.getProfile().subscribe({
+      next:(res =>{
+        console.log("active company profile",res.data)
+        this._CompanyService.ComapnySubject.next(res.data)
+      })
     })
     const saveTheme = localStorage.getItem('theme')
     if(saveTheme == 'dark'){

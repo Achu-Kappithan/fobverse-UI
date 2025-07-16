@@ -43,12 +43,12 @@ export const routes: Routes = [
       {
         path: 'companylogin',
         component: CandidateLogin,
-        data: { userType: 'company' },
+        data: { userType: 'company_admin' },
       },
       {
         path: 'companysignup',
         component: CandidateSignup,
-        data: { userType: 'company' },
+        data: { userType: 'company_admin' },
       },
       {
         path: '',

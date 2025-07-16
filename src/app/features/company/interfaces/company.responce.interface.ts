@@ -64,7 +64,5 @@ export interface ComapnyProfileInterface {
 
   teamMembers?: TeamMember[];
 
-  internalUsers?: InternalUser[];
-
   benafits?:string[]
 }

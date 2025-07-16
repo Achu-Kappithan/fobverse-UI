@@ -20,9 +20,8 @@ export class CompanyService {
     return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
-          console.log("company responce",res)
           this.ComapnySubject.next(res.data)
-          console.log("data is  state",this.company$)
+
         }else{
           this.ComapnySubject.next(null)
           console.log("faild to add get company details")
@@ -48,7 +47,6 @@ export class CompanyService {
 
 
   getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
-      console.log("start get cloudinary",params)
     return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params,{withCredentials: true})
     .pipe(
       tap(res=>[
