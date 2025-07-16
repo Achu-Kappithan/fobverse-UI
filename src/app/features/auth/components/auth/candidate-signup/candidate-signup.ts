@@ -78,7 +78,7 @@ export class CandidateSignup implements OnInit {
     if (this.signupForm.valid) {
       const { fullName, email, password } = this.signupForm.value;
       const userData = {
-        fullName: fullName,
+        name: fullName,
         email: email,
         password: password,
         role : this.userType

@@ -89,6 +89,10 @@ export class CandidateLogin implements OnInit, OnDestroy {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
     });
+
+    if(this.userType === 'company_admin'){
+      this.loginForm.addControl('role',new FormControl('company_admin',Validators.required))
+    }
   }
 
   handleFormSubmit(): void {
@@ -114,18 +118,13 @@ export class CandidateLogin implements OnInit, OnDestroy {
           }
         })
 
-      } else {
+      } else if(this.userType ==='candidate') {
 
         this.service.candidateLogin(userdata).subscribe({
           next: (response) => {
             if (response.success) {
               this.swal.showSuccessToast(response.message ?? 'Login SuccessFull');
-              console.log('resoponce login data', response);
-              if (response.data?.role === 'candidate') {
-                this.router.navigate(['/candidate/home']);
-              } else if (response.data?.role === 'company') {
-                this.router.navigate(['/company/home']);
-              }
+              this.router.navigate(['/candidate/home']);
             } else {
               this.swal.showErrorToast(
                 response.message ?? 'Invalid Email or Password'
@@ -140,6 +139,22 @@ export class CandidateLogin implements OnInit, OnDestroy {
           },
         });
 
+      }else{
+        const logindata = this.loginForm.value
+        this.service.companyUsersLogin(logindata).subscribe({
+          next: (res =>{
+            console.log("companylogin Responce",res)
+            if(res.success){
+              this.swal.showSuccessToast(res.message ?? "Login SuccessFull")
+              this.router.navigate(['/company/home'])
+              this.loginForm.reset()
+            }
+          }),
+          error:(err =>{
+            console.log("error regading company login",err)
+            this.swal.showErrorToast(err.error.message ?? "Error regading login  plz try again..!")
+          })
+        })
       }
     } else {
       console.log('Form is invalid');

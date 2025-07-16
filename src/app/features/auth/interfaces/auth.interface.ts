@@ -1,6 +1,6 @@
 
 export interface CandidateRegistration {
-    fullName: string,
+    name: string,
     email : string,
     password: string,
     role: string

@@ -10,6 +10,7 @@ import {
 } from '../../../shared/interfaces/apiresponce.interface';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +61,6 @@ export class UserRegisterService {
     .pipe(
       tap(response =>{
         if(response.success && response.data){
-          console.log(response.data)
           if(response.data.role == 'admin'){
           this.adminSubject.next(response.data)
           }else if(response.data.role == 'company'){
@@ -124,6 +124,10 @@ export class UserRegisterService {
         }
       })
     )
+  }
+
+  companyUsersLogin(loginInfo:loginInterface):Observable<ApiResponce<ComapnyProfileInterface>>{
+    return this.http.post<ApiResponce<ComapnyProfileInterface>>('/api/auth/companyuserslogin',loginInfo,{withCredentials:true})
   }
 
   validateFogotpassEmail(user:validateEmailAndRole):Observable<PlainResponce>{
