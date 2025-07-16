@@ -37,7 +37,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   ngOnInit(): void {
       this.initForm();
-      this._companyService.company$.subscribe((val)=>{
+      this._companyService.companyProfile$.subscribe((val)=>{
         if (val) {
         this.profileData = val;
         console.log("state Profiledata", this.profileData);

@@ -8,8 +8,8 @@ import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.r
   providedIn: 'root'
 })
 export class CompanyService {
-  public ComapnySubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
-  company$ = this.ComapnySubject.asObservable()
+  public ComapnyProfileSubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
+  companyProfile$ = this.ComapnyProfileSubject.asObservable()
 
   constructor(
     private readonly http: HttpClient
@@ -20,10 +20,9 @@ export class CompanyService {
     return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
-          this.ComapnySubject.next(res.data)
-
+          this.ComapnyProfileSubject.next(res.data)
         }else{
-          this.ComapnySubject.next(null)
+          this.ComapnyProfileSubject.next(null)
           console.log("faild to add get company details")
         }
       }),
@@ -37,7 +36,7 @@ export class CompanyService {
       tap(res =>{
         if(res.success){
           console.log("Updated Responce",res.data)
-          this.ComapnySubject.next(res.data)
+          this.ComapnyProfileSubject.next(res.data)
         }else{
           console.log("error for updating profile info",res)
         }
@@ -81,12 +80,5 @@ export class CompanyService {
 
   createUser(user:InternalUser):Observable<ApiResponce<ComapnyProfileInterface>>{
     return  this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user,{withCredentials:true})
-    .pipe(
-      tap(res =>{
-        if(res.success){
-          this.ComapnySubject.next(res.data)
-        }
-      })
-    )
   }
 }

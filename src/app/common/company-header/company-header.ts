@@ -26,10 +26,9 @@ export class CompanyHeader implements OnInit {
         console.log("active user",comp)
       }
     })
-    this._CompanyService.getProfile().subscribe({
-      next:(res =>{
-        console.log("active company profile",res.data)
-        this._CompanyService.ComapnySubject.next(res.data)
+    this._CompanyService.companyProfile$.subscribe({
+      next:(data =>{
+        console.log("active company profile",data)
       })
     })
     const saveTheme = localStorage.getItem('theme')
