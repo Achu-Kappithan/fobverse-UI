@@ -21,6 +21,7 @@ export class CompanyService {
       tap(res =>{
         if(res && res.success){
           this.ComapnySubject.next(res.data)
+
         }else{
           this.ComapnySubject.next(null)
           console.log("faild to add get company details")
