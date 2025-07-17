@@ -150,6 +150,11 @@ export const routes: Routes = [
         loadComponent: ()=> import ('./features/admin/components/admin-candidates-list/admin-candidates-list')
         .then (m => m.AdminCandidatesList)
       },
+      {
+        path: '**',
+        loadComponent :()=> import( './common/not-found/not-found')
+        .then (m => m.NotFound)
+      }
     ],
   },
 

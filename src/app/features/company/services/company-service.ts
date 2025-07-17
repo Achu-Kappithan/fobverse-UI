@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface, InternalUser } from '../interfaces/company.responce.interface';
+import { ApiResponce, ComapnyProfileInterface, InternalUserInterface } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
@@ -77,8 +77,11 @@ export class CompanyService {
      )
   }
 
-
-  createUser(user:InternalUser):Observable<ApiResponce<ComapnyProfileInterface>>{
+  createUser(user:InternalUserInterface):Observable<ApiResponce<ComapnyProfileInterface>>{
     return  this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user,{withCredentials:true})
+  }
+
+  getInternalUsers():Observable<ApiResponce<InternalUserInterface[]>>{
+    return this.http.get<ApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{withCredentials:true})
   }
 }

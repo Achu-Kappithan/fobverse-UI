@@ -9,7 +9,10 @@ export interface ApiResponce<T>{
 
 
 
-export interface InternalUser {
+export interface InternalUserInterface {
+
+  id:string
+  
   name: string;
 
   email: string;
