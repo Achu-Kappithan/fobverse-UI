@@ -7,7 +7,7 @@ export interface InternalUser {
 
   role: string;
 
-  profilePic?: string;
+  profileImg?: string;
 
   password: string;
 }

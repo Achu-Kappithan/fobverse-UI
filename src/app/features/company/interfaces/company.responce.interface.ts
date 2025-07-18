@@ -19,9 +19,19 @@ export interface InternalUserInterface {
 
   role: string;
 
-  profilePic?: string;
+  profileImg?: string;
 
   password: string;
+}
+
+export interface UpdateInternalUserInterface {
+  
+  name: string;
+
+  email: string;
+
+  profileImg?: string;
+
 }
 
 export interface ContactInfoItem {

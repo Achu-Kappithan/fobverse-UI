@@ -43,7 +43,7 @@ export class CompanyProfile implements OnInit {
       });
 
     this.isLoading = true
-    this._companyService.getProfile().subscribe({
+    this._companyService.getCompanyProfile().subscribe({
       next:(res =>{
         this.company$ = res.data
         this.logoUrl = res.data.logoUrl ?? "/profileimages/logodefault.jpg"

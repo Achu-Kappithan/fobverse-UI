@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { UserRegisterService } from '../../features/auth/services/auth.service';
 import { CompanyService } from '../../features/company/services/company-service';
+import { RouterModule } from '@angular/router';
+import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-company-header',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './company-header.html',
   styleUrl: './company-header.css'
 })
@@ -14,6 +16,7 @@ export class CompanyHeader implements OnInit {
   @Input() isDarkMode: boolean = false
   @Output() darkModeToggled = new EventEmitter<boolean>();
   isProfileMenuOpen: boolean = false;
+  currentUser:UserPartial |null = null
 
   constructor(
     private readonly _authService : UserRegisterService,
@@ -24,6 +27,7 @@ export class CompanyHeader implements OnInit {
     this._authService.company$.subscribe({
       next:(comp)=>{
         console.log("active user",comp)
+        this.currentUser = comp
       }
     })
     this._CompanyService.companyProfile$.subscribe({

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface, InternalUserInterface } from '../interfaces/company.responce.interface';
+import { ApiResponce, ComapnyProfileInterface, InternalUserInterface, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class CompanyService {
   ){}
 
 
-  getProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
+  getCompanyProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
@@ -30,7 +30,7 @@ export class CompanyService {
   }
 
 
-  updateProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
+  updateCompanyProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData,{withCredentials:true})
     .pipe(
       tap(res =>{
@@ -83,5 +83,17 @@ export class CompanyService {
 
   getInternalUsers():Observable<ApiResponce<InternalUserInterface[]>>{
     return this.http.get<ApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{withCredentials:true})
+  }
+
+  getUserProfile():Observable<ApiResponce<InternalUserInterface>>{
+    return this.http.get<ApiResponce<InternalUserInterface>>(`/api/company/userprofile`,{withCredentials:true})
+  }
+
+  changePassword(a:string,b:string):Observable<any>{
+    return this.http.post('/api/update',a,{withCredentials:true})
+  }
+
+  updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponce<InternalUserInterface>>{
+    return this.http.post<ApiResponce<InternalUserInterface>>('/api/company/updateuserprofile',dto,{withCredentials:true})
   }
 }

@@ -121,6 +121,11 @@ export const routes: Routes = [
             component: AddInternalUserComponent
           }
         ]
+      },
+      {
+        path: 'userprofile',
+        loadComponent:()=> import ('./features/company/components/user-profile/user-profile')
+        .then(m => m.UserProfile)
       }
     ],
   },
