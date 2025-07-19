@@ -5,10 +5,11 @@ import { InternalUserInterface, UpdateInternalUserInterface } from '../../interf
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, switchMap } from 'rxjs';
+import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule,RoleDisplayPipe,ReactiveFormsModule],
+  imports: [CommonModule,RoleDisplayPipe,ReactiveFormsModule,Passwordvalidator],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css'
 })

@@ -168,17 +168,23 @@
             </div>
 
             <div>
-              <label
-                for="newPassword"
-                class="block text-sm font-medium text-gray-700"
-                >New Password</label
-              >
+              <label for="newPassword" class="block text-sm font-medium text-gray-700">
+                New Password
+              </label>
+
               <input
                 type="password"
                 id="newPassword"
                 formControlName="newPassword"
                 class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                appPasswordvalidator
+                [minLength]="8"
+                [requireUppercase]="true"
+                [requireLowercase]="true"
+                [requireDigit]="true"
+                [requireSpecialChar]="true"
               />
+
               <div
                 *ngIf="
                   passwordChangeForm.get('newPassword')?.invalid &&
@@ -186,14 +192,33 @@
                 "
                 class="text-red-500 text-xs mt-1"
               >
-                <span
-                  *ngIf="passwordChangeForm.get('newPassword')?.errors?.['required']"
-                  >New password is required.</span
-                >
-                <span
-                  *ngIf="passwordChangeForm.get('newPassword')?.errors?.['minlength']"
-                  >Password must be at least 6 characters.</span
-                >
+                <span *ngIf="passwordChangeForm.get('newPassword')?.errors?.['required']">
+                  New password is required.
+                </span>
+
+                <span *ngIf="passwordChangeForm.get('newPassword')?.errors?.['minLength']">
+                  Password must be at least
+                  {{
+                    passwordChangeForm.get('newPassword')?.errors?.['minLength']?.requiredLength || 8
+                  }}
+                  characters long.
+                </span>
+
+                <span *ngIf="passwordChangeForm.get('newPassword')?.errors?.['requireUppercase']">
+                  Password must contain at least one uppercase letter.
+                </span>
+
+                <span *ngIf="passwordChangeForm.get('newPassword')?.errors?.['requireLowercase']">
+                  Password must contain at least one lowercase letter.
+                </span>
+
+                <span *ngIf="passwordChangeForm.get('newPassword')?.errors?.['requireDigit']">
+                  Password must contain at least one digit.
+                </span>
+
+                <span *ngIf="passwordChangeForm.get('newPassword')?.errors?.['requireSpecialChar']">
+                  Password must contain at least one special character.
+                </span>
               </div>
             </div>
 
