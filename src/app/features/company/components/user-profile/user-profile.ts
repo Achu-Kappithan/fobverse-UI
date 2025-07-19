@@ -61,7 +61,7 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error fetching user profile:", err);
+        console.error("Error fetching user profile ", err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -185,7 +185,7 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
     }
   }
 
-  onChangePasswordSubmit(): void {
+  updatePassword(): void {
     if (this.passwordChangeForm.valid) {
       this.isLoading = true;
       const { currentPassword, newPassword } = this.passwordChangeForm.value;

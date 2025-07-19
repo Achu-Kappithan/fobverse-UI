@@ -8,12 +8,11 @@
         </button>
         <div class="relative profile-menu-container">
             <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover:bg-lavender dark:hover:bg-dark-purple">
-                <img [src]="currentUser?.profileImg || '/profileimages/defaultProfile.jpg'" alt="User Avatar" class="h-8 w-8 rounded-full">
+                <img [src]="userProfile || '/profileimages/defaultProfile.jpg'" alt="User Avatar" class="h-8 w-8 rounded-full">
             </button>
             <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-lavender rounded-md shadow-lg py-1 z-10">
                 <a [routerLink]="['userprofile']" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-purple">Profile</a>
-                <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-purple">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-lavender dark:hover:bg-dark-purple">Logout</a>
+                <a (click)="logOut()" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-lavender dark:hover:bg-dark-purple">Logout</a>
             </div>
         </div>
     </div>

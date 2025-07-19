@@ -68,7 +68,7 @@ export class UserRegisterService {
           }else{
             this.CompanySubject.next(response.data)
           }
-        console.log(`${response.data.email} is active company`); 
+        console.log(`${response.data.email} is active ${response.data.role}`); 
         }else{
           this.adminSubject.next(null)
           console.log("no active user found")

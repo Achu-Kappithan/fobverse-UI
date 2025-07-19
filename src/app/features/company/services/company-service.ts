@@ -20,7 +20,7 @@ export class CompanyService {
     return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
-          this.ComapnyProfileSubject.next(res.data)
+          this.ComapnyProfileSubject.next(res.data!)
         }else{
           this.ComapnyProfileSubject.next(null)
           console.log("faild to add get company details")
@@ -36,7 +36,7 @@ export class CompanyService {
       tap(res =>{
         if(res.success){
           console.log("Updated Responce",res.data)
-          this.ComapnyProfileSubject.next(res.data)
+          this.ComapnyProfileSubject.next(res.data!)
         }else{
           console.log("error for updating profile info",res)
         }
@@ -89,8 +89,8 @@ export class CompanyService {
     return this.http.get<ApiResponce<InternalUserInterface>>(`/api/company/userprofile`,{withCredentials:true})
   }
 
-  changePassword(a:string,b:string):Observable<any>{
-    return this.http.post('/api/update',a,{withCredentials:true})
+  changePassword(currPass:string,newPass:string):Observable<ApiResponce<InternalUserInterface>>{
+    return this.http.post<ApiResponce<InternalUserInterface>>('/api/company/updatepassword',{currPass:currPass,newPass:newPass},{withCredentials:true})
   }
 
   updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponce<InternalUserInterface>>{
