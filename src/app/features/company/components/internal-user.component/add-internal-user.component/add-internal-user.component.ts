@@ -82,7 +82,8 @@ createUserForm!: FormGroup;
           console.log("updated responce",res.data)
           this._swal.showSuccessToast(res.message)
           this.createUserForm.reset()
-          this._router.navigate(['../'], { relativeTo: this._route });        }
+          this._router.navigate(['../'], { relativeTo: this._route });       
+        }
       }),
       error: (err =>{
         this._swal.showErrorToast(err.error.message)

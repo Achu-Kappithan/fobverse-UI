@@ -121,6 +121,11 @@ export const routes: Routes = [
             component: AddInternalUserComponent
           }
         ]
+      },
+      {
+        path: 'userprofile',
+        loadComponent:()=> import ('./features/company/components/user-profile/user-profile')
+        .then(m => m.UserProfile)
       }
     ],
   },
@@ -150,6 +155,11 @@ export const routes: Routes = [
         loadComponent: ()=> import ('./features/admin/components/admin-candidates-list/admin-candidates-list')
         .then (m => m.AdminCandidatesList)
       },
+      {
+        path: '**',
+        loadComponent :()=> import( './common/not-found/not-found')
+        .then (m => m.NotFound)
+      }
     ],
   },
 

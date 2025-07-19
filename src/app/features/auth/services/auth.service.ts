@@ -20,6 +20,8 @@ export class UserRegisterService {
   admin$ = this.adminSubject.asObservable()
   public CompanySubject = new BehaviorSubject<UserPartial | null>(null)
   company$ = this.CompanySubject.asObservable()
+  public CandidateSubject = new BehaviorSubject<UserPartial | null>(null)
+  candidate$ = this.CandidateSubject.asObservable()
   public isUserLoaded = new BehaviorSubject<boolean>(false)
   isLoading$ = this.isUserLoaded.asObservable()
   private _router = inject(Router)
@@ -47,8 +49,6 @@ export class UserRegisterService {
           console.log("responce service data",res.data)
           if(res.data.role == 'admin'){
             this.adminSubject.next(res.data)
-          }else if(res.data.role == 'company'){
-            this.CompanySubject.next(res.data)
           }
         }
       })
@@ -61,12 +61,14 @@ export class UserRegisterService {
     .pipe(
       tap(response =>{
         if(response.success && response.data){
-          if(response.data.role == 'admin'){
-          this.adminSubject.next(response.data)
-          }else if(response.data.role == 'company'){
+          if(response.data.role === 'admin'){
+            this.adminSubject.next(response.data)
+          }else if(response.data.role === 'candidate'){
+            this.CandidateSubject.next(response.data)
+          }else{
             this.CompanySubject.next(response.data)
-            console.log(`${response.data.email} is active company`); 
           }
+        console.log(`${response.data.email} is active ${response.data.role}`); 
         }else{
           this.adminSubject.next(null)
           console.log("no active user found")

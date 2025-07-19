@@ -37,7 +37,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   ngOnInit(): void {
       this.initForm();
-      this._companyService.company$.subscribe((val)=>{
+      this._companyService.companyProfile$.subscribe((val)=>{
         if (val) {
         this.profileData = val;
         console.log("state Profiledata", this.profileData);
@@ -326,7 +326,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       finalFormData.imageGallery.forEach((url: string) => this.imageGallery.push(new FormControl(url)));
       this.companyProfileForm.get('logoUrl')?.setValue(finalFormData.logoUrl);
 
-      const res = await this._companyService.updateProfile(finalFormData)
+      const res = await this._companyService.updateCompanyProfile(finalFormData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 

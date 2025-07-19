@@ -1,0 +1,52 @@
+        /* 404 Page Specific Styles */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-element {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        .glitch-text {
+            display: inline-block;
+            animation: glitch 1.5s infinite alternate; /* Subtle, continuous glitch */
+            text-shadow: 2px 2px #FFD700, -2px -2px #5A4BFF; /* Yellow and Blue from your theme */
+        }
+
+        html.dark .glitch-text {
+            text-shadow: 2px 2px #CCAC00, -2px -2px #4A3AFF; /* Darker yellow and blue */
+        }
+
+        /* Ensure light mode input background is distinct */
+        html:not(.dark) input[type="text"],
+        html:not(.dark) input[type="email"],
+        html:not(.dark) input[type="password"],
+        html:not(.dark) select {
+            background-color: #F3F4F6; /* Tailwind gray-100 for light mode inputs */
+        }
+        html:not(.dark) .border-gray-100 {
+            border-color: #E5E7EB; /* Tailwind gray-200 for light mode borders */
+        }

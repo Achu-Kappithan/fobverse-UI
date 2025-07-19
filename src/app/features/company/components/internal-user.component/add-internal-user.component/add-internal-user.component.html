@@ -26,8 +26,8 @@
             [ngClass]="{'border-red-500': getControl('role')?.invalid && getControl('role')?.touched}"
             required>
             <option value="">Select a role</option>
-            <option value="hr">HR</option>
-            <option value="interviewer">Interviewer</option>
+            <option value="hr_user">HR</option>
+            <option value="interviewer_user">Interviewer</option>
           </select>
           <p *ngIf="getControl('role')?.invalid && getControl('role')?.touched" class="text-red-500 text-xs mt-1">
             Role is required.

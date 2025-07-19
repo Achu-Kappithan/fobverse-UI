@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CompanyService } from '../../services/company-service';
+import { InternalUserInterface } from '../../interfaces/company.responce.interface';
 
 @Component({
   selector: 'app-internal-user.component',
@@ -8,6 +10,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './internal-user.component.css'
 })
 export class InternalUserComponent {
-  
 
 }

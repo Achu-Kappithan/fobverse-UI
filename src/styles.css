@@ -1,138 +1,168 @@
-        /* Global Font */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+/* Base Font */
+body {
+    font-family: 'Inter', sans-serif;
+}
 
-        /* Custom Colors */
-        .bg-purple { background-color: #7941B5; }
-        .text-purple { color: #7941B5; }
-        .bg-lavender { background-color: #EDE7FF; }
-        .text-dark-gray { color: #1A1A1A; }
-        .text-gray { color: #B0B0B0; }
-        .bg-yellow { background-color: #FFD700; }
-        .bg-blue { background-color: #5A4BFF; }
-        .bg-green-600 { background-color: #38A169; }
-        .bg-red-400 { background-color: #EF4444; }
+/* --- Custom Colors (These are your base definitions) --- */
+/* These colors are defined for general use and will be overridden for dark mode where needed. */
+.bg-purple { background-color: #7941B5; }
+.text-purple { color: #7941B5; }
+.bg-lavender { background-color: #EDE7FF; }
+.text-dark-gray { color: #1A1A1A; }
+.text-gray { color: #B0B0B0; } /* General gray text */
+.bg-yellow { background-color: #FFD700; }
+.bg-blue { background-color: #5A4BFF; }
+.bg-green-600 { background-color: #38A169; }
+.bg-red-400 { background-color: #EF4444; }
 
-        .bg-dark-lavender { background-color: #2D3748; }
-        .text-dark-text { color: #CBD5E0; }
-        .text-dark-gray-light { color: #A0AEC0; }
-        .bg-dark-purple { background-color: #6A35A0; }
-        .bg-dark-blue { background-color: #4A3AFF; }
-        .bg-dark-yellow { background-color: #CCAC00; }
-        .bg-dark-green { background-color: #2F855A; }
+/* --- Dark Mode Specific Color Definitions (These are your "dark palette") --- */
+/* These are the colors you want to use when the `html` tag has the `dark` class. */
+.bg-dark-lavender { background-color: #2D3748; }
+.text-dark-text { color: #CBD5E0; } /* Primary text in dark mode */
+.text-dark-gray-light { color: #A0AEC0; } /* Lighter gray text in dark mode */
+.bg-dark-purple { background-color: #6A35A0; }
+.bg-dark-blue { background-color: #4A3AFF; }
+.bg-dark-yellow { background-color: #CCAC00; }
+.bg-dark-green { background-color: #2F855A; }
 
-        @keyframes borderProgress {
-            0% { border-image-slice: 0; }
-            100% { border-image-slice: 1; }
-        }
 
-        .custom-border-toast {
-            background-color: #f0fff4 !important;
-            border: 5px solid;
-            border-image-source: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
-            border-image-slice: 1;
-            border-width: 4px;
-            border-radius: 12px;
-            padding: 1rem;
-            animation: borderProgress 3s linear forwards;
-            box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
-            position: relative;
-        }
+/* --- Dark Mode Overrides (THE KEY SECTION) --- */
+/* These rules target elements *only* when the 'dark' class is present on the <html> tag. */
 
-        .custom-toast-title {
-            color: #2e7d32;
-            font-weight: 600;
-            font-size: 1rem;
-        }
+/* Body Background */
+html.dark body {
+    background-color: #1A202C; /* A good dark background for the whole page */
+    color: #CBD5E0; /* Default text color for the body in dark mode */
+}
 
-        .custom-toast-icon {
-            color: #4caf50 !important;
-        }
+/* General Backgrounds and Text Colors */
+html.dark .bg-lavender { background-color: #2D3748; } /* Override for the main container background */
+html.dark .text-dark-gray { color: #CBD5E0; } /* Override for your darkest text to be light in dark mode */
+html.dark .text-gray { color: #A0AEC0; } /* Override for general gray text to be lighter in dark mode */
+html.dark .bg-white {
+    background-color: #1A202C; /* Main background for cards/panels */
+    border-color: #4A5568; /* Border color for cards/panels */
+}
+html.dark .shadow-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2); /* Darker shadows */
+}
+html.dark .shadow-xl {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.25); /* Darker shadows */
+}
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 4px;
-            border: 2px solid #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
 
-        /* Custom Tailwind Colors - Define globally (re-defined for clarity, can be merged) */
-        /* These are already defined above, keeping them here as per user's provided block */
-        .bg-purple { background-color: #7941B5; }
-        .text-purple { color: #7941B5; }
-        .bg-lavender { background-color: #EDE7FF; }
-        .text-dark-gray { color: #1A1A1A; }
-        .text-gray { color: #B0B0B0; }
-        .bg-blue { background-color: #5A4BFF; }
+/* Specific Element Overrides (based on your HTML structure and common Tailwind classes) */
+html.dark h1 { color: #CBD5E0; } /* Ensures headings are visible */
+html.dark hr { border-color: #4A5568; } /* Darkens hr lines */
 
-        /* Dark Mode Colors (re-defined for clarity, can be merged) */
-        /* These are already defined above, keeping them here as per user's provided block */
-        .bg-dark-lavender { background-color: #2D3748; }
-        .text-dark-text { color: #CBD5E0; }
-        .text-dark-gray-light { color: #A0AEC0; }
-        .bg-dark-purple { background-color: #6A35A0; }
-        .bg-dark-blue { background-color: #4A3AFF; }
+/* Text colors for labels and specific elements */
+html.dark .text-gray-500 { color: #A0AEC0; } /* Labels, icons */
+html.dark .text-gray-600 { color: #CBD5E0; } /* Heading/strong text that was previously gray-600 */
+html.dark .text-gray-700 { color: #E2E8F0; } /* Form labels */
+html.dark .text-gray-800 { color: #F7FAFC; } /* Strongest text in light mode, now very light */
 
-        /* Global Font (re-defined for clarity, can be merged) */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+/* Navigation Buttons */
+html.dark .text-gray-500 { color: #A0AEC0; } /* Default icon/button color */
+html.dark .hover\:text-purple:hover { color: #9F7AEA; } /* Adjust hover color for dark mode */
+html.dark .text-purple { color: #9F7AEA; } /* Ensures active button is visible */
 
-        /* Dark mode specific global styles for the HTML element */
-        html.dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
-        html.dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
-        html.dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */
-        html.dark .bg-white { background-color: #1A202C; } /* Darker background for cards/elements */
-        html.dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15); }
-        html.dark .border-gray-300 { border-color: #4A5568; } /* Darker border */
-        html.dark .text-gray-400 { color: #718096; } /* Darker icon color */
-        html.dark .hover\:bg-lavender:hover { background-color: #4A5568; } /* Darker hover for dropdowns */
-        html.dark .text-purple { color: #9F7AEA; } /* Adjust purple for dark mode visibility */
-        html.dark .text-blue { color: #667EEA; } /* Adjust blue for dark mode visibility */
 
-        /* Custom scrollbar styles (re-defined for clarity, can be merged) */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
+/* Input Fields */
+html.dark input[type="text"],
+html.dark input[type="email"],
+html.dark input[type="password"],
+html.dark select {
+    background-color: #2D3748; /* Darker background for inputs */
+    color: #E2E8F0; /* Text color inside inputs */
+    border-color: #4A5568; /* Border color for inputs */
+}
+html.dark input::placeholder {
+    color: #A0AEC0; /* Placeholder text color */
+}
+html.dark .focus\:border-purple-500:focus {
+    border-color: #9F7AEA; /* Focus border color in dark mode */
+}
+html.dark .focus\:ring-purple-500:focus {
+    --tw-ring-color: #9F7AEA; /* Focus ring color in dark mode */
+}
+html.dark .text-red-500 { color: #F87171; } /* Error messages for forms */
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
+/* Profile Image Border */
+html.dark .border-purple-600 { border-color: #9F7AEA; } /* Adjust border color for dark mode */
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
+/* Spinner Loader */
+html.dark .bg-opacity-75 { background-color: rgba(26, 32, 44, 0.75); } /* Darker overlay for loading */
+html.dark .border-purple-500 { border-color: #9F7AEA; } /* Spinner color in dark mode */
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
 
-        /* Ensure light mode input background is distinct */
-        html:not(.dark) input[type="text"],
-        html:not(.dark) input[type="email"],
-        html:not(.dark) input[type="password"],
-        html:not(.dark) select {
-            background-color: #F3F4F6; /* Tailwind gray-100 for light mode inputs */
-        }
+/* --- Toast/Notification Styles (ensure these look good in both modes) --- */
+/* These are largely fixed colors, but you might want dark mode versions if they clash. */
+.custom-border-toast {
+    background-color: #f0fff4 !important;
+    border: 5px solid;
+    border-image-source: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
+    border-image-slice: 1;
+    border-width: 4px;
+    border-radius: 12px;
+    padding: 1rem;
+    animation: borderProgress 3s linear forwards;
+    box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2);
+    position: relative;
+}
 
-        /* Dark mode specific scrollbar styles */
-        html.dark .custom-scrollbar::-webkit-scrollbar-track {
-            background: #4A5568; /* Darker track in dark mode */
-        }
-        html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #718096; /* Darker thumb in dark mode */
-        }
-        html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #A0AEC0; /* Darker hover thumb in dark mode */
-        }
+html.dark .custom-border-toast {
+    background-color: #22543D !important; /* Darker green background for success toast */
+    border-image-source: linear-gradient(90deg, #68D391, #9AE6B4, #68D391); /* Lighter border for dark mode */
+    box-shadow: 0 4px 10px rgba(0, 128, 0, 0.4);
+}
+
+.custom-toast-title {
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+html.dark .custom-toast-title {
+    color: #9AE6B4; /* Lighter text for toast title */
+}
+
+.custom-toast-icon {
+    color: #4caf50 !important;
+}
+
+html.dark .custom-toast-icon {
+    color: #68D391 !important; /* Lighter icon for toast */
+}
+
+@keyframes borderProgress {
+    0% { border-image-slice: 0; }
+    100% { border-image-slice: 1; }
+}
+
+
+/* --- Custom Scrollbar Styles --- */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Dark mode scrollbar styles */
+html.dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: #4A5568; /* Darker track */
+}
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #718096; /* Lighter thumb */
+}
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #A0AEC0; /* Even lighter thumb on hover */
+}

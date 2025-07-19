@@ -1,29 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface, InternalUser } from '../interfaces/company.responce.interface';
+import { ApiResponce, ComapnyProfileInterface, InternalUserInterface, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-  public ComapnySubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
-  company$ = this.ComapnySubject.asObservable()
+  public ComapnyProfileSubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
+  companyProfile$ = this.ComapnyProfileSubject.asObservable()
 
   constructor(
     private readonly http: HttpClient
   ){}
 
 
-  getProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
+  getCompanyProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
-          this.ComapnySubject.next(res.data)
-
+          this.ComapnyProfileSubject.next(res.data!)
         }else{
-          this.ComapnySubject.next(null)
+          this.ComapnyProfileSubject.next(null)
           console.log("faild to add get company details")
         }
       }),
@@ -31,13 +30,13 @@ export class CompanyService {
   }
 
 
-  updateProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
+  updateCompanyProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData,{withCredentials:true})
     .pipe(
       tap(res =>{
         if(res.success){
           console.log("Updated Responce",res.data)
-          this.ComapnySubject.next(res.data)
+          this.ComapnyProfileSubject.next(res.data!)
         }else{
           console.log("error for updating profile info",res)
         }
@@ -78,15 +77,23 @@ export class CompanyService {
      )
   }
 
-
-  createUser(user:InternalUser):Observable<ApiResponce<ComapnyProfileInterface>>{
+  createUser(user:InternalUserInterface):Observable<ApiResponce<ComapnyProfileInterface>>{
     return  this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user,{withCredentials:true})
-    .pipe(
-      tap(res =>{
-        if(res.success){
-          this.ComapnySubject.next(res.data)
-        }
-      })
-    )
+  }
+
+  getInternalUsers():Observable<ApiResponce<InternalUserInterface[]>>{
+    return this.http.get<ApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{withCredentials:true})
+  }
+
+  getUserProfile():Observable<ApiResponce<InternalUserInterface>>{
+    return this.http.get<ApiResponce<InternalUserInterface>>(`/api/company/userprofile`,{withCredentials:true})
+  }
+
+  changePassword(currPass:string,newPass:string):Observable<ApiResponce<InternalUserInterface>>{
+    return this.http.post<ApiResponce<InternalUserInterface>>('/api/company/updatepassword',{currPass:currPass,newPass:newPass},{withCredentials:true})
+  }
+
+  updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponce<InternalUserInterface>>{
+    return this.http.post<ApiResponce<InternalUserInterface>>('/api/company/updateuserprofile',dto,{withCredentials:true})
   }
 }

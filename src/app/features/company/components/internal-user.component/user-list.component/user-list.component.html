@@ -1,72 +1,89 @@
-<div class="bg-lavender min-h-screen ">
-    <div class="max-w-7xl mx-auto">
-        <!-- Main Header Card for User Dashboard -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-col md:flex-row justify-between items-center">
-            <h1 class="text-3xl font-bold text-dark-gray mb-4 md:mb-0">User Dashboard</h1>
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
-                <!-- Search Bar -->
-                <input type="text" id="userSearch" placeholder="Search users..."
-                       class="w-full md:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent text-dark-gray shadow-sm">
-                
-                <a [routerLink]="['createuser']" class="bg-purple text-white px-6 py-2 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 w-full md:w-auto">
-                    Add New User
-                </a>
-            </div>
-        </div>
+<div class="bg-lavender">
+  <div class="max-w-7xl mx-auto  sm:px-6 ">
+    <div
+      class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-col md:flex-row justify-between items-center"
+    >
+      <h1 class="text-3xl font-bold text-dark-gray mb-4 md:mb-0">
+        Internal Users
+      </h1>
+      <div
+        class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto"
+      >
+        <input
+          type="text"
+          id="userSearch"
+          placeholder="Search users..."
+          class="w-full md:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent text-dark-gray shadow-sm"
+        />
 
-        <!-- <div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
-            <app-loading-spinner></app-loading-spinner>
-        </div> -->
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div  class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative">
-                <div class="absolute top-4 right-4">
-                    <button  class="text-gray-400 hover:text-gray-600 focus:outline-none">
-                    <i class="fas fa-ellipsis-v text-lg"></i>
-                    </button>
-
-                    <!-- <div
-                    class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10"
-                    >
-                    <a  class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white font-medium">
-                        <span [ngClass]="{'text-red-600': can.isActive,'text-green-600': !can.isActive}" class="text-red-600">{{can.isActive?'Bolock User': 'Unblock User'}}</span>
-                    </a>
-                    <a href="#" class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender">Delete User</a>
-                    </div> -->
-                </div>
-                <img  alt="User Avatar" class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple">
-                <h2 class="text-xl font-semibold text-dark-gray mb-1"></h2>
-                <!-- <p class="text-gray text-sm mb-2">Created: {{ can.createdAt | date: 'shortDate' }}</p> -->
-                
-                <div class="flex items-center text-sm mb-2">
-                    <span class="font-medium mr-2">Status:</span>
-                    <!-- <span 
-                    [ngClass]="{
-                        'text-green-600': can.isActive,
-                        'text-red-600': !can.isActive
-                    }"
-                    class="text-green-600 font-semibold flex items-center"> -->
-                        <!-- <i
-                [ngClass]="{
-                  'fas fa-check-circle': can.isActive,
-                  'fas fa-times-circle': !can.isActive
-                }"
-                class="mr-1"
-              ></i> {{ can.isActive ? 'Active' : 'Blocked' }}
-                    </span> -->
-                </div>
-
-                <div class="flex items-center text-gray text-sm mb-4">
-                    <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
-                    <span>San Diego, CA</span>
-                </div>
-                <a href="#" class="text-purple font-medium hover:text-blue transition-colors flex items-center">
-                    View Profile
-                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                </a>
-            </div>
-
-        </div>
+        <a
+          [routerLink]="['createuser']"
+          class="bg-purple text-white px-6 py-2 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 w-full md:w-auto text-center"
+        >
+          Add New User
+        </a>
+      </div>
     </div>
-</div>
 
+    <div
+      class="flex justify-center items-center min-h-[300px]"
+      *ngIf="isLoading"
+    >
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ng-container *ngFor="let user of InternalUsers">
+        <div
+          class="bg-white rounded-xl shadow-lg p-6 flex items-center space-x-6 relative border border-gray-300 transition-colors duration-300"
+        >
+          <div class="flex-shrink-0">
+            <img
+              [src]="
+                user.profileImg ||
+                '/profileimages/defaultProfile.jpg'
+              "
+              alt="User Avatar"
+              class="w-24 h-24 rounded-full object-cover border-2 border-purple"
+            />
+          </div>
+
+          <!-- User Info and Button (Right Side) -->
+          <div class="flex-grow flex flex-col justify-center text-left">
+            <h2 class="text-xl font-semibold text-dark-gray mb-1">
+              {{ user.name }}
+            </h2>
+            <p class="text-gray-600 text-sm mb-4 capitalize">
+              Role: {{ user.role | roleDisplay }}
+            </p>
+            <!-- Updated Remove User Button -->
+            <button
+              (click)="removeUser(user.id)"
+              class="text-red-600 font-medium hover:underline transition-all duration-300 self-start"
+            >
+              Remove User
+            </button>
+          </div>
+
+          <!-- Absolute positioned dropdown (kept for structure, but hidden for this demo) -->
+          <div class="absolute top-4 right-4">
+            <div
+              class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10 hidden"
+            >
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender"
+                >Edit User</a
+              >
+              <a
+                (click)="removeUser(user.id)"
+                class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
+                >Remove User (Dropdown)</a
+              >
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

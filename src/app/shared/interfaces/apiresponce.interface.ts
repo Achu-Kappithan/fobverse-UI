@@ -9,10 +9,11 @@ export interface ApiResponce<T> {
 export interface UserPartial { 
   _id?: string;
   email: string;
-  fullName: string;
+  name: string;
   is_verified?: boolean;
-  is_superAdmin?: boolean;
   role: string
+  profileImg:string
+  
 }
 
 export interface User {

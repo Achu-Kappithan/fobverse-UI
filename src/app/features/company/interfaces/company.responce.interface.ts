@@ -9,16 +9,29 @@ export interface ApiResponce<T>{
 
 
 
-export interface InternalUser {
+export interface InternalUserInterface {
+
+  id:string
+  
   name: string;
 
   email: string;
 
   role: string;
 
-  profilePic?: string;
+  profileImg?: string;
 
   password: string;
+}
+
+export interface UpdateInternalUserInterface {
+  
+  name: string;
+
+  email: string;
+
+  profileImg?: string;
+
 }
 
 export interface ContactInfoItem {

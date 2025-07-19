@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { UserRegisterService } from '../../features/auth/services/auth.service';
 import { CompanyService } from '../../features/company/services/company-service';
+import { RouterModule } from '@angular/router';
+import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-company-header',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './company-header.html',
   styleUrl: './company-header.css'
 })
@@ -14,22 +16,25 @@ export class CompanyHeader implements OnInit {
   @Input() isDarkMode: boolean = false
   @Output() darkModeToggled = new EventEmitter<boolean>();
   isProfileMenuOpen: boolean = false;
+  userProfile:string = '/profileimages/defaultProfile.jpg'
 
   constructor(
     private readonly _authService : UserRegisterService,
-    private readonly _CompanyService : CompanyService
+    private readonly _CompanyService : CompanyService,
+    private readonly cdr : ChangeDetectorRef
   ){}
 
   ngOnInit(): void {
     this._authService.company$.subscribe({
       next:(comp)=>{
         console.log("active user",comp)
+        this.userProfile = comp?.profileImg!
+        this.cdr.detectChanges()
       }
     })
-    this._CompanyService.getProfile().subscribe({
-      next:(res =>{
-        console.log("active company profile",res.data)
-        this._CompanyService.ComapnySubject.next(res.data)
+    this._CompanyService.companyProfile$.subscribe({
+      next:(data =>{
+        console.log("active company profile",data)
       })
     })
     const saveTheme = localStorage.getItem('theme')
@@ -57,6 +62,10 @@ export class CompanyHeader implements OnInit {
 
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  logOut(){
+    this._authService.logoutUser()
   }
 
   @HostListener('document:click', ['$event'])
