@@ -1,14 +1,23 @@
 <div class="bg-lavender min-h-screen p-4 md:p-8 font-inter">
   <div class="max-w-7xl mx-auto">
     <!-- Header Section -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-      <h1 class="text-2xl sm:text-3xl font-bold text-dark-gray text-center md:text-left">Company Management Dashboard</h1>
+    <div
+      class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4"
+    >
+      <h1
+        class="text-2xl sm:text-3xl font-bold text-dark-gray text-center md:text-left"
+      >
+        Company Management Dashboard
+      </h1>
       <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+        <!-- Search Input - UPDATED -->
         <input
           type="text"
           id="companySearch"
           placeholder="Search companies..."
           class="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent text-dark-gray shadow-sm"
+          (input)="onSearchInput($event)"
+          [value]="currentQueryParms.search"
         />
         <button
           class="bg-purple text-white px-6 py-2 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 w-full sm:w-auto"
@@ -24,18 +33,25 @@
     </div>
 
     <!-- Companies Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="!isLoading && companies.length > 0">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      *ngIf="!isLoading && companies.length > 0"
+    >
       <div
         *ngFor="let company of companies"
         class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between"
       >
         <div class="flex justify-between items-start mb-4 gap-3">
           <div class="flex-1 flex flex-col text-left">
-            <h2 class="text-lg sm:text-xl font-semibold text-dark-gray mb-1">{{ company.name }}</h2>
-            <p class="text-gray text-sm">Created: {{ company.createdAt | date: 'shortDate' }}</p>
+            <h2 class="text-lg sm:text-xl font-semibold text-dark-gray mb-1">
+              {{ company.name }}
+            </h2>
+            <p class="text-gray text-sm">
+              Created: {{ company.createdAt | date : 'shortDate' }}
+            </p>
           </div>
           <img
-            [src]="logoUrl"
+            [src]="company.logoUrl"
             [alt]="company.name + ' Logo'"
             class="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover flex-shrink-0"
           />
@@ -58,7 +74,7 @@
                 }"
                 class="mr-1"
               ></i>
-              {{ company.isActive ? 'Active':'Blocked' }}
+              {{ company.isActive ? 'Active' : 'Blocked' }}
             </span>
           </div>
 
@@ -85,11 +101,89 @@
     </div>
 
     <!-- No Companies Found -->
-    <div *ngIf="!isLoading && companies.length === 0" class="col-span-full text-center p-8">
+    <div
+      *ngIf="!isLoading && companies.length === 0"
+      class="col-span-full text-center p-8"
+    >
       <p class="text-gray-600 text-lg">No companies found.</p>
       <p class="text-gray-500 text-sm mt-2">
         There might be no companies registered yet, or an error occurred.
       </p>
     </div>
+
+<!-- Lavender-Themed Pagination Controls (theme-aware) -->
+<div
+  *ngIf="!isLoading && companies.length > 0 && paginationMeta.totalItems > 0"
+  class="mt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 bg-white bg-lavender rounded-xl shadow-lg p-6"
+>
+  <!-- Results Text -->
+  <div class="text-sm text-dark-gray">
+    Showing
+    {{ (paginationMeta.currentPage - 1) * paginationMeta.itemsPerPage + 1 }}
+    to
+    {{
+      paginationMeta.currentPage * paginationMeta.itemsPerPage >
+      paginationMeta.totalItems
+        ? paginationMeta.totalItems
+        : paginationMeta.currentPage * paginationMeta.itemsPerPage
+    }}
+    of {{ paginationMeta.totalItems }} results
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4">
+    <!-- Items per page dropdown -->
+    <div class="flex items-center space-x-2">
+      <label for="itemsPerPage" class="text-sm text-dark-gray">Items per page:</label>
+      <select
+        id="itemsPerPage"
+        [(ngModel)]="currentQueryParms.limit"
+        (change)="onLimitChange(currentQueryParms.limit!)"
+        class="py-2 px-3 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-white text-dark-gray"
+      >
+        <option [ngValue]="3">3</option>
+        <option [ngValue]="6">6</option>
+        <option [ngValue]="9">9</option>
+        <option [ngValue]="15">15</option>
+      </select>
+    </div>
+
+    <!-- Previous/Next & Page Numbers -->
+    <nav class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
+      <!-- Previous -->
+      <button
+        (click)="onPageChange(paginationMeta.currentPage - 1)"
+        [disabled]="paginationMeta.currentPage === 1 || isLoading"
+        class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Previous
+      </button>
+
+      <!-- Page numbers -->
+      <ng-container *ngFor="let pageNum of pageNumbers">
+        <button
+          *ngIf="pageNum <= paginationMeta.totalPages"
+          (click)="onPageChange(pageNum)"
+          [ngClass]="{
+            'bg-purple text-white': pageNum === paginationMeta.currentPage,
+            'bg-white text-purple hover:bg-lavender': pageNum !== paginationMeta.currentPage
+          }"
+          class="relative inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium"
+        >
+          {{ pageNum }}
+        </button>
+      </ng-container>
+
+      <!-- Next -->
+      <button
+        (click)="onPageChange(paginationMeta.currentPage + 1)"
+        [disabled]="paginationMeta.currentPage === paginationMeta.totalPages || isLoading"
+        class="relative inline-flex items-center px-4 py-2 rounded-r-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Next
+      </button>
+    </nav>
+  </div>
+</div>
   </div>
 </div>

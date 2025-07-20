@@ -16,8 +16,7 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
-import { response } from 'express';
-import { error } from 'console';
+import { Passwordvalidator } from '../../../../../shared/directives/passwordvalidators/passwordvalidator';
 
 @Component({
   selector: 'app-candidate-login',
@@ -26,6 +25,7 @@ import { error } from 'console';
     ReactiveFormsModule,
     CommonModule,
     GoogleSigninButtonModule,
+    Passwordvalidator
   ],
   templateUrl: './candidate-login.html',
   styleUrl: './candidate-login.css',

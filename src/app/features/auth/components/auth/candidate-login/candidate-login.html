@@ -158,10 +158,39 @@
                       placeholder="Enter password"
                       class="w-full h-12 px-3 pr-10 pl-3 border border-[#DCDFE4] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
                       {{loginForm.get('password')?.invalid && loginForm.get('password')?.touched ?'border-red-500' : 'border-[#DCDFE4]'}}"
+                      appPasswordvalidator
+                      [minLength]="8"
+                      [requireUppercase]="true"
+                      [requireLowercase]="true"
+                      [requireDigit]="true"
+                      [requireSpecialChar]="true"
                       
                     />
                     <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.touched)" class="text-red-500 text-sm">
                     password is required.
+                    <span *ngIf="loginForm.get('password')?.errors?.['minLength']">
+                  Password must be at least
+                  {{
+                    loginForm.get('password')?.errors?.['minLength']?.requiredLength || 8
+                  }}
+                  characters long.
+                </span>
+
+                <span *ngIf="loginForm.get('password')?.errors?.['requireUppercase']">
+                  Password must contain at least one uppercase letter.
+                </span>
+
+                <span *ngIf="loginForm.get('password')?.errors?.['requireLowercase']">
+                  Password must contain at least one lowercase letter.
+                </span>
+
+                <span *ngIf="loginForm.get('password')?.errors?.['requireDigit']">
+                  Password must contain at least one digit.
+                </span>
+
+                <span *ngIf="loginForm.get('password')?.errors?.['requireSpecialChar']">
+                  Password must contain at least one special character.
+                </span>
                    </div>
                    
 
