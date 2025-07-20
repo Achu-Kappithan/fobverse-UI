@@ -1,15 +1,16 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCompanyService } from '../../services/admin-company-service';
-import { Observable } from 'rxjs';
-import { ApiResponce } from '../../../auth/interfaces/api-responce.interface';
-import { CompanyInterface } from '../../interfaces/company.interface';
+import { CompanyInterface, QueryParmsInterface } from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { PaginationMeta } from '../../../auth/interfaces/api-responce.interface';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-listcompanys',
-  imports: [CommonModule, LoadingSpinner],
+  imports: [CommonModule, LoadingSpinner,FormsModule],
   templateUrl: './admin-listcompanys.html',
   styleUrl: './admin-listcompanys.css',
 })
@@ -17,6 +18,21 @@ export class AdminListcompanys implements OnInit {
   companies: CompanyInterface[] = [];
   isLoading: boolean = false;
   logoUrl: string = '/profileimages/logodefault.jpg';
+
+  paginationMeta:PaginationMeta ={
+    totalItems:0,
+    currentPage:1,
+    itemsPerPage:6,
+    totalPages:0
+  }
+
+  currentQueryParms: QueryParmsInterface = {
+    page:1,
+    limit: 6,
+    search: ""
+  }
+
+  private searchTerms = new Subject<string>()
 
   constructor(
     private readonly _companyService: AdminCompanyService,
@@ -26,6 +42,15 @@ export class AdminListcompanys implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllcompany();
+
+    this.searchTerms.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.currentQueryParms.search = term
+      this.currentQueryParms.page = 1
+      this.fetchAllcompany()
+    })
   }
 
   UpdateStatus(company: CompanyInterface): void {
@@ -50,12 +75,13 @@ export class AdminListcompanys implements OnInit {
 
   fetchAllcompany() {
     this.isLoading = true;
-    setTimeout(() => {
-      this._companyService.getAllCompanies().subscribe({
+      this._companyService.getAllCompanies(this.currentQueryParms).subscribe({
         next: (response) => {
+          console.log("all company responce",response)
           if (response && response.success) {
             this.companies = response.data ?? [];
-            console.log('assigneddata', this.companies);
+            this.paginationMeta = response.meta ?? this.paginationMeta
+            console.log('assigneddata', this.companies, " meta :  ",this.paginationMeta);
           } else {
             console.error(
               'Failed to fetch companies or data is unsuccessful:',
@@ -73,6 +99,33 @@ export class AdminListcompanys implements OnInit {
           this.cdr.detectChanges();
         },
       });
-    });
+  }
+
+   // Event handler for page change
+  onPageChange(newPage: number): void {
+    if (newPage > 0 && newPage <= this.paginationMeta.totalPages) {
+      this.currentQueryParms.page = newPage;
+      this.fetchAllcompany();
+    }
+  }
+
+  // Event handler for limit change (items per page)
+  onLimitChange(newLimit: number): void {
+    this.currentQueryParms.limit = newLimit;
+    this.currentQueryParms.page = 1; // Reset to page 1 when limit changes
+    this.fetchAllcompany();
+  }
+
+  onSearchInput(event: Event): void {
+    const term = (event.target as HTMLInputElement).value;
+    this.searchTerms.next(term); 
+  }
+
+  get pageNumbers(): number[] {
+    const pages: number[] = [];
+    for (let i = 1; i <= this.paginationMeta.totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 }

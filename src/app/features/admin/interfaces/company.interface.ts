@@ -104,6 +104,12 @@ export interface CandidateInterface {
   updatedAt: Date;
 }
 
+export interface QueryParmsInterface {
+  page?: number
+  limit?: number
+  search?:string
+}
+
 
 
 
