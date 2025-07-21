@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponce, PlainResponce } from '../../auth/interfaces/api-responce.interface';
-import { CandidateInterface } from '../interfaces/company.interface';
+import { CandidateInterface, QueryParmsInterface } from '../interfaces/company.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,24 @@ export class AdminCandidate {
   
     constructor(private readonly http: HttpClient) {}
   
-    getAllCandidates(): Observable<ApiResponce<CandidateInterface[]>> {
+    getAllCandidates(parms:QueryParmsInterface): Observable<ApiResponce<CandidateInterface[]>> {
+
+      let httpParms = new HttpParams
+
+      if(parms.limit){
+        httpParms = httpParms.set('limit',parms.limit.toString())
+      }
+
+      if(parms.page){
+        httpParms = httpParms.set('page',parms.page.toString())
+      }
+
+      if(parms.search){
+        httpParms = httpParms.set('search',parms.search)
+      }
       return this.http.get<ApiResponce<CandidateInterface[]>>(
         `/api/admin/getAllcandidates`,
-        { withCredentials: true }
+        { params:httpParms, withCredentials: true }
       );
     }
 

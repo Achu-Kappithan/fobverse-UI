@@ -108,7 +108,7 @@ export class UserRegisterService {
       next:(res)=>{
         this.adminSubject.next(null)
         this.isUserLoaded.next(true)
-        this._router.navigate(['/login'])
+        this._router.navigate(['/adminlogin'])
       }
     })
   }
