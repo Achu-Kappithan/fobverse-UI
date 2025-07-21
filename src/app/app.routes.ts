@@ -12,9 +12,11 @@ import { SetNewPassword } from './features/auth/components/forgotPassword/set-ne
 import { UpdateProfileinfo } from './features/company/components/update-profileinfo/update-profileinfo';
 
 // gurards 
-import { isAdminGuard } from './shared/guards/is-admin-guard';
 import { AddInternalUserComponent } from './features/company/components/internal-user.component/add-internal-user.component/add-internal-user.component';
 import { UserListComponent } from './features/company/components/internal-user.component/user-list.component/user-list.component';
+import { isLogoutGuard } from './shared/guards/auth_gurds/is-logout-guard';
+import { authGurdGuard } from './shared/guards/auth_gurds/auth-gurd-guard';
+import { isAdminGuard } from './shared/guards/admin_guards/is-admin-guard';
 
 
 export const routes: Routes = [
@@ -27,26 +29,31 @@ export const routes: Routes = [
 
       {
         path: 'login',
+        canActivate:[isLogoutGuard],
         component: CandidateLogin,
         data: { userType: 'candidate' },
       },
       {
         path: 'signup',
+        canActivate:[isLogoutGuard],
         component: CandidateSignup,
         data: { userType: 'candidate' },
       },
       {
         path: 'adminlogin',
+        canActivate:[isLogoutGuard],
         component: CandidateLogin,
         data: { userType: 'admin' },
       },
       {
         path: 'companylogin',
+        canActivate:[isLogoutGuard],
         component: CandidateLogin,
         data: { userType: 'company_admin' },
       },
       {
         path: 'companysignup',
+        canActivate:[isLogoutGuard],
         component: CandidateSignup,
         data: { userType: 'company_admin' },
       },
@@ -134,24 +141,22 @@ export const routes: Routes = [
 
   {
     path: 'admin',
+    canActivate:[isAdminGuard,authGurdGuard],
     loadComponent: ()=> import ('./features/layout/admin-component/admin-component')
     .then(m => m.AdminComponent),
     children: [
       {
         path: 'dashboard',
-        canActivate: [isAdminGuard],
         loadComponent:()=> import ('./features/admin/components/admin-dashboard/admin-dashboard')
         .then (m => m.AdminDashboard),
       },
       {
         path: 'companyes',
-        canActivate: [isAdminGuard],
         loadComponent: ()=> import ('./features/admin/components/admin-listcompanys/admin-listcompanys')
         .then (m => m.AdminListcompanys)
       },
       {
         path: 'candidates',
-        canActivate: [isAdminGuard],
         loadComponent: ()=> import ('./features/admin/components/admin-candidates-list/admin-candidates-list')
         .then (m => m.AdminCandidatesList)
       },
