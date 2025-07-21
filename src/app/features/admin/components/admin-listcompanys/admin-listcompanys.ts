@@ -101,7 +101,6 @@ export class AdminListcompanys implements OnInit {
       });
   }
 
-   // Event handler for page change
   onPageChange(newPage: number): void {
     if (newPage > 0 && newPage <= this.paginationMeta.totalPages) {
       this.currentQueryParms.page = newPage;
@@ -109,10 +108,9 @@ export class AdminListcompanys implements OnInit {
     }
   }
 
-  // Event handler for limit change (items per page)
   onLimitChange(newLimit: number): void {
     this.currentQueryParms.limit = newLimit;
-    this.currentQueryParms.page = 1; // Reset to page 1 when limit changes
+    this.currentQueryParms.page = 1;  
     this.fetchAllcompany();
   }
 
