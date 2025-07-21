@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { UserRegisterService } from '../../features/auth/services/auth.service';
 import { map, filter, switchMap, take } from 'rxjs';
+import { UserRegisterService } from '../../../features/auth/services/auth.service';
 
 export const isAdminGuard: CanActivateFn = (route, state) => {
   const _authService = inject(UserRegisterService);
