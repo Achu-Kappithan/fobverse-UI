@@ -1,9 +1,13 @@
 
 
-export interface ApiResponce<T> {
+
+
+export interface PagenatedApiResponce<T> {
   success: boolean;
+  data: T ,
   message?: string;
-  data: T| null
+  meta?: PaginationMeta; 
+  timestamp: string;
 }
 
 export interface UserPartial { 
@@ -32,5 +36,20 @@ export interface GoogleResponce {
 export interface PlainResponce {
   message: string,
   success:boolean,
+}
+
+
+export interface QueryParmsInterface {
+  page?: number
+  limit?: number
+  search?:string
+}
+
+
+export interface PaginationMeta {
+  totalItems: number;
+  currentPage: number;
+  itemsPerPage: number;
+  totalPages: number;
 }
 

@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
 import {
-  ApiResponce,
   UserPartial,
 } from '../../../../shared/interfaces/apiresponce.interface';
 import { UserRegisterService } from '../../services/auth.service';
@@ -133,25 +132,3 @@ export class EmailVerification implements OnInit {
   }
 }
 
-
-// (response: ApiResponce<UserPartial> & { reason?: string }) => {
-//           if (response.success) {
-//             this.swal.showSuccessToast('Email verified successfully!');
-//             this.router.navigate(['/email/success']);
-//           } else {
-//             this.swal.showErrorToast(response.message!);
-//             const reasonForRoute = response.reason || 'api_generic_failure';
-//             this.router.navigate(['/email/failed'], {
-//               queryParams: { reason: reasonForRoute },
-//             });
-//           }
-//         },
-//         (err) => {
-//           console.error('Unexpected error in verification subscription:', err);
-//           this.swal.showErrorToast(
-//             'An unexpected error occurred. Please try again.'
-//           );
-//           this.router.navigate(['/email/failed'], {
-//             queryParams: { reason: 'unhandled_error' },
-//           });
-//         }

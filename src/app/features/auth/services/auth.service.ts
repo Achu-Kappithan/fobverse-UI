@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { CandidateRegistration, loginInterface, passwordUpdate, validateEmailAndRole } from '../interfaces/auth.interface';
 import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
 import {
-  ApiResponce,
   PlainResponce,
   User,
   UserPartial,
@@ -11,6 +10,7 @@ import {
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
+import { ApiResponce } from '../interfaces/api-responce.interface';
 
 @Injectable({
   providedIn: 'root',
