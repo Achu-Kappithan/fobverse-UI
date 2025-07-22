@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { ApiResponce, ComapnyProfileInterface, InternalUserInterface, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
+import { PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -81,8 +82,20 @@ export class CompanyService {
     return  this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user,{withCredentials:true})
   }
 
-  getInternalUsers():Observable<ApiResponce<InternalUserInterface[]>>{
-    return this.http.get<ApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{withCredentials:true})
+  getInternalUsers(params:QueryParmsInterface):Observable<PagenatedApiResponce<InternalUserInterface[]>>{
+    let  httpParms = new HttpParams
+    
+    if(params.limit){
+       httpParms = httpParms.set('limit',params.limit.toString())
+    }
+    if(params.page){
+      httpParms = httpParms.set('page',params.page.toString())
+    }
+    if(params.search){
+      httpParms = httpParms.set('search',params.search)
+    }
+
+    return this.http.get<PagenatedApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{ params: httpParms,withCredentials:true})
   }
 
   getUserProfile():Observable<ApiResponce<InternalUserInterface>>{
