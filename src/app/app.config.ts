@@ -7,6 +7,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule  } from '@abacritt/angularx-social-login';
 import { authInterceptor } from './features/auth/interceptors/auth-interceptor';
 import { initializeUser } from './app.initializer';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     withInterceptors([authInterceptor])),
     importProvidersFrom(SocialLoginModule),
     provideEnvironmentInitializer(initializeUser()),
+    provideAnimations(),
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

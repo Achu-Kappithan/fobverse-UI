@@ -100,10 +100,6 @@ export class UserListComponent {
     }
     return pageNumber
   }
-
-
-
   removeUser(id:string){
-
   }
 }

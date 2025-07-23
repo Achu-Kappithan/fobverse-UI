@@ -65,7 +65,7 @@ export class CompanyHeader implements OnInit {
   }
 
   logOut(){
-    this._authService.logoutUser()
+    this._authService.logoutUser("company")
   }
 
   @HostListener('document:click', ['$event'])
