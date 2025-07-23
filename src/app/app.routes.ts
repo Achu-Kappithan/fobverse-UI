@@ -62,6 +62,12 @@ export const routes: Routes = [
         redirectTo: 'login',
         pathMatch: 'full',
       },
+      // {
+      //   path: '**',
+      //   loadComponent :()=> import( './common/not-found/not-found')
+      //   .then (m => m.NotFound)
+      // }
+
     ],
   },
 
@@ -133,6 +139,11 @@ export const routes: Routes = [
         path: 'userprofile',
         loadComponent:()=> import ('./features/company/components/user-profile/user-profile')
         .then(m => m.UserProfile)
+      },
+      {
+        path: '**',
+        loadComponent :()=> import( './common/not-found/not-found')
+        .then (m => m.NotFound)
       }
     ],
   },

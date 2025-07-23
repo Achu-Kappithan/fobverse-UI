@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface, InternalUserInterface, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ApiResponce, ComapnyProfileInterface, InternalUserInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
-import { PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
+import { PagenatedApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +62,7 @@ export class CompanyService {
     folder:string,
     publicIdBase:string
   ):Observable<any>{
-    console.log("dat to upload cloud",file,signatureData,folder,publicIdBase)
+    console.log("data to upload cloud",file,signatureData,folder,publicIdBase)
      const formData = new FormData()
      formData.append('file', file); 
      formData.append('api_key', signatureData.apiKey);
@@ -109,4 +109,9 @@ export class CompanyService {
   updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponce<InternalUserInterface>>{
     return this.http.post<ApiResponce<InternalUserInterface>>('/api/company/updateuserprofile',dto,{withCredentials:true})
   }
+
+  addTeamMembers(dto:TeamMember):Observable<ApiResponce<ComapnyProfileInterface>>{
+    return this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/addteammember`,dto,{withCredentials:true})
+  }
+
 }

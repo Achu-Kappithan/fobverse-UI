@@ -53,6 +53,6 @@ export class AdminHeader implements OnInit {
   }
 
   logoutUser(){
-    this._authService.logoutUser()
+    this._authService.logoutUser("admin")
   }
 }

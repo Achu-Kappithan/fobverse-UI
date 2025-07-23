@@ -103,12 +103,20 @@ export class UserRegisterService {
     return refreshtoken
   }
 
-  logoutUser(): void {
+  logoutUser(User:string): void {
     this.http.post(`/api/auth/logout`, {}, { withCredentials: true }).subscribe({
       next:(res)=>{
-        this.adminSubject.next(null)
+        if(User =='company'){
+          this.CompanySubject.next(null)
+          this._router.navigate(['/companylogin'])
+        }else if(User ==='admin'){
+          this.adminSubject.next(null)
+          this._router.navigate(['/adminlogin'])
+        }else{
+          this.CandidateSubject.next(null)
+          this._router.navigate(['/login'])
+        }
         this.isUserLoaded.next(true)
-        this._router.navigate(['/adminlogin'])
       }
     })
   }

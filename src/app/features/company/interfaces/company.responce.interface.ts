@@ -45,7 +45,7 @@ export interface TeamMember {
 
   role: string;
 
-  image: string;
+  image?: string | undefined
 }
 
 export interface ComapnyProfileInterface {
