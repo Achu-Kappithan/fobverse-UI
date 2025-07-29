@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnInit
 import { UserRegisterService } from '../../features/auth/services/auth.service';
 import { CompanyService } from '../../features/company/services/company-service';
 import { RouterModule } from '@angular/router';
-import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-company-header',
