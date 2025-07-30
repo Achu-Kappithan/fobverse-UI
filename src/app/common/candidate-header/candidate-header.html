@@ -1,4 +1,4 @@
-    <nav class="bg-white shadow-xl border-b border-gray-100">
+    <nav class="sticky top-0 z-[50] bg-white shadow-xl border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
@@ -20,7 +20,7 @@
                     </button>
                 </div>
                     <div class="relative text-left">
-                        <button (click)="toggleModal()" class="flex items-center space-x-2 text-dark-gray dark:text-dark-text hover:text-purple dark:hover:text-purple focus:outline-none">
+                        <button (click)="toggleModal()" (appClickOutside)="toggleModal()" class="flex items-center space-x-2 text-dark-gray dark:text-dark-text hover:text-purple dark:hover:text-purple focus:outline-none">
                             <img [src]="candidate?.profileImg ?? '/profileimages/defaultProfile.jpg'" alt="Profile" class="w-8 h-8 rounded-full border border-purple">
                             <span class="hidden md:inline font-medium">{{candidate?.email}}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>

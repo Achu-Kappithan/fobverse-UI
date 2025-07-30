@@ -87,6 +87,8 @@ export interface CandidateInterface {
 
   profileUrl?: string;
 
+  coverUrl?:string;
+
   contactInfo?: ContactInfoInterface;
 
   education?: string[];

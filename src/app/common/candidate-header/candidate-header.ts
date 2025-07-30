@@ -3,10 +3,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 import { UserRegisterService } from '../../features/auth/services/auth.service';
 import { RouterModule } from '@angular/router';
+import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 
 @Component({
   selector: 'app-candidate-header',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,ClickOutsideDirective],
   templateUrl: './candidate-header.html',
   styleUrl: './candidate-header.css'
 })

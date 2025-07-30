@@ -1,1 +1,366 @@
-<p>candidate-profile works!</p>
+
+<div class="min-h-screen bg-lavender p-4 sm:p-6 lg:p-8">
+        <div class="w-full mb-6 max-w-7xl mx-auto rounded-xl overflow-hidden shadow-md border">
+            <div class="relative bg-gradient-to-r from-pink-200 via-pink-400 to-purple-700 h-40 sm:h-48">
+                <div class="absolute top-4 right-4 z-10">
+                    <i data-lucide="edit" class="lucide text-white bg-white/30 hover:bg-white/50 p-2 rounded-full w-5 h-5 cursor-pointer"></i>
+                </div>
+            </div>
+
+            <div class="bg-white pt-24 sm:pt-6 px-6 py-6 sm:px-8 flex flex-col items-center sm:flex-row sm:items-center sm:justify-between relative">
+
+                <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-20
+                            sm:left-8 sm:-top-16 sm:translate-x-0">
+                    <img
+                        src="https://placehold.co/96x96/0A5FFF/FFFFFF?text=JG"
+                        alt="Profile"
+                        class="w-32 h-32 sm:w-44 sm:h-44 rounded-full border-4 border-white shadow-lg object-cover"
+                    />
+                </div>
+
+                <div class="mt-4 text-center sm:text-left sm:ml-48 sm:mt-0 flex-grow">
+                    <h2 class="text-xl font-semibold text-gray-900">{{profileData?.name}}</h2>
+                    <p class="text-gray-600 mt-1">Product Designer at <span class="font-medium">Twitter</span></p>
+                    <div class="flex items-center justify-center sm:justify-start text-sm text-gray-500 mt-1">
+                        <i data-lucide="map-pin" class="lucide w-4 h-4 mr-1"></i> Manchester, UK
+                    </div>
+
+                    <div class="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                        <i data-lucide="flag" class="lucide w-4 h-4"></i> OPEN FOR OPPORTUNITIES
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-0 w-full sm:w-auto sm:ml-auto">
+                    <button class="px-5 py-2 text-sm font-medium text-blue-600 border border-blue-200 rounded-md hover:bg-blue-50 transition w-full sm:w-auto">
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
+        <!-- Main Content Area -->
+        <div class="lg:w-2/3 flex flex-col gap-6">
+            <!-- About Me Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">About Me</h2>
+                    <i data-lucide="edit" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <p class="text-gray-700 whitespace-pre-line">I'm a product designer - Filmmaker currently working remotely at Twitter from beautiful Manchester, United Kingdom. My passionate about designing digital products that have a positive impact on the world.
+
+For 10 years, I've specialized in user interface, experience & interaction design as well as working in user research and product strategy for product agencies, big tech companies & start-ups.</p>
+            </div>
+
+            <!-- Experiences Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Experiences</h2>
+                    <i data-lucide="plus" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <div id="experiences-container">
+                    <!-- Experience items will be loaded here by JavaScript -->
+                </div>
+                <button id="toggle-experiences" class="mt-4 w-full py-2 text-blue-600 font-medium rounded-full hover:bg-blue-50 transition-colors">
+                    Show more experiences
+                </button>
+            </div>
+
+            <!-- Educations Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Educations</h2>
+                    <i data-lucide="plus" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <div id="education-container">
+                    <!-- Education items will be loaded here by JavaScript -->
+                </div>
+                <button id="toggle-education" class="mt-4 w-full py-2 text-blue-600 font-medium rounded-full hover:bg-blue-50 transition-colors">
+                    Show more education
+                </button>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Skills</h2>
+                    <i data-lucide="plus" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Communication</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Analytics</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Facebook Ads</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Content Planning</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Community Manager</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">UI/UX Design</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Product Management</span>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Marketing Strategy</span>
+                </div>
+            </div>
+
+            <!-- Portfolios Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Portfolios</h2>
+                    <i data-lucide="plus" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                    <div class="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden group">
+                        <img src="https://placehold.co/100x70/E0E7FF/4F46E5?text=Project+1" alt="Portfolio item 1" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <i data-lucide="folder" class="lucide text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <div class="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden group">
+                        <img src="https://placehold.co/100x70/D1FAE5/065F46?text=Project+2" alt="Portfolio item 2" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <i data-lucide="folder" class="lucide text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <div class="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden group">
+                        <img src="https://placehold.co/100x70/FEF2F2/EF4444?text=Project+3" alt="Portfolio item 3" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <i data-lucide="folder" class="lucide text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <div class="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden group">
+                        <img src="https://placehold.co/100x70/FFFBEB/D97706?text=Project+4" alt="Portfolio item 4" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <i data-lucide="folder" class="lucide text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <div class="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden group">
+                        <img src="https://placehold.co/100x70/ECFDF5/047857?text=Project+5" alt="Portfolio item 5" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <i data-lucide="folder" class="lucide text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <div class="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden group">
+                        <img src="https://placehold.co/100x70/DBEAFE/1D4ED8?text=Project+6" alt="Portfolio item 6" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <i data-lucide="folder" class="lucide text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Area -->
+        <div class="lg:w-1/3 flex flex-col gap-6">
+            <!-- Additional Details -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Additional Details</h2>
+                    <i data-lucide="edit" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center text-gray-700">
+                        <i data-lucide="mail" class="lucide w-5 h-5 mr-3 text-gray-500"></i>
+                        <span>jakegyllmail.com</span>
+                    </div>
+                    <div class="flex items-center text-gray-700">
+                        <i data-lucide="phone" class="lucide w-5 h-5 mr-3 text-gray-500"></i>
+                        <span>+44 7985 572 136</span>
+                    </div>
+                    <div class="flex items-center text-gray-700">
+                        <i data-lucide="globe" class="lucide w-5 h-5 mr-3 text-gray-500"></i>
+                        <span>English, French</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Social Links</h2>
+                    <i data-lucide="edit" class="lucide text-gray-400 cursor-pointer w-5 h-5"></i>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://instagram.com/jakegyll" target="_blank" rel="noopener noreferrer" class="flex items-center text-blue-600 hover:underline">
+                        <i data-lucide="instagram" class="lucide w-5 h-5 mr-3"></i>
+                        <span>instagram.com/jakegyll</span>
+                    </a>
+                    <a href="https://twitter.com/jakegyll" target="_blank" rel="noopener noreferrer" class="flex items-center text-blue-600 hover:underline">
+                        <i data-lucide="twitter" class="lucide w-5 h-5 mr-3"></i>
+                        <span>twitter.com/jakegyll</span>
+                    </a>
+                    <a href="https://www.jakegyll.com" target="_blank" rel="noopener noreferrer" class="flex items-center text-blue-600 hover:underline">
+                        <i data-lucide="globe" class="lucide w-5 h-5 mr-3"></i>
+                        <span>www.jakegyll.com</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Sample data for experiences and education
+        const profileData = {
+            experiences: [
+                {
+                    id: 1,
+                    title: 'Product Designer',
+                    company: 'Twitter',
+                    duration: 'Full-Time · Jun 2019 - Present (1y 1m)',
+                    description: 'Created and executed social media plan for 10 brands, Utilizing multiple features and content types to increase brand outreach, engagement, and leads.',
+                    logo: 'https://placehold.co/40x40/1DA1F2/FFFFFF?text=T'
+                },
+                {
+                    id: 2,
+                    title: 'Growth Marketing Designer',
+                    company: 'GoDaddy',
+                    duration: 'Full-Time · Jun 2017 - May 2019 (2y)',
+                    description: 'Developed digital marketing strategies, activation plans, proposals, concepts and promotions for client initiatives.',
+                    logo: 'https://placehold.co/40x40/6D28D9/FFFFFF?text=G'
+                },
+                {
+                    id: 3,
+                    title: 'UI/UX Designer',
+                    company: 'Google',
+                    duration: 'Full-Time · Jan 2015 - Jun 2017 (2y 6m)',
+                    description: 'Designed and implemented user interfaces for various Google products, focusing on user-centered design principles.',
+                    logo: 'https://placehold.co/40x40/EA4335/FFFFFF?text=G'
+                },
+                {
+                    id: 4,
+                    title: 'Junior Designer',
+                    company: 'Facebook',
+                    duration: 'Full-Time · Sep 2013 - Dec 2014 (1y 4m)',
+                    description: 'Assisted senior designers in creating visual assets and prototypes for Facebook\'s social media platform.',
+                    logo: 'https://placehold.co/40x40/4267B2/FFFFFF?text=F'
+                }
+            ],
+            education: [
+                {
+                    id: 1,
+                    university: 'Harvard University',
+                    degree: 'Postgraduate degree, Applied Psychology',
+                    duration: '2010 - 2012',
+                    description: 'A qualified Psychologist in the field of Consumer and Society. I am specialized in creating business opportunities by observing, analysing, researching and changing behaviour.',
+                    logo: 'https://placehold.co/40x40/A51C30/FFFFFF?text=H'
+                },
+                {
+                    id: 2,
+                    university: 'University of Toronto',
+                    degree: 'Bachelor of Arts, Visual Communication',
+                    duration: '2006 - 2009',
+                    description: 'Focused on visual design principles and communication strategies.',
+                    logo: 'https://placehold.co/40x40/002060/FFFFFF?text=U'
+                },
+                {
+                    id: 3,
+                    university: 'Stanford University',
+                    degree: 'Master of Science, Human-Computer Interaction',
+                    duration: '2012 - 2014',
+                    description: 'Advanced studies in user experience design, usability, and interaction design.',
+                    logo: 'https://placehold.co/40x40/B1040E/FFFFFF?text=S'
+                }
+            ]
+        };
+
+        const experiencesContainer = document.getElementById('experiences-container');
+        const toggleExperiencesButton = document.getElementById('toggle-experiences');
+        let showAllExperiences = false;
+
+        const educationContainer = document.getElementById('education-container');
+        const toggleEducationButton = document.getElementById('toggle-education');
+        let showAllEducation = false;
+
+        // Function to render experiences
+        function renderExperiences() {
+            experiencesContainer.innerHTML = ''; // Clear existing content
+            const experiencesToShow = showAllExperiences ? profileData.experiences : profileData.experiences.slice(0, 2);
+
+            experiencesToShow.forEach((exp, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-start py-4 ${index < experiencesToShow.length - 1 ? 'border-b border-gray-200' : ''}`;
+                div.innerHTML = `
+                    <img src="${exp.logo}" alt="${exp.company} logo" class="w-10 h-10 rounded-lg mr-4 flex-shrink-0" />
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">${exp.title}</h3>
+                                <p class="text-gray-700 text-sm">${exp.company} · ${exp.duration}</p>
+                            </div>
+                            <i data-lucide="edit" class="lucide text-gray-400 cursor-pointer w-4 h-4"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-1">${exp.description}</p>
+                    </div>
+                `;
+                experiencesContainer.appendChild(div);
+            });
+
+            // Re-render Lucide icons after adding new HTML
+            lucide.createIcons();
+
+            // Update button text
+            if (profileData.experiences.length > 2) {
+                toggleExperiencesButton.textContent = showAllExperiences ? 'Show less experiences' : `Show ${profileData.experiences.length - 2} more experiences`;
+                toggleExperiencesButton.style.display = 'block'; // Ensure button is visible
+            } else {
+                toggleExperiencesButton.style.display = 'none'; // Hide button if no more to show
+            }
+        }
+
+        // Function to render education
+        function renderEducation() {
+            educationContainer.innerHTML = ''; // Clear existing content
+            const educationToShow = showAllEducation ? profileData.education : profileData.education.slice(0, 2);
+
+            educationToShow.forEach((edu, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-start py-4 ${index < educationToShow.length - 1 ? 'border-b border-gray-200' : ''}`;
+                div.innerHTML = `
+                    <img src="${edu.logo}" alt="${edu.university} logo" class="w-10 h-10 rounded-lg mr-4 flex-shrink-0" />
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">${edu.university}</h3>
+                                <p class="text-gray-700 text-sm">${edu.degree}</p>
+                                <p class="text-gray-600 text-sm">${edu.duration}</p>
+                            </div>
+                            <i data-lucide="edit" class="lucide text-gray-400 cursor-pointer w-4 h-4"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-1">${edu.description}</p>
+                    </div>
+                `;
+                educationContainer.appendChild(div);
+            });
+
+            // Re-render Lucide icons after adding new HTML
+            lucide.createIcons();
+
+            // Update button text
+            if (profileData.education.length > 2) {
+                toggleEducationButton.textContent = showAllEducation ? 'Show less education' : `Show ${profileData.education.length - 2} more education`;
+                toggleEducationButton.style.display = 'block'; // Ensure button is visible
+            } else {
+                toggleEducationButton.style.display = 'none'; // Hide button if no more to show
+            }
+        }
+
+        // Event listeners for toggle buttons
+        toggleExperiencesButton.addEventListener('click', () => {
+            showAllExperiences = !showAllExperiences;
+            renderExperiences();
+        });
+
+        toggleEducationButton.addEventListener('click', () => {
+            showAllEducation = !showAllEducation;
+            renderEducation();
+        });
+
+        // Initial render on page load
+        window.onload = () => {
+            renderExperiences();
+            renderEducation();
+        };
+    </script>
+</div>
+
+<div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
