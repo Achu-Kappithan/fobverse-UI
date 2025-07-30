@@ -36,7 +36,7 @@ export class CompanyComponent implements OnInit {
     this.isDarkMode = isDark
   }
 
-    handleSidebarStateChange(isOpen: boolean) {
+  handleSidebarStateChange(isOpen: boolean) {
     console.log('Sidebar state changed to:', isOpen); 
     this.isSidebarOpen = isOpen;
   }

@@ -10,7 +10,9 @@ display: none;
 display: none;
 }
 
-.bg-purple { background-color: #7941B5; }
+.bg-purple { background-color: #7a3ebb; }
+.bg-light-purple{ background-color: #8567c1;}
+.bg-hover-purpule {background-color: #9f73f7;}
 .text-purple { color: #7941B5; }
 .bg-lavender { background-color: #EDE7FF; }
 .text-dark-gray { color: #1A1A1A; }
