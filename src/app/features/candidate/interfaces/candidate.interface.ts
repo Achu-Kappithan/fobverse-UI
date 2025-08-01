@@ -1,20 +1,13 @@
 
-export interface ContactInfoInterface {
-  phoneNumber?: string;
-
-  address?: string;
-
-  linkedIn?: string;
-
-  github?: string;
-}
 
 export interface CandidateInterface {
-  id: string;
+  id?: string;
 
-  userId: string;
+  userId?: string;
 
   name: string;
+
+  aboutme?:string;
 
   isActive: boolean;
 
@@ -22,7 +15,7 @@ export interface CandidateInterface {
 
   coverUrl?:string;
 
-  contactInfo?: ContactInfoInterface;
+  contactInfo?: ContactInfoItem[];
 
   education?: string[];
 
@@ -32,9 +25,16 @@ export interface CandidateInterface {
 
   resumeUrl?: string;
 
-  portfolioLinks?: string;
+  portfolioLinks?: string[];
 
   createdAt: Date;
 
   updatedAt: Date;
+}
+
+
+export interface ContactInfoItem {
+  type: string;
+
+  value: string;
 }
