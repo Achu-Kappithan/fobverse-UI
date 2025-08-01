@@ -3,10 +3,11 @@ import { CandidateInterface } from '../../interfaces/candidate.interface';
 import { CandidateService } from '../../services/candidate.service';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-candidate-profile',
-  imports: [CommonModule,LoadingSpinner],
+  imports: [CommonModule,LoadingSpinner,RouterModule],
   templateUrl: './candidate-profile.html',
   styleUrl: './candidate-profile.css'
 })

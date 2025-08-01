@@ -223,7 +223,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   async onSubmit():Promise<void> {
     if (this.companyProfileForm.invalid) {
-      this.swal.showErrorToast('Please fill in all required fields')
+      this.swal.showErrorToast('Please fill all required fields')
       this.companyProfileForm.markAllAsTouched()
       return
     }
