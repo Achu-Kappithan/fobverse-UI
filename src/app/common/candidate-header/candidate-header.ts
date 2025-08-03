@@ -13,7 +13,7 @@ import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 })
 export class CandidateHeader implements OnInit {
 
-  isModalOpen:boolean = false
+  opendModal:string |null  = null
 
   @Input() isDarkMode:boolean = false
   @Output() darkModeToggled = new EventEmitter<boolean>()
@@ -39,8 +39,16 @@ export class CandidateHeader implements OnInit {
     }
   }
 
-  toggleModal(){
-    this.isModalOpen = !this.isModalOpen
+  toggleModal(id:string):void{
+    this.opendModal = id
+  }
+
+  isModalOpen(id:string):boolean{
+    return this.opendModal === id
+  }
+
+  closeModal():void{
+    this.opendModal = null
   }
 
   toggleDarkMode(){

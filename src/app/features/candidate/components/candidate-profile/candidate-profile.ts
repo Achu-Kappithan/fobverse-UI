@@ -15,6 +15,7 @@ export class CandidateProfile implements OnInit {
   
   profileData:CandidateInterface | null = null
   isLoading:boolean = false
+  OpenedModal:string| null = null
 
   constructor(
     private readonly _candidateService:CandidateService,
@@ -42,5 +43,17 @@ export class CandidateProfile implements OnInit {
         this.cdr.detectChanges()
       })
     })
+  }
+
+  ToggleModal(id:string):void {
+    this.OpenedModal = id
+  }
+
+  isModalOpen(id:string):boolean {
+    return this.OpenedModal === id
+  }
+
+  closeModal():void{
+    this.OpenedModal = null
   }
 }
