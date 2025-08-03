@@ -20,12 +20,12 @@
                     </button>
                 </div>
                     <div class="relative text-left">
-                        <button (click)="toggleModal()" (appClickOutside)="toggleModal()" class="flex items-center space-x-2 text-dark-gray dark:text-dark-text hover:text-purple dark:hover:text-purple focus:outline-none">
+                        <button (click)="toggleModal('profileModal')" (appClickOutside)="closeModal()" class="flex items-center space-x-2 text-dark-gray dark:text-dark-text hover:text-purple dark:hover:text-purple focus:outline-none">
                             <img [src]="candidate?.profileImg ?? '/profileimages/defaultProfile.jpg'" alt="Profile" class="w-8 h-8 rounded-full border border-purple">
                             <span class="hidden md:inline font-medium">{{candidate?.email}}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div *ngIf="isModalOpen" class="absolute right-0 mt-2 w-48 bg-white dark:rounded-md shadow-lg py-1 z-20 border dark:transition-colors duration-300">
+                        <div *ngIf="isModalOpen('profileModal')" class="absolute right-0 mt-2 w-48 bg-white dark:rounded-md shadow-lg py-1 z-20 border dark:transition-colors duration-300">
                             <a [routerLink]="['profile']" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-gray-600 transition-colors duration-300">Your Profile</a>
                             <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-gray-600 transition-colors duration-300">Settings</a>
                             <div class="border-t border-gray-100 dark:border-gray-600 my-1"></div>
