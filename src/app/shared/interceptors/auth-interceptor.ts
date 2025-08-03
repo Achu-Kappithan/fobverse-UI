@@ -3,8 +3,8 @@ import { inject } from '@angular/core';
 import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
-import { UserRegisterService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { UserRegisterService } from '../../features/auth/services/auth.service';
 
 let isRefreshing = false;
 const refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);

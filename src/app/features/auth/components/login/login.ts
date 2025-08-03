@@ -7,8 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { UserRegisterService } from '../../../services/auth.service';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 import {
   GoogleLoginProvider,
   GoogleSigninButtonModule,
@@ -16,10 +14,12 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
-import { Passwordvalidator } from '../../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { UserRegisterService } from '../../services/auth.service';
+import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 
 @Component({
-  selector: 'app-candidate-login',
+  selector: 'app-login',
   imports: [
     RouterModule,
     ReactiveFormsModule,
@@ -27,8 +27,8 @@ import { Passwordvalidator } from '../../../../../shared/directives/passwordvali
     GoogleSigninButtonModule,
     Passwordvalidator
   ],
-  templateUrl: './candidate-login.html',
-  styleUrl: './candidate-login.css',
+  templateUrl: './login.html',
+  styleUrl: './login.css',
 })
 export class CandidateLogin implements OnInit, OnDestroy {
   loginForm!: FormGroup;

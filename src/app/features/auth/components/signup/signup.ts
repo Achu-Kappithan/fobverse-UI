@@ -8,15 +8,15 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
-import { UserRegisterService } from '../../../services/auth.service';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ActivatedRoute, Router,RouterModule } from '@angular/router';
+import { UserRegisterService } from '../../services/auth.service';
+import { SweetAlert } from '../../../../shared/services/sweet-alert';
 
 @Component({
-  selector: 'app-candidate-signup',
+  selector: 'app-signup',
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './candidate-signup.html',
-  styleUrl: './candidate-signup.css',
+  templateUrl: './signup.html',
+  styleUrl: './signup.css',
 })
 export class CandidateSignup implements OnInit {
   private service = inject(UserRegisterService);
