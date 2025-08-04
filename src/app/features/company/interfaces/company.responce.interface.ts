@@ -1,16 +1,7 @@
 
 
 
-export interface ApiResponce<T>{
-    message:string,
-    success:string,
-    data:T
-}
-
-
-
 export interface InternalUserInterface {
-
   id:string
   
   name: string;

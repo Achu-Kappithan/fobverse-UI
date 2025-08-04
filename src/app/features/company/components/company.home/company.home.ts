@@ -7,9 +7,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './company.home.html',
   styleUrl: './company.home.css'
 })
-export class CompanyHome implements  OnInit {
+export class CompanyHome {
 
-  ngOnInit(): void {
-    
-  }
 }

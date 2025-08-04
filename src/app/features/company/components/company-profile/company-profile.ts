@@ -9,6 +9,8 @@ import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+
 @Component({
   selector: 'app-company-profile',
   imports: [CommonModule,LoadingSpinner,RouterModule,TechLogoPipe,ReactiveFormsModule],
@@ -40,18 +42,17 @@ export class CompanyProfile implements OnInit {
 
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
   @ViewChild('imagePreview') imagePreviewRef!: ElementRef<HTMLImageElement>;
-  defaultImagePreviewSrc: string = "https://placehold.co/100x100/E5E7EB/4B5563?text=No+Image"; // Placeholder for image preview
-
-  
+  defaultImagePreviewSrc: string = ""; 
 
   private destroy$ = new Subject<void>()
 
   constructor(
     private readonly _companyService:CompanyService,
-    private readonly cdr:ChangeDetectorRef,
+    private readonly _cloudinaryService:CloudinaryService,
+    private readonly _cdr:ChangeDetectorRef,
     private readonly _router : Router,
     private readonly _route: ActivatedRoute,
-    private readonly swal : SweetAlert
+    private readonly _swal : SweetAlert
   ){
   }
 
@@ -65,7 +66,7 @@ export class CompanyProfile implements OnInit {
     )
       .subscribe(() => {
         this.checkChildRouteStatus();
-        this.cdr.detectChanges()
+        this._cdr.detectChanges()
       });
 
     this.isLoading = true
@@ -74,12 +75,12 @@ export class CompanyProfile implements OnInit {
         this.company$ = res.data
         this.logoUrl = res.data.logoUrl ?? "/profileimages/logodefault.jpg"
         this.isLoading = false
-        this.cdr.detectChanges()
+        this._cdr.detectChanges()
       }),
       error:(err)=>{
         console.log(err)
         this.isLoading = false
-        this.cdr.detectChanges()
+        this._cdr.detectChanges()
       }
     })
   }
@@ -92,7 +93,7 @@ export class CompanyProfile implements OnInit {
     if (this.imagePreviewRef) {
         this.imagePreviewRef.nativeElement.src = this.defaultImagePreviewSrc;
     }
-    this.cdr.detectChanges(); 
+    this._cdr.detectChanges(); 
   }
 
   closeModal(){
@@ -143,14 +144,14 @@ export class CompanyProfile implements OnInit {
       const publicIdBase = teamData.name.toLowerCase().replace(/\s/g, '_');
 
       if(this.selectedImageFile) {
-        uploadObservable = this._companyService.getCloudinarySignature({
+        uploadObservable = this._cloudinaryService.getCloudinarySignature({
           folder:folder,
           publicIdPrefix:publicIdBase
         })
         .pipe(
           switchMap(sigRes => {
             if(sigRes.success && sigRes.data){
-              return this._companyService.uploadFileToCloudinary(
+              return this._cloudinaryService.uploadFileToCloudinary(
                 this.selectedImageFile!,
                 sigRes.data,
                 folder,
@@ -179,31 +180,31 @@ export class CompanyProfile implements OnInit {
               if(resdata.success && resdata.data){
                 this.company$ = resdata.data
                 this.isLoading = false
-                this.swal.showSuccessToast(resdata.message)
+                this._swal.showSuccessToast(resdata.message)
                 this.closeModal(); 
                 this.teamMembersForm.reset();
                 this.selectedImageFile = null;
-                this.cdr.detectChanges()
+                this._cdr.detectChanges()
               }
             },
             error : (error)=>{
               console.log("Error updating profile in backend",error)
               this.isLoading  =false
-              this.swal.showErrorToast(error.error.message)
-              this.cdr.detectChanges()
+              this._swal.showErrorToast(error.error.message)
+              this._cdr.detectChanges()
             }
           })
         },
         error:(err)=>{
           console.log("error for updating profile ",err)
           this.isLoading = false
-          this.swal.showErrorToast(err.error.message)
-          this.cdr.detectChanges()
+          this._swal.showErrorToast(err.error.message)
+          this._cdr.detectChanges()
         }
       })
     }else{
       this.teamMembersForm.markAllAsTouched()
-      this.swal.showInfoToast("Some of the input fields are missing.")
+      this._swal.showInfoToast("Some of the input fields are missing.")
     }
   }
 
@@ -214,13 +215,13 @@ export class CompanyProfile implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imagePreviewUrl = e.target.result; 
-        this.cdr.detectChanges(); 
+        this._cdr.detectChanges(); 
       };
       reader.readAsDataURL(this.selectedImageFile);
     } else {
       this.selectedImageFile = null; 
       this.imagePreviewUrl = this.defaultImagePreviewSrc; 
-      this.cdr.detectChanges(); 
+      this._cdr.detectChanges(); 
     }
   }
 

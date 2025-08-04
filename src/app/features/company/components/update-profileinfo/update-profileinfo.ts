@@ -1,12 +1,13 @@
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ComapnyProfileInterface, ContactInfoItem } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { GalleryImageDisplay } from '../../interfaces/cloudinarysignature.responce.interface';
-import { catchError, filter, forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { catchError,forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { GalleryImageDisplay } from '../../../../shared/interfaces/cloudinarysignature.responce.interface';
+import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 
 @Component({
   selector: 'app-update-profileinfo',
@@ -29,8 +30,9 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
   constructor(
     private  fb: FormBuilder,
     private readonly _companyService:CompanyService,
-    private readonly cdr : ChangeDetectorRef,
-    private readonly swal : SweetAlert,
+    private readonly _cloudinaryService:CloudinaryService,
+    private readonly _cdr : ChangeDetectorRef,
+    private readonly _swal : SweetAlert,
     private readonly _router :Router,
     private readonly _route :ActivatedRoute
   ) { }
@@ -42,7 +44,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
         this.profileData = val;
         console.log("state Profiledata", this.profileData);
         this.populateForm();
-        this.cdr.detectChanges()   
+        this._cdr.detectChanges()   
       }
     })
   }
@@ -114,7 +116,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       const reader = new FileReader();
       reader.onload = () => {
         this.logoPreviewUrl = reader.result;
-        this.cdr.detectChanges() 
+        this._cdr.detectChanges() 
       };
       reader.readAsDataURL(this.selectedLogoFile);
     } else {
@@ -130,7 +132,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     if (logoInput) {
       logoInput.value = '';
     }
-    this.cdr.detectChanges()
+    this._cdr.detectChanges()
   }
 
   onImageGallerySelected(event: Event): void {
@@ -142,7 +144,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
         reader.onload = () => {
           const previewUrl = reader.result;
           this.imageGalleryDisplay.push({ file: file, publicId: null, url: previewUrl, isNew: true });
-          this.cdr.detectChanges()
+          this._cdr.detectChanges()
         };
         reader.readAsDataURL(file);
         }
@@ -154,7 +156,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     const removedImage = this.imageGalleryDisplay[index];
     this.imageGalleryDisplay.splice(index, 1);
     this.rebuildImageGalleryFormArray();
-    this.cdr.detectChanges()
+    this._cdr.detectChanges()
   }
 
   private rebuildImageGalleryFormArray(): void {
@@ -190,7 +192,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       type: [info ? info.type : '', Validators.required],
       value: [info ? info.value : '', Validators.required]
     }));
-    this.cdr.detectChanges()
+    this._cdr.detectChanges()
   }
 
   removeContactInfo(index: number): void {
@@ -223,12 +225,12 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   async onSubmit():Promise<void> {
     if (this.companyProfileForm.invalid) {
-      this.swal.showErrorToast('Please fill all required fields')
+      this._swal.showErrorToast('Please fill all required fields')
       this.companyProfileForm.markAllAsTouched()
       return
     }
     this.loading = true
-    this.swal.showLoadingToast('Uploading images and updating profile....')
+    this._swal.showLoadingToast('Uploading images and updating profile....')
 
  try {
       const uploadObservables: Observable<any>[] = [];
@@ -236,12 +238,12 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
       if (this.selectedLogoFile) {
         const companyNameSlug = this.companyProfileForm.get('name')?.value?.toLowerCase().replace(/\s/g, '_') || 'default';
-        const logoUpload$ = this._companyService.getCloudinarySignature({
+        const logoUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'company_logos',
           publicIdPrefix: `${companyNameSlug}_logo_${Date.now()}`
         }).pipe(
           switchMap(resSignature =>
-            this._companyService.uploadFileToCloudinary(
+            this._cloudinaryService.uploadFileToCloudinary(
               this.selectedLogoFile!,
               resSignature.data,
               'company_logos',
@@ -250,7 +252,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
           ),
           catchError(error => {
             console.error('Logo upload failed:', error);
-            this.swal.showErrorToast('Failed to upload company logo.');
+            this._swal.showErrorToast('Failed to upload company logo.');
             return of(null); 
           })
         );
@@ -261,12 +263,12 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
       this.imageGalleryDisplay.filter(item => item.isNew && item.file).forEach((item, index) => {
         const companyNameSlug = this.companyProfileForm.get('name')?.value?.toLowerCase().replace(/\s/g, '_') || 'default';
-        const galleryUpload$ = this._companyService.getCloudinarySignature({
+        const galleryUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'company_gallery',
           publicIdPrefix: `${companyNameSlug}_gallery_${Date.now()}_${index}`
         }).pipe(
           switchMap(resSignature =>
-            this._companyService.uploadFileToCloudinary(
+            this._cloudinaryService.uploadFileToCloudinary(
               item.file!,
               resSignature.data,
               'company_gallery',
@@ -275,7 +277,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
           ),
           catchError(error => {
             console.error(`Gallery image ${index} upload failed:`, error);
-            this.swal.showErrorToast(`Failed to upload gallery image ${index + 1}.`);
+            this._swal.showErrorToast(`Failed to upload gallery image ${index + 1}.`);
             return of(null);
           })
         );
@@ -331,19 +333,19 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
         .toPromise();
 
       if (res && res.success) {
-        this.swal.showSuccessToast(res.message);
+        this._swal.showSuccessToast(res.message);
         this._router.navigate(["../"],{ relativeTo: this._route })
       } else {
-        this.swal.showErrorToast(res!.message);
+        this._swal.showErrorToast(res!.message);
       }
 
     } catch (error: any) {
       console.error("Profile update failed:", error);
-      this.swal.showErrorToast(error.error?.message || 'An unexpected error occurred during profile update.');
+      this._swal.showErrorToast(error.error?.message || 'An unexpected error occurred during profile update.');
     } finally {
       this.loading = false;
-      this.swal.closeToast(); 
-      this.cdr.detectChanges(); 
+      this._swal.closeToast(); 
+      this._cdr.detectChanges(); 
     }
   }
 }

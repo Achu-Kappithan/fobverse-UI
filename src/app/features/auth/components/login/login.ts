@@ -14,7 +14,7 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
-import { UserRegisterService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 
@@ -25,7 +25,7 @@ import { Passwordvalidator } from '../../../../shared/directives/passwordvalidat
     ReactiveFormsModule,
     CommonModule,
     GoogleSigninButtonModule,
-    Passwordvalidator
+    Passwordvalidator,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -38,42 +38,42 @@ export class CandidateLogin implements OnInit, OnDestroy {
   userType: string = '';
   imagePath: string = '';
 
-  private service = inject(UserRegisterService);
-  private router = inject(Router);
-  private swal = inject(SweetAlert);
-  private googleService = inject(SocialAuthService);
-  private route = inject(ActivatedRoute);
-  private googlesub?: Subscription;
+  private _AuthService = inject(AuthService);
+  private _router = inject(Router);
+  private _swal = inject(SweetAlert);
+  private _googleService = inject(SocialAuthService);
+  private _route = inject(ActivatedRoute);
+  private _googlesub?: Subscription;
 
   ngOnInit(): void {
-    this.route.data.subscribe((data) => {
+    this._route.data.subscribe((data) => {
       this.userType = data['userType'] ?? 'candidate';
       this.imagePath =
         this.userType == 'candidate'
           ? '/templateimages/v1_5138.png'
           : '/templateimages/image.png';
 
-      this.googlesub = this.googleService.authState.subscribe({
+      this._googlesub = this._googleService.authState.subscribe({
         next: (user) => {
           if (user && user.idToken) {
-            this.service.googleLogin(user.idToken, this.userType).subscribe({
+            this._AuthService.googleLogin(user.idToken, this.userType).subscribe({
               next: (response) => {
                 console.log('Backend response:', response);
                 if (response.success) {
-                  this.swal.showSuccessToast(
+                  this._swal.showSuccessToast(
                     response.message ?? 'Login Successfull'
                   );
                   console.log('logedin user role', response.data?.role);
                   if (response.data?.role === 'candidate') {
-                    this.router.navigate(['/candidate/home']);
+                    this._router.navigate(['/candidate/home']);
                   } else if (response.data?.role === 'company') {
-                    this.router.navigate(['/company/home']);
+                    this._router.navigate(['/company/home']);
                   }
                 }
               },
               error: (error) => {
                 console.error('Error during login:', error);
-                this.swal.showErrorToast(error.error.message) ??
+                this._swal.showErrorToast(error.error.message) ??
                   'Google login faild';
               },
             });
@@ -90,8 +90,11 @@ export class CandidateLogin implements OnInit, OnDestroy {
       password: new FormControl('', Validators.required),
     });
 
-    if(this.userType === 'company_admin'){
-      this.loginForm.addControl('role',new FormControl('company_admin',Validators.required))
+    if (this.userType === 'company_admin') {
+      this.loginForm.addControl(
+        'role',
+        new FormControl('company_admin', Validators.required)
+      );
     }
   }
 
@@ -104,29 +107,31 @@ export class CandidateLogin implements OnInit, OnDestroy {
       console.log('Form submitted successfully!', userdata);
 
       if (this.userType === 'admin') {
-        this.service.adminLogin(userdata).subscribe({
-          next:(response) => {
-            console.log("adminLogin Resoponse",response)
-            if(response.success){
-              this.swal.showSuccessToast(response.message ?? "Login Successfull....")
-              this.router.navigate(['/admin/dashboard'])
+        this._AuthService.adminLogin(userdata).subscribe({
+          next: (response) => {
+            console.log('adminLogin Resoponse', response);
+            if (response.success) {
+              this._swal.showSuccessToast(
+                response.message ?? 'Login Successfull....'
+              );
+              this._router.navigate(['/admin/dashboard']);
             }
           },
-          error: (error)=>{
-            this.swal.showErrorToast(error.error.message)
-            this.loginForm.reset()
-          }
-        })
-
-      } else if(this.userType ==='candidate') {
-
-        this.service.candidateLogin(userdata).subscribe({
+          error: (error) => {
+            this._swal.showErrorToast(error.error.message);
+            this.loginForm.reset();
+          },
+        });
+      } else if (this.userType === 'candidate') {
+        this._AuthService.candidateLogin(userdata).subscribe({
           next: (response) => {
             if (response.success) {
-              this.swal.showSuccessToast(response.message ?? 'Login SuccessFull');
-              this.router.navigate(['/candidate/home']);
+              this._swal.showSuccessToast(
+                response.message ?? 'Login SuccessFull'
+              );
+              this._router.navigate(['/candidate/home']);
             } else {
-              this.swal.showErrorToast(
+              this._swal.showErrorToast(
                 response.message ?? 'Invalid Email or Password'
               );
               this.loginForm.reset();
@@ -134,27 +139,28 @@ export class CandidateLogin implements OnInit, OnDestroy {
           },
           error: (err) => {
             console.error('Login error:', err);
-            this.swal.showErrorToast(err.statusText, err.error.message);
+            this._swal.showErrorToast(err.statusText, err.error.message);
             this.loginForm.reset();
           },
         });
-
-      }else{
-        const logindata = this.loginForm.value
-        this.service.companyUsersLogin(logindata).subscribe({
-          next: (res =>{
-            console.log("companylogin Responce",res)
-            if(res.success){
-              this.swal.showSuccessToast(res.message ?? "Login SuccessFull")
-              this.router.navigate(['/company/home'])
-              this.loginForm.reset()
+      } else {
+        const logindata = this.loginForm.value;
+        this._AuthService.companyUsersLogin(logindata).subscribe({
+          next: (res) => {
+            console.log('companylogin Responce', res);
+            if (res.success) {
+              this._swal.showSuccessToast(res.message ?? 'Login SuccessFull');
+              this._router.navigate(['/company/home']);
+              this.loginForm.reset();
             }
-          }),
-          error:(err =>{
-            console.log("error regading company login",err)
-            this.swal.showErrorToast(err.error.message ?? "Error regading login  plz try again..!")
-          })
-        })
+          },
+          error: (err) => {
+            console.log('error regading company login', err);
+            this._swal.showErrorToast(
+              err.error.message ?? 'Error regading login  plz try again..!'
+            );
+          },
+        });
       }
     } else {
       console.log('Form is invalid');
@@ -180,10 +186,10 @@ export class CandidateLogin implements OnInit, OnDestroy {
   }
 
   signInWithGoogle(): void {
-    this.googleService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this._googleService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
   ngOnDestroy(): void {
-    this.googlesub?.unsubscribe();
+    this._googlesub?.unsubscribe();
   }
 }

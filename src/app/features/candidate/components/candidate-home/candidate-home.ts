@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserRegisterService } from '../../../auth/services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class CandidateHome implements OnInit {
   private destroy$ = new Subject<void>();
 
-  constructor(private userservise: UserRegisterService) {}
+  constructor(private userservise: AuthService) {}
   ngOnInit(): void {
     setTimeout(() => {
       if (!this.destroy$.isStopped) {

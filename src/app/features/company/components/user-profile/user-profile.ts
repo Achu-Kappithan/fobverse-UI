@@ -6,6 +6,7 @@ import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, switchMap } from 'rxjs';
 import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -25,7 +26,8 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
   constructor(
     private fb: FormBuilder,
     private readonly _companyService: CompanyService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly _cloudinaryService:CloudinaryService,
+    private readonly _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -59,12 +61,12 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
           }
         }
         this.isLoading = false;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       },
       error: (err) => {
         console.error("Error fetching user profile ", err);
         this.isLoading = false;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       }
     });
   }
@@ -98,13 +100,13 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.previewImage = e.target.result;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedFile);
     } else {
       this.selectedFile = null;
       this.previewImage = this.userProfile?.profileImg || "";
-      this.cdr.detectChanges();
+      this._cdr.detectChanges();
     }
   }
 
@@ -127,10 +129,10 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
       let publicIdBase = this.userProfile?.email ? this.userProfile.email.split('@')[0] : 'user_profile';
 
       if (this.selectedFile) {
-        uploadObservable = this._companyService.getCloudinarySignature({ folder: 'profile_pics', publicIdPrefix: publicIdBase }).pipe(
+        uploadObservable = this._cloudinaryService.getCloudinarySignature({ folder: 'profile_pics', publicIdPrefix: publicIdBase }).pipe(
           switchMap(signatureRes => {
             if (signatureRes.success && signatureRes.data) {
-              return this._companyService.uploadFileToCloudinary(
+              return this._cloudinaryService.uploadFileToCloudinary(
                 this.selectedFile!, 
                 signatureRes.data,
                 'profile_pics',
@@ -166,19 +168,19 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
                 }
               }
               this.isLoading = false;
-              this.cdr.detectChanges();
+              this._cdr.detectChanges();
             },
             error: (err) => {
               console.error("Error updating profile in backend:", err);
               this.isLoading = false;
-              this.cdr.detectChanges();
+              this._cdr.detectChanges();
             }
           });
         },
         error: (err) => {
           console.error("Error during Cloudinary upload or signature:", err);
           this.isLoading = false;
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
         }
       });
     } else {
@@ -195,12 +197,12 @@ activeCard: 'profile' | 'password' | 'edit' = 'profile';
           console.log("Password changed successfully", res);
           this.isLoading = false;
           this.passwordChangeForm.reset();
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
         },
         error: (err) => {
           console.error("Error changing password:", err);
           this.isLoading = false;
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
         }
       });
     } else {

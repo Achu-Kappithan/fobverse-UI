@@ -1,12 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { ApiResponce, PlainResponce } from '../../auth/interfaces/api-responce.interface';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, } from 'rxjs';
 import {
   CandidateInterface,
   CompanyInterface,
   QueryParmsInterface,
 } from '../interfaces/company.interface';
+import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 
 @Injectable({
   providedIn: 'root',

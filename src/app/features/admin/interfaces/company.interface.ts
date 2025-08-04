@@ -63,9 +63,6 @@ export  interface CompanyInterface {
 
 }
 
-
-
-
 export interface ContactInfoInterface {
   phoneNumber?: string;
 

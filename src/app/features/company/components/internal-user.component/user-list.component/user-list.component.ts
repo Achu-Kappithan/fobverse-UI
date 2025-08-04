@@ -37,7 +37,7 @@ export class UserListComponent {
 
   constructor(
     private readonly _ComapnyService: CompanyService,
-    private  cdr: ChangeDetectorRef
+    private  _cdr: ChangeDetectorRef
   ){}
 
   ngOnInit(): void {
@@ -64,12 +64,12 @@ export class UserListComponent {
           this.paginationMeta = res.meta ?? this. paginationMeta
         }
         this.isLoading = false
-        this.cdr.detectChanges()
+        this._cdr.detectChanges()
       }),
       error:(err =>{
         console.log(err)
         this.isLoading= false
-        this.cdr.detectChanges()
+        this._cdr.detectChanges()
       })
     })
 

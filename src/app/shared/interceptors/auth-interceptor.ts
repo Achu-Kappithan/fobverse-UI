@@ -1,17 +1,27 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandlerFn,
+  HttpEvent,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { UserRegisterService } from '../../features/auth/services/auth.service';
+import { AuthService } from '../../features/auth/services/auth.service';
 
 let isRefreshing = false;
-const refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+const refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+  null
+);
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
-  const authService = inject(UserRegisterService);
-  const router = inject(Router)
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
   const publicPaths = [
     '/auth/refresh',
@@ -19,21 +29,21 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     'auth/register',
     'auth/google',
     'auth/adminlogin',
-    'auth/forgotpassword'
-  ]
+    'auth/forgotpassword',
+  ];
 
-  const isPublicRequest = publicPaths.some((path)=> req.url.includes(path))
+  const isPublicRequest = publicPaths.some((path) => req.url.includes(path));
 
-  if(isPublicRequest) {
-      return next(req);
+  if (isPublicRequest) {
+    return next(req);
   }
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 ) {
-           console.log('Interceptor caught 401 - trying to refresh token');
-           return handle401Error(req, next, authService, router);
-        }
+      if (error.status === 401) {
+        console.log('Interceptor caught 401 - trying to refresh token');
+        return handle401Error(req, next, authService, router);
+      }
       return throwError(() => error);
     })
   );
@@ -42,10 +52,10 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 function handle401Error(
   req: HttpRequest<any>,
   next: HttpHandlerFn,
-  authService: UserRegisterService,
-  router:Router
+  authService: AuthService,
+  router: Router
 ): Observable<HttpEvent<any>> {
-    console.log("interceptor working")
+  console.log('interceptor working');
   if (!isRefreshing) {
     isRefreshing = true;
     refreshTokenSubject.next(null);
@@ -74,5 +84,3 @@ function handle401Error(
     );
   }
 }
-
-

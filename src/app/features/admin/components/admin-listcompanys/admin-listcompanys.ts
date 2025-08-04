@@ -4,9 +4,9 @@ import { CompanyInterface, QueryParmsInterface } from '../../interfaces/company.
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
-import { PaginationMeta } from '../../../auth/interfaces/api-responce.interface';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-admin-listcompanys',

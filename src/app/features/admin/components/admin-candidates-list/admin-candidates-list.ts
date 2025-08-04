@@ -4,9 +4,9 @@ import { AdminCandidate } from '../../services/admin-candidate';
 import { CandidateInterface, QueryParmsInterface } from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
-import { PaginationMeta } from '../../../auth/interfaces/api-responce.interface';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-admin-candidates-list',
