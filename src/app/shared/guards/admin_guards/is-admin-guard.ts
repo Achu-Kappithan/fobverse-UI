@@ -1,20 +1,19 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map, filter, switchMap, take } from 'rxjs';
-import { UserRegisterService } from '../../../features/auth/services/auth.service';
+import { AuthService } from '../../../features/auth/services/auth.service';
 
 export const isAdminGuard: CanActivateFn = (route, state) => {
-  const _authService = inject(UserRegisterService);
+  const _authService = inject(AuthService);
   const router = inject(Router);
 
   return _authService.isUserLoaded.pipe(
-    filter(loaded => {
+    filter((loaded) => {
       return loaded === true;
     }),
     switchMap(() => _authService.admin$),
     take(1),
-    map(user => {
-
+    map((user) => {
       if (!user || user.role !== 'admin') {
         console.log('Unauthorized: redirecting to /adminlogin');
         return router.createUrlTree(['/adminlogin']);

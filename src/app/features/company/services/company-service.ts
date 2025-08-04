@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ApiResponce, ComapnyProfileInterface, InternalUserInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
-import { CloudinarySignatureResponse } from '../interfaces/cloudinarysignature.responce.interface';
-import { PagenatedApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
+import { ComapnyProfileInterface, InternalUserInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
+import { CloudinarySignatureResponse } from '../../../shared/interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -43,39 +43,6 @@ export class CompanyService {
         }
       })
     )
-  }
-
-
-  getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
-    return this.http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params,{withCredentials: true})
-    .pipe(
-      tap(res=>[
-        console.log("responce get get cludinarySignature",res)
-      ])
-    )
-  }
-
-
-  uploadFileToCloudinary(
-    file:File,
-    signatureData:CloudinarySignatureResponse,
-    folder:string,
-    publicIdBase:string
-  ):Observable<any>{
-    console.log("data to upload cloud",file,signatureData,folder,publicIdBase)
-     const formData = new FormData()
-     formData.append('file', file); 
-     formData.append('api_key', signatureData.apiKey);
-     formData.append('timestamp', signatureData.timestamp.toString());
-     formData.append('signature', signatureData.signature);
-     formData.append('folder', folder); 
-     formData.append('public_id', signatureData.publicId || `${publicIdBase}_${Date.now()}`);
-     const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${signatureData.cloudName}/image/upload`
-     return this.http.post(cloudinaryUploadUrl,formData).pipe(
-      tap(res=>{
-        console.log("get responce upload file cludinary",res)
-      })
-     )
   }
 
   createUser(user:InternalUserInterface):Observable<ApiResponce<ComapnyProfileInterface>>{

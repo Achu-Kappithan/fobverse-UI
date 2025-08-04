@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { ApiResponce } from '../interfaces/responce.interface';
 import { CandidateInterface } from '../interfaces/candidate.interface';
-import { CloudinarySignatureResponse } from '../../company/interfaces/cloudinarysignature.responce.interface';
+import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { CloudinarySignatureResponse } from '../../../shared/interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
   providedIn: 'root'

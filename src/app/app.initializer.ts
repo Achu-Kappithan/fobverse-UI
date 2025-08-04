@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
-import { UserRegisterService } from './features/auth/services/auth.service';
+import { AuthService } from './features/auth/services/auth.service';
 import { firstValueFrom } from 'rxjs';
 
 export function initializeUser() {
   return () => {
-    const authService = inject(UserRegisterService);
+    const authService = inject(AuthService);
     const hasRefresh = document.cookie.includes('refresh_token');
-    console.log("refresh:", hasRefresh);
+    console.log('refresh:', hasRefresh);
 
     if (hasRefresh) {
       return firstValueFrom(authService.getCurrentUserDetails());

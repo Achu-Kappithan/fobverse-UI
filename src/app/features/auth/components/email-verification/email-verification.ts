@@ -2,10 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
-import {
-  UserPartial,
-} from '../../../../shared/interfaces/apiresponce.interface';
-import { UserRegisterService } from '../../services/auth.service';
+import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
+import { AuthService } from '../../services/auth.service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 
 @Component({
@@ -20,15 +18,14 @@ export class EmailVerification implements OnInit {
   private readonly MIN_LOAD_TIME_MS = 2000;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserRegisterService,
-    private swal: SweetAlert,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _userService: AuthService,
+    private _swal: SweetAlert
   ) {}
 
   ngOnInit(): void {
-    
-    this.verificationSubscription = this.route.queryParams
+    this.verificationSubscription = this._route.queryParams
       .pipe(
         tap((parms) =>
           console.log('token get from the parms ', parms['token'])
@@ -49,12 +46,12 @@ export class EmailVerification implements OnInit {
               )
             );
           } else {
-            return this.userService.candidateVarification(token).pipe(
+            return this._userService.candidateVarification(token).pipe(
               tap((response) =>
                 console.log('Component: Raw API response:', response)
               ),
               catchError((error) => {
-                let errorMessage = 
+                let errorMessage =
                   'An unexpected error occurred during verification.';
                 let reason = 'unknown_error';
 
@@ -107,22 +104,22 @@ export class EmailVerification implements OnInit {
         })
       )
       .subscribe({
-        next:(response)=>{
-           console.log(response)
+        next: (response) => {
+          console.log(response);
           if (response.success) {
-            this.swal.showSuccessToast('Email verified successfully!');
-            this.router.navigate(['/email/success']);
+            this._swal.showSuccessToast('Email verified successfully!');
+            this._router.navigate(['/email/success']);
           } else {
-            this.swal.showErrorToast(response.message!);
-            const reasonForRoute =  'api_generic_failure';
-            this.router.navigate(['/email/failed'], {
+            this._swal.showErrorToast(response.message!);
+            const reasonForRoute = 'api_generic_failure';
+            this._router.navigate(['/email/failed'], {
               queryParams: { reason: reasonForRoute },
             });
           }
         },
-        error:(error)=>{
-          console.log(error)
-        }
+        error: (error) => {
+          console.log(error);
+        },
       });
   }
   ngOnDestroy(): void {
@@ -131,4 +128,3 @@ export class EmailVerification implements OnInit {
     }
   }
 }
-

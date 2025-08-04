@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponce, PlainResponce } from '../../auth/interfaces/api-responce.interface';
 import { CandidateInterface, QueryParmsInterface } from '../interfaces/company.interface';
+import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 
 @Injectable({
   providedIn: 'root'

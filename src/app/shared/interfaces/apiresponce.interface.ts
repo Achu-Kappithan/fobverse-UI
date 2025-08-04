@@ -1,6 +1,11 @@
 
-
-
+export interface ApiResponce<T> {
+  success: boolean;
+  data: T ,
+  message: string;
+  meta?: PaginationMeta; 
+  timestamp: string;
+}
 
 export interface PagenatedApiResponce<T> {
   success: boolean;

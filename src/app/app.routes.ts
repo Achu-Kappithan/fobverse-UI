@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { CandidateLogin } from './features/auth/components/auth/candidate-login/candidate-login';
-import { CandidateSignup } from './features/auth/components/auth/candidate-signup/candidate-signup';
 import { EmailVerificationFaild } from './features/auth/components/email-verification/email-verification-faild/email-verification-faild';
 import { EmailVerificationSuccess } from './features/auth/components/email-verification/email-verification-success/email-verification-success';
 import { EmailVerification } from './features/auth/components/email-verification/email-verification';
@@ -17,6 +15,8 @@ import { UserListComponent } from './features/company/components/internal-user.c
 import { isLogoutGuard } from './shared/guards/auth_gurds/is-logout-guard';
 import { authGurdGuard } from './shared/guards/auth_gurds/auth-gurd-guard';
 import { isAdminGuard } from './shared/guards/admin_guards/is-admin-guard';
+import { CandidateLogin } from './features/auth/components/login/login';
+import { CandidateSignup } from './features/auth/components/signup/signup';
 
 export const routes: Routes = [
   {

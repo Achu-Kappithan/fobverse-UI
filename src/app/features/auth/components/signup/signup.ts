@@ -8,29 +8,29 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
-import { UserRegisterService } from '../../../services/auth.service';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { SweetAlert } from '../../../../shared/services/sweet-alert';
 
 @Component({
-  selector: 'app-candidate-signup',
+  selector: 'app-signup',
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './candidate-signup.html',
-  styleUrl: './candidate-signup.css',
+  templateUrl: './signup.html',
+  styleUrl: './signup.css',
 })
 export class CandidateSignup implements OnInit {
-  private service = inject(UserRegisterService);
-  private sweetalert = inject(SweetAlert);
-  private router = inject(Router);
+  private readonly _Authservice = inject(AuthService);
+  private _swal = inject(SweetAlert);
+  private _router = inject(Router);
 
   signupForm!: FormGroup;
-  userType:string = ""
-  imagePath: string = ""
+  userType: string = '';
+  imagePath: string = '';
 
-  constructor(private route:ActivatedRoute){
-    this.route.data.subscribe((data)=>{
-      this.userType = data['userType']
-    })
+  constructor(private route: ActivatedRoute) {
+    this.route.data.subscribe((data) => {
+      this.userType = data['userType'];
+    });
   }
 
   ngOnInit(): void {
@@ -57,16 +57,14 @@ export class CandidateSignup implements OnInit {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
 
-     if (!password || !confirmPassword) {
+    if (!password || !confirmPassword) {
       return null;
     }
 
-    if (
-      password.value !== confirmPassword.value
-    ) {
+    if (password.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
-    }else{
+    } else {
       if (confirmPassword.hasError('passwordMismatch')) {
         confirmPassword.setErrors(null);
       }
@@ -74,31 +72,31 @@ export class CandidateSignup implements OnInit {
     return null;
   }
 
-  handleSubmit():void {
+  handleSubmit(): void {
     if (this.signupForm.valid) {
       const { fullName, email, password } = this.signupForm.value;
       const userData = {
         name: fullName,
         email: email,
         password: password,
-        role : this.userType
-      }
-      console.log("Signup form",userData)
-      this.service.registerCandidate(userData).subscribe({
+        role: this.userType,
+      };
+      console.log('Signup form', userData);
+      this._Authservice.registerCandidate(userData).subscribe({
         next: (response) => {
           console.log('registration responce comes from the backend', response);
-          this.sweetalert.showSuccessToast(response.message);
+          this._swal.showSuccessToast(response.message);
           this.signupForm.reset();
-          this.router.navigate(['/login']);
+          this._router.navigate(['/login']);
         },
         error: (error) => {
           console.log(error);
-          this.sweetalert.showErrorToast(error.error.message);
+          this._swal.showErrorToast(error.error.message);
         },
       });
     } else {
       console.log('Form is Invalid');
-      this.signupForm.markAllAsTouched()
+      this.signupForm.markAllAsTouched();
     }
   }
 
