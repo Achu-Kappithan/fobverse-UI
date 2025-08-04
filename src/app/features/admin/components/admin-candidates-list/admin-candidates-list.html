@@ -40,18 +40,18 @@
         class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative"
       >
         <div
-          (appClickOutside)="closeDropdown(can.id)"
+          (appClickOutside)="closeDropdown(can.id!)"
           class="absolute top-4 right-4"
         >
           <button
-            (click)="toggleDropdown(can.id)"
+            (click)="toggleDropdown(can.id!)"
             class="text-gray-400 hover:text-gray-600 focus:outline-none"
           >
             <i class="fas fa-ellipsis-v text-lg"></i>
           </button>
 
           <div
-            [class.hidden]="!isdorpDownOpen[can.id]"
+            [class.hidden]="!isdorpDownOpen[can.id!]"
             class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10"
           >
             <a

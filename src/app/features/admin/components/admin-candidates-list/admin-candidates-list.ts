@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside';
 import { AdminCandidate } from '../../services/admin-candidate';
-import { CandidateInterface, QueryParmsInterface } from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
+import { CandidateInterface } from '../../../candidate/interfaces/candidate.interface';
 
 @Component({
   selector: 'app-admin-candidates-list',
@@ -55,7 +55,7 @@ export class AdminCandidatesList  implements OnInit {
   }
 
   UpdateStatus(candidate:CandidateInterface){
-    this._adminCandidateService.updateStatus(candidate.id).subscribe({
+    this._adminCandidateService.updateStatus(candidate.id!).subscribe({
       next:(res)=>{
         if(res.success){
           console.log("updated status ",res)
