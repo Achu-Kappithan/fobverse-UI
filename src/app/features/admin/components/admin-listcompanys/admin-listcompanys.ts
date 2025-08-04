@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCompanyService } from '../../services/admin-company-service';
-import { CompanyInterface} from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
+import { ComapnyProfileInterface } from '../../../company/interfaces/company.responce.interface';
 
 @Component({
   selector: 'app-admin-listcompanys',
@@ -15,7 +15,7 @@ import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfac
   styleUrl: './admin-listcompanys.css',
 })
 export class AdminListcompanys implements OnInit {
-  companies: CompanyInterface[] = [];
+  companies: ComapnyProfileInterface[] = [];
   isLoading: boolean = false;
   logoUrl: string = '/profileimages/logodefault.jpg';
 
@@ -36,7 +36,7 @@ export class AdminListcompanys implements OnInit {
 
   constructor(
     private readonly _companyService: AdminCompanyService,
-    private cdr: ChangeDetectorRef,
+    private _cdr: ChangeDetectorRef,
     private readonly _swal: SweetAlert
   ) {}
 
@@ -53,13 +53,13 @@ export class AdminListcompanys implements OnInit {
     })
   }
 
-  UpdateStatus(company: CompanyInterface): void {
+  UpdateStatus(company: ComapnyProfileInterface): void {
     console.log('updatestaus', company._id);
     this._companyService.updateStatus(company._id).subscribe({
       next: (res) => {
         if (res.success) {
           company.isActive = !company.isActive;
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
           this._swal.showSuccessToast(res.message);
           console.log('status update responce ', res);
         } else {
@@ -90,13 +90,13 @@ export class AdminListcompanys implements OnInit {
             this.companies = [];
           }
           this.isLoading = false;
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error fetching companies:', err);
           this.companies = [];
           this.isLoading = false;
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
         },
       });
   }
