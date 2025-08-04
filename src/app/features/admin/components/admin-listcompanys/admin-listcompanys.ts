@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCompanyService } from '../../services/admin-company-service';
-import { CompanyInterface, QueryParmsInterface } from '../../interfaces/company.interface';
+import { CompanyInterface} from '../../interfaces/company.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-admin-listcompanys',

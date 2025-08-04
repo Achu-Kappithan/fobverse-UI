@@ -6,6 +6,7 @@ import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { forkJoin, Observable, of, switchMap } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { Router, RouterModule } from '@angular/router';
+import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 
 @Component({
   selector: 'app-update-profile',
@@ -28,9 +29,10 @@ export class UpdateProfile implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
+    private _cdr: ChangeDetectorRef,
     private readonly _swal: SweetAlert,
     private readonly _candidateService: CandidateService,
+    private readonly _cloudinaryService: CloudinaryService,
     private readonly _router: Router
   ) {}
 
@@ -42,13 +44,13 @@ export class UpdateProfile implements OnInit {
         this.profileData = resp.data; 
         this.populateForm();
         this.isLoading = false;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching profile data:', err);
         this._swal.showErrorToast('Failed to load profile data.');
         this.isLoading = false;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       },
       complete: () => {
         if (!this.profileData) {
@@ -107,7 +109,7 @@ export class UpdateProfile implements OnInit {
       this.profileData.skills?.forEach(skil => this.addSkills(skil));
       this.profileData.portfolioLinks?.forEach(link => this.addPortfolioLink(link)); 
     }
-    this.cdr.detectChanges(); 
+    this._cdr.detectChanges(); 
   }
 
   private extractPublicId(url: string): string | null {
@@ -127,7 +129,7 @@ export class UpdateProfile implements OnInit {
 
       reader.onload = () => {
         this.ProfilePreviewUrl = reader.result;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedProfileFile);
     } else {
@@ -143,7 +145,7 @@ export class UpdateProfile implements OnInit {
 
       reader.onload = () => {
         this.coverPreviewUrl = reader.result;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedCover);
     } else {
@@ -176,52 +178,52 @@ export class UpdateProfile implements OnInit {
       type: [info ? info.type : '', Validators.required],
       value: [info ? info.value : '', Validators.required]
     }));
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removeContactInfo(index: number): void {
     this.contactInfo.removeAt(index);
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   addEducation(edu?: string): void { 
     this.education.push(this.fb.control(edu || "", Validators.required));
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removeEducation(index: number): void {
     this.education.removeAt(index);
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   addExperience(exp?: string): void { 
     this.experience.push(this.fb.control(exp || '', Validators.required));
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removeExperience(index: number): void {
     this.experience.removeAt(index);
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   addSkills(skill?: string): void { 
     this.skills.push(this.fb.control(skill || "", Validators.required));
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removeSkills(index: number): void {
     this.skills.removeAt(index);
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   addPortfolioLink(link?: string): void { 
     this.portfolioLinks.push(this.fb.control(link || "", Validators.required));
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removePortfolioLink(index: number): void {
     this.portfolioLinks.removeAt(index);
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removeProfileImage(): void {
@@ -233,7 +235,7 @@ export class UpdateProfile implements OnInit {
     if (profileInput) {
       profileInput.value = ''; 
     }
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
   removeCoverImage(): void {
@@ -245,7 +247,7 @@ export class UpdateProfile implements OnInit {
     if (coverInput) {
       coverInput.value = ''; 
     }
-    this.cdr.detectChanges();
+    this._cdr.detectChanges();
   }
 
 
@@ -253,7 +255,7 @@ export class UpdateProfile implements OnInit {
     if (this.updateProfileForm.invalid) {
       this._swal.showErrorToast('Please fill all required fields');
       this.updateProfileForm.markAllAsTouched();
-      this.cdr.detectChanges(); 
+      this._cdr.detectChanges(); 
       return;
     }
 
@@ -266,13 +268,13 @@ export class UpdateProfile implements OnInit {
 
       let profileUpload$: Observable<any>;
       if (this.selectedProfileFile) {
-        profileUpload$ = this._candidateService.getCloudinarySignature({
+        profileUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'candidate_profile',
           publicIdPrefix: publicIdBase
         }).pipe(
           switchMap(signatureResp => {
             if (signatureResp.success && signatureResp.data) {
-              return this._candidateService.uploadFileToCloudinary(
+              return this._cloudinaryService.uploadFileToCloudinary(
                 this.selectedProfileFile!,
                 signatureResp.data,
                 'candidate_profile',
@@ -291,13 +293,13 @@ export class UpdateProfile implements OnInit {
 
       let coverUpload$: Observable<any>;
       if (this.selectedCover) {
-        coverUpload$ = this._candidateService.getCloudinarySignature({
+        coverUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'candidate_cover', 
           publicIdPrefix: publicIdBase
         }).pipe(
           switchMap(signatureResp => {
             if (signatureResp.success && signatureResp.data) {
-              return this._candidateService.uploadFileToCloudinary(
+              return this._cloudinaryService.uploadFileToCloudinary(
                 this.selectedCover!,
                 signatureResp.data,
                 'candidate_cover',
@@ -338,14 +340,14 @@ export class UpdateProfile implements OnInit {
               }
               this.isLoading = false;
               this._swal.closeToast();
-              this.cdr.detectChanges();
+              this._cdr.detectChanges();
             },
             error: (err) => {
               console.error('Error updating profile in the backend', err);
               this.isLoading = false;
               this._swal.closeToast();
               this._swal.showErrorToast('Failed to update profile!');
-              this.cdr.detectChanges();
+              this._cdr.detectChanges();
             }
           });
         },
@@ -354,7 +356,7 @@ export class UpdateProfile implements OnInit {
           this.isLoading = false;
           this._swal.closeToast();
           this._swal.showErrorToast('Image upload failed!');
-          this.cdr.detectChanges();
+          this._cdr.detectChanges();
         }
       });
 
@@ -363,7 +365,7 @@ export class UpdateProfile implements OnInit {
       this.isLoading = false;
       this._swal.closeToast();
       this._swal.showErrorToast('An unexpected error occurred!');
-      this.cdr.detectChanges();
+      this._cdr.detectChanges();
     }
   }
 }

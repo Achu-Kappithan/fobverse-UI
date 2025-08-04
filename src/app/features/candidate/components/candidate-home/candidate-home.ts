@@ -11,11 +11,13 @@ import { Subject, takeUntil } from 'rxjs';
 export class CandidateHome implements OnInit {
   private destroy$ = new Subject<void>();
 
-  constructor(private userservise: AuthService) {}
+  constructor(
+    private _authService: AuthService
+  ) {}
   ngOnInit(): void {
     setTimeout(() => {
       if (!this.destroy$.isStopped) {
-        this.userservise
+        this._authService
           .getCurrentUserDetails()
           .pipe(takeUntil(this.destroy$))
           .subscribe({

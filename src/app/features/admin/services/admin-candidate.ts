@@ -1,16 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CandidateInterface, QueryParmsInterface } from '../interfaces/company.interface';
-import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
+import { CandidateInterface } from '../../candidate/interfaces/candidate.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminCandidate {
-
-  
-    constructor(private readonly http: HttpClient) {}
+    constructor(
+      private readonly _http: HttpClient
+    ) {}
   
     getAllCandidates(parms:QueryParmsInterface): Observable<ApiResponce<CandidateInterface[]>> {
 
@@ -27,7 +27,7 @@ export class AdminCandidate {
       if(parms.search){
         httpParms = httpParms.set('search',parms.search)
       }
-      return this.http.get<ApiResponce<CandidateInterface[]>>(
+      return this._http.get<ApiResponce<CandidateInterface[]>>(
         `/api/admin/getAllcandidates`,
         { params:httpParms, withCredentials: true }
       );
@@ -35,7 +35,7 @@ export class AdminCandidate {
 
   updateStatus(id:string):Observable<PlainResponce>{
     console.log(id)
-    return this.http.get<PlainResponce>(`/api/admin/candidate/updatestatus?id=${id}`,{withCredentials:true})
+    return this._http.get<PlainResponce>(`/api/admin/candidate/updatestatus?id=${id}`,{withCredentials:true})
   }
   
 }

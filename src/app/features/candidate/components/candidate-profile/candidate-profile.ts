@@ -19,7 +19,7 @@ export class CandidateProfile implements OnInit {
 
   constructor(
     private readonly _candidateService:CandidateService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -34,13 +34,13 @@ export class CandidateProfile implements OnInit {
           this.profileData = profile.data
           console.log("Profile data",this.profileData)
           this.isLoading = false
-          this.cdr.detectChanges()
+          this._cdr.detectChanges()
         }
       }),
       error:(err =>{
         console.log("error regading candidate profile fetching",err)
         this.isLoading = false
-        this.cdr.detectChanges()
+        this._cdr.detectChanges()
       })
     })
   }
