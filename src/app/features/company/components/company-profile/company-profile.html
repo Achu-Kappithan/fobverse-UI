@@ -1,5 +1,10 @@
 
-<div *ngIf="!isLoading" class="text-dark-gray">
+@if(isLoading){
+  <div class="flex justify-center items-center min-h-[300px]">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+}@else {
+  <div class="text-dark-gray">
 
   <div *ngIf="ChildRouteActive">
     <router-outlet></router-outlet>
@@ -24,6 +29,7 @@
         <i class="fas fa-bell text-gray text-lg"></i>
         <i class="fas fa-cog text-gray text-lg"></i>
         <button
+        [routerLink]="['newjob']"
           class="bg-blue text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition-colors"
         >
           <i class="fas fa-plus mr-1"></i> Post a job
@@ -147,13 +153,13 @@
             </div>
           </div>
 
-          <p *ngIf="company$?.description; else noDescription" class="text-gray leading-relaxed">
+          @if (company$?.description) {
+          <p class="text-gray leading-relaxed">
               {{ company$?.description }}
             </p>
-
-            <ng-template #noDescription>
+          }@else {
               <p class="text-sm text-gray-400 italic">No description has been added yet.</p>
-            </ng-template>
+          }
         </div>
 
         <div class="bg-white rounded-xl shadow-md p-6">
@@ -161,18 +167,18 @@
             <h2 class="text-xl font-bold text-dark-gray">Contact</h2>
           </div>
           <div class="flex flex-wrap gap-2">
-            <ng-container *ngFor="let contact of company$?.contactInfo">
-              <a
-                *ngIf="contact?.value?.trim()"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-              >
-              <!-- [href]="getContactHref(contact)" -->
-                <i [ngClass]="getContactIcon(contact.type)" class="mr-2"></i>
-                {{ contact.value.trim() }}
-              </a>
-            </ng-container>
+            @for(contact of company$?.contactInfo; track contact.value){
+              @if (contact?.value?.trim()) {
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+                >
+                  <i [ngClass]="getContactIcon(contact.type)" class="mr-2"></i>
+                  {{ contact.value.trim() }}
+                </a>
+              }
+            }
           </div>
         </div>
 
@@ -529,7 +535,4 @@
    </div>
   </div>
 
-
-<div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
-  <app-loading-spinner></app-loading-spinner>
-</div>
+}

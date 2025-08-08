@@ -13,7 +13,6 @@
 .bg-dark-purple { background-color: #6A35A0; }
 .bg-dark-blue { background-color: #4A3AFF; }
 
-/* Dark mode specific styles */
 .dark .bg-lavender { background-color: #2D3748; } /* bg-dark-lavender */
 .dark .text-dark-gray { color: #CBD5E0; } /* text-dark-text */
 .dark .text-gray { color: #A0AEC0; } /* text-dark-gray-light */

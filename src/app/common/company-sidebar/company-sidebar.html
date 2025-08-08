@@ -2,7 +2,7 @@
      [ngClass]="{'w-64': isOpen, 'w-16': !isOpen}">
     <div class="p-4 h-full overflow-y-auto">
         <div class="flex items-center mb-4" [ngClass]="{'justify-end': isOpen, 'justify-center': !isOpen}">
-            <button (click)="toggleSidebar()" class="text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender p-2 rounded transition-colors" [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'">
+            <button (click)="toggleSidebar()" type="button" class="text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender p-2 rounded transition-colors" [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'">
                 <i class="fas" [ngClass]="{'fa-chevron-left': isOpen, 'fa-bars': !isOpen}"></i>
             </button>
         </div>
