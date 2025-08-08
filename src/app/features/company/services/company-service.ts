@@ -1,9 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ComapnyProfileInterface, InternalUserInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ComapnyProfileInterface, createJobsInterface, InternalUserInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
-import { CloudinarySignatureResponse } from '../../../shared/interfaces/cloudinarysignature.responce.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +78,10 @@ export class CompanyService {
 
   addTeamMembers(dto:TeamMember):Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/addteammember`,dto,{withCredentials:true})
+  }
+
+  addJobs(dto:createJobsInterface):Observable<ApiResponce<createJobsInterface>>{
+    return this.http.post<ApiResponce<createJobsInterface>>(`/api/jobs/createjob`,dto,{withCredentials:true})
   }
 
 }

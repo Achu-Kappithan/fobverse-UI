@@ -17,6 +17,7 @@ import { authGurdGuard } from './shared/guards/auth_gurds/auth-gurd-guard';
 import { isAdminGuard } from './shared/guards/admin_guards/is-admin-guard';
 import { CandidateLogin } from './features/auth/components/login/login';
 import { CandidateSignup } from './features/auth/components/signup/signup';
+import { CreateJob } from './features/company/components/create-job/create-job';
 
 export const routes: Routes = [
   {
@@ -133,6 +134,10 @@ export const routes: Routes = [
             path: 'updateprofile',
             component: UpdateProfileinfo,
           },
+          {
+            path:'newjob',
+            component: CreateJob
+          }
         ],
       },
       {

@@ -27,7 +27,7 @@ export class CompanyHeader implements OnInit {
   constructor(
     private readonly _authService: AuthService,
     private readonly _CompanyService: CompanyService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class CompanyHeader implements OnInit {
       next: (comp) => {
         console.log('active user', comp);
         this.userProfile = comp?.profileImg!;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
       },
     });
     this._CompanyService.companyProfile$.subscribe({

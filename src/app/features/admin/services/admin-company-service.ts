@@ -1,23 +1,21 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, } from 'rxjs';
-import {
-  CompanyInterface,
-} from '../interfaces/company.interface';
 import { ApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
+import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminCompanyService {
-  private _CompnayState = new BehaviorSubject<CompanyInterface[]>([]);
+  private _CompnayState = new BehaviorSubject<ComapnyProfileInterface[]>([]);
   company$ = this._CompnayState.asObservable();
 
   constructor(
     private readonly _http: HttpClient
   ) {}
 
-  getAllCompanies(parms:QueryParmsInterface = {}): Observable<ApiResponce<CompanyInterface[]>> {
+  getAllCompanies(parms:QueryParmsInterface = {}): Observable<ApiResponce<ComapnyProfileInterface[]>> {
     let httpParms = new HttpParams()
 
     if(parms.limit){
@@ -31,7 +29,7 @@ export class AdminCompanyService {
     if(parms.search){
       httpParms = httpParms.set('search',parms.search)
     }
-    return this._http.get<ApiResponce<CompanyInterface[]>>(
+    return this._http.get<ApiResponce<ComapnyProfileInterface[]>>(
       `/api/admin/getallcompany`,
       {params:httpParms, withCredentials: true }
     );

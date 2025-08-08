@@ -70,3 +70,40 @@ export interface ComapnyProfileInterface {
 
   benafits?:string[]
 }
+
+export enum jobType {
+  FullTime = 'fulltime',
+  PartTmime = 'parttime',
+  Remote = 'remote',
+  OnSite = 'onsite'
+}
+
+export interface createJobsInterface {
+  title: string;
+
+  _id?:string
+
+  description: string;
+
+  responsibility:string
+
+  jobType:jobType
+
+  skills: string[];
+
+  experience?: string[];
+
+  salary: {
+    min: number;
+    max: number;
+  };
+
+  location: string[];
+
+  vacancies: number;
+
+  companyId: string;
+
+  endData?:string
+
+}
