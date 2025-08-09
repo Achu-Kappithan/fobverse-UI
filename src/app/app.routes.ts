@@ -61,11 +61,6 @@ export const routes: Routes = [
         redirectTo: 'login',
         pathMatch: 'full',
       },
-      // {
-      //   path: '**',
-      //   loadComponent :()=> import( './common/not-found/not-found')
-      //   .then (m => m.NotFound)
-      // }
     ],
   },
 
@@ -99,14 +94,18 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: ()=> import('./features/candidate/components/candidate-profile/candidate-profile')
-        .then(m => m.CandidateProfile)
+        loadComponent: () =>
+          import(
+            './features/candidate/components/candidate-profile/candidate-profile'
+          ).then((m) => m.CandidateProfile),
       },
       {
         path: 'profile/updateprofile',
-        loadComponent: ()=> import('./features/candidate/components/update-profile/update-profile')
-        .then(m => m.UpdateProfile)
-      }
+        loadComponent: () =>
+          import(
+            './features/candidate/components/update-profile/update-profile'
+          ).then((m) => m.UpdateProfile),
+      },
     ],
   },
 
@@ -135,9 +134,9 @@ export const routes: Routes = [
             component: UpdateProfileinfo,
           },
           {
-            path:'newjob',
-            component: CreateJob
-          }
+            path: 'newjob',
+            component: CreateJob,
+          },
         ],
       },
       {
@@ -163,6 +162,13 @@ export const routes: Routes = [
           import(
             './features/company/components/user-profile/user-profile'
           ).then((m) => m.UserProfile),
+      },
+      {
+        path: 'joblist',
+        loadComponent: () =>
+          import('./features/company/components/jobs-list/jobs-list').then(
+            (m) => m.JobsList
+          ),
       },
       {
         path: '**',

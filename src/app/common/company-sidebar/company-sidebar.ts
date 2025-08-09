@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './company-sidebar.css'
 })
 export class CompanySidebar {
-  @Input() isOpen = true; 
+  @Input() isOpen = false; 
   @Output() sidebarToggled = new EventEmitter<boolean>(); 
 
   toggleSidebar() {

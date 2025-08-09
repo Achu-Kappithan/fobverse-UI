@@ -13,7 +13,7 @@ import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-si
   styleUrl: './company-component.css'
 })
 export class CompanyComponent implements OnInit {
-  isSidebarOpen: boolean = true
+  isSidebarOpen: boolean = false
   isDarkMode : boolean = false
 
   ngOnInit(): void {
