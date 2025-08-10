@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TableColumn } from '../../../../shared/interfaces/table.interface';
-import { TableComponent } from '../../../../common/table-component/table-component';
-import { Router } from '@angular/router';
+import { TableColumn } from '../../../../../shared/interfaces/table.interface';
+import { TableComponent } from '../../../../../common/table-component/table-component';
+import { Router, RouterModule } from '@angular/router';
 
 export interface Job {
   id: number;
@@ -21,17 +21,14 @@ export interface Job {
 
 @Component({
   selector: 'app-jobs-list',
-  imports: [CommonModule,FormsModule,TableComponent],
+  imports: [CommonModule, FormsModule, TableComponent, RouterModule],
   templateUrl: './jobs-list.html',
-  styleUrl: './jobs-list.css'
+  styleUrl: './jobs-list.css',
 })
 export class JobsList {
+  constructor(private readonly _router: Router) {}
 
-  constructor( 
-    private readonly _router: Router
-  ) {}
-   
- jobs: Job[] = [
+  jobs: Job[] = [
     {
       id: 1,
       title: 'Senior Frontend Developer',
@@ -43,7 +40,7 @@ export class JobsList {
       applications: 42,
       vacancies: 3,
       applicationProgress: 75,
-      selected: false
+      selected: false,
     },
     {
       id: 2,
@@ -56,7 +53,7 @@ export class JobsList {
       applications: 23,
       vacancies: 2,
       applicationProgress: 45,
-      selected: false
+      selected: false,
     },
     {
       id: 3,
@@ -69,7 +66,7 @@ export class JobsList {
       applications: 8,
       vacancies: 1,
       applicationProgress: 15,
-      selected: false
+      selected: false,
     },
     {
       id: 4,
@@ -82,7 +79,7 @@ export class JobsList {
       applications: 15,
       vacancies: 2,
       applicationProgress: 30,
-      selected: false
+      selected: false,
     },
     {
       id: 5,
@@ -95,7 +92,7 @@ export class JobsList {
       applications: 5,
       vacancies: 1,
       applicationProgress: 10,
-      selected: false
+      selected: false,
     },
     {
       id: 6,
@@ -108,7 +105,7 @@ export class JobsList {
       applications: 31,
       vacancies: 2,
       applicationProgress: 60,
-      selected: false
+      selected: false,
     },
     {
       id: 7,
@@ -121,7 +118,7 @@ export class JobsList {
       applications: 28,
       vacancies: 1,
       applicationProgress: 55,
-      selected: false
+      selected: false,
     },
     {
       id: 8,
@@ -134,26 +131,26 @@ export class JobsList {
       applications: 12,
       vacancies: 2,
       applicationProgress: 25,
-      selected: false
-    }
+      selected: false,
+    },
   ];
 
-  public tablecolumns:TableColumn[] =[
-    {header: 'Role',field:'title',type:'text'},
-    {header: 'status',field:'status',type:'status'},
-    {header: 'Postdate',field:'postedDate',type:'date'},
-    {header: 'dueDate',field: 'dueDate', type: 'date'},
-    {header: 'jobType',field: 'jobType', type:'jobType'},
-    {header: 'Applications', field:'applications',type: 'progress'},
-    {header: 'vacancies', field: 'vacancies',type: 'number'},
-    {header: 'Action', field:'viewjob', type: 'profile'}
-  ]
+  public tablecolumns: TableColumn[] = [
+    { header: 'Role', field: 'title', type: 'text' },
+    { header: 'status', field: 'status', type: 'status' },
+    { header: 'Postdate', field: 'postedDate', type: 'date' },
+    { header: 'dueDate', field: 'dueDate', type: 'date' },
+    { header: 'jobType', field: 'jobType', type: 'jobType' },
+    { header: 'Applications', field: 'applications', type: 'progress' },
+    { header: 'vacancies', field: 'vacancies', type: 'number' },
+    { header: 'Action', field: 'viewjob', type: 'profile' },
+  ];
 
   onRowSelected(row: any): void {
     console.log('Row selected:', row);
   }
 
-  showJobDetails(){
-    this._router.navigate(['company/home'])
+  showJobDetails() {
+    this._router.navigate(['company/home']);
   }
 }

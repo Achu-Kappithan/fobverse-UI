@@ -1,189 +1,274 @@
-    <div class="bg-lavender min-h-screen">
-      <div class="container mx-auto px-4 py-4">
-        <!-- Header -->
-        <header class="w-full flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-8">
-          <div class="flex items-center space-x-4">
-            <h1 class="text-2xl font-bold text-dark-gray">Company Job Listings</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <button 
-              type="button" 
-              class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              Back
+<div class="bg-purpule">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b rounded-lg ">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-purple rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">S</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-semibold text-dark-gray">Social Media Assistant</h1>
+                    <p class="text-sm text-gray">Full-Time | Remote | $50-70k</p>
+                </div>
+            </div>
+            <button class="bg-purple text-white px-6 py-2 rounded-lg font-medium hover:bg-hover-purple transition-colors">
+                Apply
             </button>
-            <button 
-              type="button" 
-              class="px-4 py-2 text-sm font-medium text-white bg-purple rounded-md hover:bg-hover-purpule focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-              </svg>
-              Add New Job
-            </button>
-          </div>
-        </header>
+        </div>
+    </header>
+</div>
 
-        <!-- Table Container -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <!-- Table Header with Search and Filters -->
-          <div class="p-6 border-b border-gray-300">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
-              <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                <!-- Search -->
-                <div class="relative">
-                  <input 
-                    type="text" 
-                    placeholder="Search jobs..." 
-                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
-                  <svg class="w-5 h-5 text-gray absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
+<div >
+
+    <!-- Main Content -->
+    <div class=" mx-auto  py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Job Details -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Description -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-dark-gray mb-4">Description</h2>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        We are looking for a Social Media Marketing specialist to help manage our online marketing and advertising campaigns. This will involve developing and implementing our social media strategy in order to increase our online presence and improve our marketing and sales efforts. You will be working closely with the Marketing and Design teams.
+                    </p>
                 </div>
 
-                <!-- Status Filter -->
-                <select 
-                  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                  <option value="">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="draft">Draft</option>
-                  <option value="expired">Expired</option>
-                </select>
-
-                <!-- Job Type Filter -->
-                <select 
-                  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                  <option value="">All Types</option>
-                  <option value="fulltime">Full-Time</option>
-                  <option value="parttime">Part-Time</option>
-                  <option value="remote">Remote</option>
-                  <option value="onsite">On-Site</option>
-                </select>
-              </div>
-
-              <div class="text-sm text-gray">
-                Showing <span class="font-medium text-dark-gray"></span> of
-                <span class="font-medium text-dark-gray"></span> jobs
-              </div>
-            </div>
-          </div>
-
-          <!-- Table -->
-          <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full min-w-[1000px]">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    <input 
-                      type="checkbox" 
-                      class="rounded border-gray-300 text-purple focus:ring-purple-500" />
-                  </th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posted Date</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Type</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applications</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vacancies</th>
-                  <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <!-- <tr 
-                  *ngFor="let job of jobs; trackBy: trackByJobId" 
-                  class="hover:bg-gray-50 transition-colors">
-                  <td class="px-6 py-4">
-                    <input 
-                      type="checkbox" 
-                      class="rounded border-gray-300 text-purple focus:ring-purple-500" />
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex flex-col">
-                      <div class="text-sm font-medium text-dark-gray">{{job.title}}</div>
-                      <div class="text-sm text-gray">{{job.location}}</div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <span 
-                      [class]="getStatusClass(job.status)"
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      {{job.status | titlecase}}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-sm text-dark-gray">{{job.postedDate}}</td>
-                  <td class="px-6 py-4 text-sm text-dark-gray">{{job.dueDate}}</td>
-                  <td class="px-6 py-4">
-                    <span 
-                      [class]="getJobTypeClass(job.jobType)"
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      {{getJobTypeDisplay(job.jobType)}}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center">
-                      <span class="text-sm font-medium text-dark-gray">{{job.applications}}</span>
-                      <div class="ml-2 w-16 bg-gray-200 rounded-full h-2">
-                        <div 
-                          class="bg-purple h-2 rounded-full" 
-                          [style.width.%]="job.applicationProgress">
+                <!-- Experiences -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-dark-gray mb-4">Experiences</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">2-4 years+ in sales field</span>
                         </div>
-                      </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">Experience in dealing with international clients</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">Understanding of design trends</span>
+                        </div>
                     </div>
-                  </td>
-                  <td class="px-6 py-4 text-sm text-dark-gray">{{job.vacancies}}</td>
-                  <td class="px-6 py-4">
-                    <div class="relative">
-                      <button 
-                        class="text-gray hover:text-gray-600 p-2 rounded-full hover:bg-gray-100">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-                        </svg>
-                      </button>
-                      <div 
-                        class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                        <a 
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
-                          <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                          </svg>
-                          Edit Job
-                        </a>
-                        <a 
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
-                          <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                          </svg>
-                          View Applications
-                        </a>
-                        <div class="border-t border-gray-100"></div>
-                        <a 
-                          class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer">
-                          <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                          </svg>
-                          Delete Job
-                        </a>
-                      </div>
-                    </div>
-                  </td>
-                </tr> -->
-                <tr>
-                  <td colspan="9" class="px-6 py-8 text-center text-gray">
-                    <div class="flex flex-col items-center">
-                      <svg class="w-12 h-12 text-gray mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                      </svg>
-                      <p class="text-lg font-medium text-dark-gray">No jobs found</p>
-                      <p class="text-sm text-gray">Try adjusting your search or filter criteria</p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+                </div>
 
-      </div>
+                <!-- Who You Are -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-dark-gray mb-4">Who You Are</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">You get energy from people and relationships. You value being able to do meaningful work.</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">You are able to adapt and respond as we evolve. You are willing to change.</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">You like a sometimes-chaotic environment, ready for added responsibilities.</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">You have a genuine curiosity and excitement to learn and grow.</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">You are detail oriented and like to understand how and why you're completing tasks.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nice-To-Haves -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-dark-gray mb-4">Nice-To-Haves</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">Fluent in English</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">Previous experience with remote collaboration tools</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple rounded-full"></div>
+                            <span class="text-gray-700">Fresh marketing ideas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Perks & Benefits -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-dark-gray mb-6">Perks & Benefits</h2>
+                    <p class="text-gray-600 mb-6">This job comes with several perks and benefits</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Full Healthcare -->
+                        <div class="text-center">
+                            <div class="perk-icon mx-auto mb-3">
+                                <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-dark-gray mb-2">Full Healthcare</h3>
+                            <p class="text-sm text-gray-600">We provide health insurance to cover full healthcare expenses for you.</p>
+                        </div>
+
+                        <!-- Unlimited Vacation -->
+                        <div class="text-center">
+                            <div class="perk-icon mx-auto mb-3">
+                                <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-dark-gray mb-2">Unlimited Vacation</h3>
+                            <p class="text-sm text-gray-600">Flexible vacation time with no limits, just coordination with your team.</p>
+                        </div>
+
+                        <!-- Skill Development -->
+                        <div class="text-center">
+                            <div class="perk-icon mx-auto mb-3">
+                                <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.75 2.524z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-dark-gray mb-2">Skill Development</h3>
+                            <p class="text-sm text-gray-600">Budget set aside for you to continue learning and developing relevant skills.</p>
+                        </div>
+
+                        <!-- Remote Working -->
+                        <div class="text-center">
+                            <div class="perk-icon mx-auto mb-3">
+                                <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm12 12V8H4v8h12z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-dark-gray mb-2">Remote Working</h3>
+                            <p class="text-sm text-gray-600">You decide when you want to work from home, office or anywhere.</p>
+                        </div>
+
+                        <!-- Commuter Benefits -->
+                        <div class="text-center">
+                            <div class="perk-icon mx-auto mb-3">
+                                <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-dark-gray mb-2">Commuter Benefits</h3>
+                            <p class="text-sm text-gray-600">We provide monthly allowances to help you get to and fro the office.</p>
+                        </div>
+
+                        <!-- We give back -->
+                        <div class="text-center">
+                            <div class="perk-icon mx-auto mb-3">
+                                <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-dark-gray mb-2">We give back</h3>
+                            <p class="text-sm text-gray-600">We give employees a monthly allowance for charitable giving.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Job Info & Company -->
+            <div class="space-y-6">
+                <!-- About this role -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-dark-gray mb-4">About this role</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-sm font-medium text-gray-600">Applied</span>
+                            <p class="text-dark-gray font-medium">243 candidates</p>
+                        </div>
+                        <hr class="border-gray-200">
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Apply Before</span>
+                                <span class="text-sm font-medium text-dark-gray">July 31, 2021</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Job Published On</span>
+                                <span class="text-sm font-medium text-dark-gray">July 1, 2021</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Job Type</span>
+                                <span class="text-sm font-medium text-dark-gray">Full-time</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Salary</span>
+                                <span class="text-sm font-medium text-dark-gray">$50-$70k USD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-dark-gray mb-4">Categories</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">Marketing</span>
+                        <span class="skill-tag">Design</span>
+                    </div>
+                </div>
+
+                <!-- Required Skills -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-dark-gray mb-4">Required Skills</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">Social Media Marketing</span>
+                        <span class="skill-tag">English</span>
+                        <span class="skill-tag">Copy Writing</span>
+                    </div>
+                </div>
+
+                <!-- Company Profile - Stripe -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-start space-x-4 mb-6">
+                        <div class="company-logo">S</div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-dark-gray">Stripe</h3>
+                            <p class="text-sm text-gray-600">Financial Services</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Stripe is a technology company that builds economic infrastructure for the internet. 
+                        Businesses of every size—from new startups to public companies—use our software to accept 
+                        payments and manage their businesses online.
+                    </p>
+
+                    <!-- Company Images -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+</div>
