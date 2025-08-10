@@ -18,6 +18,7 @@ import { isAdminGuard } from './shared/guards/admin_guards/is-admin-guard';
 import { CandidateLogin } from './features/auth/components/login/login';
 import { CandidateSignup } from './features/auth/components/signup/signup';
 import { CreateJob } from './features/company/components/create-job/create-job';
+import { JobView } from './features/company/components/jobs/job-view/job-view';
 
 export const routes: Routes = [
   {
@@ -166,10 +167,22 @@ export const routes: Routes = [
       {
         path: 'joblist',
         loadComponent: () =>
-          import('./features/company/components/jobs-list/jobs-list').then(
-            (m) => m.JobsList
-          ),
+          import('./features/company/components/jobs/jobs').then((m) => m.Jobs),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './features/company/components/jobs/jobs-list/jobs-list'
+              ).then((m) => m.JobsList),
+          },
+          {
+            path: 'jobview',
+            component: JobView,
+          },
+        ],
       },
+
       {
         path: '**',
         loadComponent: () =>
