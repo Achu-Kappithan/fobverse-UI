@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { ComapnyProfileInterface, createJobsInterface, InternalUserInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ComapnyProfileInterface, InternalUserInterface, JobsInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 
 @Injectable({
@@ -80,8 +80,25 @@ export class CompanyService {
     return this.http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/addteammember`,dto,{withCredentials:true})
   }
 
-  addJobs(dto:createJobsInterface):Observable<ApiResponce<createJobsInterface>>{
-    return this.http.post<ApiResponce<createJobsInterface>>(`/api/jobs/createjob`,dto,{withCredentials:true})
+  addJobs(dto:JobsInterface):Observable<ApiResponce<JobsInterface>>{
+    return this.http.post<ApiResponce<JobsInterface>>(`/api/jobs/createjob`,dto,{withCredentials:true})
+  }
+
+  getAllJobs(params:QueryParmsInterface):Observable<PagenatedApiResponce<JobsInterface[]>>{
+    console.log(params)
+    let httpParms = new HttpParams
+
+    if(params.limit){
+      httpParms = httpParms.set('limit',params.limit.toString())
+    }
+    if(params.page){
+      httpParms = httpParms.set('page',params.page.toString())
+    }
+    if(params.search){
+      httpParms = httpParms.set('search',params.search)
+    }
+    console.log("before making http call")
+    return this.http.get<PagenatedApiResponce<JobsInterface[]>>(`api/jobs/getalljobs`,{params:httpParms, withCredentials:true})
   }
 
 }

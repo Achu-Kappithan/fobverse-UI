@@ -81,9 +81,13 @@
 
                         <!-- End Date -->
                         <div>
-                            <label for="endDate" class="block text-sm font-medium text-gray-700">Application End Date (Optional)</label>
-                            <input type="date" id="endDate" formControlName="endDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg p-2 focus:ring-purple-500 focus:border-purple-500">
-                            <!-- No validation message as it's optional -->
+                            <label for="dueDate" class="block text-sm font-medium text-gray-700">Application End Date (Optional)</label>
+                            <input type="date" id="dueDate" formControlName="dueDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg p-2 focus:ring-purple-500 focus:border-purple-500">
+                            @if (isInvalid('dueDate')) {
+                                <div class="text-red-500 text-xs mt-1">
+                                    DueDate is required.
+                                </div>
+                            }
                         </div>
 
                         <!-- Office Locations -->

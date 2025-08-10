@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
-      @for( row of data; track row.id){ 
+      @for( row of data; track row._id){ 
         <tr class="hover:bg-gray-50">
           @for( col of columns; track col.field){
             <td class="px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap">
@@ -28,7 +28,7 @@
                 <span 
                       class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium status-badge"
                       [ngClass]="getStatusClass(row[col.field])">
-                  {{ row[col.field] }}
+                  {{ row[col.field]? 'Active':'Completed' }}
                 </span>
                 }
                 @case ('jobType') {

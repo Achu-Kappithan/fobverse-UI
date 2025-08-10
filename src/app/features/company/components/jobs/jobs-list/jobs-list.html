@@ -25,15 +25,37 @@
           </div>
         </header>
 
-        <!-- Table Container -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <!-- Table Header with Search and Filters -->
           <div class="p-6 border-b border-gray-300">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
               <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                <!-- Search -->
+
+                <!-- Status Filter -->
+                <!-- <select 
+                  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="draft">Draft</option>
+                  <option value="expired">Expired</option>
+                </select> -->
+
+                <!-- Job Type Filter -->
+                <!-- <select 
+                  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                  <option value="">All Types</option>
+                  <option value="fulltime">Full-Time</option>
+                  <option value="parttime">Part-Time</option>
+                  <option value="remote">Remote</option>
+                  <option value="onsite">On-Site</option>
+                </select> -->
+              </div>
+
+              <div class="text-sm text-gray">
                 <div class="relative">
                   <input 
+                    (input)="onSearchInput($event)"
+                    [value]="QueryParms.search"
                     type="text" 
                     placeholder="Search jobs..." 
                     class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
@@ -41,31 +63,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                   </svg>
                 </div>
-
-                <!-- Status Filter -->
-                <select 
-                  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                  <option value="">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="draft">Draft</option>
-                  <option value="expired">Expired</option>
-                </select>
-
-                <!-- Job Type Filter -->
-                <select 
-                  class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                  <option value="">All Types</option>
-                  <option value="fulltime">Full-Time</option>
-                  <option value="parttime">Part-Time</option>
-                  <option value="remote">Remote</option>
-                  <option value="onsite">On-Site</option>
-                </select>
-              </div>
-
-              <div class="text-sm text-gray">
-                Showing <span class="font-medium text-dark-gray"></span> of
-                <span class="font-medium text-dark-gray"></span> jobs
               </div>
             </div>
           </div>
@@ -78,6 +75,87 @@
             (buttonClicked)="showJobDetails()"
             ></app-table-component>
         </div>
+            <div
+      class="mt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 bg-white bg-lavender rounded-xl shadow-lg p-6"
+    >
+      <!-- Results Text -->
+      <div class="text-sm text-dark-gray">
+            Showing
+        {{ (paginationMeta.currentPage - 1) * paginationMeta.itemsPerPage + 1 }}
+        to
+        {{
+        paginationMeta.currentPage * paginationMeta.itemsPerPage >
+        paginationMeta.totalItems
+            ? paginationMeta.totalItems
+            : paginationMeta.currentPage * paginationMeta.itemsPerPage
+        }}
+        of {{ paginationMeta.totalItems }} results
+    </div>
+
+      <!-- Pagination Controls -->
+      <div
+        class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4"
+      >
+        <!-- Items per page dropdown -->
+        <div class="flex items-center space-x-2">
+          <label for="itemsPerPage" class="text-sm text-dark-gray"
+            >Items per page:</label
+          >
+          <select
+          [(ngModel)]="QueryParms.limit"
+          (change)="onLimitChange(QueryParms.limit!)"
+            id="itemsPerPage"
+            class="py-2 px-3 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-white text-dark-gray"
+          >
+            <option [ngValue]="3">3</option>
+            <option [ngValue]="6">6</option>
+            <option [ngValue]="9">9</option>
+            <option [ngValue]="15">15</option>
+          </select>
+        </div>
+
+        <!-- Previous/Next & Page Numbers -->
+        <nav
+          class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px"
+          aria-label="Pagination"
+        >
+          <!-- Previous -->
+          <button
+          (click)="onPageChange(paginationMeta.currentPage -1)"
+          [disabled]="paginationMeta.currentPage === 1 || isLoading"
+
+            class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+
+          <!-- Page numbers -->
+          <ng-container *ngFor=" let pageNum of Pagenumbers" >
+        <button
+          *ngIf="pageNum <= paginationMeta.totalPages"
+          (click)="onPageChange(pageNum)"
+          [ngClass]="{
+            'bg-purple text-white': pageNum === paginationMeta.currentPage,
+            'bg-white text-purple hover:bg-lavender': pageNum !== paginationMeta.currentPage
+          }"
+          class="relative inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium"
+        >
+          {{ pageNum }}
+        </button>
+          </ng-container>
+
+          <!-- Next -->
+          <button
+            (click)="onPageChange(paginationMeta.currentPage + 1)"
+            [disabled]="paginationMeta.currentPage === paginationMeta.totalPages || isLoading"
+            class="relative inline-flex items-center px-4 py-2 rounded-r-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </nav>
+      </div>
+    </div>
+
 
       </div>
     </div>

@@ -21,22 +21,16 @@ export class TableComponent {
   activeDropdown: string | null = null;
 
 
-  getStatusClass(status: string): string {
-    switch (status?.toLowerCase()) {
-      case 'active':
-      case 'open':
-        return 'bg-green-100 text-green-700 text-xs font-medium rounded-full';
-      case 'inactive':
-      case 'closed':
-        return 'bg-red-100 text-red-700 text-xs font-medium rounded-full';
-      case 'draft':
-        return 'bg-yellow-200 text-yellow-800 text-xs font-medium rounded-full';
-      case 'expired':
-        return 'bg-orange-100 text-orange-700 text-xs font-medium rounded-full';
-      default:
-        return '';
+  getStatusClass(status: boolean| string): string {
+    if (status === true || status === 'true') {
+    return 'bg-green-100 text-green-700 text-xs font-medium rounded-full';
     }
+    if (status === false || status === 'false') {
+      return 'bg-red-100 text-red-700 text-xs font-medium rounded-full';
+    }
+    return '';
   }
+  
 
   getJobTypeClass(type:string):string{
     switch (type?.toLowerCase()) {
