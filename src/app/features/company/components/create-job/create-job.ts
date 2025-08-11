@@ -60,7 +60,7 @@ creatJob!: FormGroup;
     return this.creatJob.get('location') as FormArray;
   }
 
-  get experiences(): FormArray {
+  get experience(): FormArray {
     return this.creatJob.get('experience') as FormArray;
   }
 
@@ -73,7 +73,7 @@ creatJob!: FormGroup;
   }
 
   get experienceControls(): FormControl[] {
-    return this.experiences.controls as FormControl[];
+    return this.experience.controls as FormControl[];
   }
 
   addSkill() {
@@ -85,7 +85,7 @@ creatJob!: FormGroup;
   }
 
   addExperience() {
-    this.experiences.push(this.fb.control('', Validators.required)); 
+    this.experience.push(this.fb.control('', Validators.required)); 
   }
 
   removeSkill(index: number) {
@@ -97,7 +97,7 @@ creatJob!: FormGroup;
   }
 
   removeExperience(index: number) {
-    this.experiences.removeAt(index);
+    this.experience.removeAt(index);
   }
 
   saveChanges() {

@@ -101,4 +101,8 @@ export class CompanyService {
     return this.http.get<PagenatedApiResponce<JobsInterface[]>>(`api/jobs/getalljobs`,{params:httpParms, withCredentials:true})
   }
 
+  getJobDetails(id:string):Observable<ApiResponce<JobsInterface>>{
+    return this.http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`,{withCredentials:true})
+  }
+
 }

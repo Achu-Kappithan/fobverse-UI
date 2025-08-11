@@ -9,10 +9,11 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.responce.interface';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { LoadingSpinner } from "../../../../../common/loading-spinner/loading-spinner";
 
 @Component({
   selector: 'app-jobs-list',
-  imports: [CommonModule, FormsModule, TableComponent, RouterModule],
+  imports: [CommonModule, FormsModule, TableComponent, RouterModule, LoadingSpinner],
   templateUrl: './jobs-list.html',
   styleUrl: './jobs-list.css',
 })
@@ -20,8 +21,7 @@ export class JobsList implements OnInit {
 
   isLoading:boolean = false
   serchValue = new Subject<string>()
-
-
+  jobs: JobsInterface[] = []
 
   constructor(
     private readonly _router: Router,
@@ -29,8 +29,6 @@ export class JobsList implements OnInit {
     private readonly _cdr :ChangeDetectorRef,
     private readonly _swal : SweetAlert
   ) {}
-
-  jobs: JobsInterface[] = []
 
   public tablecolumns: TableColumn[] = [
     { header: 'Role', field: 'title', type: 'text' },
@@ -55,7 +53,6 @@ export class JobsList implements OnInit {
       this.QueryParms.page = 1
       this.fetchAllJobs()
     })
-    
   }
 
   QueryParms : QueryParmsInterface = {
@@ -70,7 +67,6 @@ export class JobsList implements OnInit {
     itemsPerPage: 6,
     totalPages:0
   }
-
 
   fetchAllJobs(){
     this.isLoading = true
@@ -122,7 +118,7 @@ export class JobsList implements OnInit {
     return pageNumber
   }
 
-  showJobDetails() {
-    this._router.navigate(['company/joblist/jobview']);
+  showJobDetails(id:string) {
+    this._router.navigate(['company/joblist/jobview'],{queryParams:{id:id}});
   }
 }

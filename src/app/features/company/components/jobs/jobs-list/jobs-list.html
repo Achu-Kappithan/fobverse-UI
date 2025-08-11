@@ -1,37 +1,72 @@
-    <div class="bg-lavender min-h-screen">
-      <div class="container mx-auto px-4 py-4">
-        <!-- Header -->
-        <header class="w-full flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-8">
-          <div class="flex items-center space-x-4">
-            <h1 class="text-2xl font-bold text-dark-gray">Company Job Listings</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <a 
-              [routerLink]="['/company/home']"
-              class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              Back
-            </a>
-            <button 
-              [routerLink]="['/company/profile/newjob']"
-              class="px-4 py-2 text-sm font-medium text-white bg-purple rounded-md hover:bg-hover-purpule focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-              </svg>
-              Add New Job
-            </button>
-          </div>
-        </header>
+<div class="bg-lavender min-h-screen">
+  @if (isLoading) {
+    <div class=" flex items-center justify-center min-h-[300px]">
 
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div class="p-6 border-b border-gray-300">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
-              <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+    </div>
+    <app-loading-spinner></app-loading-spinner>
+  }@else {
+  <div class="container mx-auto px-4 py-4">
+    <!-- Header -->
+    <header
+      class="w-full flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-8"
+    >
+      <div class="flex items-center space-x-4">
+        <h1 class="text-2xl font-bold text-dark-gray">Company Job Listings</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a
+          [routerLink]="['/company/home']"
+          class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 inline-block mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Back
+        </a>
+        <button
+          [routerLink]="['/company/profile/newjob']"
+          class="px-4 py-2 text-sm font-medium text-white bg-purple rounded-md hover:bg-hover-purpule focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 inline-block mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          Add New Job
+        </button>
+      </div>
+    </header>
 
-                <!-- Status Filter -->
-                <!-- <select 
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-6 border-b border-gray-300">
+        <div
+          class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0"
+        >
+          <div
+            class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4"
+          >
+            <!-- Status Filter -->
+            <!-- <select 
                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                   <option value="">All Status</option>
                   <option value="active">Active</option>
@@ -40,8 +75,8 @@
                   <option value="expired">Expired</option>
                 </select> -->
 
-                <!-- Job Type Filter -->
-                <!-- <select 
+            <!-- Job Type Filter -->
+            <!-- <select 
                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                   <option value="">All Types</option>
                   <option value="fulltime">Full-Time</option>
@@ -49,48 +84,55 @@
                   <option value="remote">Remote</option>
                   <option value="onsite">On-Site</option>
                 </select> -->
-              </div>
-
-              <div class="text-sm text-gray">
-                <div class="relative">
-                  <input 
-                    (input)="onSearchInput($event)"
-                    [value]="QueryParms.search"
-                    type="text" 
-                    placeholder="Search jobs..." 
-                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
-                  <svg class="w-5 h-5 text-gray absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <!-- Table -->
-            <app-table-component
-            [columns]="tablecolumns"
-            [data]="jobs"
-            (rowSelected)="onRowSelected($event)"
-            (buttonClicked)="showJobDetails()"
-            ></app-table-component>
+          <div class="text-sm text-gray">
+            <div class="relative">
+              <input
+                (input)="onSearchInput($event)"
+                [value]="QueryParms.search"
+                type="text"
+                placeholder="Search jobs..."
+                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+              />
+              <svg
+                class="w-5 h-5 text-gray absolute left-3 top-2.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
-            <div
+      </div>
+
+      <!-- Table -->
+      <app-table-component
+        [columns]="tablecolumns"
+        [data]="jobs"
+        (rowSelected)="onRowSelected($event)"
+        (buttonClicked)="showJobDetails($event)"
+      ></app-table-component>
+    </div>
+    <div
       class="mt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 bg-white bg-lavender rounded-xl shadow-lg p-6"
     >
       <!-- Results Text -->
       <div class="text-sm text-dark-gray">
-            Showing
-        {{ (paginationMeta.currentPage - 1) * paginationMeta.itemsPerPage + 1 }}
-        to
-        {{
-        paginationMeta.currentPage * paginationMeta.itemsPerPage >
-        paginationMeta.totalItems
-            ? paginationMeta.totalItems
-            : paginationMeta.currentPage * paginationMeta.itemsPerPage
-        }}
-        of {{ paginationMeta.totalItems }} results
-    </div>
+        Showing {{ (paginationMeta.currentPage - 1) *
+        paginationMeta.itemsPerPage + 1 }} to {{ paginationMeta.currentPage *
+        paginationMeta.itemsPerPage > paginationMeta.totalItems ?
+        paginationMeta.totalItems : paginationMeta.currentPage *
+        paginationMeta.itemsPerPage }} of {{ paginationMeta.totalItems }}
+        results
+      </div>
 
       <!-- Pagination Controls -->
       <div
@@ -102,8 +144,8 @@
             >Items per page:</label
           >
           <select
-          [(ngModel)]="QueryParms.limit"
-          (change)="onLimitChange(QueryParms.limit!)"
+            [(ngModel)]="QueryParms.limit"
+            (change)="onLimitChange(QueryParms.limit!)"
             id="itemsPerPage"
             class="py-2 px-3 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-white text-dark-gray"
           >
@@ -121,27 +163,26 @@
         >
           <!-- Previous -->
           <button
-          (click)="onPageChange(paginationMeta.currentPage -1)"
-          [disabled]="paginationMeta.currentPage === 1 || isLoading"
-
+            (click)="onPageChange(paginationMeta.currentPage -1)"
+            [disabled]="paginationMeta.currentPage === 1 || isLoading"
             class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
 
           <!-- Page numbers -->
-          <ng-container *ngFor=" let pageNum of Pagenumbers" >
-        <button
-          *ngIf="pageNum <= paginationMeta.totalPages"
-          (click)="onPageChange(pageNum)"
-          [ngClass]="{
+          <ng-container *ngFor=" let pageNum of Pagenumbers">
+            <button
+              *ngIf="pageNum <= paginationMeta.totalPages"
+              (click)="onPageChange(pageNum)"
+              [ngClass]="{
             'bg-purple text-white': pageNum === paginationMeta.currentPage,
             'bg-white text-purple hover:bg-lavender': pageNum !== paginationMeta.currentPage
           }"
-          class="relative inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium"
-        >
-          {{ pageNum }}
-        </button>
+              class="relative inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium"
+            >
+              {{ pageNum }}
+            </button>
           </ng-container>
 
           <!-- Next -->
@@ -155,7 +196,6 @@
         </nav>
       </div>
     </div>
-
-
-      </div>
-    </div>
+  </div>
+}
+</div>

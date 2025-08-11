@@ -104,6 +104,9 @@ export interface JobsInterface {
 
   vacancies: number;
 
-  dueDate:string
+  dueDate:string;
+
+  createdAt:string
+
 
 }

@@ -13,7 +13,7 @@ export class TableComponent {
   @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
 
-  @Output() buttonClicked = new EventEmitter<{ id: string }>();
+  @Output() buttonClicked = new EventEmitter<string>();
 
   @Output() rowSelected = new EventEmitter<any>()
   selectedRow: any = null
@@ -49,8 +49,8 @@ export class TableComponent {
     }
   }
 
-  ShowDetails():void{
-    this.buttonClicked.emit()
+  ShowDetails(id:string):void{
+    this.buttonClicked.emit(id)
   }
 
 }
