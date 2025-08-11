@@ -27,7 +27,6 @@ export class AdminJoblist  implements OnInit {
     private readonly _adminService:AdminCompanyService,
     private readonly _cdr:ChangeDetectorRef,
     private readonly _swal: SweetAlert
-
   ) {}
 
   paginationMeta:PaginationMeta = {
@@ -50,6 +49,13 @@ export class AdminJoblist  implements OnInit {
     {header:'PostDate',field:'createdAt',type:'date'},
     {header:'jobType',field:'jobType',type:'jobType'},
     {header:'vacancies',field:'vacancies',type:'number'},
+    {header:'Action', field:'_id',type:'dropdown',
+      options:[
+        { label: 'View Details', action: 'view' },
+        { label: 'Activate', action: 'Activate' },
+        { label: 'Deactivate', action: 'deactivate' },
+      ]
+    }
   ]
 
   ngOnInit(): void {
@@ -86,10 +92,42 @@ export class AdminJoblist  implements OnInit {
     })
   }
 
+  updateUserAction(event:{action:string,row:any}){
+    const {action,row}= event
+    if(action ==='Activate'){
+      if(row.activeStatus){
+        this._swal.showErrorToast("Current User Status is Active")
+      }else{
+        this.updateJobStatus(row)
+      }
+    }else if(action ==='deactivate'){
+      if(!row.activeStatus){
+        this._swal.showErrorToast('Current User Status is Inactive')
+      }else{
+        this.updateJobStatus(row)
+      }
+    }
+  }
+
+  updateJobStatus(job:any){
+    this._adminService.ActivateJobStatus(job._id).subscribe({
+      next:(res =>{
+        if(res.success){
+          job.activeStatus = !job.activeStatus
+          this._cdr.detectChanges()
+          this._swal.showSuccessToast(res.message)
+        }
+      }),
+      error:(err =>{
+        console.log("error regading Activate job Status ",err)
+        this._swal.showErrorToast(err.error.message)
+      })
+    })
+  }
+
   onSerchInput(event:Event){
     const term = (event.target as HTMLInputElement).value
     this.serchValue.next(term)
-    this.fetchAllJobs()
   }
 
   onLimitChange(limit:number){
@@ -104,8 +142,8 @@ export class AdminJoblist  implements OnInit {
   }
 
   get Pagenumbers():number[]{
-    const pageNumber:number[]=[]
-    for(let i =1; i<this.paginationMeta.totalItems;i++){
+    const pageNumber:number[]= []
+    for(let i=1; i<this.paginationMeta.totalItems;i++){
       pageNumber.push(i)
     }
     return pageNumber

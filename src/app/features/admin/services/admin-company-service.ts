@@ -55,4 +55,8 @@ export class AdminCompanyService {
     return this._http.get<PagenatedApiResponce<JobsInterface[]>>(`/api/admin/jobs/getalljobs`,{params:httpParms, withCredentials:true})
   }
 
+  ActivateJobStatus(id:string):Observable<PlainResponce>{
+    return this._http.get<PlainResponce>(`/api/admin/jobs/updatejobstatus?id=${id}`,{withCredentials:true})
+  }
+
 }
