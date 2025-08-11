@@ -78,10 +78,12 @@ export enum jobType {
   OnSite = 'onsite'
 }
 
-export interface createJobsInterface {
-  title: string;
+export interface JobsInterface {
+  _id?:string;
 
-  _id?:string
+  companyId?:string
+
+  title: string;
 
   description: string;
 
@@ -102,8 +104,9 @@ export interface createJobsInterface {
 
   vacancies: number;
 
-  companyId: string;
+  dueDate:string;
 
-  endData?:string
+  createdAt:string
+
 
 }

@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
-      @for( row of data; track row.id){ 
+      @for( row of data; track row._id){ 
         <tr class="hover:bg-gray-50">
           @for( col of columns; track col.field){
             <td class="px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap">
@@ -28,7 +28,7 @@
                 <span 
                       class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium status-badge"
                       [ngClass]="getStatusClass(row[col.field])">
-                  {{ row[col.field] }}
+                  {{ row[col.field]? 'Active':'Completed' }}
                 </span>
                 }
                 @case ('jobType') {
@@ -57,7 +57,7 @@
                 <div class="relative">
                 <button
                     type="button"
-                    (click)="ShowDetails()"
+                    (click)="ShowDetails(row._id)"
                     class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

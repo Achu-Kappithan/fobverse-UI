@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company-service';
-import { createJobsInterface } from '../../interfaces/company.responce.interface';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { JobsInterface } from '../../interfaces/company.responce.interface';
 
 @Component({
   selector: 'app-create-job',
@@ -35,7 +35,7 @@ creatJob!: FormGroup;
       responsibility: ['', Validators.required],
       jobType: ['', Validators.required], 
       vacancies: [1, [Validators.required, Validators.min(1)]],
-      endDate: [''], 
+      dueDate: ['',[Validators.required]], 
       skills: this.fb.array([], [Validators.required]), 
       location: this.fb.array([], [Validators.required]), 
       experience: this.fb.array([]),
@@ -60,7 +60,7 @@ creatJob!: FormGroup;
     return this.creatJob.get('location') as FormArray;
   }
 
-  get experiences(): FormArray {
+  get experience(): FormArray {
     return this.creatJob.get('experience') as FormArray;
   }
 
@@ -73,7 +73,7 @@ creatJob!: FormGroup;
   }
 
   get experienceControls(): FormControl[] {
-    return this.experiences.controls as FormControl[];
+    return this.experience.controls as FormControl[];
   }
 
   addSkill() {
@@ -85,7 +85,7 @@ creatJob!: FormGroup;
   }
 
   addExperience() {
-    this.experiences.push(this.fb.control('', Validators.required)); 
+    this.experience.push(this.fb.control('', Validators.required)); 
   }
 
   removeSkill(index: number) {
@@ -97,7 +97,7 @@ creatJob!: FormGroup;
   }
 
   removeExperience(index: number) {
-    this.experiences.removeAt(index);
+    this.experience.removeAt(index);
   }
 
   saveChanges() {
@@ -107,7 +107,7 @@ creatJob!: FormGroup;
     console.log('Form Errors:', this.getFormValidationErrors());
     
     if (this.creatJob.valid) {
-      const data: createJobsInterface = this.creatJob.value;
+      const data: JobsInterface = this.creatJob.value;
       console.log('Form Submitted Successfully!', data);
       
       this._companyService.addJobs(data).subscribe({
