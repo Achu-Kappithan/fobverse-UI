@@ -55,6 +55,7 @@ export class AdminCandidatesList  implements OnInit {
   }
 
   UpdateStatus(candidate:CandidateInterface){
+    console.log(candidate)
     this._adminCandidateService.updateStatus(candidate.id!).subscribe({
       next:(res)=>{
         if(res.success){

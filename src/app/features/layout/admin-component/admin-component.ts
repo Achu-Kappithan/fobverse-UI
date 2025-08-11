@@ -13,7 +13,7 @@ import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-si
 })
 export class AdminComponent {
 
-  isSidebarOpen = true;
+  isSidebarOpen = false;
   isDarkMode = false;
 
   constructor() {

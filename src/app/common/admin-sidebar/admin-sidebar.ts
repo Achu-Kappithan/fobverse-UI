@@ -9,12 +9,11 @@ import { RouterModule } from '@angular/router';
   styleUrl: './admin-sidebar.css'
 })
 export class AdminSidebar {
-  @Input() isOpen = true; 
+  @Input() isOpen = false; 
   @Output() sidebarToggled = new EventEmitter<boolean>(); 
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
     this.sidebarToggled.emit(this.isOpen); 
   }
-
 }

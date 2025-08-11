@@ -38,6 +38,10 @@ export class CandidateHeader implements OnInit {
     }
   }
 
+  logOut(user:string){
+    this._authService.logoutUser(user)
+  }
+
   toggleModal(id: string): void {
     this.opendModal = id;
   }

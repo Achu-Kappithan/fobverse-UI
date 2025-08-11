@@ -142,7 +142,7 @@ export class AuthService {
           } else if (User === 'admin') {
             this.adminSubject.next(null);
             this._router.navigate(['/adminlogin']);
-          } else {
+          } else if(User ==='candidate') {
             this.CandidateSubject.next(null);
             this._router.navigate(['/login']);
           }

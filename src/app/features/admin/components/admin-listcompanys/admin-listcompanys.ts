@@ -54,7 +54,7 @@ export class AdminListcompanys implements OnInit {
   }
 
   UpdateStatus(company: ComapnyProfileInterface): void {
-    console.log('updatestaus', company._id);
+    console.log('updatestaus', company);
     this._companyService.updateStatus(company._id).subscribe({
       next: (res) => {
         if (res.success) {
