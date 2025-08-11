@@ -223,6 +223,11 @@ export const routes: Routes = [
           ).then((m) => m.AdminCandidatesList),
       },
       {
+        path:'joblist',
+        loadComponent:()=> import('./features/admin/components/admin-joblist/admin-joblist')
+        .then(m => m.AdminJoblist)
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./common/not-found/not-found').then((m) => m.NotFound),
