@@ -30,6 +30,19 @@ locationPattern =' /^[A-Za-z\s]+$/'
     this.minDate = (day.toISOString().split('T')[0])
   }
 
+  skillSuggestions = [
+  'React',
+  'Angular',
+  'Vue.js',
+  'Node.js',
+  'TypeScript',
+  'JavaScript',
+  'HTML',
+  'CSS',
+  'Python',
+  'Java'
+];
+
   ngOnInit(): void {
     this.initForm();
   }
@@ -86,16 +99,25 @@ locationPattern =' /^[A-Za-z\s]+$/'
     this.skills.push(this.fb.control('', Validators.required));
   }
 
+  onSuggestionSelect(index:number,event:Event){
+    const value = (event.target as HTMLInputElement).value
+    if(value){
+      this.skills.at(index).setValue(value)
+    }
+  }
+
+    removeSkill(index: number) {
+    console.log(index)
+    this.skills.removeAt(index);
+  }
+
+
   addLocation() {
     this.locations.push(this.fb.control('',[ Validators.required,Validators.pattern(this.locationPattern)]));
   }
 
   addExperience() {
     this.experience.push(this.fb.control('', Validators.required)); 
-  }
-
-  removeSkill(index: number) {
-    this.skills.removeAt(index);
   }
 
   removeLocation(index: number) {
@@ -165,4 +187,7 @@ locationPattern =' /^[A-Za-z\s]+$/'
   isFormArrayInvalid(arrayName: string): boolean {
     const formArray = this.creatJob.get(arrayName) as FormArray;
     return formArray ? formArray.invalid && (formArray.dirty || formArray.touched) : false;
-  }}
+  }
+
+  
+}
