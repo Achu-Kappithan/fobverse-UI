@@ -6,9 +6,9 @@
     [isOpen]="isSidebarOpen"
     (isOpenChange)="handleSidebarStateChange($event)"
  ></app-admin-sidebar>
-<main class="min-h-screen bg-white dark:bg-dark-lavender transition-all duration-300 ease-in-out pt-20"
+<main class="min-h-screen bg-white dark:bg-dark-lavender transition-all duration-300 ease-in-out mt-20"
       [ngClass]="{'ml-64': isSidebarOpen, 'ml-16': !isSidebarOpen}">
-  <div class="container mx-auto ">
+  <div class="container">
     <router-outlet></router-outlet>
   </div>
 </main>
