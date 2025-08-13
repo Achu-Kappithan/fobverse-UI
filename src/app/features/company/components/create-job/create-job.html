@@ -1,6 +1,6 @@
 <div class="bg-lavender font-sans">
-    <div class="min-h-screen flex flex-col items-center py-10 px-4">
-        <header class="w-full max-w-6xl flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-8">
+    <div class="min-h-screen flex flex-col items-center py-4 px-4">
+        <header class="w-full flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-8">
             <h1 class="text-2xl font-bold text-dark-gray">Add New Job</h1>
             <div class="flex items-center space-x-4">
                 <!-- Back Button -->
@@ -23,7 +23,7 @@
         </header>
 
         <!-- Single Form Group wrapping everything -->
-        <form id="job-form" [formGroup]="creatJob" (ngSubmit)="saveChanges()" class="w-full max-w-6xl">
+        <form id="job-form" [formGroup]="creatJob" (ngSubmit)="saveChanges()" class="w-full">
             <main class="flex flex-col lg:flex-row gap-8">
                 <div class="lg:w-2/3 bg-white p-8 rounded-lg shadow-lg">
                     <h2 class="text-xl font-semibold text-dark-gray mb-6">Job Details</h2>
@@ -36,6 +36,16 @@
                             @if (isInvalid('title')) {
                                 <div class="text-red-500 text-xs mt-1">
                                     Job Title is required.
+                                </div>
+                            }
+                            @if (creatJob.get('title')?.errors?.['maxlength']) {
+                                <div class="text-red-500 text-xs mt-1">
+                                Maximum 25 characters allowed.
+                                </div>
+                            }
+                             @if (creatJob.get('title')?.errors?.['pattern']) {
+                                <div class="text-red-500 text-xs mt-1">
+                                Only letters, numbers, and spaces are allowed.
                                 </div>
                             }
                         </div>
@@ -82,7 +92,7 @@
                         <!-- End Date -->
                         <div>
                             <label for="dueDate" class="block text-sm font-medium text-gray-700">Application End Date (Optional)</label>
-                            <input type="date" id="dueDate" formControlName="dueDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg p-2 focus:ring-purple-500 focus:border-purple-500">
+                            <input type="date" [min]="minDate"  formControlName="dueDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg p-2 focus:ring-purple-500 focus:border-purple-500">
                             @if (isInvalid('dueDate')) {
                                 <div class="text-red-500 text-xs mt-1">
                                     DueDate is required.
@@ -114,6 +124,11 @@
                                             </svg>
                                         </button>
                                     </div>
+                                    @if(locationControl.errors?.['pattern']){
+                                        <div class="text-red-500 text-xs mt-1">
+                                            Only letters and spaces are allowed.
+                                        </div>
+                                    }
                                 } @empty {
                                     @if (isFormArrayInvalid('location')) {
                                         <div class="text-red-500 text-xs mt-1">
