@@ -60,6 +60,9 @@ export class CompanyService {
     if(params.search){
       httpParms = httpParms.set('search',params.search)
     }
+    if(params.filtervalue){
+      httpParms = httpParms.set('filtervalue',params.filtervalue)
+    }
 
     return this.http.get<PagenatedApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{ params: httpParms,withCredentials:true})
   }
