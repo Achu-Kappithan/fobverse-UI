@@ -15,6 +15,8 @@ import { JobsInterface } from '../../interfaces/company.responce.interface';
 export class CreateJob implements OnInit {
 
 creatJob!: FormGroup;
+minDate:string = ''
+locationPattern =' /^[A-Za-z\s]+$/'
 
   constructor(
     private fb: FormBuilder,
@@ -22,7 +24,24 @@ creatJob!: FormGroup;
     private readonly _swal: SweetAlert,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute
-  ) {}
+  ) {
+    const day = new Date 
+    day.setDate(day.getDate()+1)
+    this.minDate = (day.toISOString().split('T')[0])
+  }
+
+  skillSuggestions = [
+  'React',
+  'Angular',
+  'Vue.js',
+  'Node.js',
+  'TypeScript',
+  'JavaScript',
+  'HTML',
+  'CSS',
+  'Python',
+  'Java'
+];
 
   ngOnInit(): void {
     this.initForm();
@@ -30,7 +49,7 @@ creatJob!: FormGroup;
 
   initForm() {
     this.creatJob = this.fb.group({
-      title: ['', Validators.required], 
+      title: ['', [Validators.required,Validators.maxLength(25),Validators.pattern(/^[a-zA-Z0-9 ]*$/)]], 
       description: ['', Validators.required], 
       responsibility: ['', Validators.required],
       jobType: ['', Validators.required], 
@@ -40,8 +59,8 @@ creatJob!: FormGroup;
       location: this.fb.array([], [Validators.required]), 
       experience: this.fb.array([]),
       salary: this.fb.group({
-        min: [0, [Validators.required, Validators.min(0)]],
-        max: [0, [Validators.required, Validators.min(0)]] 
+        min: [5000, [Validators.required, Validators.min(0)]],
+        max: [25000, [Validators.required, Validators.min(0)]] 
       })
     });
   }
@@ -80,16 +99,25 @@ creatJob!: FormGroup;
     this.skills.push(this.fb.control('', Validators.required));
   }
 
+  onSuggestionSelect(index:number,event:Event){
+    const value = (event.target as HTMLInputElement).value
+    if(value){
+      this.skills.at(index).setValue(value)
+    }
+  }
+
+    removeSkill(index: number) {
+    console.log(index)
+    this.skills.removeAt(index);
+  }
+
+
   addLocation() {
-    this.locations.push(this.fb.control('', Validators.required));
+    this.locations.push(this.fb.control('',[ Validators.required,Validators.pattern(this.locationPattern)]));
   }
 
   addExperience() {
     this.experience.push(this.fb.control('', Validators.required)); 
-  }
-
-  removeSkill(index: number) {
-    this.skills.removeAt(index);
   }
 
   removeLocation(index: number) {
@@ -159,4 +187,7 @@ creatJob!: FormGroup;
   isFormArrayInvalid(arrayName: string): boolean {
     const formArray = this.creatJob.get(arrayName) as FormArray;
     return formArray ? formArray.invalid && (formArray.dirty || formArray.touched) : false;
-  }}
+  }
+
+  
+}

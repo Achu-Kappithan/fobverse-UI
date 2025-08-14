@@ -19,6 +19,7 @@ import { CandidateLogin } from './features/auth/components/login/login';
 import { CandidateSignup } from './features/auth/components/signup/signup';
 import { CreateJob } from './features/company/components/create-job/create-job';
 import { JobView } from './features/company/components/jobs/job-view/job-view';
+import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
 
 export const routes: Routes = [
   {
@@ -180,6 +181,10 @@ export const routes: Routes = [
             path: 'jobview',
             component: JobView,
           },
+          {
+            path: 'jobedit',
+            component: JobEditing
+          }
         ],
       },
 

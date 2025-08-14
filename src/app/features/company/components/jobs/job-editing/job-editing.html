@@ -3,10 +3,10 @@
     <header
       class="w-full flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-8"
     >
-      <h1 class="text-2xl font-bold text-dark-gray">Add New Job</h1>
+      <h1 class="text-2xl font-bold text-dark-gray">Update job Details</h1>
       <div class="flex items-center space-x-4">
         <button
-          [routerLink]="['/company/profile']"
+          [routerLink]="['/company/joblist/jobview']"
           class="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
         >
           <svg
@@ -26,6 +26,7 @@
           Back
         </button>
         <button
+          (click)="updateChanges()"
           type="submit"
           form="job-form"
           class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
@@ -50,9 +51,8 @@
     </header>
 
     <form
-      id="job-form"
-      [formGroup]="creatJob"
-      (ngSubmit)="saveChanges()"
+      [formGroup]="jobEditForm"
+      (ngSubmit)="updateChanges()"
       class="w-full"
     >
       <main class="flex flex-col lg:flex-row gap-8">
@@ -70,15 +70,15 @@
                 formControlName="title"
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg p-2 focus:ring-purple-500 focus:border-purple-500"
               />
-              @if (isInvalid('title')) {
+              @if (jobEditForm.get('title')?.errors?.['required']) {
               <div class="text-red-500 text-xs mt-1">
                 Job Title is required.
               </div>
-              } @if (creatJob.get('title')?.errors?.['maxlength']) {
+              } @if (jobEditForm.get('title')?.errors?.['maxlength']) {
               <div class="text-red-500 text-xs mt-1">
                 Maximum 25 characters allowed.
               </div>
-              } @if (creatJob.get('title')?.errors?.['pattern']) {
+              } @if (jobEditForm.get('title')?.errors?.['pattern']) {
               <div class="text-red-500 text-xs mt-1">
                 Only letters, numbers, and spaces are allowed.
               </div>
@@ -97,7 +97,7 @@
                 rows="6"
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg focus:border-purple-500 focus:ring-purple-500 sm:text-sm p-2"
               ></textarea>
-              @if (isInvalid('description')) {
+              @if (jobEditForm.get('description')?.errors?.['required']) {
               <div class="text-red-500 text-xs mt-1">
                 Job Description is required.
               </div>
@@ -116,7 +116,7 @@
                 rows="4"
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg focus:border-purple-500 focus:ring-purple-500 sm:text-sm p-2"
               ></textarea>
-              @if (isInvalid('responsibility')) {
+              @if (jobEditForm.get('responsibility')?.errors?.['required']) {
               <div class="text-red-500 text-xs mt-1">
                 Responsibilities are required.
               </div>
@@ -140,7 +140,7 @@
                 <option value="remote">Remote</option>
                 <option value="onsite">On-Site</option>
               </select>
-              @if (isInvalid('jobType')) {
+              @if (jobEditForm.get('jobType')?.errors?.['required']) {
               <div class="text-red-500 text-xs mt-1">Job Type is required.</div>
               }
             </div>
@@ -157,7 +157,7 @@
                 formControlName="dueDate"
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-lg p-2 focus:ring-purple-500 focus:border-purple-500"
               />
-              @if (isInvalid('dueDate')) {
+              @if (jobEditForm.get('dueDate')?.errors?.['required']) {
               <div class="text-red-500 text-xs mt-1">DueDate is required.</div>
               }
             </div>
@@ -420,10 +420,15 @@
               formControlName="vacancies"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-purple focus:ring-purple-500 sm:text-sm p-2"
             />
-            @if (isInvalid('vacancies')) {
-            <div class="text-red-500 text-xs mt-1">
-              Vacancies are required and must be at least 1.
-            </div>
+            @if (jobEditForm.get('vacancies')?.touched) {
+                <div class="text-red-500 text-xs mt-1">
+                    @if (jobEditForm.get('vacancies')?.errors?.['required']) {
+                    Vacancies are required.
+                    }
+                    @if (jobEditForm.get('vacancies')?.errors?.['min']) {
+                    Must be at least 1.
+                    }
+                </div>
             }
           </div>
         </div>

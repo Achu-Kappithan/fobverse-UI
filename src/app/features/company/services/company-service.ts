@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ComapnyProfileInterface, InternalUserInterface, JobsInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 
@@ -106,6 +106,10 @@ export class CompanyService {
 
   getJobDetails(id:string):Observable<ApiResponce<JobsInterface>>{
     return this.http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`,{withCredentials:true})
+  }
+
+  updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponce<JobsInterface>>{
+    return this.http.post<ApiResponce<JobsInterface>>(`/api/jobs/updatejob?id=${id}`,data,{withCredentials:true})
   }
 
 }
