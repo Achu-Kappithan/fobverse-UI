@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
-import { JobsInterface } from '../../../company/interfaces/company.responce.interface';
 import { AdminCompanyService } from '../../services/admin-company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
@@ -10,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../shared/interfaces/table.interface';
 import { TableComponent } from '../../../../common/table-component/table-component';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { AllJobsAdminResponce } from '../../interfaces/company.responce.interface';
 
 @Component({
   selector: 'app-admin-joblist',
@@ -20,7 +20,7 @@ import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinn
 export class AdminJoblist  implements OnInit {
 
   isLoading:boolean = false
-  jobList:JobsInterface[]=[]
+  jobList:AllJobsAdminResponce[]=[]
   serchValue = new Subject<string>()
 
   constructor(
@@ -44,7 +44,7 @@ export class AdminJoblist  implements OnInit {
 
   public tablecolumns: TableColumn[]=[
     {header:'Role',field:'title',type:'text'},
-    {header:'Company',field:'',type:'text'},
+    {header:'Company',field:'companyId',type:'text'},
     {header:'status',field:'activeStatus',type:'status'},
     {header:'PostDate',field:'createdAt',type:'date'},
     {header:'jobType',field:'jobType',type:'jobType'},
