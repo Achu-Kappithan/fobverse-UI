@@ -23,7 +23,8 @@ export class UserListComponent {
   QueryParams :QueryParmsInterface = {
     page: 1,
     limit: 6,
-    search : ''
+    search : '',
+    filtervalue: ''
   }
 
   paginationMeta : PaginationMeta = {
@@ -55,7 +56,7 @@ export class UserListComponent {
   }
 
   fetchAllInternalUsers(){
-        this.isLoading = true
+    this.isLoading = true
     this._ComapnyService.getInternalUsers(this.QueryParams).subscribe({
       next:(res =>{
         if(res.success){
@@ -86,6 +87,13 @@ export class UserListComponent {
       this.QueryParams.page = newPage
       this.fetchAllInternalUsers()
     }
+  }
+
+  onfilterChange(event:Event){
+    const value = (event.target as HTMLSelectElement).value
+    this.QueryParams.filtervalue = value
+    this.QueryParams.page = 1
+    this.fetchAllInternalUsers()
   }
 
   onSerchInput(event:Event){
