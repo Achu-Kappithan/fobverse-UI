@@ -1,46 +1,49 @@
-<div class="overflow-x-auto ">
+<div class="overflow-x-auto">
   <table class="w-full table-auto min-w-full rounded-lg border-collapse text-sm sm:text-base">
     <thead class="bg-gray-50">
       <tr>
         @for( col of columns; track col.field){
-          <th class="px-3 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+          <th
+            class="px-3 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
             {{col.header}}
           </th>
         }
       </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
-      @for( row of data; track row._id){ 
+      @for( row of data; track row._id){
         <tr class="hover:bg-gray-50">
           @for( col of columns; track col.field){
-            <td class="px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap">
+            <td
+              class="px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap"
+              [attr.data-label]="col.header"
+            >
             @switch (col.type) {
-                @case ('text') {
+              @case ('text') {
                 <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ row[col.field] }}</span>
-                }
-                @case ('number') {
+              }
+              @case ('number') {
                 <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ row[col.field] | number }}</span>
-                }
-                @case ('date') {
+              }
+              @case ('date') {
                 <span class="text-xs sm:text-sm text-gray">{{ row[col.field] | date:'mediumDate' }}</span>
-                }
-                @case ('status') {
+              }
+              @case ('status') {
                 <span 
-                      class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium status-badge"
-                      [ngClass]="getStatusClass(row[col.field])">
+                  class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium status-badge"
+                  [ngClass]="getStatusClass(row[col.field])">
                   {{ row[col.field]? 'Active':'Inactive' }}
                 </span>
-                }
-                @case ('jobType') {
-                    <td class="px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap">
-                    <span 
-                      class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium"
-                      [ngClass]="getJobTypeClass(row[col.field])"> 
-                      {{row[col.field]}}
-                    </span>
-                  </td>
-                }
-                @case ('progress') {
+              }
+              @case ('jobType') {
+                <span 
+                  class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium"
+                  [ngClass]="getJobTypeClass(row[col.field])"> 
+                  {{row[col.field]}}
+                </span>
+              }
+              @case ('progress') {
                 <div>
                   <div class="flex items-center">
                     <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ row[col.field] }}%</span>
@@ -52,25 +55,25 @@
                     </div>
                   </div>
                 </div>
-                }
-                @case ('profile') {
+              }
+              @case ('profile') {
                 <div class="relative">
-                <button
+                  <button
                     type="button"
                     (click)="ShowDetails(row._id)"
                     (appClickOutside)="closeModal()"
                     class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                     view job
-                </button>
+                  </button>
                 </div>
-                }
-                @case ('dropdown') {
-                  <div class="relative">
-                <button
+              }
+              @case ('dropdown') {
+                <div class="relative">
+                  <button
                     (click)="toggleModal(row._id)"
                     type="button"
                     class="inline-flex justify-center items-center px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium text-dark-gray rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
@@ -78,46 +81,43 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                     aria-label="More options"
-                >
-                    <!-- Three dots SVG icon -->
-                    <svg
-                        class="w-4 h-4 text-purple-700"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                    >
-                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                    </svg>
-                </button>
-
-                @if (opendModal(row._id)) {
-                <div
-                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
-                    role="menu"
-                    aria-orientation="vertical"
                   >
-                    <div class="py-1" role="none">
-                      <a
-                        *ngFor="let option of col.options"
-                        href="#"
-                        class="block px-4 py-2 text-sm text-dark-gray hover:bg-gray-300 rounded-md"
-                        role="menuitem"
-                        (click)="selectOption(option.action, row); $event.preventDefault()"
-                      >
-                        {{ option.label }}
-                      </a>
+                    <svg
+                      class="w-4 h-4 text-purple-700"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                    </svg>
+                  </button>
+                  @if (opendModal(row._id)) {
+                    <div
+                      class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+                      role="menu"
+                      aria-orientation="vertical"
+                    >
+                      <div class="py-1" role="none">
+                        <a
+                          *ngFor="let option of col.options"
+                          href="#"
+                          class="block px-4 py-2 text-sm text-dark-gray hover:bg-gray-300 rounded-md"
+                          role="menuitem"
+                          (click)="selectOption(option.action, row); $event.preventDefault()"
+                        >
+                          {{ option.label }}
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                }
+                  }
                 </div>
-                }
-                @default {
-                <span *ngSwitchDefault class="text-xs sm:text-sm text-dark-gray">{{ row[col.field] }}</span>
-                }
+              }
+              @default {
+                <span class="text-xs sm:text-sm text-dark-gray">{{ row[col.field] }}</span>
+              }
             }
             </td>
           }
-          
         </tr>
       }
       @if(data.length === 0){
