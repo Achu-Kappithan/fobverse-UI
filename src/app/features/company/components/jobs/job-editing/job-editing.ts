@@ -215,7 +215,7 @@ export class JobEditing implements OnInit {
           if(res.success){
             this.jobDetails = res.data
             this._swal.showSuccessToast(res.message)
-            this._router.navigate(['/company/joblist'])
+            this._router.navigate(['../'],{relativeTo:this._route})
           }
         }),
         error:(err =>{

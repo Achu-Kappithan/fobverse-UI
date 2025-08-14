@@ -1,16 +1,45 @@
-table {
-  table-layout: auto;
-}
-
-td, th {
-  max-width: 200px;         
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
+/* On small screens, make table rows behave like blocks */
+@media (max-width: 640px) {
+  table, thead, tbody, th, td, tr { 
+    display: block; 
+  }
+  
+  /* Hide the table headers to avoid repetition */
+  thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  /* Make rows and cells style better as blocks */
+  tr { border: 1px solid #ccc; margin-bottom: 5px; }
+  td { 
+    border: none;
+    border-bottom: 1px solid #eee; 
+    position: relative;
+    padding-left: 50%; /* Make space for a pseudo-element label */
+    text-align: right;
+  }
+  
+  td:before { 
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%; 
+    padding-right: 10px; 
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+    content: attr(data-label); 
+  }
 }
 
 @media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none;
+  }
+
   td, th {
-    max-width: 120px; 
+    max-width: 120px;
   }
 }
