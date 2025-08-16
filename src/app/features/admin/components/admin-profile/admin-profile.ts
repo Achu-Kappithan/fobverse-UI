@@ -1,22 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CompanyService } from '../../services/company-service';
-import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.responce.interface';
-import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable, switchMap } from 'rxjs';
-import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { RouterModule } from '@angular/router';
+import { CompanyService } from '../../../company/services/company-service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+import { Observable, switchMap } from 'rxjs';
+import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
+import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { AdminProfileService } from '../../services/admin-profile.service';
 
 @Component({
-  selector: 'app-user-profile',
-  imports: [CommonModule,RoleDisplayPipe,ReactiveFormsModule,Passwordvalidator],
-  templateUrl: './user-profile.html',
-  styleUrl: './user-profile.css'
+  selector: 'app-admin-profile',
+  imports: [CommonModule,RouterModule,ReactiveFormsModule,RoleDisplayPipe,Passwordvalidator],
+  templateUrl: './admin-profile.html',
+  styleUrl: './admin-profile.css'
 })
-export class UserProfile implements OnInit {
+export class AdminProfile {
   activeCard: 'profile' | 'password' | 'edit' = 'profile';
-  userProfile: InternalUserInterface | null = null;
+  userProfile: any | null = null;
   isLoading = false;
   updateProfileForm!: FormGroup;
   passwordChangeForm!: FormGroup;
@@ -25,7 +26,7 @@ export class UserProfile implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private readonly _companyService: CompanyService,
+    private readonly _adminProfileService: AdminProfileService,
     private readonly _cloudinaryService:CloudinaryService,
     private readonly _cdr: ChangeDetectorRef
   ) {}
@@ -50,7 +51,7 @@ export class UserProfile implements OnInit {
 
   fetchUserProfile(): void {
     this.isLoading = true;
-    this._companyService.getUserProfile().subscribe({
+    this._adminProfileService.getUserProfile().subscribe({
       next: (res) => {
         console.log("Response for getUser", res);
         if (res.success && res.data) {
@@ -120,7 +121,7 @@ export class UserProfile implements OnInit {
     if (this.updateProfileForm.valid) {
       this.isLoading = true;
 
-      const profileData: UpdateInternalUserInterface= {
+      const profileData: any= {
         name: this.updateProfileForm.get('name')?.value,
         email: this.updateProfileForm.get('email')?.value,
       };
@@ -156,7 +157,7 @@ export class UserProfile implements OnInit {
             profileData.profileImg = undefined
           }
 
-          this._companyService.updateUserProfile(profileData).subscribe({
+          this._adminProfileService.updateUserProfile(profileData).subscribe({
             next: (res) => {
               console.log("Profile updated successfully in backend", res);
               if (res.success && res.data) {
@@ -192,7 +193,7 @@ export class UserProfile implements OnInit {
     if (this.passwordChangeForm.valid) {
       this.isLoading = true;
       const { currentPassword, newPassword } = this.passwordChangeForm.value;
-      this._companyService.changePassword(currentPassword, newPassword).subscribe({
+      this._adminProfileService.changePassword(currentPassword, newPassword).subscribe({
         next: (res) => {
           console.log("Password changed successfully", res);
           this.isLoading = false;
