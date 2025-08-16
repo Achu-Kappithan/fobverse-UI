@@ -8,18 +8,22 @@ import {
   Output,
 } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-admin-header',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './admin-header.html',
   styleUrl: './admin-header.css',
 })
 export class AdminHeader implements OnInit {
-  @Input() isSidebarOpen: boolean = true;
+  
+  activeAdmin:UserPartial | null  = null
 
+  @Input() isSidebarOpen: boolean = true;
   @Input() isDarkMode: boolean = false;
+
   @Output() darkModeToggled = new EventEmitter<boolean>();
 
   isProfileMenuOpen: boolean = false;
@@ -29,7 +33,8 @@ export class AdminHeader implements OnInit {
 
   ngOnInit(): void {
     this._authService.admin$.subscribe((val) => {
-      console.log('current user in state', val);
+      this.activeAdmin = val
+      console.log('current user in state', this.activeAdmin);
     });
     const saveTheme = localStorage.getItem('theme');
     if (saveTheme == 'dark') {

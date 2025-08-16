@@ -1,4 +1,4 @@
-<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2 bg-white dark:bg-dark-lavender shadow-md transition-colors duration-300 ease-in-out">
+<header class="fixed h-16 top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2 bg-white dark:bg-dark-lavender shadow-md transition-colors duration-300 ease-in-out">
   <div class="flex items-center">
     <img src="/logo/logo.png" alt="Fobverse Logo" class="h-10 mr-4">
   </div>
@@ -8,10 +8,10 @@
     </button>
     <div class="relative">
       <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover:bg-purple-100 dark:hover:bg-purple-700">
-        <img src="/profileimages/defaultProfile.jpg" alt="User Avatar" class="h-8 w-8 rounded-full">
+        <img [src]="activeAdmin?.profileImg" alt="User Avatar" class="h-8 w-8 rounded-full">
       </button>
       <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-lavender rounded-md shadow-lg py-1 z-10">
-        <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-purple-100 dark:hover:bg-purple-700">Profile</a>
+        <a [routerLink]="['/admin/profile']" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-purple-100 dark:hover:bg-purple-700">Profile</a>
         <a href="#" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-purple-100 dark:hover:bg-purple-700">Settings</a>
         <a (click)="logoutUser()" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-purple-100 dark:hover:bg-purple-700">Logout</a>
       </div>

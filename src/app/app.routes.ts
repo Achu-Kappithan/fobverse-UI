@@ -233,10 +233,16 @@ export const routes: Routes = [
         .then(m => m.AdminJoblist)
       },
       {
+        path: "profile",
+        loadComponent:()=> import('./features/admin/components/admin-profile/admin-profile')
+        .then(m => m.AdminProfile)
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./common/not-found/not-found').then((m) => m.NotFound),
       },
+      
     ],
   },
 
