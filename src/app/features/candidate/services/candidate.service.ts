@@ -16,8 +16,8 @@ export class CandidateService {
     return this._http.get<ApiResponce<CandidateInterface>>(`api/candidate/getprofile`,{withCredentials:true})
   }
 
-  getPublicView():Observable<ApiResponce<CandidateInterface>>{
-    return this._http.get<ApiResponce<CandidateInterface>>(`/api/cadidate/public/profile`,{withCredentials:true})
+  getPublicView(id:string):Observable<ApiResponce<CandidateInterface>>{
+    return this._http.get<ApiResponce<CandidateInterface>>(`/api/candidate/public/profile?id=${id}`,{withCredentials:true})
   }
 
   updateProfile(data:CandidateInterface):Observable<ApiResponce<CandidateInterface>>{

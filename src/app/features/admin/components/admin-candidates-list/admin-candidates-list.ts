@@ -7,10 +7,11 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 import { CandidateInterface } from '../../../candidate/interfaces/candidate.interface';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-candidates-list',
-  imports: [ClickOutsideDirective, CommonModule,LoadingSpinner,FormsModule],
+  imports: [ClickOutsideDirective,CommonModule,LoadingSpinner,FormsModule,RouterModule],
   templateUrl: './admin-candidates-list.html',
   styleUrl: './admin-candidates-list.css',
 })
@@ -19,6 +20,7 @@ export class AdminCandidatesList  implements OnInit {
   isLoading:boolean = false
   candidates:CandidateInterface[] = []
   profileImage:string ='/profileimages/defaultProfile.jpg'
+  ChildRouteActive:boolean = false
 
   QueryParms : QueryParmsInterface = {
     page : 1,
@@ -37,12 +39,13 @@ export class AdminCandidatesList  implements OnInit {
 
   constructor( 
     private readonly _adminCandidateService:AdminCandidate,
-    private readonly cdr :ChangeDetectorRef
+    private readonly _cdr :ChangeDetectorRef,
+    private readonly _route:ActivatedRoute 
   ) {}
 
   ngOnInit(): void {
+    this.checkChildRouteStatus()
     this.fetchAllCandidates()
-
     this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged()
@@ -54,6 +57,11 @@ export class AdminCandidatesList  implements OnInit {
     })
   }
 
+  checkChildRouteStatus(): void {
+    this.ChildRouteActive = this._route.firstChild !== null;
+    this._cdr.detectChanges()
+  }
+
   UpdateStatus(candidate:CandidateInterface){
     console.log(candidate)
     this._adminCandidateService.updateStatus(candidate.id!).subscribe({
@@ -61,7 +69,7 @@ export class AdminCandidatesList  implements OnInit {
         if(res.success){
           console.log("updated status ",res)
           candidate.isActive = !candidate.isActive
-          this.cdr.detectChanges()
+          this._cdr.detectChanges()
         }
       }
     })
@@ -80,13 +88,13 @@ export class AdminCandidatesList  implements OnInit {
             this.candidates = []
           }
           this.isLoading = false
-          this.cdr.detectChanges()
+          this._cdr.detectChanges()
         },
         error:(err)=>{
           console.log("error  while fetching the candiate list",err)
           this.candidates = []
           this.isLoading = false
-          this.cdr.detectChanges()
+          this._cdr.detectChanges()
         }
       })
   }

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CandidateInterface } from '../../interfaces/candidate.interface';
 import { CandidateService } from '../../services/candidate.service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 
@@ -22,7 +22,8 @@ export class CandidateProfilePublicview implements OnInit {
     private readonly _candidateService:CandidateService,
     private readonly _swal:SweetAlert,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _route:ActivatedRoute
+    private readonly _route:ActivatedRoute,
+    private readonly _router:Router
   ){}
 
   ngOnInit(): void {
@@ -37,10 +38,11 @@ export class CandidateProfilePublicview implements OnInit {
 
   fetchProfile(){
     this.isLoading = true
-    this._candidateService.getPublicView().subscribe({
+    this._candidateService.getPublicView(this.profileId!).subscribe({
       next:(res =>{
         if(res.success){
         this.profileData = res.data
+        this.isLoading = false
         this._cdr.detectChanges()
         }
       }),
@@ -51,5 +53,9 @@ export class CandidateProfilePublicview implements OnInit {
         this._cdr.detectChanges()
       })
     })
+  }
+
+  backbutton(){
+    this._router.navigate(['../'],{relativeTo:this._route})
   }
 }
