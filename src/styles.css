@@ -26,6 +26,9 @@ body {
 .bg-lavender {
   background-color: #ede7ff;
 }
+.bg-poster {
+  background-color:rgb(246, 244, 248);
+}
 .text-dark-gray {
   color: #1a1a1a;
 }
@@ -60,6 +63,10 @@ body {
 html.dark body {
   background-color: #1a202c;
   color: #cbd5e0;
+}
+
+html.dark .bg-poster {
+  background-color: #4a5568;
 }
 
 html.dark .bg-lavender {
