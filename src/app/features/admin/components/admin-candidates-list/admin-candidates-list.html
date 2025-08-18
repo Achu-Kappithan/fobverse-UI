@@ -101,7 +101,8 @@
           <span>San Diego, CA</span>
         </div>
         <a
-          href="#"
+          [routerLink]="['/admin/candidates/viewprofile']"
+          [queryParams]="{id:can.id}"
           class="text-purple font-medium hover:text-blue transition-colors flex items-center"
         >
           View Profile

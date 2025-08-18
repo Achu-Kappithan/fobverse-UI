@@ -110,9 +110,11 @@ export const routes: Routes = [
       },
       {
         path: 'joblist',
-        loadComponent: ()=> import('./features/candidate/components/candidate-joblist/candidate-joblist')
-        .then( m => m.CandidateJoblist)
-      }
+        loadComponent: () =>
+          import(
+            './features/candidate/components/candidate-joblist/candidate-joblist'
+          ).then((m) => m.CandidateJoblist),
+      },
     ],
   },
 
@@ -188,8 +190,8 @@ export const routes: Routes = [
           },
           {
             path: 'jobedit',
-            component: JobEditing
-          }
+            component: JobEditing,
+          },
         ],
       },
 
@@ -227,32 +229,40 @@ export const routes: Routes = [
       },
       {
         path: 'candidates',
+          loadComponent: ()=> import('./features/admin/components/candidates/candidates')
+          .then(m => m.Candidates),
+          children:[
+            {
+              path: '',
+              loadComponent : ()=> import('./features/admin/components/admin-candidates-list/admin-candidates-list')
+              .then(m => m.AdminCandidatesList)
+            },
+            {
+              path: 'viewprofile',
+              loadComponent : ()=> import('./features/candidate/components/candidate-profile-publicview/candidate-profile-publicview')
+              .then(m => m.CandidateProfilePublicview)
+            }
+          ]
+      },
+      {
+        path: 'joblist',
         loadComponent: () =>
           import(
-            './features/admin/components/admin-candidates-list/admin-candidates-list'
-          ).then((m) => m.AdminCandidatesList),
+            './features/admin/components/admin-joblist/admin-joblist'
+          ).then((m) => m.AdminJoblist),
       },
       {
-        path:'joblist',
-        loadComponent:()=> import('./features/admin/components/admin-joblist/admin-joblist')
-        .then(m => m.AdminJoblist)
-      },
-      {
-        path: "profile",
-        loadComponent:()=> import('./features/admin/components/admin-profile/admin-profile')
-        .then(m => m.AdminProfile)
-      },
-      {
-        path: 'viewprofile',
-        loadComponent:()=> import('./features/candidate/components/candidate-profile-publicview/candidate-profile-publicview')
-        .then(m => m.CandidateProfilePublicview)
+        path: 'profile',
+        loadComponent: () =>
+          import(
+            './features/admin/components/admin-profile/admin-profile'
+          ).then((m) => m.AdminProfile),
       },
       {
         path: '**',
         loadComponent: () =>
           import('./common/not-found/not-found').then((m) => m.NotFound),
       },
-      
     ],
   },
 
