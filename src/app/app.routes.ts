@@ -243,6 +243,11 @@ export const routes: Routes = [
         .then(m => m.AdminProfile)
       },
       {
+        path: 'viewprofile',
+        loadComponent:()=> import('./features/candidate/components/candidate-profile-publicview/candidate-profile-publicview')
+        .then(m => m.CandidateProfilePublicview)
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./common/not-found/not-found').then((m) => m.NotFound),

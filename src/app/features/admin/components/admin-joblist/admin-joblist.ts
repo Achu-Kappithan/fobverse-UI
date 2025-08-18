@@ -79,6 +79,7 @@ export class AdminJoblist  implements OnInit {
         console.log("responce for geting all jobs",res)
         if(res.success){
           this.jobList = res.data
+          this.paginationMeta = res.meta!
           this.isLoading =false
           this._cdr.detectChanges()
         }
@@ -143,7 +144,7 @@ export class AdminJoblist  implements OnInit {
 
   get Pagenumbers():number[]{
     const pageNumber:number[]= []
-    for(let i=1; i<this.paginationMeta.totalItems;i++){
+    for(let i=1; i<=this.paginationMeta.totalPages;i++){
       pageNumber.push(i)
     }
     return pageNumber
