@@ -1,25 +1,25 @@
     <nav class="sticky top-0 z-[50] bg-white shadow-xl border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
                     <img src="/logo/logo.png" alt="Fobverse Logo" class="h-10 mr-4">
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a [routerLink]="['home']" [routerLinkActive]="'text-purple-900 font-bold text-lg underline'" class="text-dark-gray hover:text-purple-900 hover:font-bold hover:underline transition-colors">Home</a>
-                    <a href="#" class="text-dark-gray hover:text-purple transition-colors">Find Job</a>
+                    <a [routerLink]="['joblist']" [routerLinkActive]="'text-purpule-900 font-bold text-lg underline'" class="text-dark-gray hover:text-purple-900 hover:font-bold hover:underline transition-colors">Find Job</a>
                     <a href="#" class="text-dark-gray hover:text-purple transition-colors">Employers</a>
                     <a href="#" class="text-dark-gray hover:text-purple transition-colors">Customer Supports</a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button (click)="toggleDarkMode()" class="p-2 rounded-full transition-colors duration-200 hover:bg-lavender dark:hover:bg-dark-purple" aria-label="Toggle dark mode">
+                <div class="relative text-left space-x-4">
+                    <!-- <button class="text-purple border border-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white transition-all">
+                        Sign In
+                    </button> -->
+                </div>
+                    <div class="relative flex text-left">
+                    <button (click)="toggleDarkMode()" class="p-2 mr-5 rounded-full transition-colors duration-200 hover:bg-lavender dark:hover:bg-dark-purple" aria-label="Toggle dark mode">
                         <i class="fas text-lg" [ngClass]="{'fa-moon text-dark-gray dark:text-dark-text': isDarkMode, 'fa-sun text-dark-gray': !isDarkMode}"></i>
                     </button>
 
-                    <button class="text-purple border border-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white transition-all">
-                        Sign In
-                    </button>
-                </div>
-                    <div class="relative text-left">
                         <button (click)="toggleModal('profileModal')" (appClickOutside)="closeModal()" class="flex items-center space-x-2 text-dark-gray dark:text-dark-text hover:text-purple dark:hover:text-purple focus:outline-none">
                             <img [src]="candidate?.profileImg ?? '/profileimages/defaultProfile.jpg'" alt="Profile" class="w-8 h-8 rounded-full border border-purple">
                             <span class="hidden md:inline font-medium">{{candidate?.email}}</span>

@@ -108,6 +108,11 @@ export const routes: Routes = [
             './features/candidate/components/update-profile/update-profile'
           ).then((m) => m.UpdateProfile),
       },
+      {
+        path: 'joblist',
+        loadComponent: ()=> import('./features/candidate/components/candidate-joblist/candidate-joblist')
+        .then( m => m.CandidateJoblist)
+      }
     ],
   },
 
