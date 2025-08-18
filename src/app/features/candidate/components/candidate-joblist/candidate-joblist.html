@@ -1,6 +1,6 @@
 <div class="bg-white min-h-screen">
   <div class="text-center shadow-lg bg-white p-16">
-    <h1 class="text-4xl md:text-5xl font-bold text-dark-gray mb-4">
+    <h1 class="text-4xl md:text-5xl font-bold text-dark-gray mb-4"> 
       Find your <span class="text-blue-500">dream job</span>
     </h1>
     <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
@@ -13,14 +13,7 @@
           <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
-          <input type="text" placeholder="Job title or keyword" class="w-full outline-none text-gray-700 placeholder-gray-400">
-        </div>
-        <div class="flex-1 flex items-center border-l md:pl-4">
-          <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
-          <input type="text" placeholder="Florence, Italy" class="w-full outline-none text-gray-700 placeholder-gray-400">
+          <input type="text" placeholder="Job title or keyword" class="w-full outline-none text-gray-700 placeholder-gray-400" (input)="onSearchInput($event)">
         </div>
         <button class="apply-btn text-white px-8 py-3 rounded-lg font-semibold whitespace-nowrap">
           Search
@@ -30,7 +23,7 @@
   </div>
 
   <div class="bg-lavander min-h-screen">
-    <header class="bg-lavander">
+    <div class="bg-lavander">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <h1 class="text-2xl font-bold text-dark-gray">Job Listings</h1>
@@ -69,56 +62,27 @@
           </div>
         </div>
       </div>
-    </header>
+    </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col lg:flex-row gap-8">
-        <div class="lg:w-1/4 shadow-lg" >
-          <div class="bg-white rounded-lg shadow-lg p-6 sticky top-8">
+        <div class="lg:w-1/4  shadow-xl">
+          <div class="bg-white rounded-lg  p-6 sticky top-8">
             <h2 class="text-lg font-semibold text-dark-gray mb-6">Filter</h2>
-
-            <div class="mb-6">
-              <div class="flex items-center justify-between">
-                <span class="text-gray-600">All Jobs</span>
-                <span class="text-sm text-gray-500">(4210)</span>
-              </div>
-              <select class="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
-                <option>Popular</option>
-                <option>Recent</option>
-                <option>Salary</option>
-              </select>
-            </div>
 
             <div class="mb-6">
               <h3 class="font-medium text-dark-gray mb-3">Salary Range</h3>
               <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">Any</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">$0 - 20k</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">$20k-40k</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">$40k-60k</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">$60k-80k</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">$80k-100k</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">$100k+</span>
+                <label *ngFor="let range of salaryRanges" class="flex items-center">
+                  <input
+                    type="radio"
+                    name="salaryRange"
+                    [value]="range"
+                    [(ngModel)]="selectedSalaryRangeOption"
+                    (change)="onSalaryRangeChange()"
+                    class="mr-2 accent-purple-600"
+                  >
+                  <span class="text-gray-600">{{ range.label }}</span>
                 </label>
               </div>
             </div>
@@ -126,251 +90,150 @@
             <div class="mb-6">
               <h3 class="font-medium text-dark-gray mb-3">Job Type</h3>
               <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">Full Time</span>
-                  <span class="ml-auto text-sm text-gray-500">(4210)</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">Part Time</span>
-                  <span class="ml-auto text-sm text-gray-500">(2843)</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">Freelance</span>
-                  <span class="ml-auto text-sm text-gray-500">(946)</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="mb-6">
-              <h3 class="font-medium text-dark-gray mb-3">Work Mode</h3>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">Remote</span>
-                  <span class="ml-auto text-sm text-gray-500">(1028)</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="mr-2">
-                  <span class="text-gray-600">Onsite</span>
-                  <span class="ml-auto text-sm text-gray-500">(2426)</span>
+                <label *ngFor="let type of availableJobTypes" class="flex items-center">
+                  <input
+                    type="checkbox"
+                    [value]="type.name"
+                    [checked]="selectedJobTypes.includes(type.name)"
+                    (change)="onJobTypeChange($event, type.name)"
+                    class="mr-2 accent-purple-600"
+                  >
+                  <span class="text-gray-600">{{ type.name }}</span>
+                  <span class="ml-auto text-sm text-gray-500">{{ type.count }}</span>
                 </label>
               </div>
             </div>
           </div>
         </div>
 
-        @if(listView) {
-          <div class="lg:w-3/4">
-            <div class="grid gap-6">
-              <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <div class="flex items-start space-x-4">
-                    <div class="w-16 h-16 bg-blue rounded-lg flex items-center justify-center">
-                      <span class="text-white text-xl font-bold">G</span>
-                    </div>
-                    <div class="flex-1">
-                      <h3 class="text-xl font-semibold text-dark-gray mb-1">Technical Support Specialist</h3>
-                      <p class="text-gray-600 mb-2">Google LLC</p>
-                      <p class="text-gray-500 text-sm mb-3">Full-time • On-site • Experien...</p>
-                      <div class="flex items-center space-x-4 text-sm text-gray-500">
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12l-2-2m0 0l-2 2m2-2v6m8-6a8 8 0 11-16 0 8 8 0 0116 0z"/>
-                          </svg>
-                          39 applicants
-                        </span>
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
-                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
-                          </svg>
-                          2d ago
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mt-4 sm:mt-0 flex space-x-3">
-                    <button
-                    class="bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
-                    <i class="fas fa-eye mr-1"></i> View Details
-                    </button>
-                    <button class="px-4 py-2 bg-purple text-white rounded-lg hover:bg-light-purple transition-colors">
-                      Apply now
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <div class="flex items-start space-x-4">
-                    <div class="w-16 h-16 bg-blue rounded-lg flex items-center justify-center">
-                      <span class="text-white text-xl font-bold">G</span>
-                    </div>
-                    <div class="flex-1">
-                      <h3 class="text-xl font-semibold text-dark-gray mb-1">Technical Support Specialist</h3>
-                      <p class="text-gray-600 mb-2">Google LLC</p>
-                      <p class="text-gray-500 text-sm mb-3">Full-time • On-site • Experien...</p>
-                      <div class="flex items-center space-x-4 text-sm text-gray-500">
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12l-2-2m0 0l-2 2m2-2v6m8-6a8 8 0 11-16 0 8 8 0 0116 0z"/>
-                          </svg>
-                          28 applicants
-                        </span>
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
-                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
-                          </svg>
-                          1w ago
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mt-4 sm:mt-0 flex space-x-3">
-                    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                      View details
-                    </button>
-                    <button class="px-4 py-2 bg-purple text-white rounded-lg hover:bg-light-purple transition-colors">
-                      Apply now
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <div class="flex items-start space-x-4">
-                    <div class="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center">
-                      <span class="text-white text-xl font-bold">🍎</span>
-                    </div>
-                    <div class="flex-1">
-                      <h3 class="text-xl font-semibold text-dark-gray mb-1">Senior UI/UX Designer</h3>
-                      <p class="text-gray-600 mb-2">Apple</p>
-                      <p class="text-gray-500 text-sm mb-3">Contract • Remote • Senior</p>
-                      <div class="flex items-center space-x-4 text-sm text-gray-500">
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12l-2-2m0 0l-2 2m2-2v6m8-6a8 8 0 11-16 0 8 8 0 0116 0z"/>
-                          </svg>
-                          67 applicants
-                        </span>
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
-                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
-                          </svg>
-                          1w ago
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mt-4 sm:mt-0 flex space-x-3">
-                    <button
-                    class="bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
-                    <i class="fas fa-eye mr-1"></i> View Details
-                    </button>
-                    <button class="px-4 py-2 bg-purple text-white rounded-lg hover:bg-light-purple transition-colors">
-                      Apply now
-                    </button>
-                  </div>
-                </div>
-              </div>
+        <!-- Main content area for job listings -->
+        <div class="lg:w-3/4">
+          @if(isLoading) {
+            <div class="flex justify-center items-center h-64">
+              <p class="text-gray-500 text-lg">Loading jobs...</p>
             </div>
-          </div>
-        } @else {
-          <div class="lg:w-3/4">
-            <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl">
-              <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200">
-                <div>
-                  <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Technical Support Specialist</h2>
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                    </svg>
-                  </div>
-                  <div class="flex items-center text-sm mb-4">
-                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded-md font-medium mr-2">PART-TIME</span>
-                    <span class="text-gray-600">Salary: 20,000 INR - 25,000 INR</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center mb-4">
-                  <img src="https://placehold.co/40x40/000000/FFFFFF?text=G" alt="Google Inc. Logo" class="w-10 h-10 rounded-full mr-3">
-                  <div>
-                    <p class="font-medium text-gray-800">Google Inc.</p>
-                    <p class="text-gray-600 text-sm flex items-center">
-                      <svg class="w-4 h-4 mr-1 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                      </svg>
-                      New Delhi, India
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex items-center mb-6">
-                  <div class="flex -space-x-2 mr-2">
-                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/FFD700/000000?text=A" alt="Avatar 1">
-                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/C0C0C0/000000?text=B" alt="Avatar 2">
-                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/CD7F32/000000?text=C" alt="Avatar 3">
-                  </div>
-                  <span class="text-gray-600 text-sm">10+ applicants</span>
-                </div>
-
-                <div class="flex space-x-4">
-                  <button class="flex-1 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-300"> <i class="fas fa-eye mr-1"></i> View details</button>
-                  <button class="flex-1 px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-300 shadow-md">Apply now</button>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200">
-                <div>
-                  <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Senior UI/UX Designer</h2>
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                    </svg>
-                  </div>
-                  <div class="flex items-center text-sm mb-4">
-                    <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-md font-medium mr-2">FULL-TIME</span>
-                    <span class="text-gray-600">Salary: $30,000 - $55,000</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center mb-4">
-                  <img src="https://placehold.co/40x40/000000/FFFFFF?text=🍎" alt="Apple Logo" class="w-10 h-10 rounded-full mr-3">
-                  <div>
-                    <p class="font-medium text-gray-800">Apple</p>
-                    <p class="text-gray-600 text-sm flex items-center">
-                      <svg class="w-4 h-4 mr-1 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                      </svg>
-                      Boston, USA
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex items-center mb-6">
-                  <div class="flex -space-x-2 mr-2">
-                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/FFD700/000000?text=D" alt="Avatar 1">
-                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/C0C0C0/000000?text=E" alt="Avatar 2">
-                    <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/CD7F32/000000?text=F" alt="Avatar 3">
-                  </div>
-                  <span class="text-gray-600 text-sm">9+ applicants</span>
-                </div>
-
-                <div class="flex space-x-4">
-                  <button class="flex-1 px-4 py-2 bg-gray-50 text-purple-700 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-300"> <i class="fas fa-eye mr-1"></i>View details</button>
-                  <button class="flex-1 px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-300 shadow-md">Apply now</button>
-                </div>
-              </div>
+          } @else if (jobList.length === 0) {
+            <div class="flex justify-center items-center h-64">
+              <p class="text-gray-500 text-lg">No jobs found matching your criteria.</p>
             </div>
-          </div>
-        }
+          } @else {
+            @if(listView) {
+              <div class="grid gap-6">
+                <div *ngFor="let job of jobList" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-start space-x-4">
+                      <div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center">
+                        <!-- <span class="text-white text-xl font-bold">{{ job.companyId?.name ? job.companyId?.name!.charAt(0) : '?' }}</span> -->
+                        <img [src]="job.companyId?.logoUrl || '/profileimages/logodefault.jpg'" class="rounded-lg"/>
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-dark-gray mb-1">{{ job.title }}</h3>
+                        <p class="text-gray-600 mb-2">{{ job.companyId?.name }}</p>
+                        <p class="text-gray-500 text-sm mb-3">{{ job.jobType }} • {{ job.location.join(', ') }} • {{ job.experience ? job.experience[0] : 'Any' }}</p>
+                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                          <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 12l-2-2m0 0l-2 2m2-2v6m8-6a8 8 0 11-16 0 8 8 0 0116 0z"/>
+                            </svg>
+                            {{ job.vacancies }} vacancies
+                          </span>
+                          <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+                              <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
+                            </svg>
+                            Due: {{ job.dueDate | date }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-4 sm:mt-0 flex space-x-3">
+                      <button
+                        class="bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
+                        <i class="fas fa-eye mr-1"></i> View Details
+                      </button>
+                      <button class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-light-purple transition-colors">
+                        Apply now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl">
+                <div *ngFor="let job of jobList" class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200">
+                  <div>
+                    <div class="flex justify-between items-start mb-4">
+                      <h2 class="text-xl font-semibold text-gray-800">{{ job.title }}</h2>
+                      <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                      </svg>
+                    </div>
+                    <div class="flex items-center text-sm mb-4">
+                      <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md font-medium mr-2">{{ job.jobType.toUpperCase() }}</span>
+                      <span class="text-gray-600">Salary: {{ job.salary.min | currency:'INR':'symbol':'1.0-0' }} - {{ job.salary.max | currency:'INR':'symbol':'1.0-0' }}</span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center mb-4">
+                      <img [src]="job.companyId?.logoUrl || '/profileimages/logodefault.jpg'"  class="w-16 h-16 rounded-full mr-3"/>
+                    <div>
+                      <p class="font-medium text-gray-800">{{ job.companyId?.name }}</p>
+                      <p class="text-gray-600 text-sm flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        {{ job.location.join(', ') }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center mb-6">
+                    <!-- <div class="flex -space-x-2 mr-2">
+                      <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/FFD700/000000?text=A" alt="Avatar 1">
+                      <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/C0C0C0/000000?text=B" alt="Avatar 2">
+                      <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/CD7F32/000000?text=C" alt="Avatar 3">
+                    </div> -->
+                    <span class="text-gray-600 text-sm">{{ job.vacancies }} applicants</span>
+                  </div>
+
+                  <div class="flex space-x-4">
+                    <button class="flex-1 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-300"> <i class="fas fa-eye mr-1"></i> View details</button>
+                    <button class="flex-1 px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-300 shadow-md">Apply now</button>
+                  </div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-8 space-x-2 w-full" >
+        <button
+          (click)="onPageChange(paginationMeta.currentPage - 1)"
+          [disabled]="paginationMeta.currentPage === 1"
+          class="px-4 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <button
+          *ngFor="let page of Pagenumbers"
+          (click)="onPageChange(page)"
+          [class.bg-purple-700]="paginationMeta.currentPage === page"
+          [class.text-white]="paginationMeta.currentPage === page"
+          [class.bg-white]="paginationMeta.currentPage !== page"
+          [class.text-gray-700]="paginationMeta.currentPage !== page"
+          class="px-4 py-2 border rounded-lg hover:bg-gray-100"
+        >
+          {{ page }}
+        </button>
+        <button
+          (click)="onPageChange(paginationMeta.currentPage + 1)"
+          [disabled]="paginationMeta.currentPage === paginationMeta.totalPages"
+          class="px-4 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>
