@@ -112,6 +112,10 @@ export class CompanyService {
     return this.http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`,{withCredentials:true})
   }
 
+  getJobPublicView(id:string):Observable<ApiResponce<JobsInterface>>{
+    return this.http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`,{withCredentials:true})
+  }
+
   updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponce<JobsInterface>>{
     return this.http.post<ApiResponce<JobsInterface>>(`/api/jobs/updatejob?id=${id}`,data,{withCredentials:true})
   }
