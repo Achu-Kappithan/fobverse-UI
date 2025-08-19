@@ -29,6 +29,10 @@ export class CompanyService {
     )
   }
 
+  getPublicView(id:string):Observable<ApiResponce<ComapnyProfileInterface>>{
+    return this.http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/public/profile?id=${id}`,{withCredentials:true})
+  }
+
 
   updateCompanyProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
     return this.http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData,{withCredentials:true})
