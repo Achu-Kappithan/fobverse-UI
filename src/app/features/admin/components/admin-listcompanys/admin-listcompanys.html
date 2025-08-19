@@ -75,7 +75,8 @@
 
           <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
             <a
-              href="#"
+              [routerLink]="['/admin/companyes/viewprofile']"
+              [queryParams]="{id:company._id}"
               class="text-purple font-medium hover:text-blue transition-colors flex items-center"
             >
               View Profile <i class="fas fa-chevron-right ml-1 text-xs"></i>

@@ -1,10 +1,10 @@
 
 @if(isLoading){
-  <div class="flex justify-center items-center min-h-[300px]">
+  <div class="flex justify-center items-center">
   <app-loading-spinner></app-loading-spinner>
 </div>
 }@else {
-  <div class="text-dark-gray">
+  <div class="text-dark-gray bg-lavender mx-12  p-8 dark:bg-lavender">
 
   <div >
   <div 
@@ -20,23 +20,17 @@
           class="h-8 w-8 rounded-full"
         />
         <span class="font-semibold text-dark-gray">{{company$?.name}}</span>
-        <i class="fas fa-chevron-down text-gray text-sm"></i>
       </div>
       <div class="flex items-center space-x-4">
-        <i class="fas fa-bell text-gray text-lg"></i>
-        <i class="fas fa-cog text-gray text-lg"></i>
         <button
-        [routerLink]="['newjob']"
-          class="bg-blue text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition-colors"
-        >
-          <i class="fas fa-plus mr-1"></i> Post a job
+            (click)="backto()"
+          class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
+          <i class="fas fa-arrow-left mr-2"></i> Back
         </button>
       </div>
     </div>
     <div
-      class="absolute top-10 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-1 rounded-full text-xs cursor-pointer"
     >
-      <i class="fas fa-pen"></i>
     </div>
 
     <div
@@ -56,15 +50,6 @@
       <div
         class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4"
       >
-        <!-- <button
-          class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-100 transition-colors flex items-center"
-        >
-          <i class="fas fa-eye mr-2"></i> Public View
-        </button> -->
-        <a [routerLink]="['updateprofile']"
-          class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
-          <i class="fas fa-cog mr-2"></i> Update Profile
-        </a>
       </div>
     </div>
 
@@ -277,7 +262,7 @@
 
     <div class="bg-white rounded-xl shadow-md p-6 mx-auto container mb-8">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
+            <h2 class="text-xl font-bold text-dark-gray">Team Members</h2>
             <div class="flex items-center space-x-4 text-gray">
                 <!-- <i (click)="openModal('addMemberModal')" class="fas fa-plus-circle"></i> -->
                 <!-- <i class="fas fa-pen"></i>
@@ -315,9 +300,6 @@
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
         <div class="flex items-center space-x-4 text-gray">
-          <i class="fas fa-plus-circle"></i>
-          <i class="fas fa-pen"></i>
-          <i class="fas fa-ellipsis-h"></i>
         </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

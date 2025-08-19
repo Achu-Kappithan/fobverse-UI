@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
@@ -26,7 +26,8 @@ export class CompanyPublicProfile implements OnInit {
     private readonly _companyService:CompanyService,
     private readonly _swal:SweetAlert,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _route:ActivatedRoute 
+    private readonly _route:ActivatedRoute,
+    private readonly _router:Router 
   ){}
 
   ngOnInit(): void {
@@ -37,7 +38,6 @@ export class CompanyPublicProfile implements OnInit {
         this.fetchCompanyDetails()
       }
     })
-    
   }
 
   fetchCompanyDetails(){
@@ -80,13 +80,17 @@ export class CompanyPublicProfile implements OnInit {
     }
   }
 
-scrollRight(): void {
+  scrollRight(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
         left: this.teamCardsContainer.nativeElement.offsetWidth / 4, 
         behavior: 'smooth'
       });
     }
+  }
+
+  backto(){
+    this._router.navigate(['../'],{relativeTo:this._route})
   }
 
 }
