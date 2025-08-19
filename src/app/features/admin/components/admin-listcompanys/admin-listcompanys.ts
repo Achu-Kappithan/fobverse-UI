@@ -7,10 +7,11 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 import { ComapnyProfileInterface } from '../../../company/interfaces/company.responce.interface';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-listcompanys',
-  imports: [CommonModule, LoadingSpinner,FormsModule],
+  imports: [CommonModule,LoadingSpinner,FormsModule,RouterModule],
   templateUrl: './admin-listcompanys.html',
   styleUrl: './admin-listcompanys.css',
 })

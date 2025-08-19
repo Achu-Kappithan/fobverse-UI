@@ -20,6 +20,7 @@ import { CandidateSignup } from './features/auth/components/signup/signup';
 import { CreateJob } from './features/company/components/create-job/create-job';
 import { JobView } from './features/company/components/jobs/job-view/job-view';
 import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
+import path from 'path';
 
 export const routes: Routes = [
   {
@@ -222,10 +223,20 @@ export const routes: Routes = [
       },
       {
         path: 'companyes',
-        loadComponent: () =>
-          import(
-            './features/admin/components/admin-listcompanys/admin-listcompanys'
-          ).then((m) => m.AdminListcompanys),
+        loadComponent: ()=> import('./features/admin/components/company/company')
+        .then(m => m.Company),
+        children:[
+          {
+            path: '',
+            loadComponent: ()=> import ('./features/admin/components/admin-listcompanys/admin-listcompanys')
+            .then( m => m.AdminListcompanys)
+          },
+          {
+            path: "viewprofile",
+            loadComponent: () => import('./features/company/components/company-public-profile/company-public-profile')
+            .then( m=> m.CompanyPublicProfile)
+          }
+        ]
       },
       {
         path: 'candidates',
