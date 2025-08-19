@@ -228,17 +228,16 @@ export class CompanyProfile implements OnInit {
     scrollLeft(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
-        left: -this.teamCardsContainer.nativeElement.offsetWidth / 4, // Scroll by one card width (approx)
+        left: -this.teamCardsContainer.nativeElement.offsetWidth / 4, 
         behavior: 'smooth'
       });
     }
   }
 
-  // Scroll right functionality
   scrollRight(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
-        left: this.teamCardsContainer.nativeElement.offsetWidth / 4, // Scroll by one card width (approx)
+        left: this.teamCardsContainer.nativeElement.offsetWidth / 4, 
         behavior: 'smooth'
       });
     }
