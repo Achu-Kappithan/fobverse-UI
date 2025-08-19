@@ -1,4 +1,4 @@
-<div class="bg-lavender">
+<div class="bg-lavender py-16 px-4">
         @if(isLoading){
     <div class="flex justify-center items-center min-h-[300px]">
         <app-loading-spinner></app-loading-spinner>
@@ -18,17 +18,12 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <a 
-                            [routerLink]="['/company/joblist']"
+                            (click)="backTo()"
                             class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                             </svg>
                             Back
-                        </a>
-                        <a [routerLink]="['/company/joblist/jobedit']"
-                            [queryParams]="{id:jobId}"
-                            class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
-                            <i class="fas fa-cog mr-2"></i> Edit Job
                         </a>
                     </div>
                 </div>

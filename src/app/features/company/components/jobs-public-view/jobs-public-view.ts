@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { JobsInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 
@@ -23,7 +23,8 @@ export class JobsPublicView  implements OnInit {
     private readonly _companyService:CompanyService,
     private readonly _swal:SweetAlert,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _route:ActivatedRoute
+    private readonly _route:ActivatedRoute,
+    private readonly _router:Router
   ){}
 
   ngOnInit(): void {
@@ -55,5 +56,9 @@ export class JobsPublicView  implements OnInit {
         this._cdr.detectChanges()
       })
     })
+  }
+
+  backTo(){
+    this._router.navigate(['../'],{relativeTo:this._route})
   }
 }
