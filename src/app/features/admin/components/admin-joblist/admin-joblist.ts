@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 import { AdminCompanyService } from '../../services/admin-company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
@@ -26,7 +26,8 @@ export class AdminJoblist  implements OnInit {
   constructor(
     private readonly _adminService:AdminCompanyService,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _swal: SweetAlert
+    private readonly _swal: SweetAlert,
+    private readonly _router:Router
   ) {}
 
   paginationMeta:PaginationMeta = {
@@ -107,6 +108,8 @@ export class AdminJoblist  implements OnInit {
       }else{
         this.updateJobStatus(row)
       }
+    }else if(action ==='view'){
+      this._router.navigate(['/admin/joblist/viewjob'],{queryParams:{id:row._id}})
     }
   }
 

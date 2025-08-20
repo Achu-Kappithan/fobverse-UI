@@ -257,10 +257,20 @@ export const routes: Routes = [
       },
       {
         path: 'joblist',
-        loadComponent: () =>
-          import(
-            './features/admin/components/admin-joblist/admin-joblist'
-          ).then((m) => m.AdminJoblist),
+        loadComponent: () => import ('./features/admin/components/adminjobs/adminjobs')
+        .then(m=> m.Adminjobs),
+        children:[
+          {
+            path: '',
+            loadComponent:()=> import('./features/admin/components/admin-joblist/admin-joblist')
+            .then(m => m.AdminJoblist)
+          },
+          {
+            path: 'viewjob',
+            loadComponent: () => import('./features/company/components/jobs-public-view/jobs-public-view')
+            .then(m => m.JobsPublicView)
+          }
+        ]
       },
       {
         path: 'profile',
