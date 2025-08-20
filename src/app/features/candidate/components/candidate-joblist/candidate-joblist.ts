@@ -6,10 +6,11 @@ import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interf
 import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface } from '../../interfaces/candidate.joblist.interface';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-candidate-joblist',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,RouterModule],
   templateUrl: './candidate-joblist.html',
   styleUrl: './candidate-joblist.css'
 })

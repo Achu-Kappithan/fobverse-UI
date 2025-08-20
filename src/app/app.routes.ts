@@ -111,11 +111,21 @@ export const routes: Routes = [
       },
       {
         path: 'joblist',
-        loadComponent: () =>
-          import(
-            './features/candidate/components/candidate-joblist/candidate-joblist'
-          ).then((m) => m.CandidateJoblist),
-      },
+        loadComponent: ()=> import ('./features/candidate/components/layout-jolist/layout-jolist')
+        .then( m => m.LayoutJolist),
+        children:[
+          {
+            path:'',
+            loadComponent: ()=> import('./features/candidate/components/candidate-joblist/candidate-joblist')
+            .then(m => m.CandidateJoblist)
+          },
+          {
+            path: 'jobsview',
+            loadComponent: ()=> import('./features/company/components/jobs-public-view/jobs-public-view')
+            .then( m => m.JobsPublicView)
+          }
+        ]
+      }
     ],
   },
 
