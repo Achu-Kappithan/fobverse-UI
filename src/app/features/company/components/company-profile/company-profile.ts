@@ -1,12 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CompanyService } from '../../services/company-service';
 import { ComapnyProfileInterface, TeamMember } from '../../interfaces/company.responce.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule,} from '@angular/router';
-import { catchError, filter, Observable, of, Subject, Subscriber, switchMap, takeUntil, tap } from 'rxjs';
+import { filter, Observable, Subject, switchMap, takeUntil} from 'rxjs';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
@@ -28,13 +28,14 @@ import { CloudinaryService } from '../../../../shared/services/cloudinary.servic
     ])
   ]
 })
-export class CompanyProfile implements OnInit {
+export class CompanyProfile implements OnInit,OnDestroy {
 
   isLoading:boolean = false
   company$:ComapnyProfileInterface | null = null
   activeModalId:string | null = null
   ChildRouteActive = false
   logoUrl:string = "/profileimages/logodefault.jpg"
+  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
 
   teamMembersForm!:FormGroup
   selectedImageFile:File | null = null
@@ -73,7 +74,7 @@ export class CompanyProfile implements OnInit {
     this._companyService.getCompanyProfile().subscribe({
       next:(res =>{
         this.company$ = res.data
-        this.logoUrl = res.data.logoUrl ?? "/profileimages/logodefault.jpg"
+        this.logoUrl = res.data.logoUrl ? this.baseUrl + res.data.logoUrl:"/profileimages/logodefault.jpg"
         this.isLoading = false
         this._cdr.detectChanges()
       }),
@@ -130,6 +131,11 @@ export class CompanyProfile implements OnInit {
     this.imagePreviewUrl = this.defaultImagePreviewSrc
   }
 
+  splitUrl(url: string): string {
+  const parts = url.split('/image/upload');
+  return parts[1]
+  }
+
 
   async addTeamMember(){
     if(this.teamMembersForm.valid){
@@ -168,7 +174,7 @@ export class CompanyProfile implements OnInit {
         next: (cludUploadResult)=>{
           console.log(cludUploadResult)
           if(cludUploadResult && cludUploadResult.secure_url){
-            teamData.image = cludUploadResult.secure_url
+            teamData.image = this.splitUrl(cludUploadResult.secure_url)
           }else{
             teamData.image = undefined
           }

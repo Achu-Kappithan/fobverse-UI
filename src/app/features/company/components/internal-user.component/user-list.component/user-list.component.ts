@@ -17,6 +17,8 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
 })
 export class UserListComponent implements OnInit, OnDestroy {
 
+  cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+
   private _subscriptions : Subscription = new Subscription()
   
   isLoading:boolean = false

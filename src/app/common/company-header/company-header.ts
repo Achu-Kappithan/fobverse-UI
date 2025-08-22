@@ -22,6 +22,7 @@ export class CompanyHeader implements OnInit {
   @Input() isDarkMode: boolean = false;
   @Output() darkModeToggled = new EventEmitter<boolean>();
   isProfileMenuOpen: boolean = false;
+  cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
   userProfile: string = '/profileimages/defaultProfile.jpg';
 
   constructor(
@@ -34,7 +35,7 @@ export class CompanyHeader implements OnInit {
     this._authService.company$.subscribe({
       next: (comp) => {
         console.log('active user', comp);
-        this.userProfile = comp?.profileImg!;
+        this.userProfile = this.cloudinaryBaseUrl+comp?.profileImg!;
         this._cdr.detectChanges();
       },
     });
