@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 import { JobsInterface } from '../../../interfaces/company.responce.interface';
+import { OpenDirOptions } from 'fs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-job-editing',
@@ -12,7 +14,9 @@ import { JobsInterface } from '../../../interfaces/company.responce.interface';
   templateUrl: './job-editing.html',
   styleUrl: './job-editing.css'
 })
-export class JobEditing implements OnInit {
+export class JobEditing implements OnInit , OnDestroy {
+
+  private _subscription:Subscription = new Subscription()
 
   jobId: string | null = null;
   jobDetails: JobsInterface | null = null;
@@ -49,12 +53,14 @@ export class JobEditing implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this._route.queryParams.subscribe(val => {
-      this.jobId = val['id'];
-      if (this.jobId) {
-        this.getJobDetails();
-      }
-    });
+    this._subscription.add(
+      this._route.queryParams.subscribe(val => {
+        this.jobId = val['id'];
+        if (this.jobId) {
+          this.getJobDetails();
+        }
+      })
+    )
   }
 
   getJobDetails() {
@@ -230,6 +236,8 @@ export class JobEditing implements OnInit {
     }
   }
 
-
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe()
+  }
 
 }

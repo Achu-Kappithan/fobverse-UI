@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.responce.interface';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../../common/loading-spinner/loading-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-job-view',
@@ -12,7 +13,10 @@ import { LoadingSpinner } from '../../../../../common/loading-spinner/loading-sp
   templateUrl: './job-view.html',
   styleUrl: './job-view.css'
 })
-export class JobView implements OnInit{
+export class JobView implements OnInit,OnDestroy{
+
+  private _subscription:Subscription = new Subscription()
+
   isLoading = false
   jobId :string| null = null
   jobDetails:JobsInterface | null = null
@@ -27,9 +31,12 @@ export class JobView implements OnInit{
 
   ngOnInit(): void {
     this.isLoading = true
-    this._route.queryParams.subscribe(parms =>{
-      this.jobId = parms['id']
-    })
+
+    this._subscription.add(
+      this._route.queryParams.subscribe(parms =>{
+        this.jobId = parms['id']
+      })
+    )
 
     if(this.jobId){
       this._companyService.getJobDetails(this.jobId).subscribe({
@@ -55,5 +62,9 @@ export class JobView implements OnInit{
       this.isLoading= false
       this._cdr.detectChanges()
     }
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe()
   }
 }
