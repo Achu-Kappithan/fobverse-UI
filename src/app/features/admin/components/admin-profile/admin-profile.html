@@ -327,12 +327,18 @@
               />
               <div
                 *ngIf="
-                  updateProfileForm.get('name')?.invalid &&
+                  updateProfileForm.get('name')?.hasError('required') &&
                   updateProfileForm.get('name')?.touched
                 "
                 class="text-red-500 text-xs mt-1"
               >
                 Name is required.
+              </div>
+              <div *ngIf="updateProfileForm.get('name')?.hasError('pattern')" class="text-red-500 text-xs mt-1">
+                Enter Valid Name
+              </div>
+              <div *ngIf="updateProfileForm.get('name')?.hasError('maxlength')" class="text-red-500 text-xs mt-1">
+                Only allowed 20 charactors
               </div>
             </div>
 

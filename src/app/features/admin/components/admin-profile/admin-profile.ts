@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CompanyService } from '../../../company/services/company-service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { Observable, switchMap } from 'rxjs';
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
@@ -38,7 +37,8 @@ export class AdminProfile {
 
   initForms(): void {
     this.updateProfileForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['',[ Validators.required,Validators.maxLength(20),
+        Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       email: ['', [Validators.email, Validators.required]]
     });
 

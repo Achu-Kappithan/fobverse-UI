@@ -57,7 +57,7 @@
         <h3 *ngIf="isOpen" class="text-dark-gray dark:text-dark-text text-sm font-bold mb-2">SETTINGS</h3>
         <ul *ngIf="isOpen" class="space-y-2">
           <li class="mb-2">
-            <a  class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
+            <a  [routerLink]="['/admin/profile']" routerLinkActive="bg-purple text-white" class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors">
               <i class="fas fa-cog mr-2"></i> Settings
             </a>
           </li>
@@ -69,7 +69,7 @@
         </ul>
         <ul *ngIf="!isOpen" class="space-y-2">
           <li class="mb-2">
-            <a class="flex items-center justify-center p-2 rounded text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors" >
+            <a [routerLink]="['/admin/profile']" routerLinkActive="bg-purple text-white" class="flex items-center justify-center p-2 rounded text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender transition-colors" >
               <i class="fas fa-cog"></i>
             </a>
           </li>
