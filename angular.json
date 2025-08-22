@@ -62,7 +62,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "allowedHosts": ["phys-pn-twins-montreal.trycloudflare.com"]
+            "allowedHosts": ["collected-panel-despite-guidance.trycloudflare.com"]
           }
         },
         "extract-i18n": {
