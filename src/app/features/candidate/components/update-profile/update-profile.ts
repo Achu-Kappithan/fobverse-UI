@@ -62,9 +62,9 @@ export class UpdateProfile implements OnInit {
 
   initForm(): void {
     this.updateProfileForm = this.fb.group({
-      name: [null, Validators.required],
+      name: [null,[ Validators.required,Validators.maxLength(10),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       profileUrl: [null],
-      aboutme: [null, Validators.required], 
+      aboutme: [null, [Validators.required,Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]], 
       coverUrl: [null],
       contactInfo: this.fb.array<FormGroup>([]),
       education: this.fb.array<FormControl>([]), 

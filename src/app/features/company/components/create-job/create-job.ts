@@ -16,7 +16,7 @@ export class CreateJob implements OnInit {
 
 creatJob!: FormGroup;
 minDate:string = ''
-locationPattern =' /^[A-Za-z\s]+$/'
+locationPattern =/^[A-Za-z\s]+$/
 
   constructor(
     private fb: FormBuilder,
