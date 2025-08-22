@@ -37,7 +37,7 @@ export class UserProfile implements OnInit {
 
   initForms(): void {
     this.updateProfileForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['',[ Validators.required, Validators.maxLength(20),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/),]],
       email: ['', [Validators.email, Validators.required]]
     });
 

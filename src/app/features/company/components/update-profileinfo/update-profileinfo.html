@@ -40,6 +40,15 @@
               <div *ngIf="companyProfileForm.get('name')?.invalid && companyProfileForm.get('name')?.touched" class="text-red-500 text-xs mt-1">
                 Company name is required.
               </div>
+
+              <div class="mt-1 text-red-500 text-xs" *ngIf="companyProfileForm.get('name')?.hasError('pattern')">
+                Enter a Valid Name
+              </div>
+
+              <div *ngIf="companyProfileForm.get('name')?.hasError('maxlength')" ngClass="mt-1 text-red-500 text-xs ">
+                Only 30 charactor Allowed
+              </div>
+              
             </div>
             <div>
               <label for="logoFile" class="block text-sm font-medium text-gray-700">Company Logo</label>
@@ -58,6 +67,12 @@
             <div>
               <label for="industry" class="block text-sm font-medium text-gray-700">Industry</label>
               <input type="text" id="industry" formControlName="industry" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500">
+              <div class="mt-5 text-red-500 text-xs " *ngIf="companyProfileForm.get('industry')?.hasError('required') && companyProfileForm.get('industry')?.touched">
+                Industry is Requied
+              </div>
+              <div class="mt-5 text-red-500 text-xs" *ngIf="companyProfileForm.get('industry')?.hasError('maxlength')">
+                Ony allowed 20 charactor
+              </div>
             </div>
           </div>
           <div>
@@ -66,6 +81,7 @@
             <div *ngIf="companyProfileForm.get('description')?.invalid && companyProfileForm.get('description')?.touched" class="text-red-500 text-xs mt-1">
               Description is required.
             </div>
+            
           </div>
         </div>
 

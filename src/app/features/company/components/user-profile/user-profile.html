@@ -334,6 +334,12 @@
               >
                 Name is required.
               </div>
+              <div *ngIf="updateProfileForm.get('name')?.hasError('pattern')" class=" text-xs text-red-500 mt-1 ">
+                Enter a Valid Name
+              </div>
+              <div *ngIf="updateProfileForm.get('name')?.hasError('maxlength')" class=" text-xs text-red-500 mt-1 ">
+                Only Allowed 20 charactors
+              </div>
             </div>
 
             <div>

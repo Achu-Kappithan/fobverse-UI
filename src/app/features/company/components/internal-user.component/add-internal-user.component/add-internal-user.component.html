@@ -1,12 +1,5 @@
 <div class="bg-lavender text-dark-gray min-h-screen flex flex-col items-center justify-center py-8 px-4 custom-scrollbar transition-colors duration-300">
 
-  <!-- <div class="absolute top-4 right-4">
-    <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg transition-all duration-300">
-      <i class="fas fa-moon dark:hidden"></i>
-      <i class="fas fa-sun hidden dark:inline"></i>
-    </button>
-  </div> -->
-
   <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 space-y-6 border border-gray-300 transition-colors duration-300">
     <h2 class="text-3xl font-bold text-center text-purple">Add New Internal User</h2>
 
@@ -21,7 +14,7 @@
             id="role"
             formControlName="role"
             class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm transition-colors duration-300
-            focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300 dark:text-dark-text
+            focus:ring-purple focus:border-purple  dark:border-gray-300 dark:text-dark-text
             dark:focus:ring-dark-purple dark:focus:border-dark-purple"
             [ngClass]="{'border-red-500': getControl('role')?.invalid && getControl('role')?.touched}"
             required>
@@ -43,13 +36,19 @@
             formControlName="name"
             placeholder="Enter user's full name"
             class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
-            transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+            transition-colors duration-300 focus:ring-purple focus:border-purple  dark:border-gray-300
             dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
             [ngClass]="{'border-red-500': getControl('name')?.invalid && getControl('name')?.touched}"
           />
           <p *ngIf="getControl('name')?.invalid && getControl('name')?.touched" class="text-red-500 text-xs mt-1">
             Name is required.
           </p>
+          <div *ngIf="createUserForm.get('name')?.hasError('pattern')" class="mt-1 text-red-500 text-xs">
+            Enter a Valid Name
+          </div>
+          <div *ngIf="createUserForm.get('name')?.hasError('maxlength')" class="mt-1 text-red-500 text-xs">
+            Only allowed 25 charactor
+          </div>
         </div>
       </div>
 
@@ -62,7 +61,7 @@
           formControlName="email"
           placeholder="user@company.com"
           class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
-          transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+          transition-colors duration-300 focus:ring-purple focus:border-purple  dark:border-gray-300
           dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
           [ngClass]="{'border-red-500': getControl('email')?.invalid && getControl('email')?.touched}"
         />
@@ -82,7 +81,7 @@
             formControlName="password"
             placeholder="Enter password"
             class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
-            transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+            transition-colors duration-300 focus:ring-purple focus:border-purple dark:border-gray-300
             dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
             [ngClass]="{'border-red-500': getControl('password')?.invalid && getControl('password')?.touched}"
           />
@@ -105,7 +104,7 @@
             formControlName="confirmPassword"
             placeholder="Confirm password"
             class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm
-            transition-colors duration-300 focus:ring-purple focus:border-purple dark:bg-gray-700 dark:border-gray-300
+            transition-colors duration-300 focus:ring-purple focus:border-purple dark:border-gray-300
             dark:text-dark-text dark:focus:ring-dark-purple dark:focus:border-dark-purple"
             [ngClass]="{
               'border-red-500':

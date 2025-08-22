@@ -56,10 +56,10 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   initForm(): void {
     this.companyProfileForm = this.fb.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required,Validators.maxLength(20),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       logoUrl: [null],
-      description: [null,Validators.required],
-      industry: [null],
+      description: [null,[Validators.required,]],
+      industry: [null,[Validators.required,Validators.maxLength(20)]],
       contactInfo: this.fb.array([]),
       officeLocation: this.fb.array([]),
       techStack: this.fb.array([]),
