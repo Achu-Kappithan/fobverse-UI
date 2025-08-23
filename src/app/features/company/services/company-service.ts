@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { ComapnyProfileInterface, InternalUserInterface, JobsInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 
@@ -10,6 +10,8 @@ import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../..
 export class CompanyService {
   public ComapnyProfileSubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
   companyProfile$ = this.ComapnyProfileSubject.asObservable()
+
+  private readonly NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q='
 
   constructor(
     private readonly http: HttpClient
@@ -118,6 +120,12 @@ export class CompanyService {
 
   updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponce<JobsInterface>>{
     return this.http.post<ApiResponce<JobsInterface>>(`/api/jobs/updatejob?id=${id}`,data,{withCredentials:true})
+  }
+
+  searchLocations(query: string): Observable<string[]> {
+  return this.http
+    .get<any[]>(`${this.NOMINATIM_URL}${query}`, { params: { format: 'json' } })
+    .pipe(map(res => res.map(item => item.display_name)));
   }
 
 }

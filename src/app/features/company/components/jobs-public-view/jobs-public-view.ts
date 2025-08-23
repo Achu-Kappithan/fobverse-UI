@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { JobsInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-jobs-public-view',
@@ -12,7 +13,9 @@ import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinn
   templateUrl: './jobs-public-view.html',
   styleUrl: './jobs-public-view.css'
 })
-export class JobsPublicView  implements OnInit {
+export class JobsPublicView  implements OnInit,OnDestroy {
+
+  private _subscription: Subscription = new Subscription()
 
   isLoading:boolean = false
   jobDetails:JobsInterface | null = null
@@ -28,13 +31,15 @@ export class JobsPublicView  implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this._route.queryParams.subscribe((val)=>{
-      this.jobId = val['id']
-      console.log("jobId",this.jobId)
-      if(this.jobId){
-        this.getJobDetails()
-      }
-    })
+    this._subscription.add(
+      this._route.queryParams.subscribe((val)=>{
+        this.jobId = val['id']
+        console.log("jobId",this.jobId)
+        if(this.jobId){
+          this.getJobDetails()
+        }
+      })
+    )
   }
 
   getJobDetails(){
@@ -60,5 +65,9 @@ export class JobsPublicView  implements OnInit {
 
   backTo(){
     this._router.navigate(['../'],{relativeTo:this._route})
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe()
   }
 }

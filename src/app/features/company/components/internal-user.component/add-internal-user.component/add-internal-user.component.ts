@@ -35,7 +35,7 @@ createUserForm!: FormGroup;
     this.createUserForm = new FormGroup(
       {
         role: new FormControl('', [Validators.required]),
-        name: new FormControl('', [Validators.required]),
+        name: new FormControl('', [Validators.required,Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/),Validators.maxLength(25)]),
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [
           Validators.required,

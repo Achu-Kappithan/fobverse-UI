@@ -19,6 +19,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
  companyProfileForm!: FormGroup;
  profileData:ComapnyProfileInterface | null = null
  loading:boolean = false
+ baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
 
   selectedLogoFile: File | null = null;
   logoPreviewUrl: string | ArrayBuffer | null = null
@@ -56,10 +57,10 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   initForm(): void {
     this.companyProfileForm = this.fb.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required,Validators.maxLength(20),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       logoUrl: [null],
-      description: [null,Validators.required],
-      industry: [null],
+      description: [null,[Validators.required,]],
+      industry: [null,[Validators.required,Validators.maxLength(20)]],
       contactInfo: this.fb.array([]),
       officeLocation: this.fb.array([]),
       techStack: this.fb.array([]),
@@ -85,6 +86,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
       if (this.profileData.logoUrl) { 
         this.logoPreviewUrl = this.profileData.logoUrl;
+        this.logoPreviewUrl = this.baseUrl+this.profileData.logoUrl;
         this.companyProfileForm.get('logoUrl')?.setValue(this.profileData.logoUrl); 
       }
 
@@ -94,8 +96,9 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       this.profileData.benafits?.forEach(benefit => this.addBenefit(benefit));
 
       this.profileData.imageGallery?.forEach(imgUrl => {
+      const fullUrl = `https://res.cloudinary.com/dl9iuhkmq/image/upload${imgUrl}`
       this.imageGallery.push(this.fb.control(imgUrl));
-      this.imageGalleryDisplay.push({file:null,publicId:this.extractPublicId(imgUrl), url: imgUrl, isNew: false })
+      this.imageGalleryDisplay.push({file:null,publicId:this.extractPublicId(fullUrl), url: fullUrl, isNew: false })
       });
     }
   }
@@ -223,6 +226,11 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     this.benafits.removeAt(index);
   }
 
+  private stripCloudinaryBase(url: string): string {
+  const parts = url.split('/image/upload');
+  return parts[1]
+  }
+
   async onSubmit():Promise<void> {
     if (this.companyProfileForm.invalid) {
       this._swal.showErrorToast('Please fill all required fields')
@@ -301,10 +309,9 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       }
 
       const finalFormData = { ...this.companyProfileForm.value };
-
       const newLogoResult = uploadedImageResults.find(r => r.isLogo);
       if (newLogoResult?.url) {
-        finalFormData.logoUrl = newLogoResult.url;
+        finalFormData.logoUrl = this.stripCloudinaryBase(newLogoResult.url)
         this.selectedLogoFile = null;
         this.logoPreviewUrl = newLogoResult.url;
       } else if (!this.selectedLogoFile && this.companyProfileForm.get('logoUrl')?.value) {
@@ -321,7 +328,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
         ...newGalleryResults.map(r => ({ file: null, publicId: r.publicId, url: r.url, isNew: false }))
       ];
 
-      finalFormData.imageGallery = combinedGalleryItems.map(item => item.url);
+      finalFormData.imageGallery = combinedGalleryItems.map(item => this.stripCloudinaryBase(item.url as string));
       this.imageGalleryDisplay = combinedGalleryItems;
 
       this.imageGallery.clear(); 

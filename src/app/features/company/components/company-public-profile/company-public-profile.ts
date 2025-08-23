@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-company-public-profile',
@@ -13,9 +14,9 @@ import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
   templateUrl: './company-public-profile.html',
   styleUrl: './company-public-profile.css'
 })
-export class CompanyPublicProfile implements OnInit {
+export class CompanyPublicProfile implements OnInit, OnDestroy {
 
-
+  private _subscription: Subscription = new Subscription()
 
   isLoading:boolean = false
   company$:ComapnyProfileInterface | null = null
@@ -31,13 +32,15 @@ export class CompanyPublicProfile implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this._route.queryParams.subscribe((val)=>{
-      this.companyId = val['id']
-      console.log(this.companyId)
-      if(this.companyId){
-        this.fetchCompanyDetails()
-      }
-    })
+    this._subscription.add(
+      this._route.queryParams.subscribe((val)=>{
+        this.companyId = val['id']
+        console.log(this.companyId)
+        if(this.companyId){
+          this.fetchCompanyDetails()
+        }
+      })
+    )
   }
 
   fetchCompanyDetails(){
@@ -91,6 +94,10 @@ export class CompanyPublicProfile implements OnInit {
 
   backto(){
     this._router.navigate(['../'],{relativeTo:this._route})
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe()
   }
 
 }

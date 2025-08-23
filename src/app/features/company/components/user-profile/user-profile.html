@@ -114,7 +114,7 @@
 
         <div class="relative w-32 h-32 mx-auto md:mx-0 mt-6 md:mt-0">
           <img
-            [src]="userProfile?.profileImg || 'https://placehold.co/150x150'"
+            [src]="cloudinaryBaseUrl+userProfile?.profileImg || 'https://placehold.co/150x150'"
             alt="User"
             class="rounded-full w-full h-full object-cover border-4 border-purple-600 shadow-lg"
           />
@@ -290,7 +290,7 @@
           <div class="relative w-32 h-32 mx-auto md:mx-0 mt-6 mb-8">
             <img
               [src]="
-                previewImage || userProfile?.profileImg || 'https://placehold.co/150x150'
+                previewImage || cloudinaryBaseUrl+userProfile?.profileImg || 'https://placehold.co/150x150'
               "
               alt="User"
               class="rounded-full w-full h-full object-cover border-4 border-purple-600 shadow-lg"
@@ -333,6 +333,12 @@
                 class="text-red-500 text-xs mt-1"
               >
                 Name is required.
+              </div>
+              <div *ngIf="updateProfileForm.get('name')?.hasError('pattern')" class=" text-xs text-red-500 mt-1 ">
+                Enter a Valid Name
+              </div>
+              <div *ngIf="updateProfileForm.get('name')?.hasError('maxlength')" class=" text-xs text-red-500 mt-1 ">
+                Only Allowed 20 charactors
               </div>
             </div>
 

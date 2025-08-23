@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { InternalUserInterface } from '../../../interfaces/company.responce.interface';
 import { CompanyService } from '../../../services/company-service';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RoleDisplayPipe } from '../../../../../shared/pipes/role-display-pipe';
 import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/apiresponce.interface';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-list.component',
@@ -15,7 +15,11 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit, OnDestroy {
+
+  cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+
+  private _subscriptions : Subscription = new Subscription()
   
   isLoading:boolean = false
   InternalUsers:InternalUserInterface[]=[]
@@ -44,15 +48,17 @@ export class UserListComponent {
   ngOnInit(): void {
     this.fetchAllInternalUsers()
 
-    this.searchTearms.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
+    this._subscriptions.add(
+      this.searchTearms.pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe((term)=>{
+        this.QueryParams.search = term
+        this.QueryParams.page =1
+        this.fetchAllInternalUsers()
+      })
     )
-    .subscribe((term)=>{
-      this.QueryParams.search = term
-      this.QueryParams.page =1
-      this.fetchAllInternalUsers()
-    })
   }
 
   fetchAllInternalUsers(){
@@ -109,5 +115,9 @@ export class UserListComponent {
     return pageNumber
   }
   removeUser(id:string){
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.unsubscribe()
   }
 }
