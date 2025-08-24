@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './candidate-joblist.css'
 })
 export class CandidateJoblist  implements OnInit {
+  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
   listView:boolean = false
   isLoading:boolean = false
 

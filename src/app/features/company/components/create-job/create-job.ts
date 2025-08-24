@@ -27,7 +27,6 @@ import {
   styleUrl: './create-job.css',
 })
 export class CreateJob implements OnInit {
-  private readonly API_BASE_URL = 'https://countriesnow.space/api/v0.1';
 
   creatJob!: FormGroup;
   minDate: string = '';

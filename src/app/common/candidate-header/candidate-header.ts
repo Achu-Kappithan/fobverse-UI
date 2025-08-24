@@ -12,6 +12,9 @@ import { ClickOutsideDirective } from '../../shared/directives/click-outside';
   styleUrl: './candidate-header.css',
 })
 export class CandidateHeader implements OnInit {
+
+  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+
   opendModal: string | null = null;
 
   @Input() isDarkMode: boolean = false;

@@ -124,7 +124,7 @@
                     <div class="flex items-start space-x-4">
                       <div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center">
                         <!-- <span class="text-white text-xl font-bold">{{ job.companyId?.name ? job.companyId?.name!.charAt(0) : '?' }}</span> -->
-                        <img [src]="job.companyId?.logoUrl || '/profileimages/logodefault.jpg'" class="rounded-lg"/>
+                        <img [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'" class="rounded-lg"/>
                       </div>
                       <div class="flex-1">
                         <h3 class="text-xl font-semibold text-dark-gray mb-1">{{ job.title }}</h3>
@@ -178,7 +178,7 @@
                   </div>
 
                   <div class="flex items-center mb-4">
-                      <img [src]="job.companyId?.logoUrl || '/profileimages/logodefault.jpg'"  class="w-16 h-16 rounded-full mr-3"/>
+                      <img [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'"  class="w-16 h-16 rounded-full mr-3"/>
                     <div>
                       <p class="font-medium text-gray-800">{{ job.companyId?.name }}</p>
                       <p class="text-gray-600 text-sm flex items-center">
