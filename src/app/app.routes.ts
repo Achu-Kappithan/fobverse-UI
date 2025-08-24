@@ -125,6 +125,11 @@ export const routes: Routes = [
             .then( m => m.JobsPublicView)
           }
         ]
+      },
+      {
+        path: "joblist/companyprofile",
+        loadComponent: ()=> import('./features/company/components/company-public-profile/company-public-profile')
+        .then(m => m.CompanyPublicProfile)
       }
     ],
   },

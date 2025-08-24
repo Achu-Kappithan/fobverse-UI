@@ -1,6 +1,6 @@
 <div class="bg-white min-h-screen">
   <div class="text-center shadow-lg bg-white p-16">
-    <h1 class="text-4xl md:text-5xl font-bold text-dark-gray mb-4"> 
+    <h1 class="text-4xl md:text-5xl font-bold text-dark-gray mb-4">
       Find your <span class="text-blue-500">dream job</span>
     </h1>
     <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
@@ -8,14 +8,33 @@
     </p>
 
     <div class="max-w-4xl mx-auto">
-      <div class="flex flex-col md:flex-row gap-4 bg-white rounded-xl shadow-lg p-4">
+      <div
+        class="flex flex-col md:flex-row gap-4 bg-white rounded-xl shadow-lg p-4"
+      >
         <div class="flex-1 flex items-center">
-          <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          <svg
+            class="w-5 h-5 text-gray-400 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
           </svg>
-          <input type="text" placeholder="Job title or keyword" class="w-full outline-none text-gray-700 placeholder-gray-400" (input)="onSearchInput($event)">
+          <input
+            type="text"
+            placeholder="Job title or keyword"
+            class="w-full outline-none text-gray-700 placeholder-gray-400"
+            (input)="onSearchInput($event)"
+          />
         </div>
-        <button class="apply-btn text-white px-8 py-3 rounded-lg font-semibold whitespace-nowrap">
+        <button
+          class="apply-btn text-white px-8 py-3 rounded-lg font-semibold whitespace-nowrap"
+        >
           Search
         </button>
       </div>
@@ -34,13 +53,19 @@
               id="gridViewBtn"
               [class.bg-purple]="!listView"
               [class.bg-gray-200]="listView"
-              class="p-2 rounded-lg hover:bg-gray-300 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg"
+              class="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5"
                 [class.text-white]="!listView"
                 [class.text-gray-600]="listView"
-                fill="currentColor" viewBox="0 0 20 20">
-                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm8 0a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm8 0a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"/>
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm8 0a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm8 0a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"
+                />
               </svg>
             </button>
 
@@ -49,14 +74,23 @@
               id="listViewBtn"
               [class.bg-purple]="listView"
               [class.bg-gray-200]="!listView"
-              class="p-2 rounded-lg hover:bg-gray-300 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg"
+              class="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5"
                 [class.text-white]="listView"
                 [class.text-gray-600]="!listView"
-                fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M4 6h12M4 10h12M4 14h12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </button>
           </div>
@@ -66,14 +100,17 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col lg:flex-row gap-8">
-        <div class="lg:w-1/4  shadow-xl">
-          <div class="bg-white rounded-lg  p-6 sticky top-8">
+        <div class="lg:w-1/4 shadow-xl">
+          <div class="bg-white rounded-lg p-6 sticky top-8">
             <h2 class="text-lg font-semibold text-dark-gray mb-6">Filter</h2>
 
             <div class="mb-6">
               <h3 class="font-medium text-dark-gray mb-3">Salary Range</h3>
               <div class="space-y-2">
-                <label *ngFor="let range of salaryRanges" class="flex items-center">
+                <label
+                  *ngFor="let range of salaryRanges"
+                  class="flex items-center"
+                >
                   <input
                     type="radio"
                     name="salaryRange"
@@ -81,7 +118,7 @@
                     [(ngModel)]="selectedSalaryRangeOption"
                     (change)="onSalaryRangeChange()"
                     class="mr-2 accent-purple-600"
-                  >
+                  />
                   <span class="text-gray-600">{{ range.label }}</span>
                 </label>
               </div>
@@ -90,16 +127,21 @@
             <div class="mb-6">
               <h3 class="font-medium text-dark-gray mb-3">Job Type</h3>
               <div class="space-y-2">
-                <label *ngFor="let type of availableJobTypes" class="flex items-center">
+                <label
+                  *ngFor="let type of availableJobTypes"
+                  class="flex items-center"
+                >
                   <input
                     type="checkbox"
                     [value]="type.name"
                     [checked]="selectedJobTypes.includes(type.name)"
                     (change)="onJobTypeChange($event, type.name)"
                     class="mr-2 accent-purple-600"
-                  >
+                  />
                   <span class="text-gray-600">{{ type.name }}</span>
-                  <span class="ml-auto text-sm text-gray-500">{{ type.count }}</span>
+                  <span class="ml-auto text-sm text-gray-500"
+                    >{{ type.count }}</span
+                  >
                 </label>
               </div>
             </div>
@@ -109,112 +151,201 @@
         <!-- Main content area for job listings -->
         <div class="lg:w-3/4">
           @if(isLoading) {
-            <div class="flex justify-center items-center h-64">
-              <p class="text-gray-500 text-lg">Loading jobs...</p>
-            </div>
+          <div class="flex justify-center items-center h-64">
+            <p class="text-gray-500 text-lg">Loading jobs...</p>
+          </div>
           } @else if (jobList.length === 0) {
-            <div class="flex justify-center items-center h-64">
-              <p class="text-gray-500 text-lg">No jobs found matching your criteria.</p>
-            </div>
-          } @else {
-            @if(listView) {
-              <div class="grid gap-6">
-                <div *ngFor="let job of jobList" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <div class="flex items-start space-x-4">
-                      <div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center">
-                        <!-- <span class="text-white text-xl font-bold">{{ job.companyId?.name ? job.companyId?.name!.charAt(0) : '?' }}</span> -->
-                        <img [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'" class="rounded-lg"/>
-                      </div>
-                      <div class="flex-1">
-                        <h3 class="text-xl font-semibold text-dark-gray mb-1">{{ job.title }}</h3>
-                        <p class="text-gray-600 mb-2">{{ job.companyId?.name }}</p>
-                        <p class="text-gray-500 text-sm mb-3">{{ job.jobType }} • {{ job.location.join(', ') }} • {{ job.experience ? job.experience[0] : 'Any' }}</p>
-                        <div class="flex items-center space-x-4 text-sm text-gray-500">
-                          <span class="flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M10 12l-2-2m0 0l-2 2m2-2v6m8-6a8 8 0 11-16 0 8 8 0 0116 0z"/>
-                            </svg>
-                            {{ job.vacancies }} vacancies
-                          </span>
-                          <span class="flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
-                              <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/>
-                            </svg>
-                            Due: {{ job.dueDate | date }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="mt-4 sm:mt-0 flex space-x-3">
-                      <button
-                        [routerLink]="['jobsview']"
-                        [queryParams]="{id:job._id}"
-                        class="bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center">
-                        <i class="fas fa-eye mr-1"></i> View Details
-                      </button>
-                      <button class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-light-purple transition-colors">
-                        Apply now
-                      </button>
+          <div class="flex justify-center items-center h-64">
+            <p class="text-gray-500 text-lg">
+              No jobs found matching your criteria.
+            </p>
+          </div>
+          } @else { @if(listView) {
+          <div class="grid gap-6">
+            <div
+              *ngFor="let job of jobList"
+              class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div class="flex items-start space-x-4">
+                  <div
+                    [routerLink]="['companyprofile']"
+                    [queryParams]="{id:job.companyId?._id}"
+                    class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center"
+                  >
+                    <!-- <span class="text-white text-xl font-bold">{{ job.companyId?.name ? job.companyId?.name!.charAt(0) : '?' }}</span> -->
+                    <img
+                      [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'"
+                      class="rounded-lg"
+                    />
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold text-dark-gray mb-1">
+                      {{ job.title }}
+                    </h3>
+                    <p class="text-gray-600 mb-2">{{ job.companyId?.name }}</p>
+                    <p class="text-gray-500 text-sm mb-3">
+                      {{ job.jobType }} • {{ job.location.join(', ') }} • {{
+                      job.experience ? job.experience[0] : 'Any' }}
+                    </p>
+                    <div
+                      class="flex items-center space-x-4 text-sm text-gray-500"
+                    >
+                      <span class="flex items-center">
+                        <svg
+                          class="w-4 h-4 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M10 12l-2-2m0 0l-2 2m2-2v6m8-6a8 8 0 11-16 0 8 8 0 0116 0z"
+                          />
+                        </svg>
+                        {{ job.vacancies }} vacancies
+                      </span>
+                      <span class="flex items-center">
+                        <svg
+                          class="w-4 h-4 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        Due: {{ job.dueDate | date }}
+                      </span>
                     </div>
                   </div>
                 </div>
+                <div class="mt-4 sm:mt-0 flex space-x-3">
+                  <button
+                    [routerLink]="['jobsview']"
+                    [queryParams]="{id:job._id}"
+                    class="bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center"
+                  >
+                    <i class="fas fa-eye mr-1"></i> View Details
+                  </button>
+                  <button
+                    class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-light-purple transition-colors"
+                  >
+                    Apply now
+                  </button>
+                </div>
               </div>
-            } @else {
-              <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl">
-                <div *ngFor="let job of jobList" class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200">
-                  <div>
-                    <div class="flex justify-between items-start mb-4">
-                      <h2 class="text-xl font-semibold text-gray-800">{{ job.title }}</h2>
-                      <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                      </svg>
-                    </div>
-                    <div class="flex items-center text-sm mb-4">
-                      <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md font-medium mr-2">{{ job.jobType.toUpperCase() }}</span>
-                      <span class="text-gray-600">Salary: {{ job.salary.min | currency:'INR':'symbol':'1.0-0' }} - {{ job.salary.max | currency:'INR':'symbol':'1.0-0' }}</span>
-                    </div>
-                  </div>
+            </div>
+          </div>
+          } @else {
+          <div
+            class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl"
+          >
+            <div
+              *ngFor="let job of jobList"
+              class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200"
+            >
+              <div>
+                <div class="flex justify-between items-start mb-4">
+                  <h2 class="text-xl font-semibold text-gray-800">
+                    {{ job.title }}
+                  </h2>
+                  <!-- <svg
+                    class="w-6 h-6 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                    ></path>
+                  </svg> -->
+                </div>
+                <div class="flex items-center text-sm mb-4">
+                  <span
+                    class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md font-medium mr-2"
+                    >{{ job.jobType.toUpperCase() }}</span
+                  >
+                  <span class="text-gray-600"
+                    >Salary: {{ job.salary.min | currency:'INR':'symbol':'1.0-0'
+                    }} - {{ job.salary.max | currency:'INR':'symbol':'1.0-0'
+                    }}</span
+                  >
+                </div>
+              </div>
 
-                  <div class="flex items-center mb-4">
-                      <img [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'"  class="w-16 h-16 rounded-full mr-3"/>
-                    <div>
-                      <p class="font-medium text-gray-800">{{ job.companyId?.name }}</p>
-                      <p class="text-gray-600 text-sm flex items-center">
-                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                        </svg>
-                        {{ job.location.join(', ') }}
-                      </p>
-                    </div>
-                  </div>
+              <div
+                [routerLink]="['companyprofile']"
+                [queryParams]="{id:job.companyId?._id}"
+                class="flex items-center mb-4"
+              >
+                <img
+                  [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'"
+                  class="w-16 h-16 rounded-full mr-3"
+                />
+                <div>
+                  <p class="font-medium text-gray-800">
+                    {{ job.companyId?.name }}
+                  </p>
+                  <p class="text-gray-600 text-sm flex items-center">
+                    <svg
+                      class="w-4 h-4 mr-1 text-gray-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    {{ job.location.join(', ') }}
+                  </p>
+                </div>
+              </div>
 
-                  <div class="flex items-center mb-6">
-                    <!-- <div class="flex -space-x-2 mr-2">
+              <div class="flex items-center mb-6">
+                <!-- <div class="flex -space-x-2 mr-2">
                       <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/FFD700/000000?text=A" alt="Avatar 1">
                       <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/C0C0C0/000000?text=B" alt="Avatar 2">
                       <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/CD7F32/000000?text=C" alt="Avatar 3">
                     </div> -->
-                    <span class="text-gray-600 text-sm">{{ job.vacancies }} applicants</span>
-                  </div>
-
-                  <div class="flex space-x-4">
-                    <button
-                     [routerLink]="['jobsview']"
-                     [queryParams]="{id:job._id}"
-                     class="flex-1 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-300">
-                      <i class="fas fa-eye mr-1"></i> View details</button>
-                    <button class="flex-1 px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-300 shadow-md">Apply now</button>
-                  </div>
-                </div>
+                <span class="text-gray-600 text-sm"
+                  >{{ job.vacancies }} applicants</span
+                >
               </div>
-            }
-          }
+
+              <div class="flex space-x-4">
+                <button
+                  [routerLink]="['jobsview']"
+                  [queryParams]="{id:job._id}"
+                  class="flex-1 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-300"
+                >
+                  <i class="fas fa-eye mr-1"></i> View details
+                </button>
+                <button
+                  class="flex-1 px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-300 shadow-md"
+                >
+                  Apply now
+                </button>
+              </div>
+            </div>
+          </div>
+          } }
         </div>
       </div>
 
-      <div class="flex justify-center mt-8 space-x-2 w-full" >
+      <div class="flex justify-center mt-8 space-x-2 w-full">
         <button
           (click)="onPageChange(paginationMeta.currentPage - 1)"
           [disabled]="paginationMeta.currentPage === 1"
