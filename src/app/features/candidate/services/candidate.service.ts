@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
 import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
-import { CandidateJobsInterface, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
+import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +61,9 @@ export class CandidateService {
 
     updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
     return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename},{withCredentials:true})
+  }
+
+  applayJob(data:jobApplicationDto):Observable<PlainResponce>{
+    return this._http.post<PlainResponce>(`/api/applications/applyjob`,data,{withCredentials:true})
   }
 }

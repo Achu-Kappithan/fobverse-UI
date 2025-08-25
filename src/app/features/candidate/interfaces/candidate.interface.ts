@@ -1,3 +1,4 @@
+import { QualificationLevel } from "../enums/candidate.enum";
 
 
 export interface CandidateInterface {
@@ -37,4 +38,9 @@ export interface ContactInfoItem {
   type: string;
 
   value: string;
+}
+
+export interface QualificationOption {
+  value: QualificationLevel;
+  label: string;
 }

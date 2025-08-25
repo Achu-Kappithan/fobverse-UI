@@ -54,9 +54,20 @@ export interface CandidateJobsInterface {
   createdAt:string
 }
 
-export interface basicJobDetails {
-  _id: string;
-  title: string;
-  description?: string;
-  location?: string;
+export interface jobApplicationDto {
+  name: string;
+
+  jobId: string 
+
+  candidateId: string;
+
+  email: string;
+
+  phone: string;
+
+  qualification: string;
+
+  experience: string;
+
+  resumeUrl: string;
 }
