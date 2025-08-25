@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
-import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
 
 @Injectable({
@@ -57,5 +57,9 @@ export class CandidateService {
       httpParams = httpParams.set('dueDate', params.dueDate); 
     }
     return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams, withCredentials: true });
+  }
+
+    updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
+    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename},{withCredentials:true})
   }
 }

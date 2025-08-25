@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^20.1.2",
     "@angular/router": "^20.1.2",
     "@tailwindcss/postcss": "^4.1.8",
+    "ng2-pdf-viewer": "^10.4.0",
+    "pdfjs-dist": "^5.4.54",
     "postcss": "^8.5.4",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.22.0",
