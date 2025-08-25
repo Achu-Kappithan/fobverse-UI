@@ -3,14 +3,15 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CandidateService } from '../../services/candidate.service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
-import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface } from '../../interfaces/candidate.joblist.interface';
+import { basicJobDetails, CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface } from '../../interfaces/candidate.joblist.interface';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
 
 @Component({
   selector: 'app-candidate-joblist',
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule,FormsModule,RouterModule,CandidateApplyjob],
   templateUrl: './candidate-joblist.html',
   styleUrl: './candidate-joblist.css'
 })
@@ -18,6 +19,8 @@ export class CandidateJoblist  implements OnInit {
   baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
   listView:boolean = false
   isLoading:boolean = false
+  openModals = new Map<string,boolean>()
+  selectedJobDetailsMap = new Map<string, CandidateJobsInterface>()
 
   jobList:CandidateJobsInterface[] = []
 
@@ -158,6 +161,24 @@ export class CandidateJoblist  implements OnInit {
       pageNumber.push(i)
     }
     return pageNumber
+  }
+
+  toggleModal(jobId: string, job: CandidateJobsInterface): void {
+    const currentState = this.openModals.get(jobId);
+    this.openModals.set(jobId, !currentState);
+    if (!currentState) {
+      this.selectedJobDetailsMap.set(jobId, job);
+    } else {
+      this.selectedJobDetailsMap.delete(jobId); 
+    }
+  }
+
+  isModalOpen(jobId:string):boolean{
+    return this.openModals.get(jobId) || false
+  }
+
+  closeModal(jobId: string): void {
+    this.openModals.set(jobId, false);
   }
 
 

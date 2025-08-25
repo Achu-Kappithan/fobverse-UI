@@ -52,6 +52,11 @@ export interface CandidateJobsInterface {
   dueDate:string;
 
   createdAt:string
+}
 
-
+export interface basicJobDetails {
+  _id: string;
+  title: string;
+  description?: string;
+  location?: string;
 }

@@ -234,11 +234,18 @@
                     <i class="fas fa-eye mr-1"></i> View Details
                   </button>
                   <button
+                  (click)="toggleModal(job._id!,job)"
                     class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-light-purple transition-colors"
                   >
                     Apply now
                   </button>
                 </div>
+                <app-candidate-applyjob
+                  [isOpen]="isModalOpen(job._id!)"
+                  [uniqueIdentifier]="job._id!"
+                  (close)="closeModal(job._id!)"
+                  [jobDetails]="selectedJobDetailsMap.get(job._id!)"
+                ></app-candidate-applyjob>
               </div>
             </div>
           </div>
@@ -334,10 +341,17 @@
                   <i class="fas fa-eye mr-1"></i> View details
                 </button>
                 <button
+                  (click)="toggleModal(job._id!,job)"
                   class="flex-1 px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition duration-300 shadow-md"
                 >
                   Apply now
                 </button>
+                <app-candidate-applyjob
+                  [isOpen]="isModalOpen(job._id!)"
+                  [uniqueIdentifier]="job._id!"
+                  (close)="closeModal(job._id!)"
+                  [jobDetails]="selectedJobDetailsMap.get(job._id!)"
+                ></app-candidate-applyjob>
               </div>
             </div>
           </div>
@@ -375,3 +389,5 @@
     </div>
   </div>
 </div>
+
+
