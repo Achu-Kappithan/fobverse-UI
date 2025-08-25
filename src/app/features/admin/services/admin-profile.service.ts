@@ -14,14 +14,14 @@ export class AdminProfileService {
   ) {}
 
   getUserProfile():Observable<ApiResponce<ProfileInterface>>{
-    return this._http.get<ApiResponce<ProfileInterface>>(`/api/admin/profile`,{withCredentials:true})
+    return this._http.get<ApiResponce<ProfileInterface>>(`/api/admin/profile`)
   }
 
   updateUserProfile(dto:UpdateAdminProfileInterface):Observable<ApiResponce<UpdateAdminProfileInterface>>{
-    return this._http.post<ApiResponce<UpdateAdminProfileInterface>>('/api/admin/updateprofile',dto,{withCredentials:true})
+    return this._http.post<ApiResponce<UpdateAdminProfileInterface>>('/api/admin/updateprofile',dto)
   }
 
   changePassword(currPass:string,newPass:string):Observable<ApiResponce<ProfileInterface>>{
-    return this._http.post<ApiResponce<ProfileInterface>>('/api/admin/updatepassword',{currPass:currPass,newPass:newPass},{withCredentials:true})
+    return this._http.post<ApiResponce<ProfileInterface>>('/api/admin/updatepassword',{currPass:currPass,newPass:newPass})
   }
 }

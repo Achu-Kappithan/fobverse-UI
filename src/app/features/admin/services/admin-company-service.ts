@@ -57,7 +57,7 @@ export class AdminCompanyService {
   }
 
   ActivateJobStatus(id:string):Observable<PlainResponce>{
-    return this._http.get<PlainResponce>(`/api/admin/jobs/updatejobstatus?id=${id}`,{withCredentials:true})
+    return this._http.get<PlainResponce>(`/api/admin/jobs/updatejobstatus?id=${id}`)
   }
 
 }
