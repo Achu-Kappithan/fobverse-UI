@@ -92,13 +92,11 @@
                 </label>
                 <div class="mt-1">
                     <select id="qualification-{{uniqueIdentifier}}" formControlName="qualification"
-                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm dark:bg-2d3748 dark:text-e2e8f0 dark:border-4a5568">
+                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm dark:bg-2d3748 dark:text-e2e8f0 dark:border-4a5568">
                         <option value="">Select your highest qualification</option>
-                        <option value="high_school">High School Diploma</option>
-                        <option value="associate">Associate's Degree</option>
-                        <option value="bachelor">Bachelor's Degree</option>
-                        <option value="master">Master's Degree</option>
-                        <option value="phd">PhD</option>
+                        <option *ngFor="let option of qualificationOptions" [value]="option.value">
+                            {{ option.label }}
+                        </option>
                     </select>
                     <div *ngIf="jobApplayForm.get('qualification')?.invalid && (jobApplayForm.get('qualification')?.dirty || jobApplayForm.get('qualification')?.touched)" class="mt-1 text-sm text-red-600">
                         <p *ngIf="jobApplayForm.get('qualification')?.errors?.['required']">Highest qualification is required.</p>
