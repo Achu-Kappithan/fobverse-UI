@@ -52,6 +52,22 @@ export interface CandidateJobsInterface {
   dueDate:string;
 
   createdAt:string
+}
 
+export interface jobApplicationDto {
+  name: string;
 
+  jobId: string 
+
+  candidateId: string;
+
+  email: string;
+
+  phone: string;
+
+  qualification: string;
+
+  experience: string;
+
+  resumeUrl: string;
 }

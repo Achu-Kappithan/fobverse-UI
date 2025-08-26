@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 import { ComapnyProfileInterface } from '../../../company/interfaces/company.responce.interface';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-admin-listcompanys',
@@ -18,7 +19,7 @@ import { RouterModule } from '@angular/router';
 export class AdminListcompanys implements OnInit {
   companies: ComapnyProfileInterface[] = [];
   isLoading: boolean = false;
-  logoUrl: string = '/profileimages/logodefault.jpg';
+  cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   paginationMeta:PaginationMeta ={
     totalItems:0,

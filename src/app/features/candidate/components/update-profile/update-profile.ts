@@ -7,6 +7,7 @@ import { forkJoin, Observable, of, switchMap } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { Router, RouterModule } from '@angular/router';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-update-profile',
@@ -26,6 +27,7 @@ export class UpdateProfile implements OnInit {
 
   selectedCover: File | null = null;
   coverPreviewUrl: string | ArrayBuffer | null = null;
+  cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   constructor(
     private fb: FormBuilder,
@@ -64,7 +66,7 @@ export class UpdateProfile implements OnInit {
     this.updateProfileForm = this.fb.group({
       name: [null,[ Validators.required,Validators.maxLength(10),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       profileUrl: [null],
-      aboutme: [null, [Validators.required,Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]], 
+      aboutme: [null, [Validators.required]], 
       coverUrl: [null],
       contactInfo: this.fb.array<FormGroup>([]),
       education: this.fb.array<FormControl>([]), 
@@ -88,7 +90,7 @@ export class UpdateProfile implements OnInit {
       this.portfolioLinks.clear();
 
       if (this.profileData.profileUrl) {
-        this.ProfilePreviewUrl = this.profileData.profileUrl;
+        this.ProfilePreviewUrl = this.cludBaseUrl+this.profileData.profileUrl;
         this.updateProfileForm.get('profileUrl')?.setValue(this.profileData.profileUrl);
       } else {
         this.ProfilePreviewUrl = null; 
@@ -96,7 +98,7 @@ export class UpdateProfile implements OnInit {
       }
 
       if (this.profileData.coverUrl) {
-        this.coverPreviewUrl = this.profileData.coverUrl;
+        this.coverPreviewUrl = this.cludBaseUrl+this.profileData.coverUrl;
         this.updateProfileForm.get('coverUrl')?.setValue(this.profileData.coverUrl);
       } else {
         this.coverPreviewUrl = null;
@@ -112,13 +114,9 @@ export class UpdateProfile implements OnInit {
     this._cdr.detectChanges(); 
   }
 
-  private extractPublicId(url: string): string | null {
-    const match = url.match(/v\d+\/(.+)\.\w+$/);
-    if (match && match[1]) {
-      return match[1];
-    }
-    console.warn('Could not extract publicId from URL:', url);
-    return null;
+  splitUrls(url: string): string {
+    const parts = url.split('/upload');
+    return parts.length > 1 ? parts[1] : url;
   }
 
   onProfileSelected(event: Event): void {
@@ -319,13 +317,13 @@ export class UpdateProfile implements OnInit {
       forkJoin([profileUpload$, coverUpload$]).subscribe({
         next: ([profileUploadResult, coverUploadResult]) => {
           if (profileUploadResult && profileUploadResult.secure_url) {
-            finalProfileData.profileUrl = profileUploadResult.secure_url;
+            finalProfileData.profileUrl = this.splitUrls(profileUploadResult.secure_url);
           } else {
             finalProfileData.profileUrl = undefined;
           }
 
           if (coverUploadResult && coverUploadResult.secure_url) {
-            finalProfileData.coverUrl = coverUploadResult.secure_url;
+            finalProfileData.coverUrl = this.splitUrls(coverUploadResult.secure_url);
           } else {
             finalProfileData.coverUrl = undefined;
           }

@@ -14,7 +14,7 @@ export class CloudinaryService {
   ){}
   
     getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponce<CloudinarySignatureResponse>> {
-      return this._http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params,{withCredentials: true})
+      return this._http.post<ApiResponce<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params)
       .pipe(
         tap(res=>[
           console.log("responce get get cludinarySignature",res)

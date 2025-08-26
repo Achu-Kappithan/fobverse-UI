@@ -2,8 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
-import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
-import { CandidateJobsInterface, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
+import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +13,15 @@ export class CandidateService {
   constructor(private readonly _http: HttpClient){}
 
   GetPorfile():Observable<ApiResponce<CandidateInterface>>{
-    return this._http.get<ApiResponce<CandidateInterface>>(`api/candidate/getprofile`,{withCredentials:true})
+    return this._http.get<ApiResponce<CandidateInterface>>(`api/candidate/getprofile`)
   }
 
   getPublicView(id:string):Observable<ApiResponce<CandidateInterface>>{
-    return this._http.get<ApiResponce<CandidateInterface>>(`/api/candidate/public/profile?id=${id}`,{withCredentials:true})
+    return this._http.get<ApiResponce<CandidateInterface>>(`/api/candidate/public/profile?id=${id}`)
   }
 
   updateProfile(data:CandidateInterface):Observable<ApiResponce<CandidateInterface>>{
-    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',data,{withCredentials:true})
+    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',data)
   }
 
   getAlljobs(params: jobsPagesAndFilterInterface): Observable<ApiResponce<CandidateJobsInterface[]>> {
@@ -56,6 +56,14 @@ export class CandidateService {
     if (params.dueDate) {
       httpParams = httpParams.set('dueDate', params.dueDate); 
     }
-    return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams, withCredentials: true });
+    return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams });
+  }
+
+    updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
+    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename})
+  }
+
+  applayJob(data:jobApplicationDto):Observable<PlainResponce>{
+    return this._http.post<PlainResponce>(`/api/applications/applyjob`,data)
   }
 }

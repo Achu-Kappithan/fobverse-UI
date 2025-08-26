@@ -21,7 +21,7 @@
                     </button>
 
                         <button (click)="toggleModal('profileModal')" (appClickOutside)="closeModal()" class="flex items-center space-x-2 text-dark-gray dark:text-dark-text hover:text-purple dark:hover:text-purple focus:outline-none">
-                            <img [src]="candidate?.profileImg ?? '/profileimages/defaultProfile.jpg'" alt="Profile" class="w-8 h-8 rounded-full border border-purple">
+                            <img [src]="candidate?.profileImg ? baseUrl+candidate?.profileImg : '/profileimages/defaultProfile.jpg'" alt="Profile" class="w-8 h-8 rounded-full border border-purple">
                             <span class="hidden md:inline font-medium">{{candidate?.email}}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>

@@ -8,7 +8,7 @@
     </button>
     <div class="relative">
       <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover:bg-purple-100 dark:hover:bg-purple-700">
-        <img [src]="activeAdmin?.profileImg" alt="User Avatar" class="h-8 w-8 rounded-full">
+        <img [src]="activeAdmin?.profileImg ? cludBaseUrl+activeAdmin?.profileImg:'/profileimages/defaultProfile.jpg'" alt="User Avatar" class="h-8 w-8 rounded-full">
       </button>
       <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-lavender rounded-md shadow-lg py-1 z-10">
         <a [routerLink]="['/admin/profile']" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-purple-100 dark:hover:bg-purple-700">Profile</a>

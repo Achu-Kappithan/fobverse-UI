@@ -10,6 +10,7 @@ import {
 import { AuthService } from '../../features/auth/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+import { environment } from '../../../env/environment';
 
 @Component({
   selector: 'app-admin-header',
@@ -20,6 +21,7 @@ import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 export class AdminHeader implements OnInit {
   
   activeAdmin:UserPartial | null  = null
+  cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   @Input() isSidebarOpen: boolean = true;
   @Input() isDarkMode: boolean = false;

@@ -35,7 +35,7 @@ export class AdminCandidate {
 
   updateStatus(id:string):Observable<PlainResponce>{
     console.log(id)
-    return this._http.get<PlainResponce>(`/api/admin/candidate/updatestatus?id=${id}`,{withCredentials:true})
+    return this._http.get<PlainResponce>(`/api/admin/candidate/updatestatus?id=${id}`)
   }
   
 }
