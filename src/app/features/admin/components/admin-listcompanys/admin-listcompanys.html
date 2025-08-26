@@ -46,7 +46,7 @@
             </p>
           </div>
           <img
-            [src]="company.logoUrl"
+            [src]="company.logoUrl? cludBaseUrl+company.logoUrl:'/profileimages/logodefault.jpg'"
             [alt]="company.name + ' Logo'"
             class="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover flex-shrink-0"
           />

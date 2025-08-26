@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-company-public-profile',
@@ -22,6 +23,8 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
   company$:ComapnyProfileInterface | null = null
   companyId:string | null = null
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
+  cludBaseUrl:string = environment.cloudinaryBaseUrl
+
 
   constructor(
     private readonly _companyService:CompanyService,

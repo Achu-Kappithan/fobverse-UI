@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-xl p-6 md:p-8 lg:p-10">
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center space-x-4">
-                <img [src]="profileData?.profileUrl || 'profileimages/defaultProfile.jpg'" alt="Candidate Profile Logo" class="rounded-full size-10">
+                <img [src]="profileData?.profileUrl ? cludBaseUrl+profileData?.profileUrl :'profileimages/defaultProfile.jpg'" alt="Candidate Profile Logo" class="rounded-full size-10">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-800">Candidate Profile</h1>
                     <p class="text-sm text-gray-500">Update your candidate profile details</p>

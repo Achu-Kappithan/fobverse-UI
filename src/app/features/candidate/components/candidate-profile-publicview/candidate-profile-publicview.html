@@ -9,7 +9,7 @@
             <div class="w-full mb-6 max-w-7xl mx-auto rounded-xl overflow-hidden shadow-md border">
                 <div class="relative bg-gradient-to-r from-pink-200 via-pink-400 to-purple-700 h-40 sm:h-48 overflow-hidden rounded-md">
                     <!-- Cover Photo Image -->
-                    <img [src]="profileData?.coverUrl" alt="Cover Photo"
+                    <img [src]="cludBaseUrl+profileData?.coverUrl" alt="Cover Photo"
                         class="w-full h-full object-cover absolute inset-0 z-0">
     
                     <!-- Edit Icon -->
@@ -23,7 +23,7 @@
                     <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-20
                                 sm:left-8 sm:-top-16 sm:translate-x-0">
                         <img
-                            [src]="profileData?.profileUrl || 'profileimages/defaultProfile.jpg'"
+                            [src]="profileData?.profileUrl ? cludBaseUrl+profileData?.profileUrl :'profileimages/defaultProfile.jpg'"
                             alt="Profile"
                             class="w-32 h-32 sm:w-44 sm:h-44 rounded-full border-4 border-white shadow-lg object-cover"
                         />
@@ -228,14 +228,22 @@
                         <h2 class="text-xl font-semibold text-gray-800">Resume</h2>
                     </div>
     
-                    <div class="relative w-full aspect-[210/297] rounded-lg overflow-hidden shadow-inner border border-gray-200">
-                        <div class="absolute inset-0 overflow-y-auto custom-scrollbar">
-                            <img src="/path/to/resume.jpg" alt="Resume Preview" class="w-full object-cover" />
-                        </div>
-                        <div class="absolute bottom-0 left-0 right-0 h-16 from-white to-transparent"></div>
+                    <div
+                    class="relative w-full aspect-[210/297] rounded-lg overflow-hidden shadow-inner border border-gray-200"
+                    >
+                    <div
+                        *ngIf="!pdfSrc"
+                        class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm"
+                    >
+                        No resume uploaded yet.
+                    </div>
+                    <iframe
+                        *ngIf="pdfSrc"
+                        [src]="pdfSrc"
+                        class="w-full h-full object-cover"
+                    ></iframe>
                     </div>
                 </div>
-    
         </div>
     </div>
 </div>

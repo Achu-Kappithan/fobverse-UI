@@ -22,12 +22,13 @@
       </div>
     </div>
 
+    @if(isLoading){
     <div
       class="flex justify-center items-center min-h-[300px]"
-      *ngIf="isLoading"
     >
       <app-loading-spinner></app-loading-spinner>
     </div>
+  }@else{
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <div
@@ -67,7 +68,7 @@
           </div>
         </div>
         <img
-          [src]="can.profileUrl ?? profileImage"
+          [src]="can.profileUrl ? cludBaseUrl+can.profileUrl : '/profileimages/defaultProfile.jpg'"
           alt="User Avatar"
           class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple"
         />
@@ -110,6 +111,7 @@
         </a>
       </div>
     </div>
+  }
 
     <div *ngIf="isLoading || candidates.length == 0" class="col-span-full text-center p-8">
       <p class="text-gray-600 text-lg">No companies found.</p>

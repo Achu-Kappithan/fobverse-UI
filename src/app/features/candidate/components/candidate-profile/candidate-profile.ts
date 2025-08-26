@@ -6,8 +6,9 @@ import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinn
 import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
-import { Observable, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -19,6 +20,7 @@ export class CandidateProfile implements OnInit {
   pdfSrc: SafeResourceUrl | null = null;
   selectedFileName: string = 'No file selected';
   selectedFile: File | null = null;
+  readonly cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   resumePdfUrl: string | null = null;
   resumeImgUrl: string | null = null;
@@ -26,7 +28,7 @@ export class CandidateProfile implements OnInit {
   profileData: CandidateInterface | null = null;
   isLoading: boolean = false;
   OpenedModal: string | null = null;
-  readonly cloudinaryBaseUrl = 'https://res.cloudinary.com/dl9iuhkmq';
+  readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
 
   constructor(
     private readonly _candidateService: CandidateService,
@@ -46,7 +48,6 @@ export class CandidateProfile implements OnInit {
       next: (profile) => {
         if (profile.success) {
           this.profileData = profile.data;
-          console.log('Profile data', this.profileData);
           if (this.profileData.resumeUrl) {
             this.setResumeUrls();
           }
@@ -63,35 +64,20 @@ export class CandidateProfile implements OnInit {
   }
 
   setResumeUrls() {
-  if (this.profileData?.resumeUrl) {
-    this.resumePdfUrl = `${this.cloudinaryBaseUrl}/image/upload${this.profileData.resumeUrl}`;
-    this.selectedFileName = this.getFileNameFromUrl(this.profileData.resumeUrl);
-    this.pdfSrc = this._sanitizer.bypassSecurityTrustResourceUrl(this.resumePdfUrl);
-    
-  } else {
-    this.resumePdfUrl = null;
-    this.resumeImgUrl = null;
-    this.selectedFileName = 'No file selected';
-    this.pdfSrc = null;
-  }
-  }
-
-
-  private generateResumeThumbnailUrl(): void {
-    if (!this.resumePdfUrl) {
-      this.resumeImgUrl = null;
-      return;
-    }
-    const transformations = 'w_400,h_566,c_fill,f_jpg,pg_1';
-
-    const parts = this.resumePdfUrl.split('/upload/');
-    if (parts.length > 1) {
-      this.resumeImgUrl = `${parts[0]}/upload/${transformations}/${parts[1]}`;
+    if (this.profileData?.resumeUrl) {
+      this.resumePdfUrl = `${this.cloudinaryBaseUrl}/image/upload${this.profileData.resumeUrl}`;
+      this.selectedFileName = this.getFileNameFromUrl(
+        this.profileData.resumeUrl
+      );
+      this.pdfSrc = this._sanitizer.bypassSecurityTrustResourceUrl(
+        this.resumePdfUrl
+      );
     } else {
-      console.warn('Invalid Cloudinary URL for thumbnail generation.');
+      this.resumePdfUrl = null;
       this.resumeImgUrl = null;
+      this.selectedFileName = 'No file selected';
+      this.pdfSrc = null;
     }
-    this._cdr.detectChanges();
   }
 
   splitUrls(url: string): string {

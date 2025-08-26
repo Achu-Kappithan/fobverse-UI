@@ -7,6 +7,7 @@ import { Observable, switchMap } from 'rxjs';
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { AdminProfileService } from '../../services/admin-profile.service';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-admin-profile',
@@ -22,6 +23,7 @@ export class AdminProfile {
   passwordChangeForm!: FormGroup;
   previewImage: string | null = null;
   selectedFile: File | null = null;
+  cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   constructor(
     private fb: FormBuilder,
@@ -58,7 +60,7 @@ export class AdminProfile {
           this.userProfile = res.data;
           this.populateProfileForm();
           if (this.userProfile.profileImg) {
-            this.previewImage = this.userProfile.profileImg;
+            this.previewImage =this.cludBaseUrl+ this.userProfile.profileImg;
           }
         }
         this.isLoading = false;
@@ -117,6 +119,11 @@ export class AdminProfile {
     if (msgElement) msgElement.classList.add('hidden');
   }
 
+  splitUrls(url: string): string {
+    const parts = url.split('/upload');
+    return parts.length > 1 ? parts[1] : url;
+  }
+
   onUpdateProfileSubmit(): void {
     if (this.updateProfileForm.valid) {
       this.isLoading = true;
@@ -150,7 +157,7 @@ export class AdminProfile {
         next: (cloudinaryUploadResult) => {
 
           if (cloudinaryUploadResult && cloudinaryUploadResult.secure_url) {
-            profileData.profileImg = cloudinaryUploadResult.secure_url
+            profileData.profileImg = this.splitUrls(cloudinaryUploadResult.secure_url)
           }else if(this.userProfile?.profileImg && !this.selectedFile){
             profileData.profileImg = this.userProfile.profileImg
           }else{
