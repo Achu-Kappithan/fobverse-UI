@@ -8,6 +8,7 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule  } from
 import { initializeUser } from './app.initializer';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
+import { credentialsInterceptor } from './shared/interceptors/credentials-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(),
-    withInterceptors([authInterceptor])),
+    withInterceptors([authInterceptor,credentialsInterceptor])),
     importProvidersFrom(SocialLoginModule),
     provideEnvironmentInitializer(initializeUser()),
     provideAnimations(),

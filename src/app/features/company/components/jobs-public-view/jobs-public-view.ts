@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-jobs-public-view',

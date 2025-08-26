@@ -8,6 +8,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-candidate-joblist',
@@ -16,7 +17,7 @@ import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
   styleUrl: './candidate-joblist.css'
 })
 export class CandidateJoblist  implements OnInit {
-  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+  baseUrl:string = environment.cloudinaryBaseUrl
   listView:boolean = false
   isLoading:boolean = false
   openModals = new Map<string,boolean>()

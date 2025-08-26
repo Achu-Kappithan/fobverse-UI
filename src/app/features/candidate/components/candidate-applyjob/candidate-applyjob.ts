@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import {
   CandidateJobsInterface,
-  jobApplicationDto,
 } from '../../interfaces/candidate.joblist.interface';
 import {
   FormBuilder,

@@ -7,7 +7,7 @@
     >
       <!-- Cover Photo Image -->
       <img
-        [src]="profileData?.coverUrl"
+        [src]="cludBaseUrl+profileData?.coverUrl"
         alt="Cover Photo"
         class="w-full h-full object-cover absolute inset-0 z-0"
       />
@@ -27,7 +27,7 @@
         class="absolute -top-16 left-1/2 -translate-x-1/2 z-20 sm:left-8 sm:-top-16 sm:translate-x-0"
       >
         <img
-          [src]="profileData?.profileUrl || 'profileimages/defaultProfile.jpg'"
+          [src]="profileData?.profileUrl ? cludBaseUrl+profileData?.profileUrl : 'profileimages/defaultProfile.jpg'"
           alt="Profile"
           class="w-32 h-32 sm:w-44 sm:h-44 rounded-full border-4 border-white shadow-lg object-cover"
         />

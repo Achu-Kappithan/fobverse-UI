@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 import { CandidateInterface } from '../../../candidate/interfaces/candidate.interface';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-admin-candidates-list',
@@ -19,8 +20,8 @@ export class AdminCandidatesList  implements OnInit {
   isdorpDownOpen: { [id: string]: boolean } = {};
   isLoading:boolean = false
   candidates:CandidateInterface[] = []
-  profileImage:string ='/profileimages/defaultProfile.jpg'
   ChildRouteActive:boolean = false
+  cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   QueryParms : QueryParmsInterface = {
     page : 1,
