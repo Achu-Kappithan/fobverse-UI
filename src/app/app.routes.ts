@@ -20,7 +20,6 @@ import { CandidateSignup } from './features/auth/components/signup/signup';
 import { CreateJob } from './features/company/components/create-job/create-job';
 import { JobView } from './features/company/components/jobs/job-view/job-view';
 import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
-import path from 'path';
 
 export const routes: Routes = [
   {
@@ -208,9 +207,13 @@ export const routes: Routes = [
             path: 'jobedit',
             component: JobEditing,
           },
+          {
+            path: 'applications',
+            loadComponent: ()=> import('./features/company/components/company-jobapplications/company-jobapplications')
+            .then(m => m.CompanyJobapplications)
+          },
         ],
       },
-
       {
         path: '**',
         loadComponent: () =>
