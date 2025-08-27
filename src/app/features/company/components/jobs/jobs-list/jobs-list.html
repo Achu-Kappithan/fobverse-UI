@@ -118,7 +118,7 @@
         [columns]="tablecolumns"
         [data]="jobs"
         (rowSelected)="onRowSelected($event)"
-        (buttonClicked)="showJobDetails($event)"
+        (dropDownAction)="updateAction($event)"
       ></app-table-component>
     </div>
     <div

@@ -107,6 +107,34 @@ export interface JobsInterface {
   dueDate:string;
 
   createdAt:string
+}
 
+export enum Stages {
+  Default = 'default',
+  Shortlisted = 'shortlisted',
+  Scheduled = 'scheduled',
+  Hired = 'hired',
+}
+
+export interface ApplicationInterface {
+  _id: string;
+
+  candidateId: string;
+
+  name: string;
+
+  Stages: Stages;
+
+  Rejected: boolean;
+
+  email: string;
+
+  phone: string;
+
+  qualification: string;
+
+  experience: string;
+
+  resumeUrl: string;
 
 }

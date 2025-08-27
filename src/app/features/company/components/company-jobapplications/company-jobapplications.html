@@ -1,0 +1,330 @@
+
+
+
+<div class="bg-white min-h-screen rounded-lg text-dark-gray hide-scrollbar">
+    <header class="bg-white rounded-lg shadow-sm border-b border-gray-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <button aria-label="Go back">
+                    <svg class="h-6 w-6 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <div class="flex flex-col">
+                    <h1 class="text-xl font-semibold">Social Media Assistant</h1>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span>Design</span>
+                        <span class="mx-2">•</span>
+                        <span>Full-Time</span>
+                        <span class="mx-2">•</span>
+                        <span>4/11 Hired</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-full border border-gray-300 text-sm flex items-center">
+                    <span class="mr-2">More Action</span>
+                    <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+<div class="mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="border-b border-gray-200">
+        <div class="flex -mb-px space-x-2 md:space-x-4">
+            <button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium leading-5 transition-colors duration-200 ease-in-out focus:outline-none"
+                    [ngClass]="activeView === 'all' ? 'text-purple-600 border border-gray-200 border-b-0 rounded-t-lg bg-white' : 'text-gray-500 border border-transparent hover:text-gray-700 hover:border-gray-300'"
+                    (click)="setView('all')">
+                All Applicants
+            </button>
+            <button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium leading-5 transition-colors duration-200 ease-in-out focus:outline-none"
+                    [ngClass]="activeView === 'qualified' ? 'text-purple-600 border border-gray-200 border-b-0 rounded-t-lg bg-white' : 'text-gray-500 border border-transparent hover:text-gray-700 hover:border-gray-300'"
+                    (click)="setView('qualified')">
+                Qualified
+            </button>
+            <button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium leading-5 transition-colors duration-200 ease-in-out focus:outline-none"
+                    [ngClass]="activeView === 'hired' ? 'text-purple-600 border border-gray-200 border-b-0 rounded-t-lg bg-white' : 'text-gray-500 border border-transparent hover:text-gray-700 hover:border-gray-300'"
+                    (click)="setView('hired')">
+                Hired
+            </button>
+        </div>
+    </div>
+</div>
+    <main *ngIf="activeView === 'all'" class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div class="flex items-center mb-4 md:mb-0">
+                <h2 class="text-xl font-semibold mr-2">Total Applicants:</h2>
+                <span class="text-xl text-gray-500">19</span>
+            </div>
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+                <div class="relative w-full md:w-64">
+                    <input type="text" placeholder="Search Applicants"
+                        class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <button
+                    class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-100 w-full md:w-auto justify-center">
+                    <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17m-3 3v2m0-8h.01" />
+                    </svg>
+                    Filter
+                </button>
+                <div class="flex space-x-2 w-full md:w-auto">
+                    <button
+                        class="px-4 py-2 bg-purple text-white rounded-md text-sm font-semibold hover:bg-hover-purpule w-full md:w-auto">
+                        Pipeline View
+                    </button>
+                    <button
+                        class="px-4 py-2 bg-gray-100 border border-gray-300 text-gray-800 rounded-md text-sm font-semibold hover:bg-gray-200 w-full md:w-auto">
+                        Table View
+                    </button>
+                </div>
+            </div>
+            </div>
+        <div class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar">
+            <div class="flex-shrink-0 w-full rounded-lg">
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar">
+                    <div class="flex-shrink-0 w-full ">
+                        <div class="flex items-center justify-between mb-4"></div>
+                        <div class="flex flex-wrap -m-1">
+                            <div class="p-1 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4">
+                                <div class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <img src="https://via.placeholder.com/40" alt="Jake Gyll"
+                                            class="h-10 w-10 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="font-medium text-dark-gray">Jake Gyll</h4>
+                                            <a href="#" class="text-sm text-purple hover:underline">View Profile</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500">
+                                        <span>Applied on</span>
+                                        <span class="font-medium">13 July, 2021</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500 mt-1">
+                                        <span>Score</span>
+                                        <span class="font-medium flex items-center">
+                                            <span class="mr-1">4.0</span>
+                                            <svg class="h-4 w-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-1 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4">
+                                <div class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <img src="https://via.placeholder.com/40" alt="Jenny Wilson"
+                                            class="h-10 w-10 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="font-medium text-dark-gray">Jenny Wilson</h4>
+                                            <a href="#" class="text-sm text-purple hover:underline">View Profile</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500">
+                                        <span>Applied on</span>
+                                        <span class="font-medium">13 July, 2021</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500 mt-1">
+                                        <span>Score</span>
+                                        <span class="font-medium flex items-center">
+                                            <span class="mr-1">0.0</span>
+                                            <svg class="h-4 w-4 text-gray-400 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-1 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4">
+                                <div class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <img src="https://via.placeholder.com/40" alt="Jacob Jones"
+                                            class="h-10 w-10 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="font-medium text-dark-gray">Jacob Jones</h4>
+                                            <a href="#" class="text-sm text-purple hover:underline">View Profile</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500">
+                                        <span>Applied on</span>
+                                        <span class="font-medium">13 July, 2021</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500 mt-1">
+                                        <span>Score</span>
+                                        <span class="font-medium flex items-center">
+                                            <span class="mr-1">0.0</span>
+                                            <svg class="h-4 w-4 text-gray-400 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-1 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4">
+                                <div class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <img src="https://via.placeholder.com/40" alt="Wade Warren"
+                                            class="h-10 w-10 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="font-medium text-dark-gray">Wade Warren</h4>
+                                            <a href="#" class="text-sm text-purple hover:underline">View Profile</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500">
+                                        <span>Applied on</span>
+                                        <span class="font-medium">13 July, 2021</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-gray-500 mt-1">
+                                        <span>Score</span>
+                                        <span class="font-medium flex items-center">
+                                            <span class="mr-1">0.0</span>
+                                            <svg class="h-4 w-4 text-gray-400 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main *ngIf="activeView === 'qualified'" class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div class="flex items-center mb-4 md:mb-0">
+                <h2 class="text-xl font-semibold mr-2">Qualified Applicants:</h2>
+                <span class="text-xl text-gray-500">...</span>
+            </div>
+            </div>
+        <div class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar">
+            <div class="flex-shrink-0 w-full rounded-lg">
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar">
+                    <div class="flex-shrink-0 w-full ">
+                        <div class="flex items-center justify-between mb-4"></div>
+                        <div class="flex flex-wrap -m-1">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <main *ngIf="activeView === 'hired'" class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div class="flex items-center mb-4 md:mb-0">
+                <h2 class="text-xl font-semibold mr-2">Hired Applicants:</h2>
+                <span class="text-xl text-gray-500">...</span>
+            </div>
+            </div>
+        <div class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar">
+            <div class="flex-shrink-0 w-full rounded-lg">
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar">
+                    <div class="flex-shrink-0 w-full ">
+                        <div class="flex items-center justify-between mb-4"></div>
+                        <div class="flex flex-wrap -m-1">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div
+      class="mt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 bg-white bg-lavender rounded-xl shadow-lg p-6"
+    >
+      <!-- Results Text -->
+      <div class="text-sm text-dark-gray">
+            Showing
+        {{ (paginationMeta.currentPage - 1) * paginationMeta.itemsPerPage + 1 }}
+        to
+        {{
+        paginationMeta.currentPage * paginationMeta.itemsPerPage >
+        paginationMeta.totalItems
+            ? paginationMeta.totalItems
+            : paginationMeta.currentPage * paginationMeta.itemsPerPage
+        }}
+        of {{ paginationMeta.totalItems }} results
+    </div>
+
+      <!-- Pagination Controls -->
+      <div
+        class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4"
+      >
+        <!-- Items per page dropdown -->
+        <div class="flex items-center space-x-2">
+          <label for="itemsPerPage" class="text-sm text-dark-gray"
+            >Items per page:</label
+          >
+          <select
+          [(ngModel)]="QueryParams.limit"
+          (change)="onLimitChange(QueryParams.limit!)"
+            id="itemsPerPage"
+            class="py-2 px-3 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-white text-dark-gray"
+          >
+            <option [ngValue]="3">3</option>
+            <option [ngValue]="6">6</option>
+            <option [ngValue]="9">9</option>
+            <option [ngValue]="15">15</option>
+          </select>
+        </div>
+
+        <!-- Previous/Next & Page Numbers -->
+        <nav
+          class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px"
+          aria-label="Pagination"
+        >
+          <!-- Previous -->
+          <button
+          (click)="onPageChange(paginationMeta.currentPage -1)"
+          [disabled]="paginationMeta.currentPage === 1 || isLoading"
+
+            class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+
+          <!-- Page numbers -->
+          <ng-container *ngFor=" let pageNum of pagenumbers" >
+        <button
+          *ngIf="pageNum <= paginationMeta.totalPages"
+          (click)="onPageChange(pageNum)"
+          [ngClass]="{
+            'bg-purple text-white': pageNum === paginationMeta.currentPage,
+            'bg-white text-purple hover:bg-lavender': pageNum !== paginationMeta.currentPage
+          }"
+          class="relative inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium"
+        >
+          {{ pageNum }}
+        </button>
+          </ng-container>
+
+          <!-- Next -->
+          <button
+            (click)="onPageChange(paginationMeta.currentPage + 1)"
+            [disabled]="paginationMeta.currentPage === paginationMeta.totalPages || isLoading"
+            class="relative inline-flex items-center px-4 py-2 rounded-r-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </nav>
+      </div>
+    </div>

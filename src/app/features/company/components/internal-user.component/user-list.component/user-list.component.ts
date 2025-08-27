@@ -8,6 +8,7 @@ import { RoleDisplayPipe } from '../../../../../shared/pipes/role-display-pipe';
 import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/apiresponce.interface';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { environment } from '../../../../../../env/environment';
 
 @Component({
   selector: 'app-user-list.component',
@@ -17,7 +18,7 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
 })
 export class UserListComponent implements OnInit, OnDestroy {
 
-  cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+  cloudinaryBaseUrl = environment.cloudinaryBaseUrl
 
   private _subscriptions : Subscription = new Subscription()
   

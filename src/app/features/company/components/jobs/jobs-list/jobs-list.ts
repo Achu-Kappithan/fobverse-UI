@@ -38,7 +38,12 @@ export class JobsList implements OnInit {
     { header: 'jobType', field: 'jobType', type: 'jobType' },
     { header: 'Applications', field: 'applications', type: 'progress' },
     { header: 'vacancies', field: 'vacancies', type: 'number' },
-    { header: 'Action', field: 'viewjob', type: 'profile' },
+    { header: 'Action', field: '_id', type: 'dropdown',
+      options:[
+        { label: 'View Details', action: 'viewDetails' },
+        { label: 'View Applications', action: 'viewApplications' }
+      ]
+     },
   ];
 
   ngOnInit(): void {
@@ -116,6 +121,20 @@ export class JobsList implements OnInit {
       pageNumber.push(i)
     }
     return pageNumber
+  }
+
+  updateAction(event:{action:string, row:any}){
+    const {action, row} = event
+
+    if(action === 'viewDetails'){
+      this.showJobDetails(row._id)
+    }else if(action === 'viewApplications'){
+      this.showApplciations(row._id)
+    }
+  }
+
+  showApplciations(id:string){
+    this._router.navigate(['company/joblist/applications'],{queryParams:{id:id}})
   }
 
   showJobDetails(id:string) {
