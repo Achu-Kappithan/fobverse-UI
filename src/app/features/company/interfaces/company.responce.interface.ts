@@ -137,4 +137,5 @@ export interface ApplicationInterface {
 
   resumeUrl: string;
 
+  createdAt:string
 }

@@ -63,7 +63,7 @@ export class CandidateService {
     return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename})
   }
 
-  applayJob(data:jobApplicationDto):Observable<PlainResponce>{
-    return this._http.post<PlainResponce>(`/api/applications/applyjob`,data)
+  applayJob(id:string,data:jobApplicationDto):Observable<PlainResponce>{
+    return this._http.post<PlainResponce>(`/api/applications/applyjob?id=${id}`,data)
   }
 }

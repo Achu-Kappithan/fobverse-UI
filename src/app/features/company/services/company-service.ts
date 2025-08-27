@@ -140,7 +140,7 @@ export class CompanyService {
       httpParms = httpParms.set('search',params.search)
     }
     if(params.filtervalue){
-      httpParms = httpParms.set('filter',params.filtervalue)
+      httpParms = httpParms.set('filtervalue',params.filtervalue)
     }
     if(!params.jobId){
      throw new  Error('jobId  Required')
