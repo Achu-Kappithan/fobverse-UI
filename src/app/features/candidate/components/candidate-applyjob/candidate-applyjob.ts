@@ -128,6 +128,7 @@ export class CandidateApplyjob implements OnInit {
   }
 
   handleSubmit() {
+    console.log(this.jobDetails)
     if (this.jobApplayForm.valid) {
       console.log('Form is valid and ready for submission.');
       const {resume,...data} = this.jobApplayForm.value;
@@ -167,7 +168,7 @@ export class CandidateApplyjob implements OnInit {
             );
           }
           console.log("datafor submition",data)
-          this._candidateService.applayJob(data).subscribe({
+          this._candidateService.applayJob(this.jobDetails?.companyId?._id!,data).subscribe({
             next: (res) => {
               if (res.success) {
                 this._swal.showSuccessToast('Profile updated successfully!');

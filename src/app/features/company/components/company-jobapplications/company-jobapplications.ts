@@ -123,7 +123,7 @@ export class CompanyJobapplications implements OnInit {
 
   get pagenumbers():number[]{
     const pageNumber:number[] = []
-    for(let i =1; i< this.paginationMeta.totalItems;i++){
+    for(let i =1; i<=this.paginationMeta.totalPages;i++){
       pageNumber.push(i)
     }
     return pageNumber
