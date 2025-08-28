@@ -124,7 +124,7 @@ export const routes: Routes = [
             path: 'jobsview',
             loadComponent: ()=> import('./features/company/components/jobs-public-view/jobs-public-view')
             .then( m => m.JobsPublicView)
-          }
+          },
         ]
       },
       {

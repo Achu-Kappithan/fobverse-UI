@@ -1,223 +1,287 @@
 <div class="bg-lavender py-16 px-4">
-        @if(isLoading){
-    <div class="flex justify-center items-center min-h-[300px]">
-        <app-loading-spinner></app-loading-spinner>
-    </div>
-    }@else {
-
-    <main class="container mx-auto px-4 ">
-        <section class="bg-white shadow-lg border-y rounded-lg mb-8">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <h1 class="text-2xl sm:text-3xl font-semibold text-dark-gray">{{jobDetails?.title}}</h1>
-                        <p class="inline mt-1 mr-4 text-gray-600 font-bold">jobLocation :</p>
-                        @for (loc of jobDetails?.location; track $index) {
-                        <p class="mt-1 mr-3 text-gray-600 inline">{{loc}},</p>
-                        }
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <a 
-                            (click)="backTo()"
-                            class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                            </svg>
-                            Back
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <article class="lg:col-span-2 space-y-8">
-                <section class="bg-white rounded-lg border shadow-lg p-6">
-                    <h2 class="text-xl font-semibold text-dark-gray">Description</h2>
-                    <p class="mt-3 text-gray-600 leading-7">{{jobDetails?.description}}</p>
-                </section>
-
-                <section class="bg-white rounded-lg border shadow-lg p-6">
-                    <h2 class="text-xl font-semibold text-dark-gray">Experiences</h2>
-                    <ul class="mt-4 space-y-3">
-                        @if(!jobDetails?.experience || jobDetails?.experience?.length ===0){
-                            <span class="items-center">
-                                Freshes  can  also applied
-                            </span>
-                        }
-                    @for (exp of jobDetails?.experience; track $index) {
-                        <li class="flex items-start gap-3">
-                            <span class="mt-1 h-5 w-5 rounded-full bg-green-600 inline-flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.414 7.414a1 1 0 01-1.414 0L3.293 10.12a1 1 0 111.414-1.415l3.172 3.172 6.707-6.707a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                            </span>
-                            <span>{{exp}}</span>
-                        </li>
-                    }
-                    </ul>
-                </section>
-                <section class="bg-white rounded-lg border shadow-lg p-6">
-                    <h2 class="text-xl font-semibold text-dark-gray">Who You Are</h2>
-                    <ul class="mt-4 grid sm:grid-cols-2 gap-2">
-                        @for (res of responsibility; track $index) {
-                        <li class="flex items-start gap-3">
-                            <span class="mt-1 size-5 p-2 rounded-full bg-green-600 inline-flex items-center justify-center">✔</span>
-                            <span>{{res}}</span>
-                        </li>
-                    }
-                    </ul>
-                </section>
-            </article>
-
-            <aside class="space-y-6">
-                <section class="bg-white rounded-lg border shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-dark-gray">About this role</h3>
-                    <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
-                        <div><dt class="text-gray-500 py-1">Job Posted On</dt><dd class="font-medium py-1">{{jobDetails?.createdAt | date}}</dd></div>
-                        <div><dt class="text-gray-500 py-1">Apply Before</dt><dd class="font-medium py-1">{{jobDetails?.dueDate | date}}</dd></div>
-                        <div><dt class="text-gray-500 py-1">Job vacancies</dt><dd class="font-medium py-1 px-5">{{jobDetails?.vacancies}}</dd></div>
-                        <div><dt class="text-gray-500 py-1">Job Type</dt><dd class="font-medium py-1">{{jobDetails?.jobType}}</dd></div>
-                    </dl>
-                </section>
-
-                <section class="bg-white rounded-lg border shadow-lg p-6">
-                    <h2 class="text-xl font-semibold text-dark-gray">Nice‑To‑Haves</h2>
-                    <ul class="p-2">
-                        @for (skill of jobDetails?.skills; track $index) {
-                        <li class="flex items-start gap-4">
-                            <span class="mt-1 size-5 p-2 rounded-full bg-yellow inline-flex items-center justify-center">★</span>
-                            <span>{{skill}}</span>
-                        </li>
-                        }
-                    </ul>
-                </section>
-
-                <section class="bg-white rounded-lg border shadow-lg p-6">
-                    <h3 class="text-lg text-center font-bold font-medium text-dark-gray">Salary Range</h3>
-                    <div class="mt-4 justify-center  flex flex-wrap gap-2">
-                        <span class="px-3 py-1 justify-center items-center bg-gray-100 rounded-lg text-gray-800">
-                            ₹{{ jobDetails?.salary?.min| number }} - ₹{{ jobDetails?.salary?.max | number }}
-                            </span>
-                    </div>
-                </section>
-            </aside>
-        </section>
-
-        <!-- About Stripe Section -->
-<section class="px-4 shadow-lg rounded-lg bg-white sm:px-6 py-10 mb-8">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-    <!-- LEFT: Description -->
-    <div class="px-4 py-8 md:px-10 md:py-10">
-      <div class="flex items-center gap-3 mb-4">
-        <img
-            [src]="profileData?.logoUrl ? baseUrl+profileData?.logoUrl :'/profileimages/logodefault.jpg'"
-          class="inline-flex size-16 md:size-20 m-2 md:m-5 items-center justify-center rounded-md bg-purple text-white font-bold text-3xl">
-        <div>
-          <h3 class="text-xl md:text-2xl font-semibold text-dark-gray">
-            {{profileData?.name}}
-          </h3>
-          <a
-            href="https://stripe.com"
-            target="_blank"
-            class="flex items-center text-indigo-600 hover:text-indigo-800 text-sm mt-1"
-          >
-            More about {{profileData?.name!}}
-          </a>
-        </div>
-      </div>
-      <p class="mt-4 text-gray-600 leading-7">
-        {{profileData?.description}}
-      </p>
-    </div>
-
-    <!-- RIGHT: Gallery -->
-    <div class="grid grid-cols-3 gap-4 h-full">
-      <!-- Main Image -->
-      <div class="col-span-2">
-        <img
-          [src]="profileData?.imageGallery?.[0] ? baseUrl+profileData?.imageGallery![0] : 'https://placehold.co/800x500/E0E0E0/B0B0B0?text=Office+1'"
-          alt="Office Image 1"
-          class="w-full h-full rounded-lg object-cover aspect-[16/10]"
-        />
-      </div>
-
-      <!-- Side Images -->
-      <div class="flex flex-col gap-4">
-        <img
-          [src]="profileData?.imageGallery?.[1] ? baseUrl+profileData?.imageGallery![1] : 'https://placehold.co/400x240/D0D0D0/A0A0A0?text=Office+2'"
-          alt="Office Image 2"
-          class="w-full rounded-lg object-cover aspect-[4/3]"
-        />
-        <img
-          [src]="profileData?.imageGallery?.[2] ? baseUrl+profileData?.imageGallery![2] : 'https://placehold.co/400x240/C0C0C0/909090?text=Office+3'"
-          alt="Office Image 3"
-          class="w-full rounded-lg object-cover aspect-[4/3]"
-        />
-      </div>
-    </div>
+  @if(isLoading){
+  <div class="flex justify-center items-center min-h-[300px]">
+    <app-loading-spinner></app-loading-spinner>
   </div>
-</section>
+  }@else {
 
-        <!-- Benefits Section -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
-                <div class="flex items-center space-x-4 text-gray-500">
-                    <i class="fas fa-plus-circle"></i>
-                    <i class="fas fa-pen"></i>
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center">
-                    <i class="fas fa-hospital-alt text-purple text-3xl mb-2"></i>
-                    <h3 class="font-semibold text-dark-gray">Full Healthcare</h3>
-                    <p class="text-gray text-sm">
-                        We believe you should have the peace of mind to focus on your work.
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center">
-                    <i class="fas fa-home text-purple text-3xl mb-2"></i>
-                    <h3 class="font-semibold text-dark-gray">Remote Work</h3>
-                    <p class="text-gray text-sm">
-                        Work from anywhere, anytime, space for family, friends, and you.
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center">
-                    <i class="fas fa-child text-purple text-3xl mb-2"></i>
-                    <h3 class="font-semibold text-dark-gray">Family Support</h3>
-                    <p class="text-gray text-sm">
-                        We believe in always putting our employees first, and helping them
-                        achieve their goals.
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center">
-                    <i class="fas fa-money-bill-wave text-purple text-3xl mb-2"></i>
-                    <h3 class="font-semibold text-dark-gray">Paid Time Off</h3>
-                    <p class="text-gray text-sm">
-                        Every 6 months we have a company-wide paid time off to have fun,
-                        reflect, and plan for the upcoming quarter.
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center">
-                    <i class="fas fa-mug-hot text-purple text-3xl mb-2"></i>
-                    <h3 class="font-semibold text-dark-gray">Free Coffee & Snacks</h3>
-                    <p class="text-gray text-sm">
-                        You know how you perform better with a full stomach. Free coffee
-                        shop or anywhere you buy that has it.
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center">
-                    <i class="fas fa-gift text-purple text-3xl mb-2"></i>
-                    <h3 class="font-semibold text-dark-gray">Birthday Bonus</h3>
-                    <p class="text-gray text-sm">
-                        We're grateful for all the hard work and dedication our team member
-                        puts into getting to our company goals.
-                    </p>
-                </div>
-            </div>
+  <main class="container mx-auto px-4">
+    <section class="bg-white shadow-lg border-y rounded-lg mb-8">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        >
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-semibold text-dark-gray">
+              {{jobDetails?.title}}
+            </h1>
+            <p class="inline mt-1 mr-4 text-gray-600 font-bold">
+              jobLocation :
+            </p>
+            @for (loc of jobDetails?.location; track $index) {
+            <p class="mt-1 mr-3 text-gray-600 inline">{{loc}},</p>
+            }
+          </div>
+          <div class="flex items-center gap-2">
+            <a
+              (click)="backTo()"
+              class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 inline-block mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              Back
+            </a>
+          </div>
         </div>
-    </main>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+      <article class="lg:col-span-2 space-y-8">
+        <section class="bg-white rounded-lg border shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-dark-gray">Description</h2>
+          <p class="mt-3 text-gray-600 leading-7">
+            {{jobDetails?.description}}
+          </p>
+        </section>
+
+        <section class="bg-white rounded-lg border shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-dark-gray">Experiences</h2>
+          <ul class="mt-4 space-y-3">
+            @if(!jobDetails?.experience || jobDetails?.experience?.length ===0){
+            <span class="items-center"> Freshes can also applied </span>
+            } @for (exp of jobDetails?.experience; track $index) {
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-1 h-5 w-5 rounded-full bg-green-600 inline-flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-3.5 w-3.5 text-white"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-7.414 7.414a1 1 0 01-1.414 0L3.293 10.12a1 1 0 111.414-1.415l3.172 3.172 6.707-6.707a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              <span>{{exp}}</span>
+            </li>
+            }
+          </ul>
+        </section>
+        <section class="bg-white rounded-lg border shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-dark-gray">Who You Are</h2>
+          <ul class="mt-4 grid sm:grid-cols-2 gap-2">
+            @for (res of responsibility; track $index) {
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-1 size-5 p-2 rounded-full bg-green-600 inline-flex items-center justify-center"
+                >✔</span
+              >
+              <span>{{res}}</span>
+            </li>
+            }
+          </ul>
+        </section>
+      </article>
+
+      <aside class="space-y-6">
+        <section class="bg-white rounded-lg border shadow-lg p-6">
+          <h3 class="text-lg font-semibold text-dark-gray">About this role</h3>
+          <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <dt class="text-gray-500 py-1">Job Posted On</dt>
+              <dd class="font-medium py-1">{{jobDetails?.createdAt | date}}</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500 py-1">Apply Before</dt>
+              <dd class="font-medium py-1">{{jobDetails?.dueDate | date}}</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500 py-1">Job vacancies</dt>
+              <dd class="font-medium py-1 px-5">{{jobDetails?.vacancies}}</dd>
+            </div>
+            <div>
+              <dt class="text-gray-500 py-1">Job Type</dt>
+              <dd class="font-medium py-1">{{jobDetails?.jobType}}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="bg-white rounded-lg border shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-dark-gray">Nice‑To‑Haves</h2>
+          <ul class="p-2">
+            @for (skill of jobDetails?.skills; track $index) {
+            <li class="flex items-start gap-4">
+              <span
+                class="mt-1 size-5 p-2 rounded-full bg-yellow inline-flex items-center justify-center"
+                >★</span
+              >
+              <span>{{skill}}</span>
+            </li>
+            }
+          </ul>
+        </section>
+
+        <section class="bg-white rounded-lg border shadow-lg p-6">
+          <h3 class="text-lg text-center font-bold font-medium text-dark-gray">
+            Salary Range
+          </h3>
+          <div class="mt-4 justify-center flex flex-wrap gap-2">
+            <span
+              class="px-3 py-1 justify-center items-center bg-gray-100 rounded-lg text-gray-800"
+            >
+              ₹{{ jobDetails?.salary?.min| number }} - ₹{{
+              jobDetails?.salary?.max | number }}
+            </span>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <!-- About Stripe Section -->
+    <section class="px-4 shadow-lg rounded-lg bg-white sm:px-6 py-10 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <!-- LEFT: Description -->
+        <div class="px-4 py-8 md:px-10 md:py-10">
+          <div class="flex items-center gap-3 mb-4">
+            <img
+              [src]="profileData?.logoUrl ? baseUrl+profileData?.logoUrl :'/profileimages/logodefault.jpg'"
+              class="inline-flex size-16 md:size-20 m-2 md:m-5 items-center justify-center rounded-md bg-purple text-white font-bold text-3xl"
+            />
+            <div>
+              <h3 class="text-xl md:text-2xl font-semibold text-dark-gray">
+                {{profileData?.name}}
+              </h3>
+              <a
+                [routerLink]="['/candidate/joblist/companyprofile']"
+                [queryParams]="{id:profileData?._id}"
+                class="flex items-center text-indigo-600 hover:text-indigo-800 text-sm mt-1"
+              >
+                More about {{profileData?.name!}}
+              </a>
+            </div>
+          </div>
+          <p class="mt-4 text-gray-600 leading-7">
+            {{profileData?.description}}
+          </p>
+        </div>
+
+        <!-- RIGHT: Gallery -->
+        <div class="grid grid-cols-3 gap-4 h-full">
+          <!-- Main Image -->
+          <div class="col-span-2">
+            <img
+              [src]="profileData?.imageGallery?.[0] ? baseUrl+profileData?.imageGallery![0] : 'https://placehold.co/800x500/E0E0E0/B0B0B0?text=Office+1'"
+              alt="Office Image 1"
+              class="w-full h-full rounded-lg object-cover aspect-[16/10]"
+            />
+          </div>
+
+          <!-- Side Images -->
+          <div class="flex flex-col gap-4">
+            <img
+              [src]="profileData?.imageGallery?.[1] ? baseUrl+profileData?.imageGallery![1] : 'https://placehold.co/400x240/D0D0D0/A0A0A0?text=Office+2'"
+              alt="Office Image 2"
+              class="w-full rounded-lg object-cover aspect-[4/3]"
+            />
+            <img
+              [src]="profileData?.imageGallery?.[2] ? baseUrl+profileData?.imageGallery![2] : 'https://placehold.co/400x240/C0C0C0/909090?text=Office+3'"
+              alt="Office Image 3"
+              class="w-full rounded-lg object-cover aspect-[4/3]"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
+        <div class="flex items-center space-x-4 text-gray-500">
+          <i class="fas fa-plus-circle"></i>
+          <i class="fas fa-pen"></i>
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center"
+        >
+          <i class="fas fa-hospital-alt text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Full Healthcare</h3>
+          <p class="text-gray text-sm">
+            We believe you should have the peace of mind to focus on your work.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center"
+        >
+          <i class="fas fa-home text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Remote Work</h3>
+          <p class="text-gray text-sm">
+            Work from anywhere, anytime, space for family, friends, and you.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center"
+        >
+          <i class="fas fa-child text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Family Support</h3>
+          <p class="text-gray text-sm">
+            We believe in always putting our employees first, and helping them
+            achieve their goals.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center"
+        >
+          <i class="fas fa-money-bill-wave text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Paid Time Off</h3>
+          <p class="text-gray text-sm">
+            Every 6 months we have a company-wide paid time off to have fun,
+            reflect, and plan for the upcoming quarter.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center"
+        >
+          <i class="fas fa-mug-hot text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Free Coffee & Snacks</h3>
+          <p class="text-gray text-sm">
+            You know how you perform better with a full stomach. Free coffee
+            shop or anywhere you buy that has it.
+          </p>
+        </div>
+        <div
+          class="bg-white dark:bg-dark-lavender p-4 rounded-lg shadow flex flex-col items-center text-center"
+        >
+          <i class="fas fa-gift text-purple text-3xl mb-2"></i>
+          <h3 class="font-semibold text-dark-gray">Birthday Bonus</h3>
+          <p class="text-gray text-sm">
+            We're grateful for all the hard work and dedication our team member
+            puts into getting to our company goals.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
   }
-
 </div>
-
