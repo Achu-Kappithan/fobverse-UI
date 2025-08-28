@@ -21,7 +21,6 @@
     </div>
     <nav>
       <ul class="space-y-2">
-        <!-- Dashboard -->
         <li>
           <a
             [routerLink]="['/company/home']"
@@ -113,6 +112,8 @@
           <!-- Settings -->
           <li>
             <a
+              [routerLink]="['/company/userprofile']"
+              [routerLinkActive]="'bg-purple text-white'"
               class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
               [ngClass]="{'justify-center': !isOpen}"
             >
