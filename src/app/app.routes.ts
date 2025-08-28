@@ -20,6 +20,8 @@ import { CandidateSignup } from './features/auth/components/signup/signup';
 import { CreateJob } from './features/company/components/create-job/create-job';
 import { JobView } from './features/company/components/jobs/job-view/job-view';
 import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
+import { CompanyPublicProfile } from './features/company/components/company-public-profile/company-public-profile';
+import { JobsPublicView } from './features/company/components/jobs-public-view/jobs-public-view';
 
 export const routes: Routes = [
   {
@@ -161,6 +163,14 @@ export const routes: Routes = [
             path: 'newjob',
             component: CreateJob,
           },
+          {
+            path: 'publicview',
+            component: CompanyPublicProfile,
+          },
+          {
+            path: 'jobview',
+            component: JobsPublicView
+          }
         ],
       },
       {

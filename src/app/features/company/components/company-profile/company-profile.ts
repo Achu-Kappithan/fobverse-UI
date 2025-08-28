@@ -10,6 +10,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-company-profile',
@@ -35,7 +36,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
   activeModalId:string | null = null
   ChildRouteActive = false
   logoUrl:string = "/profileimages/logodefault.jpg"
-  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+  baseUrl:string = environment.cloudinaryBaseUrl
 
   teamMembersForm!:FormGroup
   selectedImageFile:File | null = null

@@ -11,6 +11,8 @@ import {
 import { AuthService } from '../../features/auth/services/auth.service';
 import { CompanyService } from '../../features/company/services/company-service';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../env/environment';
+import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 
 @Component({
   selector: 'app-company-header',
@@ -22,8 +24,10 @@ export class CompanyHeader implements OnInit {
   @Input() isDarkMode: boolean = false;
   @Output() darkModeToggled = new EventEmitter<boolean>();
   isProfileMenuOpen: boolean = false;
-  cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
-  userProfile: string = '/profileimages/defaultProfile.jpg';
+  cloudinaryBaseUrl = environment.cloudinaryBaseUrl
+  userPorfile: string | null = null
+  activeUser:UserPartial | null = null
+  // userProfile: string = '/profileimages/defaultProfile.jpg';
 
   constructor(
     private readonly _authService: AuthService,
@@ -35,7 +39,9 @@ export class CompanyHeader implements OnInit {
     this._authService.company$.subscribe({
       next: (comp) => {
         console.log('active user', comp);
-        this.userProfile = this.cloudinaryBaseUrl+comp?.profileImg!;
+        this.activeUser = comp
+        this.userPorfile = this.cloudinaryBaseUrl+comp?.profileImg!;
+        console.log("userprofile",this.userPorfile)
         this._cdr.detectChanges();
       },
     });

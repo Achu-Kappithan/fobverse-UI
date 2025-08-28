@@ -117,7 +117,7 @@ export class JobsList implements OnInit {
 
   get Pagenumbers():number[]{
     const pageNumber:number[]= []
-    for(let i=1; i<this.paginationMeta.totalItems;i++){
+    for(let i=1; i<=this.paginationMeta.totalItems;i++){
       pageNumber.push(i)
     }
     return pageNumber

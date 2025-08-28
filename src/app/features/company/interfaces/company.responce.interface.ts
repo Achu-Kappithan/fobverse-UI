@@ -109,6 +109,11 @@ export interface JobsInterface {
   createdAt:string
 }
 
+export interface populatecompanyProfile {
+  company: ComapnyProfileInterface
+  jobs:JobsInterface[]
+}
+
 export enum Stages {
   Default = 'default',
   Shortlisted = 'shortlisted',

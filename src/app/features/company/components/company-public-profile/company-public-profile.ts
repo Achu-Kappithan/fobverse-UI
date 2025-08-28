@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
+import { ComapnyProfileInterface, JobsInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -21,6 +21,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
 
   isLoading:boolean = false
   company$:ComapnyProfileInterface | null = null
+  jobsLit: JobsInterface[] = []
   companyId:string | null = null
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
   cludBaseUrl:string = environment.cloudinaryBaseUrl
@@ -51,7 +52,8 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
     this._companyService.getPublicView(this.companyId!).subscribe({
        next:(res => {
         if(res.success){
-          this.company$ = res.data
+          this.company$ = res.data.company
+          this.jobsLit = res.data.jobs
           this.isLoading = false
           this._cdr.detectChanges()
         }

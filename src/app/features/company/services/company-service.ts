@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { ApplicationInterface, ComapnyProfileInterface, InternalUserInterface, JobsInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ApplicationInterface, ComapnyProfileInterface, InternalUserInterface, JobsInterface, populatecompanyProfile, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 import { ApplicationQureryInterface } from '../interfaces/company.interface';
 
@@ -32,8 +32,8 @@ export class CompanyService {
     )
   }
 
-  getPublicView(id:string):Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this._http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/public/profile?id=${id}`)
+  getPublicView(id:string):Observable<ApiResponce<populatecompanyProfile>>{
+    return this._http.get<ApiResponce<populatecompanyProfile>>(`/api/company/public/profile?id=${id}`)
   }
 
 
