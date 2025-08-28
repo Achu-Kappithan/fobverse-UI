@@ -2,7 +2,7 @@
 
 
 export interface InternalUserInterface {
-  id:string
+  _id:string
   
   name: string;
 
@@ -109,7 +109,12 @@ export interface JobsInterface {
   createdAt:string
 }
 
-export interface populatecompanyProfile {
+export interface populatedJobInterface {
+  jobDetails:JobsInterface,
+  profile: ComapnyProfileInterface[]
+}
+
+export interface populatecompanyProfile { 
   company: ComapnyProfileInterface
   jobs:JobsInterface[]
 }

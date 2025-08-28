@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { ApplicationInterface, ComapnyProfileInterface, InternalUserInterface, JobsInterface, populatecompanyProfile, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
-import { ApiResponce, PagenatedApiResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
+import { ApplicationInterface, ComapnyProfileInterface, InternalUserInterface, JobsInterface, populatecompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ApiResponce, PagenatedApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 import { ApplicationQureryInterface } from '../interfaces/company.interface';
 
 @Injectable({
@@ -113,8 +113,8 @@ export class CompanyService {
     return this._http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`)
   }
 
-  getJobPublicView(id:string):Observable<ApiResponce<JobsInterface>>{
-    return this._http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`)
+  getJobPublicView(id:string):Observable<ApiResponce<populatedJobInterface>>{
+    return this._http.get<ApiResponce<populatedJobInterface>>(`/api/jobs/publicview?id=${id}`)
   }
 
   updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponce<JobsInterface>>{
@@ -147,6 +147,10 @@ export class CompanyService {
     }
     httpParms = httpParms.set('jobId',params.jobId)
     return this._http.get<ApiResponce<ApplicationInterface[]>>(`/api/applications/applicants`,{params:httpParms})
+  }
+
+  removeUser(id:string):Observable<PlainResponce>{
+    return this._http.delete<PlainResponce>(`/api/company/removeuser?id=${id}`)
   }
 
 }

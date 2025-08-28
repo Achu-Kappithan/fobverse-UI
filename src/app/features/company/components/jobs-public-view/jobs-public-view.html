@@ -103,49 +103,62 @@
         </section>
 
         <!-- About Stripe Section -->
-        <!-- <section class="px-4 shadow-lg rounded-lg bg-white sm:px-6 py-10 mb-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="px-4 py-8 md:px-10 md:py-10">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="inline-flex size-16 md:size-20 m-2 md:m-5 items-center justify-center rounded-md bg-purple text-white font-bold text-3xl">S</span>
-                        <div>
-                            <h3 class="text-xl md:text-2xl font-semibold text-dark-gray">Stripe</h3>
-                            <a href="https://stripe.com" target="_blank" class="flex items-center text-indigo-600 hover:text-indigo-800 text-sm mt-1">
-                                Read more about Stripe
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <p class="mt-4 text-gray-600 leading-7">Stripe is a technology company that builds economic infrastructure for the internet. Businesses of every size—from new startups to public companies—use our software to accept payments and manage their businesses online.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-2">
-                        <img
-                            src="https://placehold.co/800x500/E0E0E0/B0B0B0?text=Office+1"
-                            alt="Office Image 1"
-                            class="w-full image-main rounded-lg object-cover"
-                        />
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <img
-                            src="https://placehold.co/400x240/D0D0D0/A0A0A0?text=Office+2"
-                            alt="Office Image 2"
-                            class="w-full image-side rounded-lg object-cover"
-                        />
-                        <img
-                            src="https://placehold.co/400x240/C0C0C0/909090?text=Office+3"
-                            alt="Office Image 3"
-                            class="w-full image-side rounded-lg object-cover"
-                        />
-                    </div>
-                </div>
-            </div>
-        </section> -->
+<section class="px-4 shadow-lg rounded-lg bg-white sm:px-6 py-10 mb-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <!-- LEFT: Description -->
+    <div class="px-4 py-8 md:px-10 md:py-10">
+      <div class="flex items-center gap-3 mb-4">
+        <img
+            [src]="profileData?.logoUrl ? baseUrl+profileData?.logoUrl :'/profileimages/logodefault.jpg'"
+          class="inline-flex size-16 md:size-20 m-2 md:m-5 items-center justify-center rounded-md bg-purple text-white font-bold text-3xl">
+        <div>
+          <h3 class="text-xl md:text-2xl font-semibold text-dark-gray">
+            {{profileData?.name}}
+          </h3>
+          <a
+            href="https://stripe.com"
+            target="_blank"
+            class="flex items-center text-indigo-600 hover:text-indigo-800 text-sm mt-1"
+          >
+            More about {{profileData?.name!}}
+          </a>
+        </div>
+      </div>
+      <p class="mt-4 text-gray-600 leading-7">
+        {{profileData?.description}}
+      </p>
+    </div>
+
+    <!-- RIGHT: Gallery -->
+    <div class="grid grid-cols-3 gap-4 h-full">
+      <!-- Main Image -->
+      <div class="col-span-2">
+        <img
+          [src]="profileData?.imageGallery?.[0] ? baseUrl+profileData?.imageGallery![0] : 'https://placehold.co/800x500/E0E0E0/B0B0B0?text=Office+1'"
+          alt="Office Image 1"
+          class="w-full h-full rounded-lg object-cover aspect-[16/10]"
+        />
+      </div>
+
+      <!-- Side Images -->
+      <div class="flex flex-col gap-4">
+        <img
+          [src]="profileData?.imageGallery?.[1] ? baseUrl+profileData?.imageGallery![1] : 'https://placehold.co/400x240/D0D0D0/A0A0A0?text=Office+2'"
+          alt="Office Image 2"
+          class="w-full rounded-lg object-cover aspect-[4/3]"
+        />
+        <img
+          [src]="profileData?.imageGallery?.[2] ? baseUrl+profileData?.imageGallery![2] : 'https://placehold.co/400x240/C0C0C0/909090?text=Office+3'"
+          alt="Office Image 3"
+          class="w-full rounded-lg object-cover aspect-[4/3]"
+        />
+      </div>
+    </div>
+  </div>
+</section>
 
         <!-- Benefits Section -->
-        <!-- <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-dark-gray">Benefit</h2>
                 <div class="flex items-center space-x-4 text-gray-500">
@@ -202,7 +215,7 @@
                     </p>
                 </div>
             </div>
-        </div> -->
+        </div>
     </main>
   }
 

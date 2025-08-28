@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { JobsInterface } from '../../interfaces/company.responce.interface';
+import { ComapnyProfileInterface, JobsInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -22,6 +22,8 @@ export class JobsPublicView  implements OnInit,OnDestroy {
   jobDetails:JobsInterface | null = null
   jobId:string | null = null
   responsibility:string[] =[]
+  profileData : ComapnyProfileInterface| null = null
+  baseUrl :string = environment.cloudinaryBaseUrl
 
   constructor(
     private readonly _companyService:CompanyService,
@@ -49,8 +51,10 @@ export class JobsPublicView  implements OnInit,OnDestroy {
     .subscribe({
       next:(res =>{
         if(res.success){
-          this.jobDetails = res.data
-          this.responsibility = res.data.responsibility.split('\n')
+          this.jobDetails = res.data.jobDetails
+          this.profileData = res.data.profile[0]
+          console.log(res.data)
+          this.responsibility = res.data.jobDetails.responsibility.split('\n')
           this.isLoading = false
           this._cdr.detectChanges()
         }

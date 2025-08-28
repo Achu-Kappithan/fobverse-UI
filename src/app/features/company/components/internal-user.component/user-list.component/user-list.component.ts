@@ -9,6 +9,7 @@ import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/inter
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { environment } from '../../../../../../env/environment';
+import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 
 @Component({
   selector: 'app-user-list.component',
@@ -43,7 +44,8 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly _ComapnyService: CompanyService,
-    private  _cdr: ChangeDetectorRef
+    private  _cdr: ChangeDetectorRef,
+    private readonly _swal:SweetAlert,
   ){}
 
   ngOnInit(): void {
@@ -60,7 +62,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.fetchAllInternalUsers()
       })
     )
+    console.log(this.InternalUsers)
   }
+
 
   fetchAllInternalUsers(){
     this.isLoading = true
@@ -115,7 +119,24 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
     return pageNumber
   }
-  removeUser(id:string){
+
+  removeUser(id:string,index:number){
+    console.log(id)
+    console.log("index is ",index)
+    
+    this._ComapnyService.removeUser(id).subscribe({
+      next:(res =>{
+        if(res.success){
+          this._swal.showSuccessToast(res.message)
+          this.InternalUsers.splice(index,1)
+          this._cdr.detectChanges()
+        }
+      }),
+      error:(err =>{
+        console.log("error regading removeing user", err)
+        this._swal.showErrorToast(err.error.message)
+      })
+    })
   }
 
   ngOnDestroy(): void {
