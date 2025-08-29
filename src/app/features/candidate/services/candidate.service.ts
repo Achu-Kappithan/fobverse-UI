@@ -64,6 +64,7 @@ export class CandidateService {
   }
 
   applayJob(id:string,data:jobApplicationDto):Observable<PlainResponce>{
+    console.log(data)
     return this._http.post<PlainResponce>(`/api/applications/applyjob?id=${id}`,data)
   }
 }

@@ -11,6 +11,7 @@ import {
   CandidateJobsInterface,
 } from '../../interfaces/candidate.joblist.interface';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -45,6 +46,7 @@ export class CandidateApplyjob implements OnInit {
   jobApplayForm!: FormGroup;
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  userData :UserPartial | null = null
 
   constructor(
     private fb: FormBuilder,
@@ -57,11 +59,18 @@ export class CandidateApplyjob implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.getUser();
+    this.populateForm();
     this.populateQualificationOptions()
+    this.setupFormChanges()
 
     this._AuthService.candidate$.subscribe((val) => {
       this.currentUser = val;
     });
+  }
+
+  getUser(){
+    this._AuthService.candidate$.subscribe(val=> this.userData = val)
   }
 
   initForm() {
@@ -79,6 +88,31 @@ export class CandidateApplyjob implements OnInit {
       experience: ['', [Validators.required]],
       qualification: ['', [Validators.required]],
       resume: [null, [Validators.required, this.fileValidator()]],
+      useExistingResume: [false]
+    });
+  }
+
+  populateForm(){
+    this.jobApplayForm.patchValue(this.userData!)
+  }
+
+  setupFormChanges() {
+    const resumeControl = this.jobApplayForm.get('resume') as FormControl;
+    const useExistingResumeControl = this.jobApplayForm.get('useExistingResume') as FormControl;
+
+    useExistingResumeControl.valueChanges.subscribe(useExisting => {
+      if (useExisting) {
+        resumeControl.clearValidators();
+        resumeControl.disable();
+        this.selectedFileName = 'Using profile resume';
+        this.selectedFile = null;
+      } else {
+        resumeControl.setValidators([Validators.required, this.fileValidator()]);
+        resumeControl.enable();
+        this.selectedFileName = '';
+      }
+      resumeControl.updateValueAndValidity();
+      this._cdr.detectChanges(); 
     });
   }
 
@@ -96,7 +130,7 @@ export class CandidateApplyjob implements OnInit {
   }
 
   fileValidator() {
-    return (control: FormControl) => {
+    return (control: AbstractControl) => {
       const file = control.value;
       if (file) {
         const fileType = file.name.split('.').pop()?.toLowerCase();
@@ -127,71 +161,75 @@ export class CandidateApplyjob implements OnInit {
     ];
   }
 
-  handleSubmit() {
-    console.log(this.jobDetails)
-    if (this.jobApplayForm.valid) {
-      console.log('Form is valid and ready for submission.');
-      const {resume,...data} = this.jobApplayForm.value;
-      data.jobId = this.uniqueIdentifier
-      let uploadObservable = new Observable<any>();
-      const publicBaseId = this.currentUser?.email.split('@')[0]
+handleSubmit() {
+  if (this.jobApplayForm.valid) {
+    console.log('Form is valid and ready for submission.');
+    const { resume, useExistingResume, ...data } = this.jobApplayForm.value;
+    data.jobId = this.uniqueIdentifier;
+    let uploadObservable: Observable<any>; 
 
-      if (this.selectedFile) {
-        uploadObservable = this._cloudinaryService
-          .getCloudinarySignature({
-            folder: 'candiate_resume',
-            publicIdPrefix: publicBaseId,
-          })
-          .pipe(
-            switchMap((signatureRes) => {
-              if (!signatureRes.success || !signatureRes.data) {
-                throw new Error('Failed to get Cloudinary signature');
-              }
-              return this._cloudinaryService.uploadFileToCloudinary(
-                this.selectedFile!,
-                signatureRes.data,
-                'candiate_resume',
-                publicBaseId!
-              );
-            })
-          );
-      } else {
-        data.resumeUrl = '';
-        uploadObservable = of(null);
-      }
+    const publicBaseId = this.currentUser?.email.split('@')[0];
 
-      uploadObservable.subscribe({
-        next: (cloudinaryUploadResult) => {
-          if (cloudinaryUploadResult && cloudinaryUploadResult.secure_url) {
-            data.resumeUrl = this.splitUrls(
-              cloudinaryUploadResult.secure_url
+    if (useExistingResume) {
+      data.resumeUrl = '';
+      uploadObservable = of(null); 
+    } else if (this.selectedFile) {
+      uploadObservable = this._cloudinaryService
+        .getCloudinarySignature({
+          folder: 'candiate_resume',
+          publicIdPrefix: publicBaseId,
+        })
+        .pipe(
+          switchMap((signatureRes) => {
+            if (!signatureRes.success || !signatureRes.data) {
+              throw new Error('Failed to get Cloudinary signature');
+            }
+            return this._cloudinaryService.uploadFileToCloudinary(
+              this.selectedFile!,
+              signatureRes.data,
+              'candiate_resume',
+              publicBaseId!
             );
-          }
-          console.log("datafor submition",data)
-          this._candidateService.applayJob(this.jobDetails?.companyId?._id!,data).subscribe({
-            next: (res) => {
-              if (res.success) {
-                this._swal.showSuccessToast('Profile updated successfully!');
-              }
-            },
-            error: (err) => {
-              console.error('Error updating profile in backend:', err);
-              this._swal.showErrorToast(
-                err.error?.message || 'Failed to Applay this role.'
-              );
-            },
-          });
-        },
-        error: (err) => {
-          console.error('Error during Cloudinary upload or signature:', err);
-          this._swal.showErrorToast('Failed to upload profile picture.');
-        },
-      });
-      this.jobApplayForm.reset();
-      this.onClose();
+          })
+        );
     } else {
-      console.log('Form is invalid. Please correct the errors.');
-      this.jobApplayForm.markAllAsTouched();
+      console.error('No resume selected and "use existing" not checked.');
+      this._swal.showErrorToast('Please upload a resume or select "Use resume from my profile".');
+      return;
     }
+
+    uploadObservable.subscribe({
+      next: (cloudinaryUploadResult) => {
+        if (!useExistingResume && cloudinaryUploadResult && cloudinaryUploadResult.secure_url) {
+          data.resumeUrl = this.splitUrls(
+            cloudinaryUploadResult.secure_url
+          );
+        }
+        console.log("data for submission", data);
+        this._candidateService.applayJob(this.jobDetails?.companyId?._id!, data).subscribe({
+          next: (res) => {
+            if (res.success) {
+              this._swal.showSuccessToast(res.message);
+            }
+          },
+          error: (err) => {
+            console.error('Error updating profile in backend:', err);
+            this._swal.showErrorToast(
+              err.error?.message || 'Failed to apply for this role.'
+            );
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Error during Cloudinary upload or signature:', err);
+        this._swal.showErrorToast('Failed to upload resume.');
+      },
+    });
+    this.jobApplayForm.reset();
+    this.onClose();
+  } else {
+    console.log('Form is invalid. Please correct the errors.');
+    this.jobApplayForm.markAllAsTouched();
   }
+}
 }

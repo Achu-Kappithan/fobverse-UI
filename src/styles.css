@@ -6,8 +6,9 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
-.hide-scrollbar::-moz-scrollbar {
-  display: none;
+.scrollbar-hide {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;    
 }
 
 /* Base colors */
