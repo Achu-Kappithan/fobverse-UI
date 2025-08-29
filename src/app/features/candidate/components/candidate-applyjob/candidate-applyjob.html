@@ -1,5 +1,5 @@
-<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-75 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-    <div class="relative max-w-lg w-full bg-white p-0 rounded-xl shadow-xl animate-fade-in-up mt-20 mb-8 max-h-[calc(100vh-10rem)] overflow-y-auto">
+<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-75 p-4 sm:p-6 lg:p-8  overflow-y-auto scrollbar-hide">
+    <div class="relative max-w-lg w-full bg-white p-0 rounded-xl shadow-xl animate-fade-in-up mt-20 mb-8 max-h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide">
         <button
             (click)="onClose()"
             class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-dark-gray-light dark:hover:text-cbd5e0 transition-colors duration-200 z-10"
@@ -72,7 +72,7 @@
                 </label>
                 <div class="mt-1">
                     <select id="experience-{{uniqueIdentifier}}" formControlName="experience"
-                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm dark:bg-2d3748 dark:text-e2e8f0 dark:border-4a5568">
+                         class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm dark:bg-2d3748 dark:text-e2e8f0 dark:border-4a5568">
                         <option value="">Select experience level</option>
                         <option value="0-1">0-1 Year</option>
                         <option value="1-3">1-3 Years</option>
@@ -92,7 +92,7 @@
                 </label>
                 <div class="mt-1">
                     <select id="qualification-{{uniqueIdentifier}}" formControlName="qualification"
-                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm dark:bg-2d3748 dark:text-e2e8f0 dark:border-4a5568">
+                         class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm dark:bg-2d3748 dark:text-e2e8f0 dark:border-4a5568">
                         <option value="">Select your highest qualification</option>
                         <option *ngFor="let option of qualificationOptions" [value]="option.value">
                             {{ option.label }}
@@ -103,8 +103,16 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="flex items-center space-x-2">
+                <input id="use-existing-resume-{{uniqueIdentifier}}" formControlName="useExistingResume" type="checkbox"
+                       class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded dark:bg-2d3748 dark:border-4a5568">
+                <label for="use-existing-resume-{{uniqueIdentifier}}" class="text-sm font-medium text-dark-gray dark:text-cbd5e0">
+                    Use resume from my profile
+                </label>
+            </div>
 
-            <div>
+            <div *ngIf="!jobApplayForm.get('useExistingResume')?.value">
                 <label for="resume-{{uniqueIdentifier}}" class="block text-sm font-medium text-dark-gray dark:text-cbd5e0">
                     Upload Resume (PDF only)
                 </label>
@@ -116,7 +124,7 @@
                         <div class="flex text-sm text-gray dark:text-a0aec0">
                             <label for="file-upload-{{uniqueIdentifier}}" class="relative cursor-pointer bg-white dark:bg-2d3748 rounded-md font-medium text-purple hover:text-light-purple focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500">
                                 <span>Upload a file</span>
-                                <input id="file-upload-{{uniqueIdentifier}}" name="resume" type="file" class="sr-only" accept=".pdf" required (change)="onFileSelected($event)" />
+                                <input id="file-upload-{{uniqueIdentifier}}" name="resume" type="file" class="sr-only" accept=".pdf" (change)="onFileSelected($event)" />
                             </label>
                             <p class="pl-1">or drag and drop</p>
                         </div>
@@ -130,7 +138,7 @@
                     <p *ngIf="jobApplayForm.get('resume')?.errors?.['invalidFileType']">Only PDF files are allowed.</p>
                 </div>
             </div>
-
+            
             <div>
                 <button type="submit"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple hover:bg-hover-purpule focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple">
