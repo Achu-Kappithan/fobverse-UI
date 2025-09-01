@@ -9,10 +9,4 @@ import { CandidateHeader } from '../../../common/candidate-header/candidate-head
   styleUrl: './candidatecomponent.css'
 })
 export class Candidatecomponent {
-  isDarkMode : boolean = false
-
-  onDarkModeToggle(isDark:boolean){
-    this.isDarkMode = isDark
-  }
-
 }

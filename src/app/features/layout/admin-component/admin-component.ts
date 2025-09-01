@@ -14,41 +14,12 @@ import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-si
 export class AdminComponent {
 
   isSidebarOpen = false;
-  isDarkMode = false;
-
-  constructor() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const savedMode = localStorage.getItem('theme');
-      this.isDarkMode = (savedMode === 'dark');
-      this.applyDarkModeClass(); 
-    }
-  }
-
-  onDarkModeToggle(isDark: boolean): void {
-    this.isDarkMode = isDark;
-    this.applyDarkModeClass(); 
-    
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-    }
-  }
-
-  private applyDarkModeClass(): void {
-    if (typeof document !== 'undefined') {
-      if (this.isDarkMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  }
 
   onSidebarToggle(isOpen: boolean) {
     this.isSidebarOpen = isOpen;
   }
 
   handleSidebarStateChange(isOpen: boolean) {
-    console.log('Sidebar state changed to:', isOpen); // For debugging
     this.isSidebarOpen = isOpen;
   }
 

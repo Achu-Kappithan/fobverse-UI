@@ -1,9 +1,6 @@
 
 <div class="flex flex-col min-h-screen">
-    <app-company-header
-        [isDarkMode]="isDarkMode"
-        (darkModeToggled)="onDarkModeToggle($event)">
-    </app-company-header>
+    <app-company-header></app-company-header>
 
     <div class="flex flex-1" [ngClass]="{'mt-16': true}">
         <app-company-sidebar

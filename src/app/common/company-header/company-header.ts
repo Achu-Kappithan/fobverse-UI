@@ -2,17 +2,15 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   HostListener,
-  Input,
   OnInit,
-  Output,
 } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { CompanyService } from '../../features/company/services/company-service';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../env/environment';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+import { ThemeService } from '../../shared/services/theme/theme.service';
 
 @Component({
   selector: 'app-company-header',
@@ -21,21 +19,24 @@ import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
   styleUrl: './company-header.css',
 })
 export class CompanyHeader implements OnInit {
-  @Input() isDarkMode: boolean = false;
-  @Output() darkModeToggled = new EventEmitter<boolean>();
+  isDarkMode: boolean = false;
   isProfileMenuOpen: boolean = false;
   cloudinaryBaseUrl = environment.cloudinaryBaseUrl
   userPorfile: string | null = null
   activeUser:UserPartial | null = null
-  // userProfile: string = '/profileimages/defaultProfile.jpg';
 
   constructor(
     private readonly _authService: AuthService,
     private readonly _CompanyService: CompanyService,
-    private readonly _cdr: ChangeDetectorRef
+    private readonly _cdr: ChangeDetectorRef,
+    private readonly _themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
+    this._themeService.isDarkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
+
     this._authService.company$.subscribe({
       next: (comp) => {
         console.log('active user', comp);
@@ -50,26 +51,10 @@ export class CompanyHeader implements OnInit {
         console.log('active company profile', data);
       },
     });
-    const saveTheme = localStorage.getItem('theme');
-    if (saveTheme == 'dark') {
-      this.isDarkMode = true;
-      document.documentElement.classList.add('dark');
-    } else {
-      this.isDarkMode = false;
-      document.documentElement.classList.remove('dark');
-    }
   }
 
   toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-    this.darkModeToggled.emit(this.isDarkMode);
+    this._themeService.toggleDarkMode()
   }
 
   toggleProfileMenu() {
