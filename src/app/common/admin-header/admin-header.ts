@@ -11,6 +11,7 @@ import { AuthService } from '../../features/auth/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 import { environment } from '../../../env/environment';
+import { ThemeService } from '../../shared/services/theme/theme.service';
 
 @Component({
   selector: 'app-admin-header',
@@ -24,40 +25,30 @@ export class AdminHeader implements OnInit {
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   @Input() isSidebarOpen: boolean = true;
-  @Input() isDarkMode: boolean = false;
+  isDarkMode: boolean = false
 
   @Output() darkModeToggled = new EventEmitter<boolean>();
 
   isProfileMenuOpen: boolean = false;
   private _router = inject(Router);
 
-  constructor(private readonly _authService: AuthService) {}
+  constructor(
+    private readonly _authService: AuthService,
+    private readonly _themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
+    this._themeService.isDarkMode$.subscribe(val=>{
+      this.isDarkMode = val
+    })
     this._authService.admin$.subscribe((val) => {
       this.activeAdmin = val
       console.log('current user in state', this.activeAdmin);
     });
-    const saveTheme = localStorage.getItem('theme');
-    if (saveTheme == 'dark') {
-      this.isDarkMode = true;
-      document.documentElement.classList.add('dark');
-    } else {
-      this.isDarkMode = false;
-      document.documentElement.classList.remove('dark');
-    }
   }
 
   toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-    this.darkModeToggled.emit(this.isDarkMode);
+    this._themeService.toggleDarkMode()
   }
 
   toggleProfileMenu() {

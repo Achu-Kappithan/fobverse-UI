@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { RouterModule } from '@angular/router';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside';
+import { ThemeService } from '../../shared/services/theme/theme.service';
+import { environment } from '../../../env/environment';
 
 @Component({
   selector: 'app-candidate-header',
@@ -13,32 +15,28 @@ import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 })
 export class CandidateHeader implements OnInit {
 
-  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+  baseUrl:string = environment.cloudinaryBaseUrl
 
   opendModal: string | null = null;
 
-  @Input() isDarkMode: boolean = false;
-  @Output() darkModeToggled = new EventEmitter<boolean>();
+  isDarkMode: boolean = false;
 
   candidate: UserPartial | null = null;
 
-  constructor(private readonly _authService: AuthService) {}
+  constructor(
+    private readonly _authService: AuthService,
+    private readonly _themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
+    this._themeService.isDarkMode$.subscribe(val =>{
+      this.isDarkMode = val
+    })
     this._authService.candidate$.subscribe({
       next: (can) => {
         this.candidate = can;
       },
     });
-
-    const saveTheme = localStorage.getItem('theme');
-    if (saveTheme == 'dark') {
-      this.isDarkMode = true;
-      document.documentElement.classList.add('dark');
-    } else {
-      this.isDarkMode = false;
-      document.documentElement.classList.remove('dark');
-    }
   }
 
   logOut(user:string){
@@ -58,14 +56,6 @@ export class CandidateHeader implements OnInit {
   }
 
   toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-    this.darkModeToggled.emit(this.isDarkMode);
+    this._themeService.toggleDarkMode()
   }
 }
