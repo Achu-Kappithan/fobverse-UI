@@ -153,4 +153,8 @@ export class CompanyService {
     return this._http.delete<PlainResponce>(`/api/company/removeuser?id=${id}`)
   }
 
+  updateNewScore(data:{newScore:number,joId:string}):Observable<PlainResponce>{
+    return this._http.patch<PlainResponce>(`/api/applications/updateScore`,data)
+  }
+
 }

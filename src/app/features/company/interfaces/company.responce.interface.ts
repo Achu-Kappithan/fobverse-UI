@@ -141,11 +141,15 @@ export interface ApplicationInterface {
 
   phone: string;
 
+  atsScore: number;
+
   qualification: string;
 
   experience: string;
 
   resumeUrl: string;
+
+  profile?: string
 
   createdAt:string
 }

@@ -1,26 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../services/company-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
-import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApplicationQureryInterface } from '../../interfaces/company.interface';
 import { ApplicationInterface } from '../../interfaces/company.responce.interface';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-company-jobapplications',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,RouterModule,ReactiveFormsModule],
   templateUrl: './company-jobapplications.html',
   styleUrl: './company-jobapplications.css'
 })
 export class CompanyJobapplications implements OnInit {
-  title = 'social-media-assistant';
   activeView: string = 'all';
   jobId:string | null = null;
   isLoading:boolean = false;
   ApplicationList: ApplicationInterface[] = []
+  baseUrl:string = environment.cloudinaryBaseUrl
+  modalId: string | null = null
+  atsForm!:FormGroup;
 
   searchTearms = new Subject<string>()
   private _subscription :Subscription = new Subscription()
@@ -28,33 +31,35 @@ export class CompanyJobapplications implements OnInit {
   constructor(
     private readonly _CompanySevice:CompanyService,
     private readonly _router:ActivatedRoute,
+    private readonly _route: Router,
     private readonly _swal: SweetAlert,
-    private readonly _cdr: ChangeDetectorRef
+    private readonly _cdr: ChangeDetectorRef,
+    private _fb : FormBuilder
   ){}
 
   paginationMeta:PaginationMeta = {
     currentPage :1,
     totalItems : 0,
-    itemsPerPage : 6,
+    itemsPerPage : 4,
     totalPages : 0
   }
 
   QueryParams :ApplicationQureryInterface = {
     page: 1,
-    limit: 6,
+    limit: 4,
     search : '',
     filtervalue: '',
     jobId : this.jobId!
   }
 
   ngOnInit(): void {
+    this.initForm()
 
     this._router.queryParams.subscribe(val => {
       this.jobId = val['id']
       if(this.jobId){
         this.QueryParams.jobId = this.jobId
-        console.log(this.jobId)
-        this.fetchAllApplicaton()
+        this.fetchApplicaton()
       }
     })
 
@@ -67,9 +72,33 @@ export class CompanyJobapplications implements OnInit {
       .subscribe((val) =>{
         this.QueryParams.search = val,
         this.QueryParams.page  = 1
-        this.fetchAllApplicaton()
+        this.fetchApplicaton()
       })
     )
+  }
+
+  initForm() {
+    this.atsForm = this._fb.group({
+      newscore: [
+        '',
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(100),
+          Validators.pattern(/^\d+$/)  
+        ]
+      ]
+    });
+  }
+
+  fetchApplicaton(){
+    if(this.activeView === 'all'){
+      this.QueryParams.filtervalue = ''
+      this.QueryParams.page =1
+      this.fetchAllApplicaton()
+    }else if(this.activeView === 'shortlisted'){
+      this.shortlistedApplications()
+    }
   }
 
   fetchAllApplicaton(){
@@ -78,6 +107,7 @@ export class CompanyJobapplications implements OnInit {
       next:(res =>{
         if(res.success && res.data){
           this.ApplicationList = res.data
+          this.paginationMeta = res.meta ?  res.meta : this.paginationMeta;
           console.log("responce get from thebacked  for applciatons",this.ApplicationList)
           this.isLoading = false
           this._cdr.detectChanges()
@@ -92,20 +122,48 @@ export class CompanyJobapplications implements OnInit {
     })
   }
 
+  submitNewScore(){
+    if(this.atsForm.valid){
+     const value = { ...this.atsForm.value, jobId: this.jobId };
+      console.log(value)
+      this._CompanySevice.updateNewScore(value).subscribe({
+        next : (res =>{
+          if(res.success){
+            this._swal.showSuccessToast(res.message)
+          }
+        }),
+        error: (err => {
+          console.log('error regading the update new score',err)
+          this._swal.showErrorToast(err.error.message)
+        })
+      })
+    }else{
+      this.atsForm.markAllAsTouched
+      console.log('form is invalid')
+    }
+  }
+
+  shortlistedApplications(){
+    this.QueryParams.filtervalue = 'shortlisted'
+    this.QueryParams.page = 1
+    this.fetchAllApplicaton()
+  }
+
   setView(view:string) {
     this.activeView = view;
+    this.fetchApplicaton()
   }
 
   onLimitChange(limit:number){
     this.QueryParams.limit = limit
     this.QueryParams.page = 1
-    this.fetchAllApplicaton()
+    this.fetchApplicaton()
   }
 
   onPageChange(newPage:number){
     if(newPage > 0 &&  newPage <= this.paginationMeta.totalPages){
       this.QueryParams.page = newPage
-      this.fetchAllApplicaton()
+      this.fetchApplicaton()
     }
   }
 
@@ -113,7 +171,7 @@ export class CompanyJobapplications implements OnInit {
     const value = (event.target as HTMLSelectElement).value
     this.QueryParams.filtervalue = value
     this.QueryParams.page = 1
-    this.fetchAllApplicaton()
+    this.fetchApplicaton()
   }
 
   onSerchInput(event:Event){
@@ -129,6 +187,22 @@ export class CompanyJobapplications implements OnInit {
     return pageNumber
   }
   removeUser(id:string){
+  }
+
+  back(){
+    this._route.navigate(['../'],{relativeTo:this._router})
+  }
+
+  openModal(id:string){
+    this.modalId = id
+  }
+
+  isModalOpen(id:string):boolean{
+    return this.modalId == id
+  }
+
+  closeModal(){
+    this.modalId = null
   }
 
   ngOnDestroy(): void {
