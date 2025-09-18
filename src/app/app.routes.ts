@@ -112,26 +112,34 @@ export const routes: Routes = [
       },
       {
         path: 'joblist',
-        loadComponent: ()=> import ('./features/candidate/components/layout-jolist/layout-jolist')
-        .then( m => m.LayoutJolist),
-        children:[
+        loadComponent: () =>
+          import(
+            './features/candidate/components/layout-jolist/layout-jolist'
+          ).then((m) => m.LayoutJolist),
+        children: [
           {
-            path:'',
-            loadComponent: ()=> import('./features/candidate/components/candidate-joblist/candidate-joblist')
-            .then(m => m.CandidateJoblist)
+            path: '',
+            loadComponent: () =>
+              import(
+                './features/candidate/components/candidate-joblist/candidate-joblist'
+              ).then((m) => m.CandidateJoblist),
           },
           {
             path: 'jobsview',
-            loadComponent: ()=> import('./features/company/components/jobs-public-view/jobs-public-view')
-            .then( m => m.JobsPublicView)
+            loadComponent: () =>
+              import(
+                './features/company/components/jobs-public-view/jobs-public-view'
+              ).then((m) => m.JobsPublicView),
           },
-        ]
+        ],
       },
       {
-        path: "joblist/companyprofile",
-        loadComponent: ()=> import('./features/company/components/company-public-profile/company-public-profile')
-        .then(m => m.CompanyPublicProfile)
-      }
+        path: 'joblist/companyprofile',
+        loadComponent: () =>
+          import(
+            './features/company/components/company-public-profile/company-public-profile'
+          ).then((m) => m.CompanyPublicProfile),
+      },
     ],
   },
 
@@ -169,8 +177,8 @@ export const routes: Routes = [
           },
           {
             path: 'jobview',
-            component: JobsPublicView
-          }
+            component: JobsPublicView,
+          },
         ],
       },
       {
@@ -218,9 +226,39 @@ export const routes: Routes = [
             component: JobEditing,
           },
           {
-            path: 'applications',
-            loadComponent: ()=> import('./features/company/components/company-jobapplications/company-jobapplications')
-            .then(m => m.CompanyJobapplications)
+            path: 'applications/:id',
+            loadComponent: () =>
+              import(
+                './features/company/components/company-application-layout/company-application-layout'
+              ).then((m) => m.CompanyApplicationLayout),
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  import(
+                    './features/company/components/company-application-layout/company-jobapplications/company-jobapplications'
+                  ).then((m) => m.CompanyJobapplications),
+              },
+              {
+                path: 'viewprofile',
+                loadComponent: () =>
+                  import(
+                    './features/candidate/components/candidate-profile-publicview/candidate-profile-publicview'
+                  ).then((m) => m.CandidateProfilePublicview),
+              },
+              {
+                path: 'viewapplication',
+                loadComponent: ()=> import('./features/company/components/company-application-layout/application-details/application-details')
+                .then( m => m.ApplicationDetails)
+              }
+            ],
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './features/company/components/company-application-layout/company-jobapplications/company-jobapplications'
+              ).then((m) => m.CompanyJobapplications),
           },
         ],
       },
@@ -251,54 +289,72 @@ export const routes: Routes = [
       },
       {
         path: 'companyes',
-        loadComponent: ()=> import('./features/admin/components/company/company')
-        .then(m => m.Company),
-        children:[
+        loadComponent: () =>
+          import('./features/admin/components/company/company').then(
+            (m) => m.Company
+          ),
+        children: [
           {
             path: '',
-            loadComponent: ()=> import ('./features/admin/components/admin-listcompanys/admin-listcompanys')
-            .then( m => m.AdminListcompanys)
+            loadComponent: () =>
+              import(
+                './features/admin/components/admin-listcompanys/admin-listcompanys'
+              ).then((m) => m.AdminListcompanys),
           },
           {
-            path: "viewprofile",
-            loadComponent: () => import('./features/company/components/company-public-profile/company-public-profile')
-            .then( m=> m.CompanyPublicProfile)
-          }
-        ]
+            path: 'viewprofile',
+            loadComponent: () =>
+              import(
+                './features/company/components/company-public-profile/company-public-profile'
+              ).then((m) => m.CompanyPublicProfile),
+          },
+        ],
       },
       {
         path: 'candidates',
-          loadComponent: ()=> import('./features/admin/components/candidates/candidates')
-          .then(m => m.Candidates),
-          children:[
-            {
-              path: '',
-              loadComponent : ()=> import('./features/admin/components/admin-candidates-list/admin-candidates-list')
-              .then(m => m.AdminCandidatesList)
-            },
-            {
-              path: 'viewprofile',
-              loadComponent : ()=> import('./features/candidate/components/candidate-profile-publicview/candidate-profile-publicview')
-              .then(m => m.CandidateProfilePublicview)
-            }
-          ]
+        loadComponent: () =>
+          import('./features/admin/components/candidates/candidates').then(
+            (m) => m.Candidates
+          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './features/admin/components/admin-candidates-list/admin-candidates-list'
+              ).then((m) => m.AdminCandidatesList),
+          },
+          {
+            path: 'viewprofile',
+            loadComponent: () =>
+              import(
+                './features/candidate/components/candidate-profile-publicview/candidate-profile-publicview'
+              ).then((m) => m.CandidateProfilePublicview),
+          },
+        ],
       },
       {
         path: 'joblist',
-        loadComponent: () => import ('./features/admin/components/adminjobs/adminjobs')
-        .then(m=> m.Adminjobs),
-        children:[
+        loadComponent: () =>
+          import('./features/admin/components/adminjobs/adminjobs').then(
+            (m) => m.Adminjobs
+          ),
+        children: [
           {
             path: '',
-            loadComponent:()=> import('./features/admin/components/admin-joblist/admin-joblist')
-            .then(m => m.AdminJoblist)
+            loadComponent: () =>
+              import(
+                './features/admin/components/admin-joblist/admin-joblist'
+              ).then((m) => m.AdminJoblist),
           },
           {
             path: 'viewjob',
-            loadComponent: () => import('./features/company/components/jobs-public-view/jobs-public-view')
-            .then(m => m.JobsPublicView)
-          }
-        ]
+            loadComponent: () =>
+              import(
+                './features/company/components/jobs-public-view/jobs-public-view'
+              ).then((m) => m.JobsPublicView),
+          },
+        ],
       },
       {
         path: 'profile',

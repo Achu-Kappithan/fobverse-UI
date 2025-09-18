@@ -225,7 +225,7 @@ handleSubmit() {
         this._swal.showErrorToast('Failed to upload resume.');
       },
     });
-    this.onClose();
+      this.onClose();
   } else {
     console.log('Form is invalid. Please correct the errors.');
     this.jobApplayForm.markAllAsTouched();
