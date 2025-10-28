@@ -134,7 +134,7 @@ export class JobsList implements OnInit {
   }
 
   showApplciations(id:string){
-    this._router.navigate(['company/joblist/applications'],{queryParams:{id:id}})
+    this._router.navigate(['company/joblist/applications',id])
   }
 
   showJobDetails(id:string) {

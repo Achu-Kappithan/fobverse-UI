@@ -143,13 +143,15 @@ export interface ApplicationInterface {
 
   atsScore: number;
 
+  atsCriteria: number;
+
   qualification: string;
 
   experience: string;
 
   resumeUrl: string;
 
-  profile?: string
+  profile?: { _id:string , profileImg: string}
 
   createdAt:string
 }
