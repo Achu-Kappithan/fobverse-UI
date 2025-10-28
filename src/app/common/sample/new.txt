@@ -1,175 +1,513 @@
-import { Component } from '@angular/core';
+<div class="bg-white min-h-[70vh] rounded-lg text-dark-gray hide-scrollbar">
+  <header class="bg-white rounded-lg shadow-sm border-b border-gray-200">
+    <nav
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between"
+    >
+      <div class="flex items-center space-x-4">
+        <button (click)="back()" aria-label="Go back">
+          <svg
+            class="h-6 w-6 text-gray-500 hover:text-gray-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <div class="flex flex-col">
+          <h1 class="text-xl font-semibold">Social Media Assistant</h1>
+          <div class="flex items-center text-sm text-gray-500">
+            <span>Design</span>
+            <span class="mx-2">•</span>
+            <span>Full-Time</span>
+            <span class="mx-2">•</span>
+            <span>4/11 Hired</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button
+          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-full border border-gray-300 text-sm flex items-center"
+        >
+          <span class="mr-2">More Action</span>
+          <svg
+            class="h-4 w-4 text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
 
-@Component({
-  selector: 'app-sample',
-  imports: [],
-  templateUrl: './sample.html',
-  styleUrl: './sample.css'
-})
-export class Sample {
+  <div class="mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="border-b border-gray-200">
+      <div class="flex -mb-px space-x-2 md:space-x-4">
+        <button
+          class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium leading-5 transition-colors duration-200 ease-in-out focus:outline-none"
+          [ngClass]="activeView === 'all' ? 'text-purple-600 border border-gray-200 border-b-0 rounded-t-lg bg-white' : 'text-gray-500 border border-transparent hover:text-gray-700 hover:border-gray-300'"
+          (click)="setView('all')"
+        >
+          All Applicants
+        </button>
+        <button
+          class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium leading-5 transition-colors duration-200 ease-in-out focus:outline-none"
+          [ngClass]="activeView === 'shortlisted' ? 'text-purple-600 border border-gray-200 border-b-0 rounded-t-lg bg-white' : 'text-gray-500 border border-transparent hover:text-gray-700 hover:border-gray-300'"
+          (click)="setView('shortlisted')"
+        >
+          Shortlisted
+        </button>
+        <button
+          class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium leading-5 transition-colors duration-200 ease-in-out focus:outline-none"
+          [ngClass]="activeView === 'hired' ? 'text-purple-600 border border-gray-200 border-b-0 rounded-t-lg bg-white' : 'text-gray-500 border border-transparent hover:text-gray-700 hover:border-gray-300'"
+          (click)="setView('hired')"
+        >
+          Hired
+        </button>
+      </div>
+    </div>
+  </div>
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+      <div class="flex items-center mb-4 md:mb-0">
+        <h2 class="text-xl font-semibold mr-2">Total Applicants:</h2>
+        <span class="text-xl text-gray-500">{{ ApplicationList.length }}</span>
+      </div>
+      <div
+        class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto"
+      >
+        <button
+          *ngIf="activeView === 'shortlisted'"
+          (click)="openModal('Criteria')"
+          class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 inline-block mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Change Criteria
+        </button>
+        <div class="relative w-full md:w-64">
+          <input
+            type="text"
+            placeholder="Search Applicants"
+            (input)="onSerchInput($event)"
+            class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500"
+          />
+          <span
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </span>
+        </div>
+        <select
+          *ngIf="activeView === 'all'"
+          (change)="onfilterChange($event)"
+          class="px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-100 w-full md:w-auto justify-center"
+        >
+          <option value="">All</option>
+          <option value="shortlisted">Shortlisted</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="hired">Hired</option>
+          <!-- <option value="rejected">Rejected</option> -->
+        </select>
+      </div>
+    </div>
 
-}
+    <div
+      *ngIf="activeView === 'all'"
+      class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar"
+    >
+      <h1>all applicatons</h1>
+      <div class="flex-shrink-0 w-full rounded-lg">
+        <div *ngIf="isLoading" class="flex justify-center items-center py-10">
+          <div class="loader"></div>
+        </div>
 
+        <div
+          *ngIf="!isLoading && ApplicationList.length === 0"
+          class="flex justify-center items-center py-10"
+        >
+          <p class="text-gray-500 text-lg">No applicants found.</p>
+        </div>
 
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ComapnyProfileInterface } from '../../interfaces/company.responce.interface';
+        <div
+          *ngIf="!isLoading && ApplicationList.length > 0"
+          class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar"
+        >
+          <div class="flex-shrink-0 w-full">
+            <div class="flex flex-wrap -m-1">
+              <div
+                *ngFor="let applicant of ApplicationList"
+                class="p-2 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4"
+              >
+                <div
+                  class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full flex flex-col justify-between"
+                >
+                  <div class="px-4">
+                    <div class="flex justify-between items-start gap-3">
+                      <div class="flex-1 flex flex-col text-left">
+                        <h2
+                          class="text-lg sm:text-xl font-semibold text-dark-gray mb-1"
+                        >
+                          {{ applicant.name }}
+                        </h2>
+                        <p class="text-gray-500 text-sm flex gap-x-4">
+                          <span>Created:</span>
+                          <span class="text-gray-700"
+                            >{{ applicant.createdAt | date: 'shortDate' }}</span
+                          >
+                        </p>
+                        <p class="text-gray-500 text-sm flex gap-x-7">
+                          <span>Stage:</span>
+                          <span class="text-gray-700"
+                            >{{ applicant.Stages }}</span
+                          >
+                        </p>
+                        <div class="flex items-center text-sm flex gap-x-5">
+                          <span class="font-medium mr-1 text-gray-500"
+                            >Status:</span
+                          >
+                          <span
+                            [ngClass]="{
+                                'text-green-600': !applicant.Rejected,
+                                'text-red-600': applicant.Rejected
+                            }"
+                            class="font-semibold flex items-center"
+                          >
+                            <i
+                              [ngClass]="{
+                                    'fas fa-check-circle': !applicant.Rejected,
+                                    'fas fa-times-circle': applicant.Rejected
+                                }"
+                              class="mr-1"
+                            ></i>
+                            {{ applicant.Rejected ? 'Rejected' : 'Active'}}
+                          </span>
+                        </div>
+                      </div>
+                      <img
+                        [src]="applicant.profile?.profileImg ? baseUrl + applicant.profile?.profileImg : '/profileimages/defaultProfile.jpg'"
+                        [alt]="applicant.name + ' Logo'"
+                        class="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover flex-shrink-0"
+                      />
+                    </div>
 
-@Component({
-  selector: 'app-update-profileinfo',
-  imports: [CommonModule,ReactiveFormsModule],
-  templateUrl: './update-profileinfo.html',
-  styleUrl: './update-profileinfo.css'
-})
-export class UpdateProfileinfo {
-  companyProfileForm!: FormGroup;
+                    <div class="flex items-center justify-between text-base">
+                      <span class="font-bold text-gray-700">Score</span>
+                      <span
+                        class="font-bold flex items-center text-lg text-gold"
+                      >
+                        <span class="mr-1">{{applicant.atsScore}}</span>
+                        <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                          <path
+                            d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
 
-  constructor(private fb: FormBuilder) {}
+                  <div
+                    class="flex justify-between items-center mx-4 gap-4 mt-auto p-2 border-t border-gray-200"
+                  >
+                    <a
+                      [routerLink]="['viewprofile']"
+                      [queryParams]="{id:applicant.profile?._id}"
+                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+                    >
+                      View Profile
+                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                    <a
+                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+                    >
+                      View application
+                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  ngOnInit(): void {
-    this.companyProfileForm = this.fb.group({
-      name: ['', Validators.required],
-      industry: [''],
-      logoUrl: [''],
-      description: [''],
-      contactInfo: this.fb.array([]),
-      officeLocation: this.fb.array([]),
-      techStack: this.fb.array([]),
-      imageGallery: this.fb.array([]),
-      benefits: this.fb.array([])
-    });
+    <!-- setion -2 -->
 
-    // Simulate loading existing company data
-    this.loadCompanyProfileData();
-  }
+    <div
+      *ngIf="activeView === 'shortlisted'"
+      class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar"
+    >
+      <h1>application 2</h1>
+      <div class="flex-shrink-0 w-full rounded-lg">
+        <div *ngIf="isLoading" class="flex justify-center items-center py-10">
+          <div class="loader"></div>
+        </div>
 
-  // --- Getters for FormArrays ---
-  get contactInfo(): FormArray {
-    return this.companyProfileForm.get('contactInfo') as FormArray;
-  }
+        <div
+          *ngIf="!isLoading && ApplicationList.length === 0"
+          class="flex justify-center items-center py-10"
+        >
+          <p class="text-gray-500 text-lg">No applicants found.</p>
+        </div>
 
-  get officeLocation(): FormArray {
-    return this.companyProfileForm.get('officeLocation') as FormArray;
-  }
+        <div
+          *ngIf="!isLoading && ApplicationList.length > 0"
+          class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar"
+        >
+          <div class="flex-shrink-0 w-full">
+            <div class="flex flex-wrap -m-1">
+              <div
+                *ngFor="let applicant of ApplicationList"
+                class="p-2 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4"
+              >
+                <div
+                  class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full flex flex-col justify-between"
+                >
+                  <div class="px-4">
+                    <div class="flex justify-between items-start gap-3">
+                      <div class="flex-1 flex flex-col text-left">
+                        <h2
+                          class="text-lg sm:text-xl font-semibold text-dark-gray mb-1"
+                        >
+                          {{ applicant.name }}
+                        </h2>
+                        <p class="text-gray-500 text-sm flex gap-x-4">
+                          <span>Created:</span>
+                          <span class="text-gray-700"
+                            >{{ applicant.createdAt | date: 'shortDate' }}</span
+                          >
+                        </p>
+                        <p class="text-gray-500 text-sm flex gap-x-7">
+                          <span>Stage:</span>
+                          <span class="text-gray-700"
+                            >{{ applicant.Stages }}</span
+                          >
+                        </p>
+                        <div class="flex items-center text-sm flex gap-x-5">
+                          <span class="font-medium mr-1 text-gray-500"
+                            >Status:</span
+                          >
+                          <span
+                            [ngClass]="{
+                                'text-green-600': !applicant.Rejected,
+                                'text-red-600': applicant.Rejected
+                            }"
+                            class="font-semibold flex items-center"
+                          >
+                            <i
+                              [ngClass]="{
+                                    'fas fa-check-circle': !applicant.Rejected,
+                                    'fas fa-times-circle': applicant.Rejected
+                                }"
+                              class="mr-1"
+                            ></i>
+                            {{ applicant.Rejected ? 'Rejected' : 'Active'}}
+                          </span>
+                        </div>
+                      </div>
+                      <img
+                        [src]="applicant.profile?.profileImg ? baseUrl + applicant.profile?.profileImg : '/profileimages/defaultProfile.jpg'"
+                        [alt]="applicant.name + ' Logo'"
+                        class="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover flex-shrink-0"
+                      />
+                    </div>
 
-  get techStack(): FormArray {
-    return this.companyProfileForm.get('techStack') as FormArray;
-  }
+                    <div class="flex items-center justify-between text-base">
+                      <span class="font-bold text-gray-700">Score</span>
+                      <span
+                        class="font-bold flex items-center text-lg text-gold"
+                      >
+                        <span class="mr-1">{{applicant.atsScore}}</span>
+                        <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                          <path
+                            d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
 
-  get imageGallery(): FormArray {
-    return this.companyProfileForm.get('imageGallery') as FormArray;
-  }
+                  <div
+                    class="flex justify-between items-center mx-4 gap-4 mt-auto p-2 border-t border-gray-200"
+                  >
+                    <a
+                      [routerLink]="['viewprofile']"
+                      [queryParams]="{id:applicant._id}"
+                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+                    >
+                      View Profile
+                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                    <a
+                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+                    >
+                      View application
+                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-  get benefits(): FormArray {
-    return this.companyProfileForm.get('benefits') as FormArray;
-  }
+  <!-- <main  class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div class="flex items-center mb-4 md:mb-0">
+                <h2 class="text-xl font-semibold mr-2">Qualified Applicants:</h2>
+                <span class="text-xl text-gray-500">...</span>
+            </div>
+            </div>
+        <div class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar">
+            <div class="flex-shrink-0 w-full rounded-lg">
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar">
+                    <div class="flex-shrink-0 w-full ">
+                        <div class="flex items-center justify-between mb-4"></div>
+                        <div class="flex flex-wrap -m-1">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main> -->
 
-  // --- Simulate Loading Existing Data ---
-  loadCompanyProfileData(): void {
-    // In a real application, you would fetch this data from a service:
-    // this.companyService.getCompanyProfile(companyId).subscribe(data => { ... });
+  <main
+    *ngIf="activeView === 'hired'"
+    class="container mx-auto px-4 sm:px-6 lg:px-8 py-6"
+  >
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+      <div class="flex items-center mb-4 md:mb-0">
+        <h2 class="text-xl font-semibold mr-2">Hired Applicants:</h2>
+        <span class="text-xl text-gray-500">...</span>
+      </div>
+    </div>
+    <div class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar">
+      <div class="flex-shrink-0 w-full rounded-lg">
+        <div
+          class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar"
+        >
+          <div class="flex-shrink-0 w-full">
+            <div class="flex items-center justify-between mb-4"></div>
+            <div class="flex flex-wrap -m-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
 
-    const existingData: Partial<ComapnyProfileInterface> = {
-      name: 'Nomad Inc.',
-      industry: 'Software, Social & Non-Profit',
-      logoUrl: 'https://placehold.co/100x100/34D399/FFFFFF?text=N',
-      description: 'Nomad is a software platform for starting and running internet businesses. Millions of businesses, from daily to 500-company teams, use Nomad to launch, expand globally, and manage their online operations. Businesses large and small use Nomad to power their online stores. Our mission is to make commerce better for everyone, so businesses can focus on building and selling their products. Nomad is a global company, with offices in San Francisco, New York, London, Paris, Berlin, Tokyo, and Sydney. We are a team of passionate, creative, and driven individuals who are committed to making a difference in the world. We are looking for talented and motivated individuals to join our team.',
-      contactInfo: [
-        { type: 'Email', value: 'contact@nomad.com' },
-        { type: 'Twitter', value: 'twitter.com/nomad' },
-        { type: 'LinkedIn', value: 'linkedin.com/company/nomad' }
-      ],
-      officeLocation: ['United States', 'England', 'Japan', 'Australia', 'India'],
-      techStack: ['HTML5', 'CSS3', 'JavaScript', 'Python', 'React', 'Node.js'],
-      imageGallery: [
-        'https://placehold.co/400x250/E0E0E0/B0B0B0?text=Office+1',
-        'https://placehold.co/400x120/D0D0D0/A0A0A0?text=Office+2',
-        'https://placehold.co/400x120/C0C0C0/909090?text=Office+3'
-      ],
-      benafits: [
-        'Full Healthcare',
-        'Remote Work',
-        'Family Support',
-        'Paid Time Off',
-        'Free Coffee & Snacks',
-        'Birthday Bonus'
-      ]
-    };
+<div
+  class="mt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 bg-white bg-lavender rounded-xl shadow-lg p-6"
+>
+  <!-- Results Text -->
+  <div class="text-sm text-dark-gray">
+    Showing {{ (paginationMeta.currentPage - 1) * paginationMeta.itemsPerPage +
+    1 }} to {{ paginationMeta.currentPage * paginationMeta.itemsPerPage >
+    paginationMeta.totalItems ? paginationMeta.totalItems :
+    paginationMeta.currentPage * paginationMeta.itemsPerPage }} of {{
+    paginationMeta.totalItems }} results
+  </div>
 
-    // Patch the main form values
-    this.companyProfileForm.patchValue({
-      name: existingData.name,
-      industry: existingData.industry,
-      logoUrl: existingData.logoUrl,
-      description: existingData.description
-    });
+  <!-- Pagination Controls -->
+  <div
+    class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4"
+  >
+    <!-- Items per page dropdown -->
+    <div class="flex items-center space-x-2">
+      <label for="itemsPerPage" class="text-sm text-dark-gray"
+        >Items per page:</label
+      >
+      <select
+        [(ngModel)]="QueryParams.limit"
+        (change)="onLimitChange(QueryParams.limit!)"
+        id="itemsPerPage"
+        class="py-2 px-3 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-white text-dark-gray"
+      >
+        <option [ngValue]="4">4</option>
+        <option [ngValue]="6">6</option>
+        <option [ngValue]="8">8</option>
+        <option [ngValue]="12">12</option>
+      </select>
+    </div>
 
-    // Populate FormArrays
-    existingData.contactInfo?.forEach(item => {
-      this.contactInfo.push(this.fb.group(item));
-    });
-    existingData.officeLocation?.forEach(item => {
-      this.officeLocation.push(this.fb.control(item));
-    });
-    existingData.techStack?.forEach(item => {
-      this.techStack.push(this.fb.control(item));
-    });
-    existingData.imageGallery?.forEach(item => {
-      this.imageGallery.push(this.fb.control(item));
-    });
-    existingData.benafits?.forEach(item => {
-      this.benefits.push(this.fb.control(item));
-    });
-  }
+    <!-- Previous/Next & Page Numbers -->
+    <nav
+      class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px"
+      aria-label="Pagination"
+    >
+      <!-- Previous -->
+      <button
+        (click)="onPageChange(paginationMeta.currentPage -1)"
+        [disabled]="paginationMeta.currentPage === 1 || isLoading"
+        class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Previous
+      </button>
 
-  // --- Methods for Contact Info (Array of Objects) ---
-  addContactInfo(): void {
-    this.contactInfo.push(this.fb.group({
-      type: ['', Validators.required],
-      value: ['', Validators.required]
-    }));
-  }
+      <!-- Page numbers -->
+      <ng-container *ngFor=" let pageNum of pagenumbers">
+        <button
+          *ngIf="pageNum <= paginationMeta.totalPages"
+          (click)="onPageChange(pageNum)"
+          [ngClass]="{
+            'bg-purple text-white': pageNum === paginationMeta.currentPage,
+            'bg-white text-purple hover:bg-lavender': pageNum !== paginationMeta.currentPage
+          }"
+          class="relative inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium"
+        >
+          {{ pageNum }}
+        </button>
+      </ng-container>
 
-  removeContactInfo(index: number): void {
-    this.contactInfo.removeAt(index);
-  }
-
-  // --- Methods for String Arrays (Office Location, Tech Stack, Image Gallery, Benefits) ---
-  addStringItem(formArray: FormArray, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.trim();
-    if (value) {
-      formArray.push(this.fb.control(value));
-      input.value = ''; // Clear the input field
-    }
-  }
-
-  removeStringItem(formArray: FormArray, index: number): void {
-    formArray.removeAt(index);
-  }
-
-  // --- Form Submission ---
-  onSubmit(): void {
-    if (this.companyProfileForm.valid) {
-      const updatedData: ComapnyProfileInterface = this.companyProfileForm.value;
-      console.log('Updating Company Profile Data:', updatedData);
-      // Here you would typically send this data to your backend service for update
-      alert('Company Profile Updated! Check console for data.');
-    } else {
-      console.error('Form is invalid. Please check all fields.');
-      alert('Please fill out all required fields and ensure data is valid.');
-      this.markAllAsTouched(this.companyProfileForm);
-    }
-  }
-
-  // Helper to mark all controls as touched to show validation errors
-  private markAllAsTouched(formGroup: FormGroup | FormArray): void {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup || control instanceof FormArray) {
-        this.markAllAsTouched(control);
-      }
-    });
-  }
-}
+      <!-- Next -->
+      <button
+        (click)="onPageChange(paginationMeta.currentPage + 1)"
+        [disabled]="paginationMeta.currentPage === paginationMeta.totalPages || isLoading"
+        class="relative inline-flex items-center px-4 py-2 rounded-r-xl border border-purple-300 bg-white text-purple hover:bg-lavender disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Next
+      </button>
+    </nav>
+  </div>
+</div>
