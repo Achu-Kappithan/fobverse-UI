@@ -123,21 +123,24 @@ export class JobsList implements OnInit {
     return pageNumber
   }
 
-  updateAction(event:{action:string, row:any}){
+  updateAction(event:{action:string, row:JobsInterface}){
     const {action, row} = event
 
     if(action === 'viewDetails'){
-      this.showJobDetails(row._id)
+      this.showJobDetails(row)
     }else if(action === 'viewApplications'){
-      this.showApplciations(row._id)
+      this.showApplciations(row)
     }
   }
 
-  showApplciations(id:string){
-    this._router.navigate(['company/joblist/applications',id])
+  showApplciations(row:JobsInterface){
+    this._router.navigate(['company/joblist/applications',row._id],
+      {state:{jobDetails:row}}
+    )
+    localStorage.setItem('jobDetails', JSON.stringify(row));
   }
 
-  showJobDetails(id:string) {
-    this._router.navigate(['company/joblist/jobview'],{queryParams:{id:id}});
+  showJobDetails(row:JobsInterface) {
+    this._router.navigate(['company/joblist/jobview'],{queryParams:{id:row._id}});
   }
 }

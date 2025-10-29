@@ -14,19 +14,19 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
+              stroke-width="2"  
               d="M15 19l-7-7 7-7"
             />
           </svg>
         </button>
         <div class="flex flex-col">
-          <h1 class="text-xl font-semibold">Social Media Assistant</h1>
+          <h1 class="text-xl font-semibold">{{currentJobdetails?.title}}</h1>
           <div class="flex items-center text-sm text-gray-500">
-            <span>Design</span>
+            <span>{{currentJobdetails?.jobType}}</span>
             <span class="mx-2">•</span>
-            <span>Full-Time</span>
+            <span>{{currentJobdetails?.location}}</span>
             <span class="mx-2">•</span>
-            <span>4/11 Hired</span>
+            <span>No:{{currentJobdetails?.vacancies}}</span>
           </div>
         </div>
       </div>
@@ -255,6 +255,7 @@
                       <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                     <a
+                      [routerLink]="['viewapplication']"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View application
@@ -377,6 +378,7 @@
                       <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                     <a
+                      [routerLink]="['viewapplication']"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View application
