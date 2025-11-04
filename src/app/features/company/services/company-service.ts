@@ -127,27 +127,6 @@ export class CompanyService {
     .pipe(map(res => res.map(item => item.display_name)));
   }
 
-  getAllApplication(params:ApplicationQureryInterface):Observable<ApiResponce<ApplicationInterface[]>>{
-    let httpParms = new HttpParams
-
-    if(params.limit){
-      httpParms = httpParms.set('limit',params.limit.toString())
-    }
-    if(params.page){
-      httpParms = httpParms.set('page',params.page.toString())
-    }
-    if(params.search){
-      httpParms = httpParms.set('search',params.search)
-    }
-    if(params.filtervalue){
-      httpParms = httpParms.set('filtervalue',params.filtervalue)
-    }
-    if(!params.jobId){
-     throw new  Error('jobId  Required')
-    }
-    httpParms = httpParms.set('jobId',params.jobId)
-    return this._http.get<ApiResponce<ApplicationInterface[]>>(`/api/applications/applicants`,{params:httpParms})
-  }
 
   removeUser(id:string):Observable<PlainResponce>{
     return this._http.delete<PlainResponce>(`/api/company/removeuser?id=${id}`)

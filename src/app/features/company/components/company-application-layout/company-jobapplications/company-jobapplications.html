@@ -14,19 +14,19 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
+              stroke-width="2"  
               d="M15 19l-7-7 7-7"
             />
           </svg>
         </button>
         <div class="flex flex-col">
-          <h1 class="text-xl font-semibold">Social Media Assistant</h1>
+          <h1 class="text-xl font-semibold">{{currentJobdetails?.title}}</h1>
           <div class="flex items-center text-sm text-gray-500">
-            <span>Design</span>
+            <span>{{currentJobdetails?.jobType}}</span>
             <span class="mx-2">•</span>
-            <span>Full-Time</span>
+            <span>{{currentJobdetails?.location}}</span>
             <span class="mx-2">•</span>
-            <span>4/11 Hired</span>
+            <span>No:{{currentJobdetails?.vacancies}}</span>
           </div>
         </div>
       </div>
@@ -153,7 +153,7 @@
       *ngIf="activeView === 'all'"
       class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar"
     >
-      <h1>all applicatons</h1>
+      <h1>All Applicatons</h1>
       <div class="flex-shrink-0 w-full rounded-lg">
         <div *ngIf="isLoading" class="flex justify-center items-center py-10">
           <div class="loader"></div>
@@ -255,6 +255,7 @@
                       <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                     <a
+                      [routerLink]="['viewapplication',applicant._id,applicant?.candidateId]"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View application
@@ -275,7 +276,7 @@
       *ngIf="activeView === 'shortlisted'"
       class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar"
     >
-      <h1>application 2</h1>
+      <h1>Shortlisted</h1>
       <div class="flex-shrink-0 w-full rounded-lg">
         <div *ngIf="isLoading" class="flex justify-center items-center py-10">
           <div class="loader"></div>
@@ -377,6 +378,7 @@
                       <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                     <a
+                      [routerLink]="['viewapplication',applicant._id,currentJobdetails?._id]"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View application

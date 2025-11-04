@@ -247,7 +247,7 @@ export const routes: Routes = [
                   ).then((m) => m.CandidateProfilePublicview),
               },
               {
-                path: 'viewapplication',
+                path: 'viewapplication/:appId/:canId',
                 loadComponent: ()=> import('./features/company/components/company-application-layout/application-details/application-details')
                 .then( m => m.ApplicationDetails)
               }

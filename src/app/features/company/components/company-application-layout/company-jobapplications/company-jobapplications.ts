@@ -18,8 +18,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApplicationQureryInterface } from '../../../interfaces/company.interface';
-import { ApplicationInterface } from '../../../interfaces/company.responce.interface';
+import { ApplicationInterface, JobsInterface } from '../../../interfaces/company.responce.interface';
 import { environment } from '../../../../../../env/environment';
+import { CompanyApplication } from '../../../services/company-application';
 
 @Component({
   selector: 'app-company-jobapplications',
@@ -35,14 +36,16 @@ export class CompanyJobapplications implements OnInit {
   baseUrl: string = environment.cloudinaryBaseUrl;
   modalId: string | null = null;
   atsForm!: FormGroup;
+  currentJobdetails: JobsInterface | null = null
 
   searchTearms = new Subject<string>();
   private _subscription: Subscription = new Subscription();
 
   constructor(
     private readonly _CompanySevice: CompanyService,
-    private readonly _router: ActivatedRoute,
-    private readonly _route: Router,
+    private readonly _CompanyApplicationService: CompanyApplication,
+    private readonly _route: ActivatedRoute,
+    private readonly _router: Router,
     private readonly _swal: SweetAlert,
     private readonly _cdr: ChangeDetectorRef,
     private _fb: FormBuilder
@@ -66,7 +69,15 @@ export class CompanyJobapplications implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this._router.paramMap.subscribe((parms) => {
+    this.currentJobdetails = history.state?.['jobDetails']
+    if (!this.currentJobdetails) {
+    const saved = localStorage.getItem('jobDetails');
+    this.currentJobdetails = saved ? JSON.parse(saved) : null;
+    }
+    console.log('loaded job details',this.currentJobdetails)
+
+
+    this._route.paramMap.subscribe((parms) => {
       this.jobId = parms.get('id');
       if (this.jobId) {
         this.QueryParams.jobId = this.jobId;
@@ -110,7 +121,7 @@ export class CompanyJobapplications implements OnInit {
 
   fetchAllApplicaton() {
     this.isLoading = true;
-    this._CompanySevice.getAllApplication(this.QueryParams).subscribe({
+    this._CompanyApplicationService.getAllApplication(this.QueryParams).subscribe({
       next: (res) => {
         if (res.success && res.data) {
           this.ApplicationList = res.data;
@@ -195,7 +206,7 @@ export class CompanyJobapplications implements OnInit {
 
   get pagenumbers(): number[] {
     const pageNumber: number[] = [];
-    for (let i = 1; i <= this.paginationMeta.totalPages; i++) {
+    for (let i = 1; i < this.paginationMeta.totalPages; i++) {
       pageNumber.push(i);
     }
     return pageNumber;
@@ -203,7 +214,7 @@ export class CompanyJobapplications implements OnInit {
   removeUser(id: string) {}
 
   back() {
-    this._route.navigate(['../'], { relativeTo: this._router });
+    this._router.navigate(['../'], { relativeTo: this._route });
   }
 
   openModal(id: string) {
