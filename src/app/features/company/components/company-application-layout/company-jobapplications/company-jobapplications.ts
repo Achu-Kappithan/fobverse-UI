@@ -20,6 +20,7 @@ import {
 import { ApplicationQureryInterface } from '../../../interfaces/company.interface';
 import { ApplicationInterface, JobsInterface } from '../../../interfaces/company.responce.interface';
 import { environment } from '../../../../../../env/environment';
+import { CompanyApplication } from '../../../services/company-application';
 
 @Component({
   selector: 'app-company-jobapplications',
@@ -42,6 +43,7 @@ export class CompanyJobapplications implements OnInit {
 
   constructor(
     private readonly _CompanySevice: CompanyService,
+    private readonly _CompanyApplicationService: CompanyApplication,
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
     private readonly _swal: SweetAlert,
@@ -119,7 +121,7 @@ export class CompanyJobapplications implements OnInit {
 
   fetchAllApplicaton() {
     this.isLoading = true;
-    this._CompanySevice.getAllApplication(this.QueryParams).subscribe({
+    this._CompanyApplicationService.getAllApplication(this.QueryParams).subscribe({
       next: (res) => {
         if (res.success && res.data) {
           this.ApplicationList = res.data;

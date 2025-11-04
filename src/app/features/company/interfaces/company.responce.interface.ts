@@ -1,3 +1,4 @@
+import { CandidateInterface } from "../../candidate/interfaces/candidate.interface";
 
 
 
@@ -151,7 +152,37 @@ export interface ApplicationInterface {
 
   resumeUrl: string;
 
-  profile?: { _id:string , profileImg: string}
+  profile?: { _id:string , profileImg: string} 
 
   createdAt:string
+}
+
+export interface applicationWithProfile {
+  _id: string;
+
+  candidateId: string;
+
+  name: string;
+
+  Stages: Stages;
+
+  Rejected: boolean;
+
+  email: string;
+
+  phone: string;
+
+  atsScore: number;
+
+  atsCriteria: number;
+
+  qualification: string;
+
+  experience: string;
+
+  resumeUrl: string;
+
+  createdAt:string;
+
+  profile: CandidateInterface
 }
