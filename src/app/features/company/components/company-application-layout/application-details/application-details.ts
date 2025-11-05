@@ -2,15 +2,15 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyApplication } from '../../../services/company-application';
 import {
-  ApplicationInterface,
   applicationWithProfile,
-  ContactInfoItem,
 } from '../../../interfaces/company.responce.interface';
 import { CandidateInterface } from '../../../../candidate/interfaces/candidate.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../../env/environment';
 import { TextTransformPipe } from '../../../../../shared/pipes/text-transform-pipe';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { interviewStages } from '../../../../../shared/enums/Interview-stages.enum';
 
 @Component({
   selector: 'app-application-details',
@@ -19,19 +19,28 @@ import { TextTransformPipe } from '../../../../../shared/pipes/text-transform-pi
   styleUrl: './application-details.css',
 })
 export class ApplicationDetails implements OnInit {
+  contentId: string = 'Profile';
+  pdfSrc: SafeResourceUrl | null = null;
   applicationId: string | null = null;
   candidateId: string | null = null;
   applicationDetails: applicationWithProfile | null = null;
   profileData: CandidateInterface | null = null;
   addressValue: string | null = null;
-  isLoading : boolean = false
+  isLoading : boolean = false;
   baseUrl:string = environment.cloudinaryBaseUrl;
-  Math = Math
+  readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
+  resumePdfUrl: string | null = null;
+  Math = Math;
+  currentStageIndex: number = 2
+
+  currentStageId: string  = 'stage-shortlisted'
+
 
   constructor(
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
     private readonly _ApplicationService: CompanyApplication,
+    private readonly _sanitizer: DomSanitizer,
     private _cdr: ChangeDetectorRef
   ) {}
 
@@ -41,12 +50,6 @@ export class ApplicationDetails implements OnInit {
       this.candidateId = parms.get('canId');
     });
 
-    console.log(
-      'application id:',
-      this.applicationId,
-      ' candidateId :',
-      this.candidateId
-    );
     if (this.applicationId && this.candidateId) {
       this.fetchApplicationDetails();
     }
@@ -67,6 +70,8 @@ export class ApplicationDetails implements OnInit {
             ? addressObj.value
             : 'No address available';
             console.log(value)
+            this.setResumeUrl()
+            this.getStages(value.data.Stages)
             this.isLoading = false
             this._cdr.detectChanges()
         },
@@ -86,5 +91,62 @@ export class ApplicationDetails implements OnInit {
     }
     const fivePointScore = percentage / 20;
     return Math.round(fivePointScore * 2) / 2;
+  }
+
+  setResumeUrl(){
+    const baseUrl = `${this.cloudinaryBaseUrl}/image/upload${this.applicationDetails?.resumeUrl}`;
+    this.resumePdfUrl = `${baseUrl}#toolbar=0&navpanes=0&scrollbar=0`;
+    this.pdfSrc =  this._sanitizer.bypassSecurityTrustResourceUrl(this.resumePdfUrl);
+  }
+
+  switchContent(id:string){
+    this.contentId = id
+  }
+
+  activeContent(id:string):boolean{
+    return this.contentId == id
+  }
+
+  switchStages(id:string):void{
+    this.currentStageId = id
+  }
+
+  activeStage(id:string):boolean{
+    return this.currentStageId == id
+  }
+
+  get atsPassed(): boolean {
+    return (this.applicationDetails?.atsScore ?? 0) >= (this.applicationDetails?.atsCriteria ?? 0);
+  }
+
+  hiringStages = [
+    'Shortlisted',    
+    'Telephoneic',  
+    'Technicals',   
+    'Hired/Reject'   
+  ];
+
+  getStages(stage: string): void {
+    if (stage === interviewStages.Shortlisted) {
+      this.currentStageIndex = 1; 
+    } else if (stage === interviewStages.Telephone) {
+      this.currentStageIndex = 2; 
+    } else if (stage === interviewStages.Technical) {
+      this.currentStageIndex = 3;
+    } else if (stage === interviewStages.Hired) {
+      this.currentStageIndex = 4;
+    } else {
+      this.currentStageIndex = 0;
+    }
+  }
+
+  getStageStatus(index: number): 'completed' | 'current' | 'pending' {
+    if (index < this.currentStageIndex) {
+      return 'completed';
+    } else if (index === this.currentStageIndex) {
+      return 'current';
+    } else {
+      return 'pending';
+    }
   }
 }
