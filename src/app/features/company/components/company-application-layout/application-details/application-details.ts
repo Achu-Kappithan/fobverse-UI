@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyApplication } from '../../../services/company-application';
 import {
   applicationWithProfile,
+  InternalUserInterface,
 } from '../../../interfaces/company.responce.interface';
 import { CandidateInterface } from '../../../../candidate/interfaces/candidate.interface';
 import { CommonModule } from '@angular/common';
@@ -14,7 +15,7 @@ import { interviewStages } from '../../../../../shared/enums/Interview-stages.en
 
 @Component({
   selector: 'app-application-details',
-  imports: [CommonModule, FormsModule,TextTransformPipe],
+  imports: [CommonModule, FormsModule, TextTransformPipe],
   templateUrl: './application-details.html',
   styleUrl: './application-details.css',
 })
@@ -26,15 +27,17 @@ export class ApplicationDetails implements OnInit {
   applicationDetails: applicationWithProfile | null = null;
   profileData: CandidateInterface | null = null;
   addressValue: string | null = null;
-  isLoading : boolean = false;
-  baseUrl:string = environment.cloudinaryBaseUrl;
+  isLoading: boolean = false;
+  baseUrl: string = environment.cloudinaryBaseUrl;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
   resumePdfUrl: string | null = null;
   Math = Math;
-  currentStageIndex: number = 2
+  currentStageIndex: number = 2;
 
-  currentStageId: string  = 'stage-shortlisted'
-
+  currentStageId: string = 'stage-shortlisted';
+  interviewScheduled: boolean = false;
+  sheduleModal: boolean = false;
+  hrList: InternalUserInterface[] | null = null;
 
   constructor(
     private readonly _route: ActivatedRoute,
@@ -56,7 +59,7 @@ export class ApplicationDetails implements OnInit {
   }
 
   fetchApplicationDetails() {
-    this.isLoading = true
+    this.isLoading = true;
     this._ApplicationService
       .getApplicationDetails(this.applicationId!, this.candidateId!)
       .subscribe({
@@ -69,18 +72,18 @@ export class ApplicationDetails implements OnInit {
           this.addressValue = addressObj
             ? addressObj.value
             : 'No address available';
-            console.log(value)
-            this.setResumeUrl()
-            this.getStages(value.data.Stages)
-            this.isLoading = false
-            this._cdr.detectChanges()
+          console.log(value);
+          this.setResumeUrl();
+          this.getStages(value.data.Stages);
+          this.isLoading = false;
+          this._cdr.detectChanges();
         },
         error: (err) => {
           console.log(
             'error  regading  fetch applicationDetails with profile',
             err
           );
-          this._cdr.detectChanges()
+          this._cdr.detectChanges();
         },
       });
   }
@@ -93,44 +96,64 @@ export class ApplicationDetails implements OnInit {
     return Math.round(fivePointScore * 2) / 2;
   }
 
-  setResumeUrl(){
+  setResumeUrl() {
     const baseUrl = `${this.cloudinaryBaseUrl}/image/upload${this.applicationDetails?.resumeUrl}`;
     this.resumePdfUrl = `${baseUrl}#toolbar=0&navpanes=0&scrollbar=0`;
-    this.pdfSrc =  this._sanitizer.bypassSecurityTrustResourceUrl(this.resumePdfUrl);
+    this.pdfSrc = this._sanitizer.bypassSecurityTrustResourceUrl(
+      this.resumePdfUrl
+    );
   }
 
-  switchContent(id:string){
-    this.contentId = id
+  switchContent(id: string) {
+    this.contentId = id;
   }
 
-  activeContent(id:string):boolean{
-    return this.contentId == id
+  activeContent(id: string): boolean {
+    return this.contentId == id;
   }
 
-  switchStages(id:string):void{
-    this.currentStageId = id
+  switchStages(id: string): void {
+    this.currentStageId = id;
   }
 
-  activeStage(id:string):boolean{
-    return this.currentStageId == id
+  activeStage(id: string): boolean {
+    return this.currentStageId == id;
+  }
+
+  sheduleModalOpen() {
+    if (!this.hrList) {
+      this._ApplicationService.getHrlist().subscribe({
+        next: (res) => {
+          console.log(res.data)
+          this.hrList = res.data
+          this._cdr.detectChanges()
+        },
+        error: (err) => {
+          console.log('error regading  fetch  hr list ', err);
+        },
+      });
+    }
+    this.sheduleModal = true;
+  }
+
+  sheduleModalclose() {
+    this.sheduleModal = false;
   }
 
   get atsPassed(): boolean {
-    return (this.applicationDetails?.atsScore ?? 0) >= (this.applicationDetails?.atsCriteria ?? 0);
+    return (
+      (this.applicationDetails?.atsScore ?? 0) >=
+      (this.applicationDetails?.atsCriteria ?? 0)
+    );
   }
 
-  hiringStages = [
-    'Shortlisted',    
-    'Telephoneic',  
-    'Technicals',   
-    'Hired/Reject'   
-  ];
+  hiringStages = ['Shortlisted', 'Telephoneic', 'Technicals', 'Hired/Reject'];
 
   getStages(stage: string): void {
     if (stage === interviewStages.Shortlisted) {
-      this.currentStageIndex = 1; 
+      this.currentStageIndex = 1;
     } else if (stage === interviewStages.Telephone) {
-      this.currentStageIndex = 2; 
+      this.currentStageIndex = 2;
     } else if (stage === interviewStages.Technical) {
       this.currentStageIndex = 3;
     } else if (stage === interviewStages.Hired) {

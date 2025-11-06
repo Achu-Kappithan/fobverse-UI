@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApplicationQureryInterface } from '../interfaces/company.interface';
 import { Observable } from 'rxjs';
 import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
-import { ApplicationInterface, applicationWithProfile } from '../interfaces/company.responce.interface';
+import { ApplicationInterface, applicationWithProfile, InternalUserInterface } from '../interfaces/company.responce.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +39,9 @@ export class CompanyApplication {
 
   getApplicationDetails(appId:string,canId:string):Observable<ApiResponce<applicationWithProfile>>{
     return this._http.get<ApiResponce<applicationWithProfile>>(`/api/applications/applicationDetails/${appId}/${canId}`)
+  }
+
+  getHrlist():Observable<ApiResponce<InternalUserInterface[]>>{
+    return this._http.get<ApiResponce<InternalUserInterface[]>>(`/api/company/hrusers`)
   }
 }

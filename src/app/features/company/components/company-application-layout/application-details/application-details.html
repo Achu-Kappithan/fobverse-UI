@@ -506,7 +506,7 @@
               </div>
             </div>
 
-            <div *ngIf="activeStage('stage-telephoneic')">
+            <div *ngIf="activeStage('stage-telephoneic') && interviewScheduled ">
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
               >
@@ -617,6 +617,20 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="activeStage('stage-telephoneic') && !interviewScheduled">
+              <div class="bg-yellow-soft text-yellow-soft p-4 rounded-lg border mb-6">
+                <p class="font-medium">Interview not scheduled yet</p>
+                <p class="text-sm mt-1 text-gray-600">HR has not created an interview schedule for this candidate.</p>
+              </div>
+
+              <button
+                (click)="sheduleModalOpen()"
+                class="bg-purple text-white px-5 py-2 rounded-lg font-medium hover:bg-hover-purpule transition"
+              >
+                Schedule Interview
+              </button>
+            </div>
+
 
             <div *ngIf="activeStage('stage-Technicals')">
               <div
@@ -733,6 +747,81 @@
         </div>
       </div>
     </main>
+
+<div
+  *ngIf="sheduleModal"
+  class="fixed inset-0 bg-opacity-75 bg-opacity-50 bg-black flex items-center justify-center z-50"
+>
+  <!-- Modal Box -->
+  <div
+    class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 border border-gray-300 relative"
+  >
+    <!-- Close Btn -->
+    <button
+      (click)="sheduleModalclose()"
+      class="absolute top-4 right-4 text-gray-500 hover:text-purple"
+    >
+      ✕
+    </button>
+
+    <!-- Title -->
+    <h2 class="text-xl font-semibold text-dark-gray mb-6">
+      Schedule Interview
+    </h2>
+
+    <form class="space-y-4">
+
+      <!-- Interview Date -->
+      <div>
+        <label class="block text-gray-500 text-sm mb-1">Interview Date</label>
+        <input
+          type="date"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+
+      <!-- Interview Start Time -->
+      <div>
+        <label class="block text-gray-500 text-sm mb-1">Start Time</label>
+        <input
+          type="time"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+
+      <!-- HR Dropdown -->
+      <div>
+        <label class="block text-gray-500 text-sm mb-1">Assign HR</label>
+        <select
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          <option value="">Select HR</option>
+          <option *ngFor="let hr of hrList" [value]="hr._id">
+            {{ hr.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-3 mt-4">
+        <button
+          type="button"
+          (click)="sheduleModalclose()"
+          class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-gray-100 hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="px-5 py-2 rounded-lg bg-purple text-white font-medium hover:bg-hover-purpule"
+        >
+          Save Schedule
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
     <div
       *ngIf="isLoading"
