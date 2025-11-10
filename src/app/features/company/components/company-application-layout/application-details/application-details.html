@@ -393,32 +393,32 @@
             <!-- Stage Tabs -->
             <div class="flex gap-2 mb-6">
               <button
-                (click)="switchStages('stage-shortlisted')"
+                (click)="switchStages('shortlisted')"
                 class="px-4 py-1.5 rounded-lg text-sm font-semibold"
                 [ngClass]="{
-                  'bg-blue text-white shadow-md': currentStageId === 'stage-shortlisted',
-                  'bg-lavender text-purple': currentStageId !== 'stage-shortlisted'
+                  'bg-blue text-white shadow-md': currentStageId === 'shortlisted',
+                  'bg-lavender text-purple': currentStageId !== 'shortlisted'
                 }"
               >
                 Qualified
               </button>
 
               <button
-                (click)="switchStages('stage-telephoneic')"
+                (click)="switchStages('telephone')"
                 class="px-4 py-1.5 rounded-lg text-sm font-semibold"
                 [ngClass]="{
-                  'bg-blue text-white shadow-md': currentStageId === 'stage-telephoneic',
-                  'bg-lavender text-purple': currentStageId !== 'stage-telephoneic'
+                  'bg-blue text-white shadow-md': currentStageId === 'telephone',
+                  'bg-lavender text-purple': currentStageId !== 'telephone'
                 }"
               >
                 Telephoneic
               </button>
               <button
-                (click)="switchStages('stage-Technicals')"
+                (click)="switchStages('technical_analysis')"
                 class="px-4 py-1.5 rounded-lg text-sm font-semibold"
                 [ngClass]="{
-                  'bg-blue text-white shadow-md': currentStageId === 'stage-Technicals',
-                  'bg-lavender text-purple': currentStageId !== 'stage-Technicals'
+                  'bg-blue text-white shadow-md': currentStageId === 'technical_analysis',
+                  'bg-lavender text-purple': currentStageId !== 'technical_analysis'
                 }"
               >
                 Interview
@@ -431,7 +431,7 @@
             </div>
 
             <!-- Stage Info -->
-            <div *ngIf="activeStage('stage-shortlisted')">
+            <div *ngIf="activeStage('shortlisted')">
               <div
                 class="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
               >
@@ -506,7 +506,7 @@
               </div>
             </div>
 
-            <div *ngIf="activeStage('stage-telephoneic') && interviewScheduled ">
+            <div *ngIf="activeStage('telephone') && interviewScheduled ">
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
               >
@@ -617,7 +617,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="activeStage('stage-telephoneic') && !interviewScheduled">
+            <div *ngIf="activeStage('telephone') && !interviewScheduled">
               <div class="bg-yellow-soft text-yellow-soft p-4 rounded-lg border mb-6">
                 <p class="font-medium">Interview not scheduled yet</p>
                 <p class="text-sm mt-1 text-gray-600">HR has not created an interview schedule for this candidate.</p>
@@ -632,7 +632,7 @@
             </div>
 
 
-            <div *ngIf="activeStage('stage-Technicals')">
+            <div *ngIf="activeStage('technical_analysis')">
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
               >
@@ -769,15 +769,20 @@
       Schedule Interview
     </h2>
 
-    <form class="space-y-4">
+    <form [formGroup]="interviewSheduleForm" (ngSubmit)="SheduleTeleCaling()" class="space-y-4">
 
       <!-- Interview Date -->
       <div>
         <label class="block text-gray-500 text-sm mb-1">Interview Date</label>
         <input
           type="date"
+          formControlName="scheduledDate"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
+        <div *ngIf="interviewSheduleForm.get('scheduledDate')?.touched && interviewSheduleForm.get('scheduledDate')?.invalid"
+     class="text-red-500 text-xs mt-1">
+  Interview date is required
+</div>
       </div>
 
       <!-- Interview Start Time -->
@@ -785,14 +790,21 @@
         <label class="block text-gray-500 text-sm mb-1">Start Time</label>
         <input
           type="time"
+          formControlName="scheduledTime"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
+        <div *ngIf="interviewSheduleForm.get('scheduledTime')?.touched && interviewSheduleForm.get('scheduledTime')?.invalid"
+     class="text-red-500 text-xs mt-1">
+  Start time is required
+</div>
       </div>
 
       <!-- HR Dropdown -->
       <div>
         <label class="block text-gray-500 text-sm mb-1">Assign HR</label>
         <select
+          (change)="onHrSelect($event)"
+          formControlName="hrId"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple-500"
         >
           <option value="">Select HR</option>
@@ -800,6 +812,10 @@
             {{ hr.name }}
           </option>
         </select>
+        <div *ngIf="interviewSheduleForm.get('hrId')?.touched && interviewSheduleForm.get('hrId')?.invalid"
+     class="text-red-500 text-xs mt-1">
+  Please assign a HR
+</div>
       </div>
 
       <!-- Buttons -->

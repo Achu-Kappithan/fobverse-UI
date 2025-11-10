@@ -44,4 +44,9 @@ export class CompanyApplication {
   getHrlist():Observable<ApiResponce<InternalUserInterface[]>>{
     return this._http.get<ApiResponce<InternalUserInterface[]>>(`/api/company/hrusers`)
   }
+
+  sheduleTelephon(data:any):Observable<ApiResponce<any>>{
+    console.log(data)
+    return this._http.post<ApiResponce<any>>(`/api/interview/shedule`,data)
+  }
 }

@@ -7,15 +7,16 @@ import {
 } from '../../../interfaces/company.responce.interface';
 import { CandidateInterface } from '../../../../candidate/interfaces/candidate.interface';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { environment } from '../../../../../../env/environment';
 import { TextTransformPipe } from '../../../../../shared/pipes/text-transform-pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { interviewStages } from '../../../../../shared/enums/Interview-stages.enum';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-application-details',
-  imports: [CommonModule, FormsModule, TextTransformPipe],
+  imports: [CommonModule, FormsModule, TextTransformPipe,ReactiveFormsModule],
   templateUrl: './application-details.html',
   styleUrl: './application-details.css',
 })
@@ -34,20 +35,25 @@ export class ApplicationDetails implements OnInit {
   Math = Math;
   currentStageIndex: number = 2;
 
-  currentStageId: string = 'stage-shortlisted';
+  currentStageId: string = 'shortlisted';
   interviewScheduled: boolean = false;
   sheduleModal: boolean = false;
   hrList: InternalUserInterface[] | null = null;
+  selectedHr: InternalUserInterface | null  = null;
+
+  interviewSheduleForm!: FormGroup
 
   constructor(
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
     private readonly _ApplicationService: CompanyApplication,
     private readonly _sanitizer: DomSanitizer,
+    private fb:FormBuilder,
     private _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.initSeduleFrom()
     this._route.paramMap.subscribe((parms) => {
       this.applicationId = parms.get('appId');
       this.candidateId = parms.get('canId');
@@ -56,6 +62,14 @@ export class ApplicationDetails implements OnInit {
     if (this.applicationId && this.candidateId) {
       this.fetchApplicationDetails();
     }
+  }
+
+  initSeduleFrom(){
+    this.interviewSheduleForm = this.fb.group({
+      scheduledDate:['',Validators.required],
+      scheduledTime:['',Validators.required],
+      hrId: ['',Validators.required]
+    })
   }
 
   fetchApplicationDetails() {
@@ -86,6 +100,35 @@ export class ApplicationDetails implements OnInit {
           this._cdr.detectChanges();
         },
       });
+  }
+
+  onHrSelect(event: Event) {
+  const select = event.target as HTMLSelectElement;
+  const hrId = select.value;
+  this.selectedHr = this.hrList?.find(hr => hr._id === hrId) || null;
+}
+
+
+  SheduleTeleCaling(){
+    if(this.interviewSheduleForm.invalid){
+      this.interviewSheduleForm.markAllAsTouched()
+    }
+    let data = this.interviewSheduleForm.value
+
+    data = {
+      ...data,
+      applicationId : this.applicationId,
+      stage: this.currentStageId,
+      hrName: this.selectedHr?.name
+    }
+    this._ApplicationService.sheduleTelephon(data).subscribe({
+      next: (res)=>{
+        console.log(res)
+      },
+      error: (err)=>{
+        console.log('error regading shedule interview ',err)
+      }
+    })
   }
 
   getStarRating(percentage: number | null | undefined): number {
@@ -124,7 +167,6 @@ export class ApplicationDetails implements OnInit {
     if (!this.hrList) {
       this._ApplicationService.getHrlist().subscribe({
         next: (res) => {
-          console.log(res.data)
           this.hrList = res.data
           this._cdr.detectChanges()
         },
