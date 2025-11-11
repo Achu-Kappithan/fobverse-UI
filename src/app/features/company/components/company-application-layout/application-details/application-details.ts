@@ -7,16 +7,23 @@ import {
 } from '../../../interfaces/company.responce.interface';
 import { CandidateInterface } from '../../../../candidate/interfaces/candidate.interface';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { environment } from '../../../../../../env/environment';
 import { TextTransformPipe } from '../../../../../shared/pipes/text-transform-pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { interviewStages } from '../../../../../shared/enums/Interview-stages.enum';
-import { subscribe } from 'diagnostics_channel';
+import { SheduleResponceInterface } from '../../../interfaces/company.interviewresponce.interface';
+import { SweetAlert } from '../../../../../shared/services/sweet-alert';
 
 @Component({
   selector: 'app-application-details',
-  imports: [CommonModule, FormsModule, TextTransformPipe,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, TextTransformPipe, ReactiveFormsModule],
   templateUrl: './application-details.html',
   styleUrl: './application-details.css',
 })
@@ -29,6 +36,7 @@ export class ApplicationDetails implements OnInit {
   profileData: CandidateInterface | null = null;
   addressValue: string | null = null;
   isLoading: boolean = false;
+  isLoadingStage: boolean = false;
   baseUrl: string = environment.cloudinaryBaseUrl;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
   resumePdfUrl: string | null = null;
@@ -36,24 +44,27 @@ export class ApplicationDetails implements OnInit {
   currentStageIndex: number = 2;
 
   currentStageId: string = 'shortlisted';
-  interviewScheduled: boolean = false;
+  interviewScheduled: boolean = true;
   sheduleModal: boolean = false;
   hrList: InternalUserInterface[] | null = null;
-  selectedHr: InternalUserInterface | null  = null;
+  selectedHr: InternalUserInterface | null = null;
 
-  interviewSheduleForm!: FormGroup
+  TelephoneInterview: SheduleResponceInterface | null = null;
+
+  interviewSheduleForm!: FormGroup;
 
   constructor(
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
     private readonly _ApplicationService: CompanyApplication,
     private readonly _sanitizer: DomSanitizer,
-    private fb:FormBuilder,
+    private readonly _swal: SweetAlert,
+    private fb: FormBuilder,
     private _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.initSeduleFrom()
+    this.initSeduleFrom();
     this._route.paramMap.subscribe((parms) => {
       this.applicationId = parms.get('appId');
       this.candidateId = parms.get('canId');
@@ -64,12 +75,12 @@ export class ApplicationDetails implements OnInit {
     }
   }
 
-  initSeduleFrom(){
+  initSeduleFrom() {
     this.interviewSheduleForm = this.fb.group({
-      scheduledDate:['',Validators.required],
-      scheduledTime:['',Validators.required],
-      hrId: ['',Validators.required]
-    })
+      scheduledDate: ['', Validators.required],
+      scheduledTime: ['', Validators.required],
+      hrId: ['', Validators.required],
+    });
   }
 
   fetchApplicationDetails() {
@@ -103,32 +114,40 @@ export class ApplicationDetails implements OnInit {
   }
 
   onHrSelect(event: Event) {
-  const select = event.target as HTMLSelectElement;
-  const hrId = select.value;
-  this.selectedHr = this.hrList?.find(hr => hr._id === hrId) || null;
-}
+    const select = event.target as HTMLSelectElement;
+    const hrId = select.value;
+    this.selectedHr = this.hrList?.find((hr) => hr._id === hrId) || null;
+  }
 
-
-  SheduleTeleCaling(){
-    if(this.interviewSheduleForm.invalid){
-      this.interviewSheduleForm.markAllAsTouched()
+  SheduleTeleCaling() {
+    if (this.interviewSheduleForm.invalid) {
+      this.interviewSheduleForm.markAllAsTouched();
     }
-    let data = this.interviewSheduleForm.value
+    let data = this.interviewSheduleForm.value;
 
     data = {
       ...data,
-      applicationId : this.applicationId,
+      applicationId: this.applicationId,
       stage: this.currentStageId,
-      hrName: this.selectedHr?.name
-    }
+      hrName: this.selectedHr?.name,
+      userEmail: this.applicationDetails?.email,
+    };
     this._ApplicationService.sheduleTelephon(data).subscribe({
-      next: (res)=>{
-        console.log(res)
+      next: (res) => {
+        if (res.success) {
+          if (res.data.stage == 'telephone') {
+            this.TelephoneInterview = res.data;
+            this.sheduleModalclose();
+            this._swal.showSuccessToast(res.message);
+            this._cdr.detectChanges();
+          }
+        }
       },
-      error: (err)=>{
-        console.log('error regading shedule interview ',err)
-      }
-    })
+      error: (err) => {
+        console.log('error regading shedule interview ', err);
+        this._swal.showErrorToast(err.error.message);
+      },
+    });
   }
 
   getStarRating(percentage: number | null | undefined): number {
@@ -157,18 +176,42 @@ export class ApplicationDetails implements OnInit {
 
   switchStages(id: string): void {
     this.currentStageId = id;
+    if (id === 'telephone' && !this.TelephoneInterview) {
+    this.getStageDetails(id);
+  }
   }
 
   activeStage(id: string): boolean {
     return this.currentStageId == id;
   }
 
+  getStageDetails(id: string) {
+    this.isLoadingStage = true
+    this._ApplicationService.getStageDetails(this.applicationId!, id).subscribe({
+      next: (res)=>{
+        console.log(res)
+        if(res.success){
+          if(res.data.stage == 'telephone'){
+            this.TelephoneInterview = res.data
+            this.isLoadingStage = false
+            this._cdr.detectChanges()
+          }
+        }
+      },
+      error: (err)=>{
+        console.log('error regading fetch stage details',err)
+        this.isLoadingStage = false;
+        this._cdr.detectChanges()
+      }
+    })
+  }
+
   sheduleModalOpen() {
     if (!this.hrList) {
       this._ApplicationService.getHrlist().subscribe({
         next: (res) => {
-          this.hrList = res.data
-          this._cdr.detectChanges()
+          this.hrList = res.data;
+          this._cdr.detectChanges();
         },
         error: (err) => {
           console.log('error regading  fetch  hr list ', err);
