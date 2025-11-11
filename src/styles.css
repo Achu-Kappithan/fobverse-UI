@@ -7,8 +7,8 @@ body {
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none;  
-  scrollbar-width: none;    
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Base colors */
@@ -28,7 +28,7 @@ body {
   background-color: #ede7ff;
 }
 .bg-poster {
-  background-color:rgb(246, 244, 248);
+  background-color: rgb(246, 244, 248);
 }
 .text-dark-gray {
   color: #1a1a1a;
@@ -38,6 +38,18 @@ body {
 }
 .bg-yellow {
   background-color: #ffd700;
+}
+.bg-yellow-soft {
+  background-color: #fff9db;
+}
+html.dark .bg-yellow-soft {
+  background-color: #3b3a2a;
+}
+.text-yellow-soft {
+  color: #d4b000;
+}
+html.dark .text-yellow-soft {
+  color: #ffe27a;
 }
 .bg-blue {
   background-color: #5a4bff;
