@@ -11,6 +11,7 @@ import {
 import {
   SheduleInterface,
   SheduleResponceInterface,
+  updatefeedbackInterface,
 } from '../interfaces/company.interviewresponce.interface';
 
 @Injectable({
@@ -77,6 +78,16 @@ export class CompanyApplication {
     return this._http.get<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/getstagedetails`,
       { params: { applicationId: applicationId, stage: stage } }
+    );
+  }
+
+  updateFeedback(
+    data: updatefeedbackInterface
+  ): Observable<ApiResponce<SheduleInterface>> {
+    console.log(data)
+    return this._http.post<ApiResponce<SheduleInterface>>(
+      `/api/interview/updatefeedback`,
+      data
     );
   }
 }

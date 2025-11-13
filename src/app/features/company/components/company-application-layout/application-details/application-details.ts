@@ -48,10 +48,11 @@ export class ApplicationDetails implements OnInit {
   sheduleModal: boolean = false;
   hrList: InternalUserInterface[] | null = null;
   selectedHr: InternalUserInterface | null = null;
-
   TelephoneInterview: SheduleResponceInterface | null = null;
+  isFeedbackModalOpen : boolean = false
 
   interviewSheduleForm!: FormGroup;
+  FeedbackForm! : FormGroup;
 
   constructor(
     private readonly _route: ActivatedRoute,
@@ -65,6 +66,7 @@ export class ApplicationDetails implements OnInit {
 
   ngOnInit(): void {
     this.initSeduleFrom();
+    this.initFeedbackForm()
     this._route.paramMap.subscribe((parms) => {
       this.applicationId = parms.get('appId');
       this.candidateId = parms.get('canId');
@@ -81,6 +83,13 @@ export class ApplicationDetails implements OnInit {
       scheduledTime: ['', Validators.required],
       hrId: ['', Validators.required],
     });
+  }
+
+  initFeedbackForm(){
+    this.FeedbackForm = this.fb.group({
+      feedback: ['',Validators.required],
+      status: ['',Validators.required]
+    })
   }
 
   fetchApplicationDetails() {
@@ -177,8 +186,8 @@ export class ApplicationDetails implements OnInit {
   switchStages(id: string): void {
     this.currentStageId = id;
     if (id === 'telephone' && !this.TelephoneInterview) {
-    this.getStageDetails(id);
-  }
+      this.getStageDetails(id);
+    }
   }
 
   activeStage(id: string): boolean {
@@ -186,24 +195,26 @@ export class ApplicationDetails implements OnInit {
   }
 
   getStageDetails(id: string) {
-    this.isLoadingStage = true
-    this._ApplicationService.getStageDetails(this.applicationId!, id).subscribe({
-      next: (res)=>{
-        console.log(res)
-        if(res.success){
-          if(res.data.stage == 'telephone'){
-            this.TelephoneInterview = res.data
-            this.isLoadingStage = false
-            this._cdr.detectChanges()
+    this.isLoadingStage = true;
+    this._ApplicationService
+      .getStageDetails(this.applicationId!, id)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res.success) {
+            if (res.data.stage == 'telephone') {
+              this.TelephoneInterview = res.data;
+              this.isLoadingStage = false;
+              this._cdr.detectChanges();
+            }
           }
-        }
-      },
-      error: (err)=>{
-        console.log('error regading fetch stage details',err)
-        this.isLoadingStage = false;
-        this._cdr.detectChanges()
-      }
-    })
+        },
+        error: (err) => {
+          console.log('error regading fetch stage details', err);
+          this.isLoadingStage = false;
+          this._cdr.detectChanges();
+        },
+      });
   }
 
   sheduleModalOpen() {
@@ -230,6 +241,35 @@ export class ApplicationDetails implements OnInit {
       (this.applicationDetails?.atsScore ?? 0) >=
       (this.applicationDetails?.atsCriteria ?? 0)
     );
+  }
+
+  openFeedbackModal(){
+    if(this.isFeedbackModalOpen){
+      this.isFeedbackModalOpen = false
+    }else{
+    this.isFeedbackModalOpen = true
+    }
+  }
+
+  updateFeedback(){
+    if(this.FeedbackForm.invalid){
+      this.FeedbackForm.markAllAsTouched()
+    }
+    let data = this.FeedbackForm.value
+    data = {
+      ...data,
+      stage:this.currentStageId,
+      applicationId: this.applicationId
+    }
+
+    this._ApplicationService.updateFeedback(data).subscribe({
+      next: (res)=>{
+        console.log(res)
+      },
+      error: (err)=>{
+        console.log('error regading update feedback',err)
+      }
+    })
   }
 
   hiringStages = ['Shortlisted', 'Telephoneic', 'Technicals', 'Hired/Reject'];

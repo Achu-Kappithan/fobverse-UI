@@ -15,6 +15,18 @@ export interface SheduleInterface{
   userEmail:string;
 
 }
+
+export interface updatefeedbackInterface {
+
+  applicationId: string,
+
+  stage: string,
+
+  feedback: string,
+
+  status: string
+}
+
 export interface PanalInterface {
   interviewerName: string;
 

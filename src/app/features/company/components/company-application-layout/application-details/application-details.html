@@ -383,11 +383,6 @@
               <h2 class="text-lg font-semibold text-dark-gray">
                 Current Stage
               </h2>
-              <button
-                class="bg-purple text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-hover-purpule"
-              >
-                Update Feedback
-              </button>
             </div>
 
             <!-- Stage Tabs -->
@@ -430,7 +425,7 @@
               </button>
             </div>
             <!-- StageLoader -->
-             <div *ngIf="isLoadingStage" class="loader-container">
+            <div *ngIf="isLoadingStage" class="loader-container">
               <div class="skeleton-line w-3/4"></div>
               <div class="skeleton-line w-1/2"></div>
               <div class="skeleton-line w-full"></div>
@@ -438,323 +433,416 @@
             <div *ngIf="isLoadingStage" class="pulse-loader"></div>
 
             <!-- Stage Info -->
-             <div *ngIf="!isLoadingStage" >
-               <div *ngIf="activeStage('shortlisted')">
-                 <div
-                   class="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
-                 >
-                   <!-- Header -->
-                   <div class="flex justify-between items-center mb-6">
-                     <h2 class="text-lg font-semibold text-dark-gray">
-                       ATS Screening Result
-                     </h2>
-                     <span
-                       [ngClass]="{
+            <div *ngIf="!isLoadingStage">
+              <div *ngIf="activeStage('shortlisted')">
+                <div
+                  class="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
+                >
+                  <!-- Header -->
+                  <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-semibold text-dark-gray">
+                      ATS Screening Result
+                    </h2>
+                    <span
+                      [ngClass]="{
                          'bg-green-100 text-green-700': atsPassed,
                          'bg-red-100 text-red-700': !atsPassed
                        }"
-                       class="px-3 py-1 rounded-full text-sm font-semibold"
-                     >
-                       {{ atsPassed ? 'Qualified' : 'Rejected' }}
-                     </span>
-                   </div>
-   
-                   <!-- Score Box -->
-                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                     <div class="flex flex-col">
-                       <span class="text-gray-500 text-sm"
-                         >Candidate ATS Score</span
-                       >
-                       <span class="text-dark-gray font-bold text-2xl">
-                         {{ applicationDetails?.atsScore }} / 100
-                       </span>
-                     </div>
-                     <div class="flex flex-col">
-                       <span class="text-gray-500 text-sm"
-                         >Required Minimum Score</span
-                       >
-                       <span class="text-dark-gray font-bold text-2xl">
-                         {{ applicationDetails?.atsCriteria }} / 100
-                       </span>
-                     </div>
-                   </div>
-   
-                   <!-- Progress Bar -->
-                   <div>
-                     <div class="text-sm mb-1 text-gray-500">
-                       ATS Match Strength
-                     </div>
-                     <div
-                       class="w-full bg-gray-200 rounded-full h-2 overflow-hidden"
-                     >
-                       <div
-                         class="h-2 bg-purple rounded-full transition-all duration-500"
-                         [style.width.%]="applicationDetails?.atsScore"
-                       ></div>
-                     </div>
-                   </div>
-   
-                   <!-- Status Message -->
-                   <div
-                     class="mt-6 p-4 rounded-lg"
-                     [ngClass]="{
+                      class="px-3 py-1 rounded-full text-sm font-semibold"
+                    >
+                      {{ atsPassed ? 'Qualified' : 'Rejected' }}
+                    </span>
+                  </div>
+
+                  <!-- Score Box -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 text-sm"
+                        >Candidate ATS Score</span
+                      >
+                      <span class="text-dark-gray font-bold text-2xl">
+                        {{ applicationDetails?.atsScore }} / 100
+                      </span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 text-sm"
+                        >Required Minimum Score</span
+                      >
+                      <span class="text-dark-gray font-bold text-2xl">
+                        {{ applicationDetails?.atsCriteria }} / 100
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Progress Bar -->
+                  <div>
+                    <div class="text-sm mb-1 text-gray-500">
+                      ATS Match Strength
+                    </div>
+                    <div
+                      class="w-full bg-gray-200 rounded-full h-2 overflow-hidden"
+                    >
+                      <div
+                        class="h-2 bg-purple rounded-full transition-all duration-500"
+                        [style.width.%]="applicationDetails?.atsScore"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Status Message -->
+                  <div
+                    class="mt-6 p-4 rounded-lg"
+                    [ngClass]="{
                        'bg-green-50 border border-green-200 text-green-700': atsPassed,
                        'bg-red-50 border border-red-200 text-red-700': !atsPassed
                      }"
-                   >
-                     <p class="font-medium">
-                       {{ atsPassed ? 'Candidate passed initial ATS screening 🎉' :
-                       'Candidate did not meet ATS requirements ❌' }}
-                     </p>
-                     <p class="text-sm mt-1 text-gray-500" *ngIf="!atsPassed">
-                       Resume did not match minimum criteria for skills and
-                       keywords.
-                     </p>
-                   </div>
-                 </div>
-               </div>
-   
-               <div *ngIf="activeStage('telephone') && TelephoneInterview ">
-                 <div
-                   class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
-                 >
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Interview Date</h3>
-                     <p class="text-dark-gray font-medium">{{TelephoneInterview.scheduledDate}}</p>
-                   </div>
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
-                     <span
-                       class="bg-yellow text-dark-gray px-3 py-1 rounded-full text-xs font-semibold"
-                     >
-                       On Progress
-                     </span>
-                   </div>
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Description</h3>
-                     <p class="text-dark-gray text-sm leading-relaxed">
-                       Time : <span class="font-semibold">{{TelephoneInterview.scheduledTime}}</span
-                       ><br />
-                       Please be available on time.
-                     </p>
-                   </div>
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
-                     <div class="flex -space-x-2 mt-1">
-                       <img
-                         src="https://i.pravatar.cc/40?img=1"
-                         class="w-8 h-8 rounded-full border-2 border-white"
-                       />
-                       <img
-                         src="https://i.pravatar.cc/40?img=2"
-                         class="w-8 h-8 rounded-full border-2 border-white"
-                       />
-                       <img
-                         src="https://i.pravatar.cc/40?img=3"
-                         class="w-8 h-8 rounded-full border-2 border-white"
-                       />
-                     </div>
-                   </div>
-                 </div>
-   
-                 <!-- Start Interview Button -->
-                 <div class="mb-8">
-                   <button
-                     class="bg-gray-200 text-gray-400 font-medium px-5 py-2 rounded-lg cursor-not-allowed"
-                   >
-                     Start Interview
-                   </button>
-                 </div>
-   
-                 <!-- Notes Section -->
-                 <div class="flex justify-between items-center mb-4">
-                   <h3 class="text-lg font-semibold text-dark-gray">
-                     Stages and Feedbacks
-                   </h3>
-                   <button
-                     class="text-purple text-sm font-semibold hover:text-hover-purpule"
-                   >
-                     + Add Notes
-                   </button>
-                 </div>
-   
-                 <!-- Feedback Cards -->
-                 <div class="space-y-4">
-                   <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-                     <div class="flex justify-between items-center mb-2">
-                       <div class="flex items-center gap-2">
-                         <img
-                           src="https://i.pravatar.cc/40?img=5"
-                           class="w-10 h-10 rounded-full"
-                         />
-                         <div>
-                           <p class="font-semibold text-dark-gray">Maria Kelly</p>
-                           <p class="text-xs text-gray-500">
-                             10 July, 2021 • 11:30 AM
-                           </p>
-                         </div>
-                       </div>
-                     </div>
-                     <p class="text-sm text-dark-gray mb-2">
-                       Please, do an interview stage immediately. The design
-                       division needs more new employees now.
-                     </p>
-                     <a href="#" class="text-purple text-sm font-semibold"
-                       >2 Replies</a
-                     >
-                   </div>
-   
-                   <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-                     <div class="flex justify-between items-center mb-2">
-                       <div class="flex items-center gap-2">
-                         <img
-                           src="https://i.pravatar.cc/40?img=6"
-                           class="w-10 h-10 rounded-full"
-                         />
-                         <div>
-                           <p class="font-semibold text-dark-gray">Maria Kelly</p>
-                           <p class="text-xs text-gray-500">
-                             10 July, 2021 • 10:30 AM
-                           </p>
-                         </div>
-                       </div>
-                     </div>
-                     <p class="text-sm text-dark-gray">
-                       Please, do an interview stage immediately.
-                     </p>
-                   </div>
-                 </div>
-               </div>
-               <div *ngIf="activeStage('telephone') && !TelephoneInterview">
-                 <div
-                   class="bg-yellow-soft text-yellow-soft p-4 rounded-lg border mb-6"
-                 >
-                   <p class="font-medium">Interview not scheduled yet</p>
-                   <p class="text-sm mt-1 text-gray-600">
-                     HR has not created an interview schedule for this candidate.
-                   </p>
-                 </div>
-   
-                 <button
-                   (click)="sheduleModalOpen()"
-                   class="bg-purple text-white px-5 py-2 rounded-lg font-medium hover:bg-hover-purpule transition"
-                 >
-                   Schedule Interview
-                 </button>
-               </div>
-   
-               <div *ngIf="activeStage('technical_analysis')">
-                 <div
-                   class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
-                 >
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Interview Date</h3>
-                     <p class="text-dark-gray font-medium">10 - 13 July 2021</p>
-                   </div>
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
-                     <span
-                       class="bg-yellow text-dark-gray px-3 py-1 rounded-full text-xs font-semibold"
-                     >
-                       On Progress
-                     </span>
-                   </div>
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Description</h3>
-                     <p class="text-dark-gray text-sm leading-relaxed">
-                       Time : <span class="font-semibold">10 AM to 12 PM</span
-                       ><br />
-                       Please be available on time.
-                     </p>
-                   </div>
-                   <div>
-                     <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
-                     <div class="flex -space-x-2 mt-1">
-                       <img
-                         src="https://i.pravatar.cc/40?img=1"
-                         class="w-8 h-8 rounded-full border-2 border-white"
-                       />
-                       <img
-                         src="https://i.pravatar.cc/40?img=2"
-                         class="w-8 h-8 rounded-full border-2 border-white"
-                       />
-                       <img
-                         src="https://i.pravatar.cc/40?img=3"
-                         class="w-8 h-8 rounded-full border-2 border-white"
-                       />
-                     </div>
-                   </div>
-                 </div>
-   
-                 <!-- Start Interview Button -->
-                 <div class="mb-8">
-                   <button
-                     class="bg-gray-200 text-gray-400 font-medium px-5 py-2 rounded-lg cursor-not-allowed"
-                   >
-                     Start Interview
-                   </button>
-                 </div>
-   
-                 <!-- Notes Section -->
-                 <div class="flex justify-between items-center mb-4">
-                   <h3 class="text-lg font-semibold text-dark-gray">
-                     Stages and Feedbacks
-                   </h3>
-                   <button
-                     class="text-purple text-sm font-semibold hover:text-hover-purpule"
-                   >
-                     + Add Notes
-                   </button>
-                 </div>
-   
-                 <!-- Feedback Cards -->
-                 <div class="space-y-4">
-                   <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-                     <div class="flex justify-between items-center mb-2">
-                       <div class="flex items-center gap-2">
-                         <img
-                           src="https://i.pravatar.cc/40?img=5"
-                           class="w-10 h-10 rounded-full"
-                         />
-                         <div>
-                           <p class="font-semibold text-dark-gray">Maria Kelly</p>
-                           <p class="text-xs text-gray-500">
-                             10 July, 2021 • 11:30 AM
-                           </p>
-                         </div>
-                       </div>
-                     </div>
-                     <p class="text-sm text-dark-gray mb-2">
-                       Please, do an interview stage immediately. The design
-                       division needs more new employees now.
-                     </p>
-                     <a href="#" class="text-purple text-sm font-semibold"
-                       >2 Replies</a
-                     >
-                   </div>
-   
-                   <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-                     <div class="flex justify-between items-center mb-2">
-                       <div class="flex items-center gap-2">
-                         <img
-                           src="https://i.pravatar.cc/40?img=6"
-                           class="w-10 h-10 rounded-full"
-                         />
-                         <div>
-                           <p class="font-semibold text-dark-gray">Maria Kelly</p>
-                           <p class="text-xs text-gray-500">
-                             10 July, 2021 • 10:30 AM
-                           </p>
-                         </div>
-                       </div>
-                     </div>
-                     <p class="text-sm text-dark-gray">
-                       Please, do an interview stage immediately.
-                     </p>
-                   </div>
-                 </div>
-               </div>
-             </div>
+                  >
+                    <p class="font-medium">
+                      {{ atsPassed ? 'Candidate passed initial ATS screening 🎉'
+                      : 'Candidate did not meet ATS requirements ❌' }}
+                    </p>
+                    <p class="text-sm mt-1 text-gray-500" *ngIf="!atsPassed">
+                      Resume did not match minimum criteria for skills and
+                      keywords.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="activeStage('telephone') && TelephoneInterview ">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
+                >
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Interview Date</h3>
+                    <p class="text-dark-gray font-medium">
+                      {{TelephoneInterview.scheduledDate}}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
+                    <span
+                      class="bg-yellow text-dark-gray px-3 py-1 rounded-full text-xs font-semibold"
+                    >
+                      On Progress
+                    </span>
+                  </div>
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Description</h3>
+                    <p class="text-dark-gray text-sm leading-relaxed">
+                      Time :
+                      <span class="font-semibold"
+                        >{{TelephoneInterview.scheduledTime}}</span
+                      ><br />
+                      Please be available on time.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
+                    <div class="flex -space-x-2 mt-1">
+                      <img
+                        src="https://i.pravatar.cc/40?img=1"
+                        class="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                      <img
+                        src="https://i.pravatar.cc/40?img=2"
+                        class="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                      <img
+                        src="https://i.pravatar.cc/40?img=3"
+                        class="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-semibold text-dark-gray">
+                    Feedbacks
+                  </h3>
+                  <button
+                    (click)="openFeedbackModal()"
+                    class="bg-purple text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-hover-purpule"
+                  >
+                    Update Feedback
+                  </button>
+                </div>
+
+                <!-- Feedback Update Modal -->
+                <div
+                  *ngIf="isFeedbackModalOpen"
+                  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fadeIn"
+                >
+                  <div
+                    class="relative w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-300 transform scale-95 animate-scaleIn p-6"
+                  >
+                    <!-- Close Button -->
+                    <button
+                      (click)="openFeedbackModal()"
+                      class="absolute top-3 right-3 text-gray hover:text-purple transition"
+                      title="Close"
+                    >
+                      ✕
+                    </button>
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                      <h2 class="text-xl font-semibold text-purple">
+                        Update Interview Feedback
+                      </h2>
+                      <p class="text-gray text-sm mt-1">
+                        Please share your feedback and select the result for
+                        this stage.
+                      </p>
+                    </div>
+
+                    <!-- Form -->
+                    <form [formGroup]="FeedbackForm" (ngSubmit)="updateFeedback()">
+                      <!-- Feedback Input -->
+                      <div class="mb-4">
+                        <label
+                          class="block text-sm font-medium text-dark-gray mb-1"
+                          >Feedback</label
+                        >
+                        <textarea
+                          formControlName="feedback"
+                          rows="4"
+                          placeholder="Type your feedback here..."
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+                        ></textarea>
+                        <div *ngIf="FeedbackForm.get('feedback')?.touched && FeedbackForm.get('feedback')?.invalid" 
+                        class="text-red-500 text-xs mt-1">
+                          Feedback  Requied
+                        </div>
+                      </div>
+
+                      <!-- Result Dropdown -->
+                      <div class="mb-6">
+                        <label
+                          class="block text-sm font-medium text-dark-gray mb-1"
+                          >Result</label
+                        >
+                        <select
+                          formControlName="status"
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+                        >
+                          <option value="">Select Result</option>
+                          <option value="Pass">Pass</option>
+                          <option value="Fail">Fail</option>
+                          <option value="Neutral">Neutral</option>
+                        </select>
+                        <div *ngIf="FeedbackForm.get('status')?.touched && FeedbackForm.get('status')?.invalid" 
+                        class="text-red-500 text-xs mt-1 ">
+                          Select Stage Status
+                        </div>
+                      </div>
+
+                      <!-- Buttons -->
+                      <div class="flex justify-end gap-3">
+                        <button
+                          type="button"
+                          (click)="openFeedbackModal()"
+                          class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-dark-gray transition"
+                        >
+                          Cancel
+                        </button>
+
+                        <button
+                          type="submit"
+                          class="px-5 py-2 rounded-lg bg-purple text-white hover:bg-hover-purpule transition flex items-center justify-center shadow-lg"
+                        >
+                          <ng-container>Submit</ng-container>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- Feedback Cards -->
+                <div class="space-y-4">
+                  <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                      <div class="flex items-center gap-2">
+                        <img
+                          src="https://i.pravatar.cc/40?img=5"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="font-semibold text-dark-gray">
+                            Maria Kelly
+                          </p>
+                          <p class="text-xs text-gray-500">
+                            10 July, 2021 • 11:30 AM
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-sm text-dark-gray mb-2">
+                      Please, do an interview stage immediately. The design
+                      division needs more new employees now.
+                    </p>
+                    <a href="#" class="text-purple text-sm font-semibold"
+                      >2 Replies</a
+                    >
+                  </div>
+
+                  <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                      <div class="flex items-center gap-2">
+                        <img
+                          src="https://i.pravatar.cc/40?img=6"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="font-semibold text-dark-gray">
+                            Maria Kelly
+                          </p>
+                          <p class="text-xs text-gray-500">
+                            10 July, 2021 • 10:30 AM
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-sm text-dark-gray">
+                      Please, do an interview stage immediately.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeStage('telephone') && !TelephoneInterview">
+                <div
+                  class="bg-yellow-soft text-yellow-soft p-4 rounded-lg border mb-6"
+                >
+                  <p class="font-medium">Interview not scheduled yet</p>
+                  <p class="text-sm mt-1 text-gray-600">
+                    HR has not created an interview schedule for this candidate.
+                  </p>
+                </div>
+
+                <button
+                  (click)="sheduleModalOpen()"
+                  class="bg-purple text-white px-5 py-2 rounded-lg font-medium hover:bg-hover-purpule transition"
+                >
+                  Schedule Interview
+                </button>
+              </div>
+
+              <div *ngIf="activeStage('technical_analysis')">
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
+                >
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Interview Date</h3>
+                    <p class="text-dark-gray font-medium">10 - 13 July 2021</p>
+                  </div>
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
+                    <span
+                      class="bg-yellow text-dark-gray px-3 py-1 rounded-full text-xs font-semibold"
+                    >
+                      On Progress
+                    </span>
+                  </div>
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Description</h3>
+                    <p class="text-dark-gray text-sm leading-relaxed">
+                      Time : <span class="font-semibold">10 AM to 12 PM</span
+                      ><br />
+                      Please be available on time.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
+                    <div class="flex -space-x-2 mt-1">
+                      <img
+                        src="https://i.pravatar.cc/40?img=1"
+                        class="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                      <img
+                        src="https://i.pravatar.cc/40?img=2"
+                        class="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                      <img
+                        src="https://i.pravatar.cc/40?img=3"
+                        class="w-8 h-8 rounded-full border-2 border-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Start Interview Button -->
+                <div class="mb-8">
+                  <button
+                    class="bg-gray-200 text-gray-400 font-medium px-5 py-2 rounded-lg cursor-not-allowed"
+                  >
+                    Start Interview
+                  </button>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-semibold text-dark-gray">
+                    Stages and Feedbacks
+                  </h3>
+                  <button
+                    class="text-purple text-sm font-semibold hover:text-hover-purpule"
+                  >
+                    + Add Notes
+                  </button>
+                </div>
+
+                <!-- Feedback Cards -->
+                <div class="space-y-4">
+                  <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                      <div class="flex items-center gap-2">
+                        <img
+                          src="https://i.pravatar.cc/40?img=5"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="font-semibold text-dark-gray">
+                            Maria Kelly
+                          </p>
+                          <p class="text-xs text-gray-500">
+                            10 July, 2021 • 11:30 AM
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-sm text-dark-gray mb-2">
+                      Please, do an interview stage immediately. The design
+                      division needs more new employees now.
+                    </p>
+                    <a href="#" class="text-purple text-sm font-semibold"
+                      >2 Replies</a
+                    >
+                  </div>
+
+                  <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                      <div class="flex items-center gap-2">
+                        <img
+                          src="https://i.pravatar.cc/40?img=6"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="font-semibold text-dark-gray">
+                            Maria Kelly
+                          </p>
+                          <p class="text-xs text-gray-500">
+                            10 July, 2021 • 10:30 AM
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-sm text-dark-gray">
+                      Please, do an interview stage immediately.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
