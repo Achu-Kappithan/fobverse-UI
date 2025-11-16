@@ -49,10 +49,10 @@ export class ApplicationDetails implements OnInit {
   hrList: InternalUserInterface[] | null = null;
   selectedHr: InternalUserInterface | null = null;
   TelephoneInterview: SheduleResponceInterface | null = null;
-  isFeedbackModalOpen : boolean = false
+  isFeedbackModalOpen: boolean = false;
 
   interviewSheduleForm!: FormGroup;
-  FeedbackForm! : FormGroup;
+  FeedbackForm!: FormGroup;
 
   constructor(
     private readonly _route: ActivatedRoute,
@@ -66,7 +66,7 @@ export class ApplicationDetails implements OnInit {
 
   ngOnInit(): void {
     this.initSeduleFrom();
-    this.initFeedbackForm()
+    this.initFeedbackForm();
     this._route.paramMap.subscribe((parms) => {
       this.applicationId = parms.get('appId');
       this.candidateId = parms.get('canId');
@@ -85,11 +85,11 @@ export class ApplicationDetails implements OnInit {
     });
   }
 
-  initFeedbackForm(){
+  initFeedbackForm() {
     this.FeedbackForm = this.fb.group({
-      feedback: ['',Validators.required],
-      status: ['',Validators.required]
-    })
+      feedback: ['', Validators.required],
+      status: ['', Validators.required],
+    });
   }
 
   fetchApplicationDetails() {
@@ -243,33 +243,43 @@ export class ApplicationDetails implements OnInit {
     );
   }
 
-  openFeedbackModal(){
-    if(this.isFeedbackModalOpen){
-      this.isFeedbackModalOpen = false
-    }else{
-    this.isFeedbackModalOpen = true
+  openFeedbackModal() {
+    if (this.isFeedbackModalOpen) {
+      this.isFeedbackModalOpen = false;
+    } else {
+      this.isFeedbackModalOpen = true;
     }
   }
 
-  updateFeedback(){
-    if(this.FeedbackForm.invalid){
-      this.FeedbackForm.markAllAsTouched()
+  updateFeedback() {
+    if (this.FeedbackForm.invalid) {
+      this.FeedbackForm.markAllAsTouched();
     }
-    let data = this.FeedbackForm.value
+    let data = this.FeedbackForm.value;
     data = {
       ...data,
-      stage:this.currentStageId,
-      applicationId: this.applicationId
-    }
+      stage: this.currentStageId,
+      applicationId: this.applicationId,
+    };
 
     this._ApplicationService.updateFeedback(data).subscribe({
-      next: (res)=>{
-        console.log(res)
+      next: (res) => {
+        if (res.success) {
+          if (res.data.stage === 'telephone') {
+            this.TelephoneInterview = res.data;
+            this._swal.showSuccessToast(res.message)
+            this.openFeedbackModal()
+            this._cdr.detectChanges()
+          }
+        }
       },
-      error: (err)=>{
-        console.log('error regading update feedback',err)
-      }
-    })
+      error: (err) => {
+        this._swal.showErrorToast(err.error.message)
+        this.openFeedbackModal()
+        this._cdr.detectChanges()
+        console.log('error regading update feedback', err);
+      },
+    });
   }
 
   hiringStages = ['Shortlisted', 'Telephoneic', 'Technicals', 'Hired/Reject'];

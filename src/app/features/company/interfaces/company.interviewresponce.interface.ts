@@ -59,4 +59,6 @@ export interface SheduleResponceInterface {
   overallFeedback?: string;
 
   finalResult?: string;
+
+  updatedAt:string;
 }

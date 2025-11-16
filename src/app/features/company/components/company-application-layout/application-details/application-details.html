@@ -522,9 +522,15 @@
                   <div>
                     <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
                     <span
-                      class="bg-yellow text-dark-gray px-3 py-1 rounded-full text-xs font-semibold"
+                      [ngClass]="{
+                        'bg-yellow-100 text-yellow-800': TelephoneInterview.status === 'Scheduled',
+                        'bg-green-100 text-green-800': TelephoneInterview.status === 'Completed',
+                        'bg-red-100 text-red-800': TelephoneInterview.status === 'Cancelled',
+                        'bg-blue-100 text-blue-800': TelephoneInterview.status === 'Rescheduled'
+                      }"
+                      class="px-3 py-1 rounded-full text-xs font-semibold"
                     >
-                      On Progress
+                      {{ TelephoneInterview.status }}
                     </span>
                   </div>
                   <div>
@@ -539,34 +545,70 @@
                   </div>
                   <div>
                     <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
-                    <div class="flex -space-x-2 mt-1">
-                      <img
-                        src="https://i.pravatar.cc/40?img=1"
-                        class="w-8 h-8 rounded-full border-2 border-white"
-                      />
-                      <img
-                        src="https://i.pravatar.cc/40?img=2"
-                        class="w-8 h-8 rounded-full border-2 border-white"
-                      />
-                      <img
-                        src="https://i.pravatar.cc/40?img=3"
-                        class="w-8 h-8 rounded-full border-2 border-white"
-                      />
+
+                    <div class="flex items-center mt-1 space-x-2">
+                      <!-- HR Profile Image -->
+                      <!-- <img
+                        src="{{ TelephoneInterview.hrImage || 'https://i.pravatar.cc/40?img=1' }}"
+                        alt="{{ TelephoneInterview.hrName }}"
+                        class="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                      /> -->
+
+                      <!-- HR Name -->
+                      <span class="text-sm font-medium text-gray-800">
+                        {{ TelephoneInterview.hrName || 'Not Assigned' }}
+                      </span>
                     </div>
                   </div>
-                </div>
-
-                <!-- Notes Section -->
-                <div class="flex justify-between items-center mb-4">
-                  <h3 class="text-lg font-semibold text-dark-gray">
-                    Feedbacks
-                  </h3>
                   <button
+                    *ngIf="!TelephoneInterview.overallFeedback"
                     (click)="openFeedbackModal()"
-                    class="bg-purple text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-hover-purpule"
+                    class="bg-purple text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-hover-purpule justify-self-end self-end sm:col-span-2"
                   >
                     Update Feedback
                   </button>
+                </div>
+
+                <div
+                *ngIf="TelephoneInterview.overallFeedback" 
+                class="mb-6">
+                  <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-dark-gray">
+                      Feedbacks
+                    </h3>
+                    <!-- Optional: Add a button or count -->
+                    <!-- <button class="text-purple text-sm font-medium hover:underline">
+                      View All
+                    </button> -->
+                  </div>
+
+                  <div class="space-y-4">
+                    <div
+                      class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+                    >
+                      <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-3">
+                          <img
+                            src="https://i.pravatar.cc/40?img=5"
+                            class="w-10 h-10 rounded-full"
+                            alt="Maria Kelly"
+                          />
+                          <div>
+                            <p class="font-semibold text-dark-gray">
+                              {{ TelephoneInterview.hrName }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                              {{ TelephoneInterview.updatedAt | date }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-sm text-dark-gray mb-3 leading-relaxed">
+                        {{TelephoneInterview.overallFeedback}}
+                      </p>
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- Feedback Update Modal -->
@@ -598,7 +640,10 @@
                     </div>
 
                     <!-- Form -->
-                    <form [formGroup]="FeedbackForm" (ngSubmit)="updateFeedback()">
+                    <form
+                      [formGroup]="FeedbackForm"
+                      (ngSubmit)="updateFeedback()"
+                    >
                       <!-- Feedback Input -->
                       <div class="mb-4">
                         <label
@@ -611,9 +656,11 @@
                           placeholder="Type your feedback here..."
                           class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
                         ></textarea>
-                        <div *ngIf="FeedbackForm.get('feedback')?.touched && FeedbackForm.get('feedback')?.invalid" 
-                        class="text-red-500 text-xs mt-1">
-                          Feedback  Requied
+                        <div
+                          *ngIf="FeedbackForm.get('feedback')?.touched && FeedbackForm.get('feedback')?.invalid"
+                          class="text-red-500 text-xs mt-1"
+                        >
+                          Feedback Requied
                         </div>
                       </div>
 
@@ -630,10 +677,11 @@
                           <option value="">Select Result</option>
                           <option value="Pass">Pass</option>
                           <option value="Fail">Fail</option>
-                          <option value="Neutral">Neutral</option>
                         </select>
-                        <div *ngIf="FeedbackForm.get('status')?.touched && FeedbackForm.get('status')?.invalid" 
-                        class="text-red-500 text-xs mt-1 ">
+                        <div
+                          *ngIf="FeedbackForm.get('status')?.touched && FeedbackForm.get('status')?.invalid"
+                          class="text-red-500 text-xs mt-1"
+                        >
                           Select Stage Status
                         </div>
                       </div>
@@ -656,56 +704,6 @@
                         </button>
                       </div>
                     </form>
-                  </div>
-                </div>
-                <!-- Feedback Cards -->
-                <div class="space-y-4">
-                  <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                      <div class="flex items-center gap-2">
-                        <img
-                          src="https://i.pravatar.cc/40?img=5"
-                          class="w-10 h-10 rounded-full"
-                        />
-                        <div>
-                          <p class="font-semibold text-dark-gray">
-                            Maria Kelly
-                          </p>
-                          <p class="text-xs text-gray-500">
-                            10 July, 2021 • 11:30 AM
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <p class="text-sm text-dark-gray mb-2">
-                      Please, do an interview stage immediately. The design
-                      division needs more new employees now.
-                    </p>
-                    <a href="#" class="text-purple text-sm font-semibold"
-                      >2 Replies</a
-                    >
-                  </div>
-
-                  <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                      <div class="flex items-center gap-2">
-                        <img
-                          src="https://i.pravatar.cc/40?img=6"
-                          class="w-10 h-10 rounded-full"
-                        />
-                        <div>
-                          <p class="font-semibold text-dark-gray">
-                            Maria Kelly
-                          </p>
-                          <p class="text-xs text-gray-500">
-                            10 July, 2021 • 10:30 AM
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <p class="text-sm text-dark-gray">
-                      Please, do an interview stage immediately.
-                    </p>
                   </div>
                 </div>
               </div>
