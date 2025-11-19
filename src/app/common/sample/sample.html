@@ -1,114 +1,23 @@
-<!-- <div
-      *ngIf="activeView === 'all'"
-      class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar"
-    >
-      <h1>all applicatons</h1>
-      <div class="flex-shrink-0 w-full rounded-lg">
-        <div *ngIf="isLoading" class="flex justify-center items-center py-10">
-          <div class="loader"></div>
-        </div>
-
-        <div
-          *ngIf="!isLoading && ApplicationList.length === 0"
-          class="flex justify-center items-center py-10"
-        >
-          <p class="text-gray-500 text-lg">No applicants found.</p>
-        </div>
-
-        <div
-          *ngIf="!isLoading && ApplicationList.length > 0"
-          class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar"
-        >
-          <div class="flex-shrink-0 w-full">
-            <div class="flex flex-wrap -m-1">
-              <div
-                *ngFor="let applicant  of ApplicationList"
-                class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between p-1 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4"
-              >
-                <div class="flex justify-between items-start mb-4 gap-3">
-                  <div class="flex-1 flex flex-col text-left">
-                    <h2
-                      class="text-lg sm:text-xl font-semibold text-dark-gray mb-1"
-                    >
-                      {{ applicant.name }}
-                    </h2>
-                    <p class="text-gray text-sm">
-                      Created: {{ applicant.createdAt | date : 'shortDate' }}
-                    </p>
-                    <div
-                      class="flex items-center justify-between text-sm text-gray-500 mt-1"
-                    >
-                      <span>Stage</span>
-                      <span class="font-medium text-gray-700"
-                        >{{applicant.Stages}}</span
-                      >
-                    </div>
-                    <div class="flex items-center text-sm">
-                      <span class="font-medium mr-1">Status:</span>
-                      <span
-                        [ngClass]="{
-                            'text-green-600': !applicant.Rejected,
-                            'text-red-600': applicant.Rejected
-                        }"
-                        class="font-semibold flex items-center"
-                      >
-                        <i
-                          [ngClass]="{
-                            'fas fa-check-circle': !applicant.Rejected,
-                            'fas fa-times-circle': applicant.Rejected
-                            }"
-                          class="mr-1"
-                        ></i>
-                        {{ applicant.Rejected ? 'Rejected' : 'Active'}}
-                      </span>
-                    </div>
-                  </div>
-                  <img
-                    [src]="applicant.profile? baseUrl+applicant.profile:'/profileimages/logodefault.jpg'"
-                    [alt]="applicant.name + ' Logo'"
-                    class="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover flex-shrink-0"
-                  />
-                </div>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500 mt-1"
-                >
-                  <span>Score</span>
-                  <span class="font-medium flex items-center">
-                    <span class="mr-1">{{applicant.atsScore}}</span>
-                    <svg
-                      class="h-4 w-4 text-gray-400 fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"
-                      />
-                    </svg>
-                  </span>
-                </div>
-
-                <div
-                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-auto"
-                >
-                  <div
-                    class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3"
-                  >
-                    <a
-                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
-                    >
-                      View Profile
-                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                    </a>
-                    <a
-                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
-                    >
-                      View application
-                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+          <ng-container >
+            <svg
+              class="animate-spin h-5 w-5 mr-2 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+            Saving...
+          </ng-container>
