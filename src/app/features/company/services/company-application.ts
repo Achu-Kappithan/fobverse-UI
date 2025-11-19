@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApplicationQureryInterface } from '../interfaces/company.interface';
+import { ApplicationQureryInterface, CancelInterviewInterface } from '../interfaces/company.interface';
 import { Observable } from 'rxjs';
 import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
 import {
@@ -88,5 +88,18 @@ export class CompanyApplication {
       `/api/interview/updatefeedback`,
       data
     );
+  }
+
+  ReShedule(
+    data: SheduleInterface
+  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    return this._http.put<ApiResponce<SheduleResponceInterface>>(
+      `/api/interview/reshedule`,
+      data
+    );
+  }
+
+  cancelInterview(dto:CancelInterviewInterface):Observable<ApiResponce<SheduleResponceInterface>>{
+    return this._http.patch<ApiResponce<SheduleResponceInterface>>(`/api/interview/cancelinterview`,dto)
   }
 }

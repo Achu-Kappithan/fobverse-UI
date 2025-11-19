@@ -17,15 +17,27 @@ import {
 import { environment } from '../../../../../../env/environment';
 import { TextTransformPipe } from '../../../../../shared/pipes/text-transform-pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { interviewStages } from '../../../../../shared/enums/Interview-stages.enum';
+import { Stages } from '../../../../../shared/enums/Interview-stages.enum';
 import { SheduleResponceInterface } from '../../../interfaces/company.interviewresponce.interface';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-application-details',
   imports: [CommonModule, FormsModule, TextTransformPipe, ReactiveFormsModule],
   templateUrl: './application-details.html',
   styleUrl: './application-details.css',
+  animations: [
+    trigger('slideFade', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('250ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' })),
+      ]),
+    ]),
+  ],
 })
 export class ApplicationDetails implements OnInit {
   contentId: string = 'Profile';
@@ -37,15 +49,17 @@ export class ApplicationDetails implements OnInit {
   addressValue: string | null = null;
   isLoading: boolean = false;
   isLoadingStage: boolean = false;
+  isSaving: boolean = false
+  saveComplete: boolean = false;
   baseUrl: string = environment.cloudinaryBaseUrl;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
   resumePdfUrl: string | null = null;
   Math = Math;
-  currentStageIndex: number = 2;
+  currentStageIndex: number = -1;
 
   currentStageId: string = 'shortlisted';
   interviewScheduled: boolean = true;
-  sheduleModal: boolean = false;
+  sheduleModal: string | null  = null;
   hrList: InternalUserInterface[] | null = null;
   selectedHr: InternalUserInterface | null = null;
   TelephoneInterview: SheduleResponceInterface | null = null;
@@ -83,6 +97,16 @@ export class ApplicationDetails implements OnInit {
       scheduledTime: ['', Validators.required],
       hrId: ['', Validators.required],
     });
+  }
+
+  SetupReSheduleFrom(){
+    if(this.TelephoneInterview){
+      this.interviewSheduleForm.patchValue({
+        scheduledDate : this.TelephoneInterview.scheduledDate,
+        scheduledTime : this.TelephoneInterview.scheduledTime,
+        hrId : this.TelephoneInterview.hrName
+      })
+    }
   }
 
   initFeedbackForm() {
@@ -141,7 +165,11 @@ export class ApplicationDetails implements OnInit {
       hrName: this.selectedHr?.name,
       userEmail: this.applicationDetails?.email,
     };
-    this._ApplicationService.sheduleTelephon(data).subscribe({
+    const apiCall =
+    this.sheduleModal === 'Scheduled'
+      ? this._ApplicationService.sheduleTelephon(data)
+      : this._ApplicationService.ReShedule(data);
+    apiCall.subscribe({
       next: (res) => {
         if (res.success) {
           if (res.data.stage == 'telephone') {
@@ -157,6 +185,35 @@ export class ApplicationDetails implements OnInit {
         this._swal.showErrorToast(err.error.message);
       },
     });
+  }
+
+  CancelInterview(){
+    this.isSaving = true
+    this.saveComplete = false
+    const data = {
+      applicationId: this.applicationId!,
+      stage: this.currentStageId,
+      userEmail: this.applicationDetails?.email!
+    }
+
+    this._ApplicationService.cancelInterview(data).subscribe({
+      next:(res)=>{
+        if(res.success){
+          this.TelephoneInterview = res.data
+          this.isSaving = false
+          this.saveComplete = true
+          setTimeout(()=> this.saveComplete = false,500)
+          this._swal.showSuccessToast(res.message)
+          this._cdr.detectChanges()
+        }
+      },
+      error:(err)=>{
+        console.log('error regading Cancell interview')
+        this._swal.showErrorToast(err.error.message)
+        this.isSaving = false 
+        this._cdr.detectChanges()
+      }
+    })
   }
 
   getStarRating(percentage: number | null | undefined): number {
@@ -204,6 +261,7 @@ export class ApplicationDetails implements OnInit {
           if (res.success) {
             if (res.data.stage == 'telephone') {
               this.TelephoneInterview = res.data;
+              this.SetupReSheduleFrom()
               this.isLoadingStage = false;
               this._cdr.detectChanges();
             }
@@ -217,7 +275,7 @@ export class ApplicationDetails implements OnInit {
       });
   }
 
-  sheduleModalOpen() {
+   sheduleModalOpen(id:string) {
     if (!this.hrList) {
       this._ApplicationService.getHrlist().subscribe({
         next: (res) => {
@@ -229,11 +287,11 @@ export class ApplicationDetails implements OnInit {
         },
       });
     }
-    this.sheduleModal = true;
+    this.sheduleModal = id;
   }
 
   sheduleModalclose() {
-    this.sheduleModal = false;
+    this.sheduleModal = null;
   }
 
   get atsPassed(): boolean {
@@ -282,29 +340,38 @@ export class ApplicationDetails implements OnInit {
     });
   }
 
-  hiringStages = ['Shortlisted', 'Telephoneic', 'Technicals', 'Hired/Reject'];
+  hiringStages = ['Shortlisted', 'Telephonic', 'Technical', 'Hired/Reject'];
 
-  getStages(stage: string): void {
-    if (stage === interviewStages.Shortlisted) {
-      this.currentStageIndex = 1;
-    } else if (stage === interviewStages.Telephone) {
-      this.currentStageIndex = 2;
-    } else if (stage === interviewStages.Technical) {
-      this.currentStageIndex = 3;
-    } else if (stage === interviewStages.Hired) {
-      this.currentStageIndex = 4;
-    } else {
-      this.currentStageIndex = 0;
+  getStages(stage: string ): void {
+    switch (stage) {
+      case Stages.Shortlisted:
+        this.currentStageIndex = 0;
+        break;
+
+      case Stages.Telephone:
+        this.currentStageIndex = 1;
+        break;
+
+      case Stages.Technical:
+        this.currentStageIndex = 2;
+        break;
+
+      case Stages.Hired:
+        this.currentStageIndex = 3;
+        break;
+
+      default: 
+        this.currentStageIndex = -1;
+        break;
     }
   }
 
   getStageStatus(index: number): 'completed' | 'current' | 'pending' {
-    if (index < this.currentStageIndex) {
-      return 'completed';
-    } else if (index === this.currentStageIndex) {
-      return 'current';
-    } else {
-      return 'pending';
-    }
+    if (this.currentStageIndex === -1) return 'pending';
+
+    if (index < this.currentStageIndex) return 'completed';
+    if (index === this.currentStageIndex) return 'current';
+    return 'pending';
   }
+
 }

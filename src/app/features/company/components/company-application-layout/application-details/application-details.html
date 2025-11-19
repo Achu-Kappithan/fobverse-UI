@@ -82,8 +82,10 @@
               ></div>
 
               <div
-                class="absolute h-1 bg-purple top-1/2 transform -translate-y-1/2 rounded-full transition-all duration-500 ease-in-out"
-                [style.width]="(currentStageIndex / (hiringStages.length - 1)) * 100 + '%'"
+                class="absolute h-1 bg-purple top-1/2 transform -translate-y-1/2 rounded-full transition-all duration-700 ease-in-out"
+                [style.width]="currentStageIndex >= 0 
+                  ? (currentStageIndex / (hiringStages.length - 1)) * 100 + '%' 
+                  : '0%'"
               ></div>
 
               <ng-container *ngFor="let stage of hiringStages; let i = index">
@@ -380,9 +382,7 @@
           <div *ngIf="activeContent('hiring-process')" class="p-6">
             <!-- Current Stage Header -->
             <div class="flex justify-between items-center mb-6">
-              <h2 class="text-lg font-semibold text-dark-gray">
-                Current Stage
-              </h2>
+              <h2 class="text-lg font-semibold text-dark-gray">Stages</h2>
             </div>
 
             <!-- Stage Tabs -->
@@ -511,67 +511,129 @@
 
               <div *ngIf="activeStage('telephone') && TelephoneInterview ">
                 <div
-                  class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
+                  class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-2xl border border-gray-100"
                 >
-                  <div>
-                    <h3 class="text-gray-500 text-sm mb-1">Interview Date</h3>
-                    <p class="text-dark-gray font-medium">
-                      {{TelephoneInterview.scheduledDate}}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
-                    <span
-                      [ngClass]="{
-                        'bg-yellow-100 text-yellow-800': TelephoneInterview.status === 'Scheduled',
-                        'bg-green-100 text-green-800': TelephoneInterview.status === 'Completed',
-                        'bg-red-100 text-red-800': TelephoneInterview.status === 'Cancelled',
-                        'bg-blue-100 text-blue-800': TelephoneInterview.status === 'Rescheduled'
-                      }"
-                      class="px-3 py-1 rounded-full text-xs font-semibold"
+                  <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-4"
+                  >
+                    <h2
+                      class="text-2xl font-bold text-gray-800 flex items-center"
                     >
-                      {{ TelephoneInterview.status }}
-                    </span>
-                  </div>
-                  <div>
-                    <h3 class="text-gray-500 text-sm mb-1">Description</h3>
-                    <p class="text-dark-gray text-sm leading-relaxed">
-                      Time :
-                      <span class="font-semibold"
-                        >{{TelephoneInterview.scheduledTime}}</span
-                      ><br />
-                      Please be available on time.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
+                      Interview Details
+                    </h2>
 
-                    <div class="flex items-center mt-1 space-x-2">
-                      <!-- HR Profile Image -->
-                      <!-- <img
-                        src="{{ TelephoneInterview.hrImage || 'https://i.pravatar.cc/40?img=1' }}"
-                        alt="{{ TelephoneInterview.hrName }}"
-                        class="w-8 h-8 rounded-full border-2 border-white shadow-sm"
-                      /> -->
-
-                      <!-- HR Name -->
-                      <span class="text-sm font-medium text-gray-800">
-                        {{ TelephoneInterview.hrName || 'Not Assigned' }}
+                    <div class="mt-3 sm:mt-0 flex items-center space-x-2">
+                      <span class="text-md font-semibold text-gray-600"
+                        >Result:</span
+                      >
+                      <span
+                        [ngClass]="{
+          'bg-green-500 text-white': TelephoneInterview.finalResult === 'Pass',
+          'bg-red-500 text-white': TelephoneInterview.finalResult === 'Fail',
+          'bg-yellow-400 text-gray-900': !TelephoneInterview.finalResult || TelephoneInterview.finalResult === 'Pending'
+        }"
+                        class="px-4 py-1.5 rounded-2xl text-xs font-bold shadow-md uppercase tracking-wider"
+                      >
+                        {{ TelephoneInterview.finalResult || 'Pending' }}
                       </span>
                     </div>
                   </div>
-                  <button
-                    *ngIf="!TelephoneInterview.overallFeedback"
-                    (click)="openFeedbackModal()"
-                    class="bg-purple text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-hover-purpule justify-self-end self-end sm:col-span-2"
-                  >
-                    Update Feedback
-                  </button>
+
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div
+                      class="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500 shadow-sm"
+                    >
+                      <h3
+                        class="text-xs uppercase tracking-wider font-semibold text-blue-600 mb-2"
+                      >
+                        Status
+                      </h3>
+                      <span
+                        [ngClass]="{
+          'bg-yellow-200 text-yellow-800': TelephoneInterview.status === 'Scheduled',
+          'bg-green-200 text-green-800': TelephoneInterview.status === 'Completed',
+          'bg-red-200 text-red-800': TelephoneInterview.status === 'Cancelled',
+          'bg-blue-200 text-blue-800': TelephoneInterview.status === 'Rescheduled'
+        }"
+                        class="px-3 py-1 rounded-full text-sm font-bold"
+                      >
+                        {{ TelephoneInterview.status }}
+                      </span>
+                    </div>
+
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-sm">
+                      <h3
+                        class="text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2"
+                      >
+                        Interview Date
+                      </h3>
+                      <p class="text-md font-extrabold text-gray-800">
+                        {{ TelephoneInterview.scheduledDate || 'TBD' }}
+                      </p>
+                    </div>
+
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-sm">
+                      <h3
+                        class="text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2"
+                      >
+                        Interview Time
+                      </h3>
+                      <p class="text-md font-extrabold text-gray-800">
+                        {{ TelephoneInterview.scheduledTime || 'TBD' }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <hr class="my-6" />
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div>
+                      <h3
+                        class="text-sm uppercase tracking-wider font-semibold text-gray-500 mb-3"
+                      >
+                        Assigned To
+                      </h3>
+                      <div
+                        class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg shadow-inner"
+                      >
+                        <span class="text-base font-semibold text-gray-800">
+                          {{ TelephoneInterview.hrName || 'Not Assigned' }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr class="my-8" />
+
+                  <div class="flex flex-col sm:flex-row justify-end gap-4">
+                    <button
+                      *ngIf="!TelephoneInterview.overallFeedback"
+                      (click)="openFeedbackModal()"
+                      class="order-3 sm:order-1 w-full sm:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-purple-700 transition duration-150 shadow-md"
+                    >
+                      Update Feedback
+                    </button>
+
+                    <button
+                      *ngIf="TelephoneInterview.status === 'Scheduled'"
+                      (click)="sheduleModalOpen('Rescheduled')"
+                      class="order-2 w-full sm:w-auto border border-blue-500 text-blue-600 bg-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-blue-50 transition duration-150 shadow-sm"
+                    >
+                      🗓️ Reschedule
+                    </button>
+
+                    <button
+                      *ngIf="TelephoneInterview.status === 'Scheduled' 
+                      || TelephoneInterview.status ==='Rescheduled'"
+                      (click)="CancelInterview()"
+                      class="order-1 sm:order-3 w-full sm:w-auto border border-red-500 text-red-600 bg-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-red-50 transition duration-150 shadow-sm"
+                    >
+                      ❌ Cancel
+                    </button>
+                  </div>
                 </div>
 
-                <div
-                *ngIf="TelephoneInterview.overallFeedback" 
-                class="mb-6">
+                <div *ngIf="TelephoneInterview.overallFeedback" class="mb-6">
                   <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-dark-gray">
                       Feedbacks
@@ -607,7 +669,6 @@
                         {{TelephoneInterview.overallFeedback}}
                       </p>
                     </div>
-
                   </div>
                 </div>
 
@@ -718,7 +779,7 @@
                 </div>
 
                 <button
-                  (click)="sheduleModalOpen()"
+                  (click)="sheduleModalOpen('Scheduled')"
                   class="bg-purple text-white px-5 py-2 rounded-lg font-medium hover:bg-hover-purpule transition"
                 >
                   Schedule Interview
@@ -941,11 +1002,48 @@
               type="submit"
               class="px-5 py-2 rounded-lg bg-purple text-white font-medium hover:bg-hover-purpule"
             >
-              Save Schedule
+              Save {{sheduleModal}}
             </button>
           </div>
         </form>
       </div>
+    </div>
+
+    <div
+      *ngIf="isSaving"
+      @slideFade
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-2 rounded-full shadow-lg flex items-center gap-2 z-50"
+    >
+      <div class="relative flex items-center">
+        <!-- Ring loader -->
+        <div
+          class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+        ></div>
+      </div>
+
+      <span class="font-medium text-sm tracking-wide">Saving changes...</span>
+    </div>
+
+    <div
+      *ngIf="saveComplete"
+      @slideFade
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-2 rounded-full shadow-lg flex items-center gap-2 z-50"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="3"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+      <span class="font-medium text-sm tracking-wide">Saved successfully!</span>
     </div>
 
     <div

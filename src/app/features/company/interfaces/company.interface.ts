@@ -3,3 +3,11 @@ import { QueryParmsInterface } from "../../../shared/interfaces/apiresponce.inte
 export interface ApplicationQureryInterface extends QueryParmsInterface {
     jobId :string
 }
+
+export interface CancelInterviewInterface {
+    applicationId:string,
+
+    stage:string,
+
+    userEmail:string
+}
