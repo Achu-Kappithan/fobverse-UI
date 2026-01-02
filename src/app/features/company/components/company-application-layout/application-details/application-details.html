@@ -615,7 +615,7 @@
                     </button>
 
                     <button
-                      *ngIf="TelephoneInterview.status === 'Scheduled'"
+                      *ngIf="TelephoneInterview.status === 'Scheduled' || TelephoneInterview.status === 'Rescheduled'"
                       (click)="sheduleModalOpen('Rescheduled')"
                       class="order-2 w-full sm:w-auto border border-blue-500 text-blue-600 bg-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-blue-50 transition duration-150 shadow-sm"
                     >

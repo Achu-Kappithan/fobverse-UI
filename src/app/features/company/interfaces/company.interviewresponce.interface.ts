@@ -2,6 +2,8 @@ export interface SheduleInterface{
 
   applicationId: string;
 
+  candidateId? :string;
+
   hrId: string;
 
   hrName: string;
