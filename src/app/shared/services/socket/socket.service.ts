@@ -22,6 +22,19 @@ export class SocketService {
     });
   }
 
+  onNotification(callback: (data: any) => void) {
+
+    if (!this.socket) {
+      console.log('Socket not initialized');
+      return;
+    }
+
+    this.socket.on('notification', (payload) => {
+      console.log('notification event from socket', payload);
+      callback(payload);
+    });
+  }
+
   disconnect(){
     if(this.socket){
       this.socket.disconnect()
