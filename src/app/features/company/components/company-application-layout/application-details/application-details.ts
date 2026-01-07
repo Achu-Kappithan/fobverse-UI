@@ -161,6 +161,7 @@ export class ApplicationDetails implements OnInit {
     data = {
       ...data,
       applicationId: this.applicationId,
+      candidateId: this.candidateId,
       stage: this.currentStageId,
       hrName: this.selectedHr?.name,
       userEmail: this.applicationDetails?.email,
