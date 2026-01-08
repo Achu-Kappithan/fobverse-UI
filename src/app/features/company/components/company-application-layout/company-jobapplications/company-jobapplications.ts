@@ -116,6 +116,8 @@ export class CompanyJobapplications implements OnInit {
       this.fetchAllApplicaton();
     } else if (this.activeView === 'shortlisted') {
       this.shortlistedApplications();
+    }else if (this.activeView === 'technicals') {
+      this.TechinicalApplications();
     }
   }
 
@@ -170,6 +172,12 @@ export class CompanyJobapplications implements OnInit {
 
   shortlistedApplications() {
     this.QueryParams.filtervalue = 'shortlisted';
+    this.QueryParams.page = 1;
+    this.fetchAllApplicaton();
+  }
+
+  TechinicalApplications() {
+    this.QueryParams.filtervalue = 'technical_analysis'
     this.QueryParams.page = 1;
     this.fetchAllApplicaton();
   }
