@@ -60,10 +60,12 @@ export class ApplicationDetails implements OnInit {
   currentStageId: string = 'shortlisted';
   interviewScheduled: boolean = true;
   sheduleModal: string | null  = null;
+  technicalSheduleModalOpen: boolean = false
   hrList: InternalUserInterface[] | null = null;
   selectedHr: InternalUserInterface | null = null;
   TelephoneInterview: SheduleResponceInterface | null = null;
   isFeedbackModalOpen: boolean = false;
+  TechnicalShedule: SheduleResponceInterface | null = null;
 
   interviewSheduleForm!: FormGroup;
   FeedbackForm!: FormGroup;
@@ -293,6 +295,10 @@ export class ApplicationDetails implements OnInit {
 
   sheduleModalclose() {
     this.sheduleModal = null;
+  }
+
+  openTechinalModal(){
+    this.technicalSheduleModalOpen = this.technicalSheduleModalOpen ? false : true
   }
 
   get atsPassed(): boolean {

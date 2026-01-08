@@ -69,6 +69,16 @@ html.dark .text-yellow-soft {
   color: #a0aec0;
 }
 
+.bg-hover-action:hover {
+  background-color: #8e52d1; 
+  color: #ffffff;
+}
+
+html.dark .bg-hover-action:hover {
+  background-color: #9f7aea; 
+  color: #ffffff;
+}
+
 /* Dark mode border color */
 .border-purple {
   border-color: #6a35a0;

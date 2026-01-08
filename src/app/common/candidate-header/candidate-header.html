@@ -68,7 +68,7 @@
           >
             <div class="flex items-center gap-2">
               <i class="fas fa-bell text-white"></i>
-              <h3 class="font-bold text-white">Notifications</h3>
+              <h3 class="font-bold text-dark-gray">Notifications</h3>
               <span
                 *ngIf="unreadMessageCount > 0"
                 class="bg-white text-purple text-xs font-bold px-2 py-0.5 rounded-full"
@@ -79,7 +79,7 @@
             <button
               *ngIf="unreadMessageCount > 0"
               (click)="markAllAsRead()"
-              class="text-xs text-white hover:underline font-medium transition-all"
+              class="text-xs text-dark-gray hover:underline font-medium transition-all"
             >
               Mark all read
             </button>
@@ -94,7 +94,7 @@
               [class.border-b-2]="notificationTab === 'unread'"
               [class.text-purple]="notificationTab === 'unread'"
               [class.text-gray]="notificationTab !== 'unread'"
-              class="flex-1 py-3 border-purple font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
+              class="flex-1 py-3 bg-white border-purple font-medium transition-all  hover:bg-gray-300 hover:font-bold hover:text-md dark:hover:bg-gray-100"
             >
               Unread
               <span *ngIf="unreadMessageCount > 0" class="ml-1 text-xs">
@@ -106,7 +106,7 @@
               [class.border-b-2]="notificationTab === 'all'"
               [class.text-purple]="notificationTab === 'all'"
               [class.text-gray]="notificationTab !== 'all'"
-              class="flex-1 py-3 border-purple font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
+              class="flex-1 py-3 bg-white border-purple font-medium transition-all hover:bg-gray-300 hover:font-bold hover:text-md dark:hover:bg-gray-100"
             >
               All
               <span class="ml-1 text-xs">({{ notifications.length }})</span>
@@ -121,7 +121,7 @@
               <div
                 *ngFor="let notif of getFilteredNotifications()"
                 (click)="onNotificationClick(notif)"
-                class="p-4 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-200"
+                class="p-4 border-b bg-white dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-100 cursor-pointer transition-all duration-200"
                 [class.bg-blue-50]="!notif.isRead"
                 [class.dark:bg-gray-750]="!notif.isRead"
               >
@@ -209,7 +209,7 @@
           <a
             routerLink="/notifications"
             (click)="closeModal()"
-            class="block py-3 text-center text-sm font-semibold text-purple border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            class="block py-3 text-center text-sm font-semibold text-purple border-t dark:border-gray-700 hover:font-bold hover:text-md  dark:hover:bg-gray-300 transition-colors"
           >
             View All Notifications
             <i class="fas fa-arrow-right ml-1 text-xs"></i>
