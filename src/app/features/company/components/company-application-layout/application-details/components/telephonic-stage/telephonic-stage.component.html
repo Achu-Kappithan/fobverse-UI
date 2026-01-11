@@ -5,25 +5,22 @@
     <div
       class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-4"
     >
-      <h2
-        class="text-2xl font-bold text-gray-800 flex items-center"
-      >
+      <h2 class="text-2xl font-bold text-gray-800 flex items-center">
         Interview Details
       </h2>
 
       <div class="mt-3 sm:mt-0 flex items-center space-x-2">
-        <span class="text-md font-semibold text-gray-600"
-          >Result:</span
-        >
+        <span class="text-md font-semibold text-gray-600">Result:</span>
         <span
           [ngClass]="{
             'bg-green-500 text-white': interview.finalResult === 'Pass',
             'bg-red-500 text-white': interview.finalResult === 'Fail',
-            'bg-yellow-400 text-gray-900': !interview.finalResult || interview.finalResult === 'Pending'
+            'bg-yellow-400 text-gray-900':
+              !interview.finalResult || interview.finalResult === 'Pending'
           }"
           class="px-4 py-1.5 rounded-2xl text-xs font-bold shadow-md uppercase tracking-wider"
         >
-          {{ interview.finalResult || 'Pending' }}
+          {{ interview.finalResult || "Pending" }}
         </span>
       </div>
     </div>
@@ -57,7 +54,7 @@
           Interview Date
         </h3>
         <p class="text-md font-extrabold text-gray-800">
-          {{ interview.scheduledDate || 'TBD' }}
+          {{ interview.scheduledDate || "TBD" }}
         </p>
       </div>
 
@@ -68,15 +65,15 @@
           Interview Time
         </h3>
         <p class="text-md font-extrabold text-gray-800">
-          {{ interview.scheduledTime || 'TBD' }}
+          {{ interview.scheduledTime || "TBD" }}
         </p>
       </div>
     </div>
 
     <hr class="my-6" />
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-      <div>
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div class="flex-grow">
         <h3
           class="text-sm uppercase tracking-wider font-semibold text-gray-500 mb-3"
         >
@@ -86,9 +83,22 @@
           class="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg shadow-inner"
         >
           <span class="text-base font-semibold text-gray-800">
-            {{ interview.hrName || 'Not Assigned' }}
+            {{ interview.evaluators[0].interviewerName }}
           </span>
         </div>
+      </div>
+
+      <div class="flex items-center">
+        <button
+          *ngIf="
+            interview.status === 'Scheduled' ||
+            interview.status === 'Rescheduled'
+          "
+          (click)="openFeedbackModal()"
+          class="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg text-xs font-semibold hover:bg-purple-700 transition duration-150 shadow-md whitespace-nowrap"
+        >
+          Update Feedback
+        </button>
       </div>
     </div>
 
@@ -96,15 +106,30 @@
 
     <div class="flex flex-col sm:flex-row justify-end gap-4">
       <button
-        *ngIf="!interview?.overallFeedback"
         (click)="openFeedbackModal()"
-        class="order-3 sm:order-1 w-full sm:w-auto bg-purple-600 text-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-purple-700 transition duration-150 shadow-md"
+        class="inline-flex items-center justify-center gap-2 bg-indigo-700 text-white px-3 py-2 rounded-xl text-sm font-bold hover:bg-indigo-800 active:scale-95 transition-all duration-200 shadow-lg border-b-4 border-indigo-900"
       >
-        Update Feedback
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        FINALIZE RESULT
       </button>
 
       <button
-        *ngIf="interview?.status === 'Scheduled' || interview?.status === 'Rescheduled'"
+        *ngIf="
+          interview.status === 'Scheduled' || interview.status === 'Rescheduled'
+        "
         (click)="sheduleModalOpen('Rescheduled')"
         class="order-2 w-full sm:w-auto border border-blue-500 text-blue-600 bg-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-blue-50 transition duration-150 shadow-sm"
       >
@@ -112,8 +137,9 @@
       </button>
 
       <button
-        *ngIf="interview?.status === 'Scheduled' 
-        || interview?.status ==='Rescheduled'"
+        *ngIf="
+          interview.status === 'Scheduled' || interview.status === 'Rescheduled'
+        "
         (click)="triggerCancel()"
         class="order-1 sm:order-3 w-full sm:w-auto border border-red-500 text-red-600 bg-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-red-50 transition duration-150 shadow-sm"
       >
@@ -122,11 +148,9 @@
     </div>
   </div>
 
-  <div *ngIf="interview?.overallFeedback" class="mb-6">
+  <div class="mb-6 mt-4">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold text-dark-gray">
-        Feedbacks
-      </h3>
+      <h3 class="text-lg font-semibold text-dark-gray">Feedbacks</h3>
     </div>
 
     <div class="space-y-4">
@@ -142,7 +166,7 @@
             />
             <div>
               <p class="font-semibold text-dark-gray">
-                {{ interview.hrName }}
+                {{ interview.evaluators[0].interviewerName }}
               </p>
               <p class="text-xs text-gray-500">
                 {{ interview.updatedAt | date }}
@@ -151,7 +175,7 @@
           </div>
         </div>
         <p class="text-sm text-dark-gray mb-3 leading-relaxed">
-          {{interview.overallFeedback}}
+          {{ interview.evaluators[0].feedback }}
         </p>
       </div>
     </div>
@@ -180,20 +204,15 @@
           Update Interview Feedback
         </h2>
         <p class="text-gray text-sm mt-1">
-          Please share your feedback and select the result for
-          this stage.
+          Please share your feedback and select the result for this stage.
         </p>
       </div>
 
       <!-- Form -->
-      <form
-        [formGroup]="FeedbackForm"
-        (ngSubmit)="submitFeedback()"
-      >
+      <form [formGroup]="FeedbackForm" (ngSubmit)="submitFeedback()">
         <!-- Feedback Input -->
         <div class="mb-4">
-          <label
-            class="block text-sm font-medium text-dark-gray mb-1"
+          <label class="block text-sm font-medium text-dark-gray mb-1"
             >Feedback</label
           >
           <textarea
@@ -203,7 +222,10 @@
             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
           ></textarea>
           <div
-            *ngIf="FeedbackForm.get('feedback')?.touched && FeedbackForm.get('feedback')?.invalid"
+            *ngIf="
+              FeedbackForm.get('feedback')?.touched &&
+              FeedbackForm.get('feedback')?.invalid
+            "
             class="text-red-500 text-xs mt-1"
           >
             Feedback Requied
@@ -212,20 +234,121 @@
 
         <!-- Result Dropdown -->
         <div class="mb-6">
-          <label
-            class="block text-sm font-medium text-dark-gray mb-1"
+          <label class="block text-sm font-medium text-dark-gray mb-1"
             >Result</label
           >
           <select
-            formControlName="status"
+            formControlName="result"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
           >
             <option value="">Select Result</option>
-            <option value="Pass">Pass</option>
+            <option *ngIf="interview.status !== 'Cancelled'" value="Pass">
+              Pass
+            </option>
             <option value="Fail">Fail</option>
           </select>
           <div
-            *ngIf="FeedbackForm.get('status')?.touched && FeedbackForm.get('status')?.invalid"
+            *ngIf="
+              FeedbackForm.get('result')?.touched &&
+              FeedbackForm.get('result')?.invalid
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Select Stage Status
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3">
+          <button
+            type="button"
+            (click)="openFeedbackModal()"
+            class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-dark-gray transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="px-5 py-2 rounded-lg bg-purple text-white hover:bg-hover-purpule transition flex items-center justify-center shadow-lg"
+          >
+            <ng-container>Submit</ng-container>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isFeedbackModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fadeIn"
+  >
+    <div
+      class="relative w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-300 transform scale-95 animate-scaleIn p-6"
+    >
+      <!-- Close Button -->
+      <button
+        (click)="openFeedbackModal()"
+        class="absolute top-3 right-3 text-gray hover:text-purple transition"
+        title="Close"
+      >
+        ✕
+      </button>
+
+      <!-- Header -->
+      <div class="text-center mb-4">
+        <h2 class="text-xl font-semibold text-purple">
+          Update Interview Feedback
+        </h2>
+        <p class="text-gray text-sm mt-1">
+          Please share your feedback and select the result for this stage.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="FeedbackForm" (ngSubmit)="submitFeedback()">
+        <!-- Feedback Input -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-dark-gray mb-1"
+            >Feedback</label
+          >
+          <textarea
+            formControlName="feedback"
+            rows="4"
+            placeholder="Type your feedback here..."
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+          ></textarea>
+          <div
+            *ngIf="
+              FeedbackForm.get('feedback')?.touched &&
+              FeedbackForm.get('feedback')?.invalid
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Feedback Requied
+          </div>
+        </div>
+
+        <!-- Result Dropdown -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-dark-gray mb-1"
+            >Result</label
+          >
+          <select
+            formControlName="result"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+          >
+            <option value="">Select Result</option>
+            <option *ngIf="interview.status !== 'Cancelled'" value="Pass">
+              Pass
+            </option>
+            <option value="Fail">Fail</option>
+          </select>
+          <div
+            *ngIf="
+              FeedbackForm.get('result')?.touched &&
+              FeedbackForm.get('result')?.invalid
+            "
             class="text-red-500 text-xs mt-1"
           >
             Select Stage Status
@@ -255,9 +378,7 @@
 </div>
 
 <div *ngIf="!interview">
-  <div
-    class="bg-yellow-soft text-yellow-soft p-4 rounded-lg border mb-6"
-  >
+  <div class="bg-yellow-soft text-yellow-soft p-4 rounded-lg border mb-6">
     <p class="font-medium">Interview not scheduled yet</p>
     <p class="text-sm mt-1 text-gray-600">
       HR has not created an interview schedule for this candidate.
@@ -271,7 +392,6 @@
     Schedule Interview
   </button>
 </div>
-
 
 <div
   *ngIf="sheduleModal"
@@ -301,16 +421,17 @@
     >
       <!-- Interview Date -->
       <div>
-        <label class="block text-gray-500 text-sm mb-1"
-          >Interview Date</label
-        >
+        <label class="block text-gray-500 text-sm mb-1">Interview Date</label>
         <input
           type="date"
           formControlName="scheduledDate"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <div
-          *ngIf="interviewSheduleForm.get('scheduledDate')?.touched && interviewSheduleForm.get('scheduledDate')?.invalid"
+          *ngIf="
+            interviewSheduleForm.get('scheduledDate')?.touched &&
+            interviewSheduleForm.get('scheduledDate')?.invalid
+          "
           class="text-red-500 text-xs mt-1"
         >
           Interview date is required
@@ -326,7 +447,10 @@
           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <div
-          *ngIf="interviewSheduleForm.get('scheduledTime')?.touched && interviewSheduleForm.get('scheduledTime')?.invalid"
+          *ngIf="
+            interviewSheduleForm.get('scheduledTime')?.touched &&
+            interviewSheduleForm.get('scheduledTime')?.invalid
+          "
           class="text-red-500 text-xs mt-1"
         >
           Start time is required
@@ -347,7 +471,10 @@
           </option>
         </select>
         <div
-          *ngIf="interviewSheduleForm.get('hrId')?.touched && interviewSheduleForm.get('hrId')?.invalid"
+          *ngIf="
+            interviewSheduleForm.get('hrId')?.touched &&
+            interviewSheduleForm.get('hrId')?.invalid
+          "
           class="text-red-500 text-xs mt-1"
         >
           Please assign a HR
@@ -368,7 +495,7 @@
           type="submit"
           class="px-5 py-2 rounded-lg bg-purple text-white font-medium hover:bg-hover-purpule"
         >
-          Save {{sheduleModal}}
+          Save {{ sheduleModal }}
         </button>
       </div>
     </form>
@@ -403,11 +530,7 @@
     stroke="currentColor"
     stroke-width="3"
   >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M5 13l4 4L19 7"
-    />
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
   </svg>
   <span class="font-medium text-sm tracking-wide">Saved successfully!</span>
 </div>
