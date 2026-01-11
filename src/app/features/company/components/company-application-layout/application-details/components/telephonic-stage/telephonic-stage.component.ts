@@ -1,6 +1,18 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
 import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
@@ -17,31 +29,38 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('slideFade', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(-10px)' }),
-        animate('250ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+        animate(
+          '250ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
       ]),
       transition(':leave', [
-        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' })),
+        animate(
+          '200ms ease-in',
+          style({ opacity: 0, transform: 'translateY(-10px)' })
+        ),
       ]),
     ]),
     trigger('fadeIn', [
-        transition(':enter', [
-            style({ opacity: 0 }),
-            animate('200ms ease-out', style({ opacity: 1 }))
-        ]),
-        transition(':leave', [
-            animate('150ms ease-in', style({ opacity: 0 }))
-        ])
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('150ms ease-in', style({ opacity: 0 }))]),
     ]),
     trigger('scaleIn', [
-        transition(':enter', [
-            style({ transform: 'scale(0.95)', opacity: 0 }),
-            animate('200ms ease-out', style({ transform: 'scale(1)', opacity: 1 }))
-        ]),
-        transition(':leave', [
-            animate('150ms ease-in', style({ transform: 'scale(0.95)', opacity: 0 }))
-        ])
-    ])
-  ]
+      transition(':enter', [
+        style({ transform: 'scale(0.95)', opacity: 0 }),
+        animate('200ms ease-out', style({ transform: 'scale(1)', opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate(
+          '150ms ease-in',
+          style({ transform: 'scale(0.95)', opacity: 0 })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class TelephonicStageComponent implements OnInit {
   interview: SheduleResponceInterface | null = null;
@@ -53,10 +72,10 @@ export class TelephonicStageComponent implements OnInit {
   isSaving: boolean = false;
   saveComplete: boolean = false;
   isLoading: boolean = false;
-  
+
   interviewSheduleForm!: FormGroup;
   FeedbackForm!: FormGroup;
-  
+
   sheduleModal: string | null = null;
   isFeedbackModalOpen: boolean = false;
   selectedHr: InternalUserInterface | null = null;
@@ -87,17 +106,39 @@ export class TelephonicStageComponent implements OnInit {
   initFeedbackForm() {
     this.FeedbackForm = this.fb.group({
       feedback: ['', Validators.required],
-      status: ['', Validators.required],
+      result: ['', Validators.required],
     });
   }
 
-  SetupReSheduleFrom(){
-    if(this.interview){
+  getStageDetails() {
+    this.isLoading = true;
+    this._ApplicationService
+      .getStageDetails(this.applicationId!, 'telephone')
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            if (res.data.stage == 'telephone') {
+              this.interview = res.data;
+              console.log('current stage  details ', this.interview);
+              this.isLoading = false;
+              this._cdr.detectChanges();
+            }
+          }
+        },
+        error: (err) => {
+          console.log('error regading fetch stage details', err);
+          this.isLoading = false;
+          this._cdr.detectChanges();
+        },
+      });
+  }
+
+  SetupReSheduleFrom() {
+    if (this.interview) {
       this.interviewSheduleForm.patchValue({
-        scheduledDate : this.interview.scheduledDate,
-        scheduledTime : this.interview.scheduledTime,
-        hrId : this.interview.hrName
-      })
+        scheduledDate: this.interview.scheduledDate,
+        scheduledTime: this.interview.scheduledTime,
+     });
     }
   }
 
@@ -107,7 +148,7 @@ export class TelephonicStageComponent implements OnInit {
     }
     this.sheduleModal = id;
     if (id === 'Rescheduled') {
-        this.SetupReSheduleFrom();
+      this.SetupReSheduleFrom();
     }
   }
 
@@ -127,30 +168,36 @@ export class TelephonicStageComponent implements OnInit {
       this.interviewSheduleForm.markAllAsTouched();
       return;
     }
-    
+
     let data = this.interviewSheduleForm.value;
+    const evaluator = [
+      {
+        interviewerId: this.selectedHr?._id,
+        interviewerName: this.selectedHr?.name,
+      },
+    ];
     data = {
-      ...data,
+      scheduledDate: data.scheduledDate,
+      scheduledTime: data.scheduledTime,
       applicationId: this.applicationId,
-      candidateId: this.candidateId,
       stage: 'telephone',
-      hrName: this.selectedHr?.name,
+      evaluator: evaluator,
       userEmail: this.userEmail,
     };
 
     const apiCall =
-    this.sheduleModal === 'Scheduled'
-      ? this._ApplicationService.sheduleTelephon(data)
-      : this._ApplicationService.ReShedule(data);
-    
+      this.sheduleModal === 'Scheduled'
+        ? this._ApplicationService.sheduleTelephon(data)
+        : this._ApplicationService.ReShedule(data);
+
     apiCall.subscribe({
       next: (res) => {
         if (res.success) {
-            this.interview = res.data;
+          this.interview = res.data;
 
-            this.sheduleModalclose();
-            this._swal.showSuccessToast(res.message);
-            this._cdr.detectChanges();
+          this.sheduleModalclose();
+          this._swal.showSuccessToast(res.message);
+          this._cdr.detectChanges();
         }
       },
       error: (err) => {
@@ -161,33 +208,33 @@ export class TelephonicStageComponent implements OnInit {
   }
 
   triggerCancel() {
-    this.isSaving = true
-    this.saveComplete = false
+    this.isSaving = true;
+    this.saveComplete = false;
     const data = {
       applicationId: this.applicationId!,
       stage: 'telephone',
-      userEmail: this.userEmail!
-    }
+      userEmail: this.userEmail!,
+    };
 
     this._ApplicationService.cancelInterview(data).subscribe({
-      next:(res)=>{
-        if(res.success){
-          this.interview = res.data
+      next: (res) => {
+        if (res.success) {
+          this.interview = res.data;
 
-          this.isSaving = false
-          this.saveComplete = true
-          setTimeout(()=> this.saveComplete = false,500)
-          this._swal.showSuccessToast(res.message)
-          this._cdr.detectChanges()
+          this.isSaving = false;
+          this.saveComplete = true;
+          setTimeout(() => (this.saveComplete = false), 500);
+          this._swal.showSuccessToast(res.message);
+          this._cdr.detectChanges();
         }
       },
-      error:(err)=>{
-        console.log('error regading Cancell interview')
-        this._swal.showErrorToast(err.error.message)
-        this.isSaving = false 
-        this._cdr.detectChanges()
-      }
-    })
+      error: (err) => {
+        console.log('error regading Cancell interview');
+        this._swal.showErrorToast(err.error.message);
+        this.isSaving = false;
+        this._cdr.detectChanges();
+      },
+    });
   }
 
   openFeedbackModal() {
@@ -199,28 +246,26 @@ export class TelephonicStageComponent implements OnInit {
       this.FeedbackForm.markAllAsTouched();
       return;
     }
-    
+
     let data = this.FeedbackForm.value;
     data = {
       ...data,
-      stage: 'telephone',
-      applicationId: this.applicationId,
+      interviewId:this.interview?._id
     };
 
     this._ApplicationService.updateFeedback(data).subscribe({
       next: (res) => {
         if (res.success) {
-            this.interview = res.data;
-
-            this._swal.showSuccessToast(res.message)
-            this.openFeedbackModal()
-            this._cdr.detectChanges()
+          this.interview = res.data;
+          this._swal.showSuccessToast(res.message);
+          this.openFeedbackModal();
+          this._cdr.detectChanges();
         }
       },
       error: (err) => {
-        this._swal.showErrorToast(err.error.message)
-        this.openFeedbackModal()
-        this._cdr.detectChanges()
+        this._swal.showErrorToast(err.error.message);
+        this.openFeedbackModal();
+        this._cdr.detectChanges();
         console.log('error regading update feedback', err);
       },
     });
@@ -238,28 +283,5 @@ export class TelephonicStageComponent implements OnInit {
         },
       });
     }
-  }
-
-  getStageDetails() {
-    this.isLoading = true;
-    this._ApplicationService
-      .getStageDetails(this.applicationId!, 'telephone')
-      .subscribe({
-        next: (res) => {
-          if (res.success) {
-            if (res.data.stage == 'telephone') {
-              this.interview = res.data;
-
-              this.isLoading = false;
-              this._cdr.detectChanges();
-            }
-          }
-        },
-        error: (err) => {
-          console.log('error regading fetch stage details', err);
-          this.isLoading = false;
-          this._cdr.detectChanges();
-        },
-      });
   }
 }

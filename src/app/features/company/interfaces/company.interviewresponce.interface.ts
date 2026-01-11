@@ -15,6 +15,10 @@ export interface SheduleInterface{
   scheduledTime: string;
 
   userEmail:string;
+  
+  interviewers?: string[];
+  
+  meetingLink?: string;
 
 }
 
@@ -42,9 +46,9 @@ export interface SheduleResponceInterface {
 
   applicationId: string;
 
-  hrId: string;
+  scheduledBy: string;
 
-  hrName: string;
+  userEmail: string;
 
   stage: string;
 
@@ -56,7 +60,7 @@ export interface SheduleResponceInterface {
 
   status: string;
 
-  panel: PanalInterface | []
+  evaluators: PanalInterface[];
 
   overallFeedback?: string;
 

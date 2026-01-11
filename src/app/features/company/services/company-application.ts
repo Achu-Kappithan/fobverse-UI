@@ -84,6 +84,7 @@ export class CompanyApplication {
   updateFeedback(
     data: updatefeedbackInterface
   ): Observable<ApiResponce<SheduleResponceInterface>> {
+    console.log('updatting feedbak data',data)
     return this._http.post<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/updatefeedback`,
       data
