@@ -75,9 +75,11 @@ export class TelephonicStageComponent implements OnInit {
 
   interviewSheduleForm!: FormGroup;
   FeedbackForm!: FormGroup;
+  finalizeResultForm!: FormGroup;
 
   sheduleModal: string | null = null;
   isFeedbackModalOpen: boolean = false;
+  isFinalizeModalOpen: boolean = false;
   selectedHr: InternalUserInterface | null = null;
 
   constructor(
@@ -90,6 +92,7 @@ export class TelephonicStageComponent implements OnInit {
   ngOnInit(): void {
     this.initSeduleFrom();
     this.initFeedbackForm();
+    this.initFinalizeResultForm();
     if (!this.interview && this.applicationId) {
       this.getStageDetails();
     }
@@ -107,6 +110,13 @@ export class TelephonicStageComponent implements OnInit {
     this.FeedbackForm = this.fb.group({
       feedback: ['', Validators.required],
       result: ['', Validators.required],
+    });
+  }
+
+  initFinalizeResultForm() {
+    this.finalizeResultForm = this.fb.group({
+      finalResult: ['', Validators.required],
+      finalFeedback: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
@@ -267,6 +277,49 @@ export class TelephonicStageComponent implements OnInit {
         this.openFeedbackModal();
         this._cdr.detectChanges();
         console.log('error regading update feedback', err);
+      },
+    });
+  }
+
+  openFinalizeModal() {
+    this.isFinalizeModalOpen = !this.isFinalizeModalOpen;
+    if (!this.isFinalizeModalOpen) {
+      this.finalizeResultForm.reset();
+    }
+  }
+
+  submitFinalizeResult() {
+    if (this.finalizeResultForm.invalid) {
+      this.finalizeResultForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true;
+    this.saveComplete = false;
+
+    let data = this.finalizeResultForm.value;
+    data = {
+      ...data,
+      interviewId: this.interview?._id,
+    };
+
+    this._ApplicationService.finalizeTelephoneResult(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.interview = res.data;
+          this.isSaving = false;
+          this.saveComplete = true;
+          setTimeout(() => (this.saveComplete = false), 2000);
+          this._swal.showSuccessToast(res.message);
+          this.openFinalizeModal();
+          this._cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        this._swal.showErrorToast(err.error.message);
+        this.isSaving = false;
+        this._cdr.detectChanges();
+        console.log('error regarding finalize result', err);
       },
     });
   }

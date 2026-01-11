@@ -12,6 +12,7 @@ import {
   SheduleInterface,
   SheduleResponceInterface,
   updatefeedbackInterface,
+  FinalizeResultInterface,
 } from '../interfaces/company.interviewresponce.interface';
 
 @Injectable({
@@ -102,5 +103,12 @@ export class CompanyApplication {
 
   cancelInterview(dto:CancelInterviewInterface):Observable<ApiResponce<SheduleResponceInterface>>{
     return this._http.patch<ApiResponce<SheduleResponceInterface>>(`/api/interview/cancelinterview`,dto)
+  }
+
+  finalizeTelephoneResult(data: FinalizeResultInterface): Observable<ApiResponce<SheduleResponceInterface>> {
+    return this._http.post<ApiResponce<SheduleResponceInterface>>(
+      `/api/interview/finalize-result`,
+      data
+    );
   }
 }
