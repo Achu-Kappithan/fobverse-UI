@@ -33,6 +33,16 @@ export interface updatefeedbackInterface {
   status: string
 }
 
+export interface FinalizeResultInterface {
+
+  finalResult: string;
+
+  finalFeedback: string;
+
+  interviewId?: string;
+
+}
+
 export interface PanalInterface {
   interviewerName: string;
 

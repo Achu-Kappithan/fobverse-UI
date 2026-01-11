@@ -106,7 +106,7 @@
 
     <div class="flex flex-col sm:flex-row justify-end gap-4">
       <button
-        (click)="openFeedbackModal()"
+        (click)="openFinalizeModal()"
         class="inline-flex items-center justify-center gap-2 bg-indigo-700 text-white px-3 py-2 rounded-xl text-sm font-bold hover:bg-indigo-800 active:scale-95 transition-all duration-200 shadow-lg border-b-4 border-indigo-900"
       >
         <svg
@@ -178,6 +178,141 @@
           {{ interview.evaluators[0].feedback }}
         </p>
       </div>
+    </div>
+  </div>
+
+  <!-- Finalize Result Modal -->
+  <div
+    *ngIf="isFinalizeModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fadeIn"
+  >
+    <div
+      class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-gray-300 transform scale-95 animate-scaleIn p-6"
+    >
+      <!-- Close Button -->
+      <button
+        (click)="openFinalizeModal()"
+        class="absolute top-3 right-3 text-gray-400 hover:text-indigo-700 transition text-2xl font-bold"
+        title="Close"
+      >
+        ✕
+      </button>
+
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <div class="mx-auto w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8 text-indigo-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-indigo-700">
+          Finalize Interview Result
+        </h2>
+        <p class="text-gray-600 text-sm mt-2">
+          Submit the final result and feedback for this telephonic interview stage.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="finalizeResultForm" (ngSubmit)="submitFinalizeResult()">
+        <!-- Final Result Dropdown -->
+        <div class="mb-5">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Final Result <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="finalResult"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          >
+            <option value="">Select Final Result</option>
+            <option value="Pass"> Pass</option>
+            <option value="Fail"> Fail</option>
+          </select>
+          <div
+            *ngIf="
+              finalizeResultForm.get('finalResult')?.touched &&
+              finalizeResultForm.get('finalResult')?.invalid
+            "
+            class="text-red-500 text-xs mt-1 font-medium"
+          >
+            Please select a final result
+          </div>
+        </div>
+
+        <!-- Final Feedback Input -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Final Feedback <span class="text-red-500">*</span>
+          </label>
+          <textarea
+            formControlName="finalFeedback"
+            rows="5"
+            placeholder="Provide detailed feedback about the candidate's performance..."
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none"
+          ></textarea>
+          <div
+            *ngIf="
+              finalizeResultForm.get('finalFeedback')?.touched &&
+              finalizeResultForm.get('finalFeedback')?.invalid
+            "
+            class="text-red-500 text-xs mt-1 font-medium"
+          >
+            <span *ngIf="finalizeResultForm.get('finalFeedback')?.errors?.['required']">
+              Final feedback is required
+            </span>
+            <span *ngIf="finalizeResultForm.get('finalFeedback')?.errors?.['minlength']">
+              Feedback must be at least 10 characters long
+            </span>
+          </div>
+          <div class="text-xs text-gray-500 mt-1">
+            {{ finalizeResultForm.get('finalFeedback')?.value?.length || 0 }} characters
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3">
+          <button
+            type="button"
+            (click)="openFinalizeModal()"
+            class="px-6 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            [disabled]="finalizeResultForm.invalid"
+            class="px-6 py-2.5 rounded-lg bg-indigo-700 text-white font-semibold hover:bg-indigo-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition flex items-center justify-center gap-2 shadow-lg"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            Finalize Result
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
