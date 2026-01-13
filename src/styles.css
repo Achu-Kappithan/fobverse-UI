@@ -1,3 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-purple: #7a3ebb;
+  --color-light-purple: #8567c1;
+  --color-hover-purpule: #9f73f7;
+  --color-lavender: #ede7ff;
+  --color-poster: rgb(246, 244, 248);
+  --color-dark-gray: #1a1a1a;
+  --color-gray: #b0b0b0;
+  --color-yellow-soft: #fff9db;
+}
+
 /* Base Font */
 body {
   font-family: "Inter", sans-serif;
@@ -119,6 +132,12 @@ html.dark .shadow-xl {
 html.dark h1 {
   color: #cbd5e0;
 }
+html.dark h2 {
+  color: #f7fafc;
+}
+html.dark h3 {
+  color: #f7fafc;
+}
 html.dark hr {
   border-color: #4a5568;
 }
@@ -133,6 +152,9 @@ html.dark .text-gray-700 {
   color: #e2e8f0;
 }
 html.dark .text-gray-800 {
+  color: #f7fafc;
+}
+html.dark .text-gray-900 {
   color: #f7fafc;
 }
 
@@ -316,3 +338,86 @@ html.dark .status-expired {
   background-color: #374151;
   color: #9ca3af;
 }
+
+/* Additional dark mode color classes for badges and cards */
+html.dark .bg-dark-gray {
+  background-color: #2d3748;
+}
+
+/* Dark mode purples */
+html.dark .bg-purple-50 {
+  background-color: #2d1b4e;
+}
+
+html.dark .text-purple-700 {
+  color: #c084fc;
+}
+
+/* Dark mode status badges - Green */
+html.dark .bg-green-100 {
+  background-color: rgba(6, 78, 59, 0.3);
+}
+
+html.dark .text-green-700 {
+  color: #4ade80;
+}
+
+html.dark .text-green-800 {
+  color: #4ade80;
+}
+
+html.dark .border-green-200 {
+  border-color: #065f46;
+}
+
+/* Dark mode status badges - Red */
+html.dark .bg-red-100 {
+  background-color: rgba(127, 29, 29, 0.3);
+}
+
+html.dark .text-red-700 {
+  color: #f87171;
+}
+
+html.dark .text-red-800 {
+  color: #f87171;
+}
+
+html.dark .border-red-200 {
+  border-color: #7f1d1d;
+}
+
+/* Dark mode status badges - Yellow */
+html.dark .bg-yellow-100 {
+  background-color: rgba(120, 53, 15, 0.3);
+}
+
+html.dark .text-yellow-700 {
+  color: #fbbf24;
+}
+
+html.dark .text-yellow-800 {
+  color: #fbbf24;
+}
+
+html.dark .border-yellow-200 {
+  border-color: #78350f;
+}
+
+/* Dark mode status badges - Blue */
+html.dark .bg-blue-100 {
+  background-color: rgba(30, 58, 138, 0.3);
+}
+
+html.dark .text-blue-700 {
+  color: #60a5fa;
+}
+
+html.dark .text-blue-800 {
+  color: #60a5fa;
+}
+
+html.dark .border-blue-200 {
+  border-color: #1e3a8a;
+}
+
