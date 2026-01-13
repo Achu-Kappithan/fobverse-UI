@@ -14,6 +14,11 @@
 /* Base Font */
 body {
   font-family: "Inter", sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-transition {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -63,7 +68,7 @@ html.dark .bg-yellow-soft {
   color: #d4b000;
 }
 html.dark .text-yellow-soft {
-  color: #ffe27a;
+  color: #fbbf24;
 }
 .bg-blue {
   background-color: #5a4bff;
@@ -98,8 +103,8 @@ html.dark .bg-hover-action:hover {
 }
 
 html.dark body {
-  background-color: #1a202c;
-  color: #cbd5e0;
+  background-color: #111827;
+  color: #e5e7eb;
 }
 
 html.dark .bg-poster {
@@ -117,8 +122,8 @@ html.dark .text-gray {
 }
 
 html.dark .bg-white {
-  background-color: #1a202c;
-  border-color: #4a5568;
+  background-color: #1f2937;
+  border-color: #374151;
 }
 html.dark .shadow-lg {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
@@ -139,7 +144,15 @@ html.dark h3 {
   color: #f7fafc;
 }
 html.dark hr {
-  border-color: #4a5568;
+  border-color: #374151;
+}
+
+html.dark .border-gray-100 {
+  border-color: #374151;
+}
+
+html.dark .border-gray-200 {
+  border-color: #374151;
 }
 
 html.dark .text-gray-500 {
@@ -155,7 +168,11 @@ html.dark .text-gray-800 {
   color: #f7fafc;
 }
 html.dark .text-gray-900 {
-  color: #f7fafc;
+  color: #f3f4f6;
+}
+
+html.dark .text-white {
+  color: #ffffff;
 }
 
 /* Corrected input, textarea, select dark mode styles */
@@ -194,6 +211,14 @@ html.dark .bg-opacity-75 {
 }
 html.dark .border-purple-500 {
   border-color: #9f7aea;
+}
+
+html.dark .border-purple-100 {
+  border-color: #4338ca;
+}
+
+html.dark .text-purple-300 {
+  color: #d8b4fe;
 }
 
 html.dark .bg-gray-200 {
@@ -385,6 +410,14 @@ html.dark .text-red-800 {
 
 html.dark .border-red-200 {
   border-color: #7f1d1d;
+}
+
+html.dark .border-red-600 {
+  border-color: #ef4444;
+}
+
+html.dark .border-red-500 {
+  border-color: #f87171;
 }
 
 /* Dark mode status badges - Yellow */
