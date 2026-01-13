@@ -1,6 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApplicationQureryInterface, CancelInterviewInterface } from '../interfaces/company.interface';
+import {
+  ApplicationQureryInterface,
+  CancelInterviewInterface,
+} from '../interfaces/company.interface';
 import { Observable } from 'rxjs';
 import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
 import {
@@ -63,9 +66,16 @@ export class CompanyApplication {
     );
   }
 
-  sheduleTelephon(
+  getInterviewers(): Observable<ApiResponce<InternalUserInterface[]>> {
+    return this._http.get<ApiResponce<InternalUserInterface[]>>(
+      `/api/company/interviewers`
+    );
+  }
+
+  sheduleInterview(
     data: SheduleInterface
   ): Observable<ApiResponce<SheduleResponceInterface>> {
+    console.log('data  for  sheduling interivew',data)
     return this._http.post<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/shedule`,
       data
@@ -85,7 +95,7 @@ export class CompanyApplication {
   updateFeedback(
     data: updatefeedbackInterface
   ): Observable<ApiResponce<SheduleResponceInterface>> {
-    console.log('updatting feedbak data',data)
+    console.log('updatting feedbak data', data);
     return this._http.post<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/updatefeedback`,
       data
@@ -95,17 +105,26 @@ export class CompanyApplication {
   ReShedule(
     data: SheduleInterface
   ): Observable<ApiResponce<SheduleResponceInterface>> {
+    console.log('detaisl for shedule tech',data)
     return this._http.put<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/reshedule`,
       data
     );
   }
 
-  cancelInterview(dto:CancelInterviewInterface):Observable<ApiResponce<SheduleResponceInterface>>{
-    return this._http.patch<ApiResponce<SheduleResponceInterface>>(`/api/interview/cancelinterview`,dto)
+  cancelInterview(
+    dto: CancelInterviewInterface
+  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    return this._http.patch<ApiResponce<SheduleResponceInterface>>(
+      `/api/interview/cancelinterview`,
+      dto
+    );
   }
 
-  finalizeTelephoneResult(data: FinalizeResultInterface): Observable<ApiResponce<SheduleResponceInterface>> {
+  finalizeTelephoneResult(
+    data: FinalizeResultInterface
+  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    console.log(data);
     return this._http.post<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/finalize-result`,
       data
