@@ -1,115 +1,158 @@
 <div *ngIf="interview">
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-b pb-6 mb-6"
-  >
-    <div>
-      <h3 class="text-gray-500 text-sm mb-1">Interview Date</h3>
-      <p class="text-dark-gray font-medium">10 - 13 July 2021</p>
-    </div>
-    <div>
-      <h3 class="text-gray-500 text-sm mb-1">Interview Status</h3>
-      <span
-        class="bg-yellow text-dark-gray px-3 py-1 rounded-full text-xs font-semibold"
-      >
-        On Progress
-      </span>
-    </div>
-    <div>
-      <h3 class="text-gray-500 text-sm mb-1">Description</h3>
-      <p class="text-dark-gray text-sm leading-relaxed">
-        Time : <span class="font-semibold">10 AM to 12 PM</span
-        ><br />
-        Please be available on time.
-      </p>
-    </div>
-    <div>
-      <h3 class="text-gray-500 text-sm mb-1">Assigned to</h3>
-      <div class="flex -space-x-2 mt-1">
-        <img
-          src="https://i.pravatar.cc/40?img=1"
-          class="w-8 h-8 rounded-full border-2 border-white"
-        />
-        <img
-          src="https://i.pravatar.cc/40?img=2"
-          class="w-8 h-8 rounded-full border-2 border-white"
-        />
-        <img
-          src="https://i.pravatar.cc/40?img=3"
-          class="w-8 h-8 rounded-full border-2 border-white"
-        />
+  <!-- Interview Details Header & Cards -->
+  <div class="bg-white dark:bg-dark-gray rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+    
+    <!-- Header with Result Badge -->
+    <div class="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">Interview Details</h2>
+      
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Result:</span>
+        <span
+          [ngClass]="{
+            'bg-green-100 text-green-700 border-green-200': interview.finalResult === 'Pass',
+            'bg-red-100 text-red-700 border-red-200': interview.finalResult === 'Fail',
+            'bg-yellow-100 text-yellow-700 border-yellow-200': !interview.finalResult || interview.finalResult === 'Pending'
+          }"
+          class="px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide"
+        >
+          {{ interview.finalResult || "PENDING" }}
+        </span>
       </div>
     </div>
-  </div>
 
-  <!-- Start Interview Button -->
-  <div class="mb-8">
-    <button
-      class="bg-gray-200 text-gray-400 font-medium px-5 py-2 rounded-lg cursor-not-allowed"
-    >
-      Start Interview
-    </button>
-  </div>
+    <!-- Status, Date, Time Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
+      
+      <!-- Status Card -->
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 border-l-4"
+        [ngClass]="{
+          'border-yellow-500': interview.status === 'Scheduled',
+          'border-green-500': interview.status === 'Completed',
+          'border-red-500': interview.status === 'Cancelled',
+          'border-blue-500': interview.status === 'Rescheduled'
+        }">
+        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+          Status
+        </label>
+        <span
+          [ngClass]="{
+            'bg-yellow-100 text-yellow-800': interview.status === 'Scheduled',
+            'bg-green-100 text-green-800': interview.status === 'Completed',
+            'bg-red-100 text-red-800': interview.status === 'Cancelled',
+            'bg-blue-100 text-blue-800': interview.status === 'Rescheduled'
+          }"
+          class="inline-block px-3 py-1 rounded-full text-sm font-bold"
+        >
+          {{ interview.status }}
+        </span>
+      </div>
 
-  <!-- Notes Section -->
-  <div class="flex justify-between items-center mb-4">
-    <h3 class="text-lg font-semibold text-dark-gray">
-      Stages and Feedbacks
-    </h3>
-    <button
-      class="text-purple text-sm font-semibold hover:text-hover-purpule"
-    >
-      + Add Notes
-    </button>
-  </div>
+      <!-- Interview Date Card -->
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+          Interview Date
+        </label>
+        <p class="text-lg font-bold text-gray-900 dark:text-white">
+          {{ interview.scheduledDate || "TBD" }}
+        </p>
+      </div>
 
-  <!-- Feedback Cards -->
-  <div class="space-y-4">
-    <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-      <div class="flex justify-between items-center mb-2">
-        <div class="flex items-center gap-2">
-          <img
-            src="https://i.pravatar.cc/40?img=5"
-            class="w-10 h-10 rounded-full"
-          />
-          <div>
-            <p class="font-semibold text-dark-gray">
-              Maria Kelly
-            </p>
-            <p class="text-xs text-gray-500">
-              10 July, 2021 • 11:30 AM
-            </p>
+      <!-- Interview Time Card -->
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+          Interview Time
+        </label>
+        <p class="text-lg font-bold text-gray-900 dark:text-white">
+          {{ interview.scheduledTime || "TBD" }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Interview Panel / Assigned To -->
+    <div class="px-6 pb-6">
+      <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-5 border border-purple-100 dark:border-purple-800">
+        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-4">
+          Assigned To (Interview Panel)
+        </label>
+        
+        <div class="flex flex-wrap gap-3">
+          <div
+            *ngFor="let evaluator of interview.evaluators"
+            class="flex items-center gap-3 bg-white dark:bg-gray-800 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+              <span class="text-purple-700 dark:text-purple-300 font-bold text-sm">
+                {{ evaluator.interviewerName.charAt(0).toUpperCase() }}
+              </span>
+            </div>
+            <span class="font-semibold text-gray-800 dark:text-white">
+              {{ evaluator.interviewerName }}
+            </span>
           </div>
         </div>
       </div>
-      <p class="text-sm text-dark-gray mb-2">
-        Please, do an interview stage immediately. The design
-        division needs more new employees now.
-      </p>
-      <a href="#" class="text-purple text-sm font-semibold"
-        >2 Replies</a
-      >
     </div>
 
-    <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
-      <div class="flex justify-between items-center mb-2">
-        <div class="flex items-center gap-2">
-          <img
-            src="https://i.pravatar.cc/40?img=6"
-            class="w-10 h-10 rounded-full"
-          />
-          <div>
-            <p class="font-semibold text-dark-gray">
-              Maria Kelly
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-3 px-6 pb-6">
+      <button
+        *ngIf="interview.status === 'Scheduled' || interview.status === 'Rescheduled'"
+        (click)="openTechinalModal('Rescheduled')"
+        class="flex-1 min-w-[140px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        Reschedule
+      </button>
+
+      <button
+        *ngIf="interview.status === 'Scheduled' || interview.status === 'Rescheduled'"
+        (click)="triggerCancel()"
+        class="flex-1 min-w-[140px] bg-white hover:bg-red-50 text-red-600 border-2 border-red-600 px-5 py-3 rounded-xl text-sm font-semibold transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Cancel Interview
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Feedbacks Section -->
+  <div class="mt-6">
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Feedback</h3>
+
+    <div class="space-y-4">
+      <div
+        *ngFor="let evaluator of interview.evaluators"
+        class="bg-white dark:bg-dark-gray rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+      >
+        <div class="flex items-start gap-4 mb-3">
+          <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center flex-shrink-0">
+            <span class="text-purple-700 dark:text-purple-300 font-bold text-lg">
+              {{ evaluator.interviewerName.charAt(0).toUpperCase() }}
+            </span>
+          </div>
+          
+          <div class="flex-1">
+            <p class="font-bold text-gray-900 dark:text-white">
+              {{ evaluator.interviewerName }}
             </p>
-            <p class="text-xs text-gray-500">
-              10 July, 2021 • 10:30 AM
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              {{ interview.updatedAt | date: 'MMM d, y' }}
             </p>
           </div>
         </div>
+        
+        <div class="pl-16">
+          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            {{ evaluator.feedback || "No feedback provided yet" }}
+          </p>
+        </div>
       </div>
-      <p class="text-sm text-dark-gray">
-        Please, do an interview stage immediately.
-      </p>
     </div>
   </div>
 </div>
@@ -179,7 +222,7 @@
         <div class="border border-gray-300 rounded-lg overflow-hidden shadow-sm bg-poster">
           <div class="max-h-48 overflow-y-auto p-3 space-y-2 bg-white custom-scrollbar">
             
-            <div *ngFor="let hr of hrList" class="group">
+            <div *ngFor="let hr of interviewers" class="group">
               <label 
                 [for]="hr._id" 
                 class="flex items-center p-3 rounded-lg bg-gray-50 hover:bg-lavender border border-transparent hover:border-purple shadow-sm hover:shadow-md transition-all cursor-pointer">
@@ -209,7 +252,7 @@
       <!-- Action Buttons -->
       <div class="flex items-center justify-end gap-3 pt-5 border-t border-gray-300">
         <button 
-          (click)="openTechinalModal()" 
+          (click)="sheduleModalclose()" 
           type="button" 
           class="px-5 py-2.5 text-sm font-medium text-dark-gray bg-gray-100 hover:bg-gray-200 rounded-lg transition-all shadow-sm hover:shadow-md">
           Cancel
@@ -217,9 +260,42 @@
         <button 
           type="submit" 
           class="px-6 py-2.5 bg-purple hover:bg-hover-purpule text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-          Schedule Interview
+          {{ sheduleModal === 'Rescheduled' ? 'Reschedule' : 'Schedule' }} Interview
         </button>
       </div>
     </form>
   </div>
+</div>
+
+<div
+  *ngIf="isSaving"
+  @slideFade
+  class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-2 rounded-full shadow-lg flex items-center gap-2 z-50"
+>
+  <div class="relative flex items-center">
+    <!-- Ring loader -->
+    <div
+      class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+    ></div>
+  </div>
+
+  <span class="font-medium text-sm tracking-wide">Saving changes...</span>
+</div>
+
+<div
+  *ngIf="saveComplete"
+  @slideFade
+  class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-2 rounded-full shadow-lg flex items-center gap-2 z-50"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-4 w-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="3"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+  <span class="font-medium text-sm tracking-wide">Saved successfully!</span>
 </div>

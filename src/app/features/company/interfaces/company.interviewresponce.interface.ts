@@ -44,11 +44,13 @@ export interface FinalizeResultInterface {
 }
 
 export interface PanalInterface {
+  interviewerId?: string;
+  
   interviewerName: string;
 
   feedback?: string;
 
-  result: string;
+  result?: string;
 }
 
 export interface SheduleResponceInterface {

@@ -197,7 +197,7 @@ export class TelephonicStageComponent implements OnInit {
 
     const apiCall =
       this.sheduleModal === 'Scheduled'
-        ? this._ApplicationService.sheduleTelephon(data)
+        ? this._ApplicationService.sheduleInterview(data)
         : this._ApplicationService.ReShedule(data);
 
     apiCall.subscribe({

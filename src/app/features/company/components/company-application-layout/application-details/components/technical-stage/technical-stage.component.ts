@@ -1,10 +1,8 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
 } from '@angular/core';
 import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
@@ -12,6 +10,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
 import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
 import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-technical-stage',
@@ -19,6 +18,23 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './technical-stage.component.html',
   styleUrls: ['./technical-stage.component.css'],
+  animations: [
+    trigger('slideFade', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate(
+          '250ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '200ms ease-in',
+          style({ opacity: 0, transform: 'translateY(-10px)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class TechnicalStageComponent implements OnInit {
   interview: SheduleResponceInterface | null = null;
@@ -27,8 +43,11 @@ export class TechnicalStageComponent implements OnInit {
   @Input() userEmail: string | undefined = undefined;
 
   technicalSheduleModalOpen: boolean = false;
+  sheduleModal: string | null = null;
   isLoading: boolean = false;
-  hrList: InternalUserInterface[] | null = null;
+  isSaving: boolean = false;
+  saveComplete: boolean = false;
+  interviewers: InternalUserInterface[] | null = null;
   technicalScheduleForm!: FormGroup;
 
   constructor(
@@ -61,6 +80,9 @@ export class TechnicalStageComponent implements OnInit {
         next: (res) => {
           if (res.success) {
               this.interview = res.data;
+              console.log('Interview data:', this.interview);
+              console.log('Evaluators array:', this.interview?.evaluators);
+              console.log('Number of evaluators:', this.interview?.evaluators?.length);
               this.isLoading = false;
               this._cdr.detectChanges();
           }
@@ -73,17 +95,51 @@ export class TechnicalStageComponent implements OnInit {
       });
   }
 
-  openTechinalModal() {
-    if (!this.technicalSheduleModalOpen && !this.hrList) {
-        this.fetchHrList();
+  openTechinalModal(mode: string = 'Scheduled') {
+    this.sheduleModal = mode;
+    
+    if (!this.technicalSheduleModalOpen && !this.interviewers) {
+        this.fetchInterviewers();
     }
+    
+    if (mode === 'Rescheduled' && this.interview) {
+      this.SetupReSheduleForm();
+    }
+    
     this.technicalSheduleModalOpen = !this.technicalSheduleModalOpen;
   }
 
-  fetchHrList() {
-    this._ApplicationService.getHrlist().subscribe({
+  sheduleModalclose() {
+    this.technicalSheduleModalOpen = false;
+    this.technicalScheduleForm.reset();
+    this.sheduleModal = null;
+  }
+
+  SetupReSheduleForm() {
+    if (this.interview) {
+      const evaluatorIds = this.interview.evaluators
+        .filter(e => e.interviewerId)
+        .map(e => {
+          // Ensure we extract only the string ID, not the entire object
+          const id = e.interviewerId;
+          return typeof id === 'string' ? id : (id as any)?._id || '';
+        })
+        .filter(id => id !== ''); // Remove any empty strings
+      
+      console.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
+      
+      this.technicalScheduleForm.patchValue({
+        scheduledDate: this.interview.scheduledDate,
+        scheduledTime: this.interview.scheduledTime,
+        interviewers: evaluatorIds
+      });
+    }
+  }
+
+  fetchInterviewers() {
+    this._ApplicationService.getInterviewers().subscribe({
       next: (res) => {
-        this.hrList = res.data;
+        this.interviewers = res.data;
         this._cdr.detectChanges();
       },
       error: (err) => {
@@ -98,29 +154,82 @@ export class TechnicalStageComponent implements OnInit {
       return;
     }
 
-    const formValue = this.technicalScheduleForm.value;
-    const data = {
-      ...formValue,
+    let data = this.technicalScheduleForm.value;
+    
+    const selectedInterviewerIds = data.interviewers;
+    const validInterviewerIds = selectedInterviewerIds.filter((id: any) => typeof id === 'string' && id.trim() !== '');
+    if (validInterviewerIds.length !== selectedInterviewerIds.length) {
+      console.warn('Found invalid interviewer IDs (filtered out):', 
+        selectedInterviewerIds.filter((id: any) => typeof id !== 'string' || id.trim() === '')
+      );
+    }
+    
+    const evaluators = validInterviewerIds.map((id: string) => {
+      const interviewer = this.interviewers?.find(hr => hr._id === id);
+      return {
+        interviewerId: id,
+        interviewerName: interviewer?.name 
+      };
+    });
+
+    data = {
+      scheduledDate: data.scheduledDate,
+      scheduledTime: data.scheduledTime,
       applicationId: this.applicationId,
-      candidateId: this.candidateId,
       stage: 'technical_analysis',
-      userEmail: this.userEmail, 
-      hrName: 'Panel Interview' 
+      userEmail: this.userEmail,
+      evaluators: evaluators
     };
 
-    this._ApplicationService.sheduleTelephon(data).subscribe({
+    const apiCall =
+      this.sheduleModal === 'Scheduled'
+        ? this._ApplicationService.sheduleInterview(data)
+        : this._ApplicationService.ReShedule(data);
+
+    apiCall.subscribe({
       next: (res) => {
         if (res.success) {
           this.interview = res.data;
-          this.openTechinalModal();
+
+          this.sheduleModalclose();
           this._swal.showSuccessToast(res.message);
           this._cdr.detectChanges();
         }
       },
       error: (err) => {
-        console.log('error scheduling technical interview', err);
-        this._swal.showErrorToast(err.error?.message || 'Failed to schedule');
-      }
+        console.log('error regading shedule interview ', err);
+        this._swal.showErrorToast(err.error.message);
+      },
+    });
+  }
+
+  triggerCancel() {
+    this.isSaving = true;
+    this.saveComplete = false;
+    const data = {
+      applicationId: this.applicationId!,
+      stage: 'technical_analysis',
+      userEmail: this.userEmail!,
+    };
+
+    this._ApplicationService.cancelInterview(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.interview = res.data;
+
+          this.isSaving = false;
+          this.saveComplete = true;
+          setTimeout(() => (this.saveComplete = false), 500);
+          this._swal.showSuccessToast(res.message);
+          this._cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        console.log('error regading cancel interview');
+        this._swal.showErrorToast(err.error.message);
+        this.isSaving = false;
+        this._cdr.detectChanges();
+      },
     });
   }
 

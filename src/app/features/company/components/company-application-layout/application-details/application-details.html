@@ -432,7 +432,8 @@
               <app-technical-stage
                   *ngIf="activeStage('technical_analysis')"
                   [applicationId]="applicationId"
-                  [candidateId]="candidateId">
+                  [candidateId]="candidateId"
+                  [userEmail]="applicationDetails?.email">
               </app-technical-stage>
               
                <app-hiring-status
