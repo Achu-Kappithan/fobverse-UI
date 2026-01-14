@@ -24,13 +24,11 @@ export interface SheduleInterface{
 
 export interface updatefeedbackInterface {
 
-  applicationId: string,
-
-  stage: string,
+  interviewId: string,
 
   feedback: string,
 
-  status: string
+  result: string
 }
 
 export interface FinalizeResultInterface {

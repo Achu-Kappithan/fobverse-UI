@@ -96,6 +96,30 @@
 
     <!-- Action Buttons -->
     <div class="flex flex-wrap gap-3 px-6 pb-6">
+      
+      <!-- Finalize Result Button -->
+      <button
+        *ngIf="interview.status === 'Completed'"
+        (click)="openFinalizeModal()"
+        class="flex-1 min-w-[140px] bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Finalize Result
+      </button>
+
+      <button
+        *ngIf="interview.status === 'Scheduled' || interview.status === 'Rescheduled' || interview.status === 'Completed'"
+        (click)="openFeedbackModal()"
+        class="flex-1 min-w-[140px] bg-purple hover:bg-hover-purpule text-white px-5 py-3 rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        Update Feedback
+      </button>
+
       <button
         *ngIf="interview.status === 'Scheduled' || interview.status === 'Rescheduled'"
         (click)="openTechinalModal('Rescheduled')"
@@ -175,27 +199,45 @@
   </button>
 </div>
 
+<!-- Schedule Modal -->
 <div *ngIf="technicalSheduleModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-  <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 theme-transition">
+  <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 theme-transition relative">
     
-    <!-- Header with purple background -->
-    <div class="bg-purple p-6">
-      <h2 class="text-white text-xl font-bold tracking-tight">Schedule Technical Interview</h2>
-      <p class="text-white text-sm mt-1 opacity-90">Set date, time, and assign the interview panel.</p>
+    <!-- Close Button -->
+    <button 
+      (click)="sheduleModalclose()"
+      class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Header Section -->
+    <div class="pt-10 pb-2 px-6 text-center">
+      <div class="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+      </div>
+      <h2 class="text-2xl font-bold text-indigo-900">{{ sheduleModal === 'Rescheduled' ? 'Reschedule' : 'Schedule' }} Technical Interview</h2>
+      <p class="text-sm text-gray-500 mt-2">Set the date, time, and assign the interview panel for this candidate.</p>
     </div>
 
     <!-- Form Content -->
-    <form [formGroup]="technicalScheduleForm" (ngSubmit)="submitSchedule()" class="p-6 space-y-5">
+    <form [formGroup]="technicalScheduleForm" (ngSubmit)="submitSchedule()" class="p-8 space-y-6">
       
       <!-- Date and Time Row -->
       <div class="grid grid-cols-2 gap-4">
         <div class="space-y-2">
-          <label class="block text-sm font-semibold text-gray-700">Interview Date</label>
+          <label class="block text-sm font-bold text-gray-700">Interview Date <span class="text-red-500">*</span></label>
           <div class="relative">
             <input 
               type="date" 
               formControlName="scheduledDate" 
-              class="w-full px-3 py-2.5 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 shadow-sm focus:ring-2 focus:ring-purple focus:border-purple-500 outline-none transition-all theme-transition">
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all theme-transition">
           </div>
           <div *ngIf="technicalScheduleForm.get('scheduledDate')?.touched && technicalScheduleForm.get('scheduledDate')?.invalid" class="text-red-500 text-xs flex items-center gap-1">
             <span>⚠</span> Date is required
@@ -203,12 +245,12 @@
         </div>
         
         <div class="space-y-2">
-          <label class="block text-sm font-semibold text-gray-700">Start Time</label>
+          <label class="block text-sm font-bold text-gray-700">Start Time <span class="text-red-500">*</span></label>
           <div class="relative">
             <input 
               type="time" 
               formControlName="scheduledTime" 
-              class="w-full px-3 py-2.5 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 shadow-sm focus:ring-2 focus:ring-purple focus:border-purple-500 outline-none transition-all theme-transition">
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all theme-transition">
           </div>
           <div *ngIf="technicalScheduleForm.get('scheduledTime')?.touched && technicalScheduleForm.get('scheduledTime')?.invalid" class="text-red-500 text-xs flex items-center gap-1">
             <span>⚠</span> Time is required
@@ -217,26 +259,26 @@
       </div>
 
       <!-- Interview Panel -->
-      <div class="space-y-2">
-        <label class="block text-sm font-semibold text-gray-700">Interview Panel</label>
-        <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-gray-50 theme-transition">
-          <div class="max-h-56 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+      <div class="space-y-3">
+        <label class="block text-sm font-bold text-gray-700">Interview Panel <span class="text-red-500">*</span></label>
+        <div class="border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-gray-50 theme-transition">
+          <div class="max-h-48 overflow-y-auto p-2 space-y-1 custom-scrollbar">
             
             <div *ngFor="let hr of interviewers" class="group">
               <label 
                 [for]="hr._id" 
-                class="flex items-center p-3 rounded-lg bg-white hover:bg-purple-50 border border-gray-100 hover:border-purple-300 transition-all cursor-pointer theme-transition">
+                class="flex items-center p-3 rounded-xl bg-white hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all cursor-pointer theme-transition">
                 <input 
                   type="checkbox" 
                   [id]="hr._id"
                   [value]="hr._id"
                   (change)="onInterviewerChange($event, hr._id)"
                   [checked]="isInterviewerSelected(hr._id)"
-                  class="w-4 h-4 text-purple border-gray-300 rounded focus:ring-2 focus:ring-purple cursor-pointer transition-all">
+                  class="w-5 h-5 text-indigo-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 cursor-pointer transition-all">
                 
                 <div class="ml-3 flex flex-col">
-                  <span class="text-sm font-bold text-gray-900 group-hover:text-purple transition-colors">{{ hr.name }}</span>
-                  <span class="text-xs text-gray-600">{{ hr.role }}</span>
+                  <span class="text-sm font-bold text-gray-900 group-hover:text-indigo-700 transition-colors">{{ hr.name }}</span>
+                  <span class="text-xs text-gray-500">{{ hr.role }}</span>
                 </div>
               </label>
             </div>
@@ -250,17 +292,218 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center justify-end gap-3 pt-5 border-t border-gray-100">
+      <div class="flex items-center justify-end gap-3 pt-2">
         <button 
           (click)="sheduleModalclose()" 
           type="button" 
-          class="px-5 py-2.5 text-sm font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all theme-transition">
+          class="px-8 py-3 text-sm font-bold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all theme-transition">
           Cancel
         </button>
         <button 
           type="submit" 
-          class="px-6 py-2.5 bg-purple hover:bg-hover-purpule text-white rounded-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 theme-transition">
+          class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-0.5 theme-transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
           {{ sheduleModal === 'Rescheduled' ? 'Reschedule' : 'Schedule' }} Interview
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Feedback Modal -->
+<div *ngIf="feedbackModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+  <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 theme-transition relative">
+    
+    <!-- Close Button -->
+    <button 
+      (click)="closeFeedbackModal()"
+      class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Header Section -->
+    <div class="pt-10 pb-4 px-6 text-center">
+      <div class="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </div>
+      </div>
+      <h2 class="text-2xl font-bold text-indigo-900">Update Technical Feedback</h2>
+      <p class="text-sm text-gray-500 mt-2">Submit your assessment and candidate status for this technical stage.</p>
+    </div>
+
+    <!-- Form Content -->
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="p-8 space-y-6">
+      
+      <!-- Status Selection -->
+      <div class="space-y-2">
+        <label class="block text-sm font-bold text-gray-700">Interview Status <span class="text-red-500">*</span></label>
+        <div class="relative">
+          <select 
+            formControlName="result" 
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all appearance-none theme-transition"
+          >
+            <option value="" disabled selected>Select Status</option>
+            <option value="Pass">Pass</option>
+            <option value="Fail">Fail</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+            </svg>
+          </div>
+        </div>
+        <div *ngIf="feedbackForm.get('result')?.touched && feedbackForm.get('result')?.invalid" class="text-red-500 text-xs flex items-center gap-1">
+          <span>⚠</span> Status is required
+        </div>
+      </div>
+
+      <!-- Feedback Textarea -->
+      <div class="space-y-2">
+        <label class="block text-sm font-bold text-gray-700">Technical Feedback <span class="text-red-500">*</span></label>
+        <textarea 
+          formControlName="feedback" 
+          rows="5"
+          (input)="onFeedbackInput($event)"
+          placeholder="Enter detailed technical assessment and observations..."
+          class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none theme-transition"
+        ></textarea>
+        <div class="flex justify-between items-center mt-1">
+          <div *ngIf="feedbackForm.get('feedback')?.touched && feedbackForm.get('feedback')?.invalid" class="text-red-500 text-xs">
+            <span *ngIf="feedbackForm.get('feedback')?.errors?.['required']"><span>⚠</span> Feedback is required</span>
+            <span *ngIf="feedbackForm.get('feedback')?.errors?.['minlength']"><span>⚠</span> Feedback must be at least 10 characters</span>
+          </div>
+          <div class="text-xs text-gray-400 ml-auto">
+            {{ feedbackCharCount }} characters
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button 
+          (click)="closeFeedbackModal()" 
+          type="button" 
+          class="px-8 py-3 text-sm font-bold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all theme-transition"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          [disabled]="isSaving"
+          class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2 disabled:bg-indigo-200 disabled:shadow-none theme-transition"
+        >
+          <svg *ngIf="!isSaving" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          <span *ngIf="!isSaving">Update Feedback</span>
+          <span *ngIf="isSaving">Updating...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Finalize Result Modal -->
+<div *ngIf="finalizeModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+  <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 theme-transition relative">
+    
+    <!-- Close Button -->
+    <button 
+      (click)="closeFinalizeModal()"
+      class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Header Section -->
+    <div class="pt-10 pb-4 px-6 text-center">
+      <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+      <h2 class="text-2xl font-bold text-indigo-900">Finalize Interview Result</h2>
+      <p class="text-sm text-gray-500 mt-2">Submit the final pass/fail status and overall feedback for the technical stage.</p>
+    </div>
+
+    <!-- Form Content -->
+    <form [formGroup]="finalizeForm" (ngSubmit)="submitFinalResult()" class="p-8 space-y-6">
+      
+      <!-- Status Selection -->
+      <div class="space-y-2">
+        <label class="block text-sm font-bold text-gray-700">Final Result <span class="text-red-500">*</span></label>
+        <div class="relative">
+          <select 
+            formControlName="finalResult" 
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all appearance-none theme-transition"
+          >
+            <option value="" disabled selected>Select Final Result</option>
+            <option value="Pass">Pass</option>
+            <option value="Fail">Fail</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+            </svg>
+          </div>
+        </div>
+        <div *ngIf="finalizeForm.get('finalResult')?.touched && finalizeForm.get('finalResult')?.invalid" class="text-red-500 text-xs flex items-center gap-1">
+          <span>⚠</span> Final result is required
+        </div>
+      </div>
+
+      <!-- Feedback Textarea -->
+      <div class="space-y-2">
+        <label class="block text-sm font-bold text-gray-700">Overall Feedback <span class="text-red-500">*</span></label>
+        <textarea 
+          formControlName="finalFeedback" 
+          rows="5"
+          (input)="onFinalizeInput($event)"
+          placeholder="Provide final summary feedback about the candidate's performance across the entire technical evaluation..."
+          class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all resize-none theme-transition"
+        ></textarea>
+        <div class="flex justify-between items-center mt-1">
+          <div *ngIf="finalizeForm.get('finalFeedback')?.touched && finalizeForm.get('finalFeedback')?.invalid" class="text-red-500 text-xs">
+            <span *ngIf="finalizeForm.get('finalFeedback')?.errors?.['required']"><span>⚠</span> Feedback is required</span>
+            <span *ngIf="finalizeForm.get('finalFeedback')?.errors?.['minlength']"><span>⚠</span> Feedback must be at least 10 characters</span>
+          </div>
+          <div class="text-xs text-gray-400 ml-auto">
+            {{ finalizeCharCount }} characters
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button 
+          (click)="closeFinalizeModal()" 
+          type="button" 
+          class="px-8 py-3 text-sm font-bold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all theme-transition"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          [disabled]="isSaving"
+          class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2 disabled:bg-emerald-200 disabled:shadow-none theme-transition"
+        >
+          <svg *ngIf="!isSaving" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span *ngIf="!isSaving">Finalize Result</span>
+          <span *ngIf="isSaving">Finalizing...</span>
         </button>
       </div>
     </form>

@@ -43,12 +43,18 @@ export class TechnicalStageComponent implements OnInit {
   @Input() userEmail: string | undefined = undefined;
 
   technicalSheduleModalOpen: boolean = false;
+  feedbackModalOpen: boolean = false;
+  finalizeModalOpen: boolean = false;
+  feedbackCharCount: number = 0;
+  finalizeCharCount: number = 0;
   sheduleModal: string | null = null;
   isLoading: boolean = false;
   isSaving: boolean = false;
   saveComplete: boolean = false;
   interviewers: InternalUserInterface[] | null = null;
   technicalScheduleForm!: FormGroup;
+  feedbackForm!: FormGroup;
+  finalizeForm!: FormGroup;
 
   constructor(
     private readonly _ApplicationService: CompanyApplication,
@@ -62,6 +68,8 @@ export class TechnicalStageComponent implements OnInit {
       this.getStageDetails();
     }
     this.initForm();
+    this.initFeedbackForm();
+    this.initFinalizeForm();
   }
 
   initForm() {
@@ -69,6 +77,20 @@ export class TechnicalStageComponent implements OnInit {
       scheduledDate: ['', Validators.required],
       scheduledTime: ['', Validators.required],
       interviewers: [[], Validators.required],
+    });
+  }
+
+  initFeedbackForm() {
+    this.feedbackForm = this.fb.group({
+      result: ['', Validators.required],
+      feedback: ['', [Validators.required, Validators.minLength(10)]],
+    });
+  }
+
+  initFinalizeForm() {
+    this.finalizeForm = this.fb.group({
+      finalResult: ['', Validators.required],
+      finalFeedback: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
@@ -115,16 +137,112 @@ export class TechnicalStageComponent implements OnInit {
     this.sheduleModal = null;
   }
 
+  openFeedbackModal() {
+    this.feedbackModalOpen = true;
+  }
+
+  closeFeedbackModal() {
+    this.feedbackModalOpen = false;
+    this.feedbackForm.reset();
+    this.feedbackCharCount = 0;
+  }
+
+  onFeedbackInput(event: any) {
+    this.feedbackCharCount = event.target.value.length;
+  }
+
+  openFinalizeModal() {
+    this.finalizeModalOpen = true;
+  }
+
+  closeFinalizeModal() {
+    this.finalizeModalOpen = false;
+    this.finalizeForm.reset();
+    this.finalizeCharCount = 0;
+  }
+
+  onFinalizeInput(event: any) {
+    this.finalizeCharCount = event.target.value.length;
+  }
+
+  submitFeedback() {
+    if (this.feedbackForm.invalid) {
+      this.feedbackForm.markAllAsTouched();
+      return;
+    }
+
+   let data = this.feedbackForm.value;
+    data = {
+      ...data,
+      interviewId:this.interview?._id
+    };
+
+
+    this.isSaving = true;
+    this._ApplicationService.updateFeedback(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.interview = res.data;
+          this.isSaving = false;
+          this.saveComplete = true;
+          this.closeFeedbackModal();
+          this._swal.showSuccessToast(res.message);
+          setTimeout(() => (this.saveComplete = false), 2000);
+          this._cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        this.isSaving = false;
+        console.log('error updating feedback', err);
+        this._swal.showErrorToast(err.error?.message || 'Failed to update feedback');
+        this._cdr.detectChanges();
+      }
+    });
+  }
+
+  submitFinalResult() {
+    if (this.finalizeForm.invalid) {
+      this.finalizeForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = this.finalizeForm.value;
+    const data = {
+      ...formData,
+      interviewId: this.interview?._id
+    };
+
+    this.isSaving = true;
+    this._ApplicationService.finalizeTelephoneResult(data).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.interview = res.data;
+          this.isSaving = false;
+          this.saveComplete = true;
+          this.closeFinalizeModal();
+          this._swal.showSuccessToast(res.message);
+          setTimeout(() => (this.saveComplete = false), 2000);
+          this._cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        this.isSaving = false;
+        console.log('error finalizing result', err);
+        this._swal.showErrorToast(err.error?.message || 'Failed to finalize result');
+        this._cdr.detectChanges();
+      }
+    });
+  }
+
   SetupReSheduleForm() {
     if (this.interview) {
       const evaluatorIds = this.interview.evaluators
         .filter(e => e.interviewerId)
         .map(e => {
-          // Ensure we extract only the string ID, not the entire object
           const id = e.interviewerId;
           return typeof id === 'string' ? id : (id as any)?._id || '';
         })
-        .filter(id => id !== ''); // Remove any empty strings
+        .filter(id => id !== ''); 
       
       console.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
       
