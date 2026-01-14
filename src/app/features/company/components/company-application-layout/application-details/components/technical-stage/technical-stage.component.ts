@@ -352,21 +352,30 @@ export class TechnicalStageComponent implements OnInit {
   }
 
   onInterviewerChange(event: any, hrId: string) {
-  const selectedIds = this.technicalScheduleForm.get('interviewers')?.value || [];
-  
-  if (event.target.checked) {
-    selectedIds.push(hrId);
-  } else {
-    const index = selectedIds.indexOf(hrId);
-    if (index >= 0) selectedIds.splice(index, 1);
+    const selectedIds = this.technicalScheduleForm.get('interviewers')?.value || [];
+    
+    if (event.target.checked) {
+      selectedIds.push(hrId);
+    } else {
+      const index = selectedIds.indexOf(hrId);
+      if (index >= 0) selectedIds.splice(index, 1);
+    }
+    this.technicalScheduleForm.get('interviewers')?.setValue(selectedIds);
+    this.technicalScheduleForm.get('interviewers')?.markAsTouched();
   }
-  this.technicalScheduleForm.get('interviewers')?.setValue(selectedIds);
-  this.technicalScheduleForm.get('interviewers')?.markAsTouched();
-}
 
-isInterviewerSelected(hrId: string): boolean {
-  const values = this.technicalScheduleForm.get('interviewers')?.value;
-  return values ? values.includes(hrId) : false;
-}
+  isInterviewerSelected(hrId: string): boolean {
+    const values = this.technicalScheduleForm.get('interviewers')?.value;
+    return values ? values.includes(hrId) : false;
+  }
+
+  onStartInterview() {
+    console.log('Starting interview...');
+    if (this.interview?.meetingLink) {
+      window.open(this.interview.meetingLink, '_blank');
+    } else {
+      this._swal.showInfoToast('Starting interview session...');
+    }
+  }
 
 }
