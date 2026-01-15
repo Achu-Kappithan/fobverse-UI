@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,58 @@ export class SocketService {
     });
   }
 
+  // Video Call Methods
+  joinVideoRoom(data: { roomId: string; userId: string; peerId: string; name: string; role?: string }) {
+    if (this.socket) {
+      console.log('[Socket] Joining video room:', data);
+      this.socket.emit('join-video-room', data);
+    }
+  }
+
+  leaveVideoRoom(data: { roomId: string; userId: string }) {
+    if (this.socket) {
+      console.log('[Socket] Leaving video room:', data);
+      this.socket.emit('leave-video-room', data);
+    }
+  }
+
+  sendVideoMessage(data: { roomId: string; userId: string; name: string; message: string }) {
+    if (this.socket) {
+      this.socket.emit('video-message', data);
+    }
+  }
+
+  onRoomJoined(callback: (data: any) => void) {
+    if (this.socket) {
+      this.socket.on('room-joined', callback);
+    }
+  }
+
+  onUserJoinedVideo(callback: (data: any) => void) {
+    if (this.socket) {
+      this.socket.on('user-joined-video', callback);
+    }
+  }
+
+  onUserLeftVideo(callback: (data: any) => void) {
+    if (this.socket) {
+      this.socket.on('user-left-video', callback);
+    }
+  }
+
+  onVideoMessage(callback: (data: any) => void) {
+    if (this.socket) {
+      this.socket.on('video-message', callback);
+    }
+  }
+
   disconnect(){
     if(this.socket){
       this.socket.disconnect()
     }
+  }
+
+  getSocket(): Socket {
+    return this.socket;
   }
 }

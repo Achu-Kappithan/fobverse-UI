@@ -371,6 +371,15 @@ export const routes: Routes = [
     ],
   },
 
+  // Video Interview (Standalone route)
+  {
+    path: 'video-interview/:roomId',
+    loadComponent: () =>
+      import('./features/video-interview/video-interview.component').then(
+        (m) => m.VideoInterviewComponent
+      ),
+  },
+
   // forgoPassword
 
   {

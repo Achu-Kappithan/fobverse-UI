@@ -11,6 +11,7 @@ import { InternalUserInterface } from '../../../../../interfaces/company.responc
 import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-technical-stage',
@@ -60,7 +61,8 @@ export class TechnicalStageComponent implements OnInit {
     private readonly _ApplicationService: CompanyApplication,
     private _cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private readonly _swal: SweetAlert
+    private readonly _swal: SweetAlert,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -369,13 +371,48 @@ export class TechnicalStageComponent implements OnInit {
     return values ? values.includes(hrId) : false;
   }
 
-  onStartInterview() {
-    console.log('Starting interview...');
-    if (this.interview?.meetingLink) {
-      window.open(this.interview.meetingLink, '_blank');
-    } else {
-      this._swal.showInfoToast('Starting interview session...');
+  canJoinInterview(): boolean {
+    if (!this.interview) return false;
+    
+    // TODO: Get current user ID from auth service
+    const currentUserId = this.getCurrentUserId();
+    
+    // Check if user is the one who scheduled
+    if (this.interview.scheduledBy === currentUserId) {
+      return true;
     }
+    
+    // Check if user is in the evaluators list
+    const isEvaluator = this.interview.evaluators.some(
+      evaluator => {
+        const id = evaluator.interviewerId;
+        const idString = typeof id === 'string' ? id : (id as any)?._id || '';
+        return idString === currentUserId;
+      }
+    );
+    
+    return isEvaluator;
+  }
+
+  onJoinInterview() {
+    console.log('Joining interview...');
+    if (this.interview?.meetingLink) {
+      const roomId = this.interview.meetingLink.split('/').pop();
+      if (roomId) {
+        this.router.navigate(['/video-interview', roomId]);
+      } else {
+        this._swal.showErrorToast('Invalid meeting link');
+      }
+    } else {
+      this._swal.showErrorToast('No meeting link available');
+    }
+  }
+
+  private getCurrentUserId(): string {
+    // TODO: Implement this method to get current user ID from your auth service
+    // For now, returning a placeholder
+    // Example: return this.authService.getCurrentUser().id;
+    return localStorage.getItem('userId') || '';
   }
 
 }

@@ -16,7 +16,8 @@ export interface PagenatedApiResponce<T> {
 }
 
 export interface UserPartial { 
-  _id?: string;
+  id?: string; // Actual field from auth service
+  _id?: string; // Legacy/fallback field
   email: string;
   name: string;
   is_verified?: boolean;
