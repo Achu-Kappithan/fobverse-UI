@@ -1,9 +1,8 @@
-
 <div class="flex flex-col min-h-screen">
-    <app-company-header></app-company-header>
+    <app-company-header *ngIf="!isVideoCall"></app-company-header>
 
-    <div class="flex flex-1" [ngClass]="{'mt-16': true}">
-        <app-company-sidebar
+    <div class="flex flex-1" [ngClass]="{'mt-16': !isVideoCall}">
+        <app-company-sidebar *ngIf="!isVideoCall"
             [isOpen]="isSidebarOpen"
             (sidebarToggled)="onSidebarToggle($event)"
             appAutoCollapseSidebar
@@ -11,7 +10,7 @@
             (isOpenChange)="handleSidebarStateChange($event)">
         </app-company-sidebar>
 
-        <main [ngClass]="{'ml-64': isSidebarOpen, 'ml-16': !isSidebarOpen}"
+        <main [ngClass]="{'ml-64': isSidebarOpen && !isVideoCall, 'ml-16': !isSidebarOpen && !isVideoCall}"
               class="flex-1 p-4  transition-all duration-300 ease-in-out bg-lavender dark:bg-dark-lavender">
             <div class="container mx-auto">
                 <router-outlet></router-outlet>

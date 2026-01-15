@@ -11,7 +11,7 @@ import { InternalUserInterface } from '../../../../../interfaces/company.responc
 import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-technical-stage',
@@ -62,7 +62,8 @@ export class TechnicalStageComponent implements OnInit {
     private _cdr: ChangeDetectorRef,
     private fb: FormBuilder,
     private readonly _swal: SweetAlert,
-    private router: Router
+    private router: Router,
+    private _route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -373,16 +374,11 @@ export class TechnicalStageComponent implements OnInit {
 
   canJoinInterview(): boolean {
     if (!this.interview) return false;
-    
-    // TODO: Get current user ID from auth service
     const currentUserId = this.getCurrentUserId();
-    
-    // Check if user is the one who scheduled
     if (this.interview.scheduledBy === currentUserId) {
       return true;
     }
     
-    // Check if user is in the evaluators list
     const isEvaluator = this.interview.evaluators.some(
       evaluator => {
         const id = evaluator.interviewerId;
@@ -399,7 +395,7 @@ export class TechnicalStageComponent implements OnInit {
     if (this.interview?.meetingLink) {
       const roomId = this.interview.meetingLink.split('/').pop();
       if (roomId) {
-        this.router.navigate(['/video-interview', roomId]);
+        this.router.navigate(['video-interview', roomId],{relativeTo: this._route});
       } else {
         this._swal.showErrorToast('Invalid meeting link');
       }
@@ -409,9 +405,6 @@ export class TechnicalStageComponent implements OnInit {
   }
 
   private getCurrentUserId(): string {
-    // TODO: Implement this method to get current user ID from your auth service
-    // For now, returning a placeholder
-    // Example: return this.authService.getCurrentUser().id;
     return localStorage.getItem('userId') || '';
   }
 

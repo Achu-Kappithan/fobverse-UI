@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CompanyHeader } from '../../../common/company-header/company-header';
 import { CompanySidebar } from '../../../common/company-sidebar/company-sidebar';
 import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-sidebar';
@@ -12,7 +12,18 @@ import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-si
   styleUrl: './company-component.css'
 })
 export class CompanyComponent {
-  isSidebarOpen: boolean = false
+  isSidebarOpen: boolean = false;
+  isVideoCall: boolean = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+     this.checkIfVideoCall();
+    });
+  }
+
+  checkIfVideoCall() {
+     this.isVideoCall = this.router.url.includes('video-interview');
+  }
 
   onSidebarToggle(isOpen:boolean){
     this.isSidebarOpen = isOpen

@@ -82,6 +82,16 @@ export class CompanyApplication {
     );
   }
 
+  sheduleTelyInterview(
+    data: SheduleInterface
+  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    console.log('data  for  sheduling interivew',data)
+    return this._http.post<ApiResponce<SheduleResponceInterface>>(
+      `/api/interview/telephone/shedule`,
+      data
+    );
+  }
+
   getStageDetails(
     applicationId: string,
     stage: string
@@ -98,6 +108,16 @@ export class CompanyApplication {
     console.log('updatting feedbak data', data);
     return this._http.post<ApiResponce<SheduleResponceInterface>>(
       `/api/interview/updatefeedback`,
+      data
+    );
+  }
+
+  ReSheduleTelyphone(
+    data: SheduleInterface
+  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    console.log('detaisl for shedule tech',data)
+    return this._http.put<ApiResponce<SheduleResponceInterface>>(
+      `/api/interview/telephone/reshedule`,
       data
     );
   }
