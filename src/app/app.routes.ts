@@ -22,6 +22,7 @@ import { JobView } from './features/company/components/jobs/job-view/job-view';
 import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
 import { CompanyPublicProfile } from './features/company/components/company-public-profile/company-public-profile';
 import { JobsPublicView } from './features/company/components/jobs-public-view/jobs-public-view';
+import { VideoLayoutComponent } from './features/layout/video-layout-component/video-layout-component';
 
 export const routes: Routes = [
   {
@@ -248,9 +249,27 @@ export const routes: Routes = [
               },
               {
                 path: 'viewapplication/:appId/:canId',
-                loadComponent: ()=> import('./features/company/components/company-application-layout/application-details/application-details')
-                .then( m => m.ApplicationDetails)
-              }
+                loadComponent: () =>
+                  import(
+                    './features/layout/video-layout-component/video-layout-component'
+                  ).then((m) => m.VideoLayoutComponent),
+                children: [
+                  {
+                    path: '',
+                    loadComponent: () =>
+                      import(
+                        './features/company/components/company-application-layout/application-details/application-details'
+                      ).then((m) => m.ApplicationDetails),
+                  },
+                  {
+                    path: 'video-interview/:roomId',
+                    loadComponent: () =>
+                      import(
+                        './features/video-interview/video-interview.component'
+                      ).then((m) => m.VideoInterviewComponent),
+                  },
+                ],
+              },
             ],
           },
           {
@@ -369,15 +388,6 @@ export const routes: Routes = [
           import('./common/not-found/not-found').then((m) => m.NotFound),
       },
     ],
-  },
-
-  // Video Interview (Standalone route)
-  {
-    path: 'video-interview/:roomId',
-    loadComponent: () =>
-      import('./features/video-interview/video-interview.component').then(
-        (m) => m.VideoInterviewComponent
-      ),
   },
 
   // forgoPassword

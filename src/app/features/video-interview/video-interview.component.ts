@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed, effect, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { SocketService } from '../../shared/services/socket/socket.service';
 import { PeerService } from '../../shared/services/peer/peer.service';
 import { ChatMessage, Participant } from '../../shared/interfaces/video-call.interface';
 import { AuthService } from '../auth/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-video-interview',
@@ -15,7 +16,8 @@ import { AuthService } from '../auth/services/auth.service';
   styleUrls: ['./video-interview.component.css']
 })
 export class VideoInterviewComponent implements OnInit, OnDestroy {
-  // Signals (Angular 19)
+  @ViewChild('localVideo') localVideoRef!: ElementRef<HTMLVideoElement>;
+
   participants = signal<Participant[]>([]);
   chatMessages = signal<ChatMessage[]>([]);
   isMicOn = signal(true);
@@ -25,10 +27,8 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   showChat = signal(true);
   newMessage = signal('');
   
-  // Computed
-  participantCount = computed(() => this.participants().length + 1); // +1 for self
+  participantCount = computed(() => this.participants().length + 1);
   
-  // Component state
   roomId: string = '';
   userId: string = '';
   userName: string = '';
@@ -41,7 +41,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     private peerService: PeerService,
     private authService: AuthService
   ) {
-    // Effect to auto-scroll chat
+
     effect(() => {
       const messages = this.chatMessages();
       if (messages.length > 0) {
@@ -51,20 +51,17 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    // Get room ID from route
     this.roomId = this.route.snapshot.paramMap.get('roomId') || '';
     
     if (!this.roomId) {
       console.error('[VideoInterview] No room ID provided');
-      this.router.navigate(['/']);
+      this.router.navigate(['../../'], { relativeTo: this.route });
       return;
     }
 
-    // Get user info from auth service
     this.userId = this.getUserId();
     this.userName = this.getUserName();
 
-    // Validate user is authenticated
     if (!this.userId || !this.userName) {
       console.error('[VideoInterview] User not authenticated. UserId:', this.userId, 'UserName:', this.userName);
       alert('Please log in to join the video interview.');
@@ -75,47 +72,43 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     console.log('[VideoInterview] Joining room:', this.roomId, 'User:', this.userName, 'ID:', this.userId);
 
     try {
-      // 1. Get user media
       const stream = await this.peerService.getUserMedia();
       this.localStream.set(stream);
-      this.displayLocalVideo(stream);
 
-      // 2. Initialize peer
       this.peerId = await this.peerService.initializePeer(this.userId);
       console.log('[VideoInterview] Peer ID:', this.peerId);
 
-      // 3. Setup socket listeners
       this.setupSocketListeners();
 
-      // 4. Join room via socket
       this.socketService.joinVideoRoom({
         roomId: this.roomId,
         userId: this.userId,
         peerId: this.peerId,
         name: this.userName,
-        role: 'interviewer' // or get from context
+        role: 'interviewer' 
       });
 
-      // 5. Setup peer incoming call handler
       this.peerService.incomingCallSubject.subscribe((call) => {
         this.handleIncomingCall(call);
       });
 
       this.isConnecting.set(false);
 
+      setTimeout(() => {
+        this.displayLocalVideo(stream);
+      }, 0);
+
     } catch (error) {
       console.error('[VideoInterview] Setup error:', error);
       alert('Failed to access camera/microphone. Please check permissions.');
-      this.router.navigate(['/']);
+      this.router.navigate(['../../'], { relativeTo: this.route });
     }
   }
 
   setupSocketListeners() {
-    // When successfully joined room
     this.socketService.onRoomJoined((data) => {
       console.log('[VideoInterview] Room joined:', data);
       
-      // Call all existing participants
       if (data.otherPeers && data.otherPeers.length > 0) {
         data.otherPeers.forEach((peer: any) => {
           this.callPeer(peer.peerId, peer.userId, peer.name);
@@ -125,25 +118,21 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       this.addSystemMessage(`You joined the room`);
     });
 
-    // When another user joins
     this.socketService.onUserJoinedVideo((data) => {
       console.log('[VideoInterview] User joined:', data);
       this.addSystemMessage(`${data.name} joined the room`);
       
-      // Call the new user
       if (data.peerId && data.userId !== this.userId) {
         this.callPeer(data.peerId, data.userId, data.name);
       }
     });
 
-    // When user leaves
     this.socketService.onUserLeftVideo((data) => {
       console.log('[VideoInterview] User left:', data);
       this.removeParticipant(data.userId);
       this.addSystemMessage(`${data.name || 'User'} left the room`);
     });
 
-    // Chat messages
     this.socketService.onVideoMessage((data) => {
       console.log('[VideoInterview] Chat message:', data);
       this.chatMessages.update(messages => [...messages, {
@@ -175,8 +164,6 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
 
     } catch (error: any) {
       console.warn('[VideoInterview] Failed to connect to peer:', name, error?.message || error);
-      // Don't throw - just log and continue. User might have left or connection failed.
-      // This is normal in WebRTC scenarios
     }
   }
 
@@ -188,7 +175,6 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       console.log('[VideoInterview] Answering call from:', call.peer);
       const remoteStream = await this.peerService.answer(call, localStream);
       
-      // Find participant from our participants list (already added from socket event)
       const existingParticipant = this.participants().find(p => p.peerId === call.peer || p.userId === call.peer);
       
       this.addOrUpdateParticipant({
@@ -222,13 +208,29 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   displayLocalVideo(stream: MediaStream) {
-    setTimeout(() => {
-      const videoElement = document.getElementById('local-video') as HTMLVideoElement;
-      if (videoElement) {
-        videoElement.srcObject = stream;
-        videoElement.muted = true; // Mute own audio
-      }
-    }, 100);
+    let videoElement: HTMLVideoElement | null = null;
+    
+    if (this.localVideoRef && this.localVideoRef.nativeElement) {
+      videoElement = this.localVideoRef.nativeElement;
+    } else {
+      videoElement = document.getElementById('local-video') as HTMLVideoElement;
+    }
+
+    if (videoElement) {
+      videoElement.srcObject = stream;
+      videoElement.muted = true;
+      videoElement.play().catch(e => console.error('[VideoInterview] Error playing local video:', e));
+    } else {
+      console.warn('[VideoInterview] Local video element not found, retrying...');
+      setTimeout(() => {
+        const retryElement = document.getElementById('local-video') as HTMLVideoElement;
+        if (retryElement) {
+            retryElement.srcObject = stream;
+            retryElement.muted = true;
+            retryElement.play().catch(e => console.error('[VideoInterview] Error playing local video:', e));
+        }
+      }, 500);
+    }
   }
 
   toggleMic() {
@@ -244,7 +246,6 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       await this.peerService.toggleVideo(newState);
       this.isCameraOn.set(newState);
       
-      // If turning on, update local video display
       if (newState) {
         const stream = this.peerService.getLocalStream();
         if (stream) {
@@ -253,7 +254,6 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.error('[VideoInterview] Failed to toggle camera:', error);
-      // Revert UI state on error
       alert('Failed to toggle camera. Please check permissions.');
     }
   }
@@ -294,14 +294,39 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   async leaveCall() {
-    if (confirm('Are you sure you want to leave the call?')) {
+    const result = await Swal.fire({
+      title: 'Leave Call?',
+      text: "Are you sure you want to leave?",
+      icon: 'warning',
+      width: '24em',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, leave',
+      cancelButtonText: 'Cancel',
+      background: '#ffffff',
+      customClass: {
+        popup: 'dark:bg-slate-800 dark:text-white'
+      },
+      didOpen: (modalElement) => {
+        const icon = modalElement.querySelector('.swal2-icon') as HTMLElement;
+        if (icon) {
+            icon.style.width = '3em';
+            icon.style.height = '3em';
+            icon.style.fontSize = '0.8em'; 
+            icon.style.margin = '1.5em auto 1em'; 
+        }
+      }
+    });
+
+    if (result.isConfirmed) {
       this.socketService.leaveVideoRoom({
         roomId: this.roomId,
         userId: this.userId
       });
 
       this.peerService.destroy();
-      this.router.navigate(['/']); // Navigate back
+      this.router.navigate(['../../'], { relativeTo: this.route }); 
     }
   }
 
@@ -313,34 +338,28 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     this.peerService.destroy();
   }
 
-  // Helper methods - get from auth service
   private getUserId(): string {
-    // Try to get from auth service subjects
     let currentUser = this.authService.CompanySubject.value ||
                       this.authService.CandidateSubject.value ||
                       this.authService.adminSubject.value;
     
-    // Check for both 'id' and '_id' to be safe
     if (currentUser && (currentUser.id || currentUser._id)) {
       const userId = currentUser.id || currentUser._id || '';
       console.log('[VideoInterview] Got user ID from AuthService:', userId);
       return userId;
     }
     
-    // Fallback: Try localStorage (might be set by auth service)
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       console.log('[VideoInterview] Got user ID from localStorage:', storedUserId);
       return storedUserId;
     }
     
-    // No user found
     console.error('[VideoInterview] No authenticated user found in AuthService or localStorage');
     return '';
   }
 
   private getUserName(): string {
-    // Try to get from auth service subjects
     let currentUser = this.authService.CompanySubject.value ||
                       this.authService.CandidateSubject.value ||
                       this.authService.adminSubject.value;
@@ -350,14 +369,12 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       return currentUser.name;
     }
     
-    // Fallback: Try localStorage
     const storedUserName = localStorage.getItem('userName') || localStorage.getItem('name');
     if (storedUserName) {
       console.log('[VideoInterview] Got user name from localStorage:', storedUserName);
       return storedUserName;
     }
     
-    // No user found
     console.error('[VideoInterview] No authenticated user name found');
     return '';
   }
