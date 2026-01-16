@@ -12,6 +12,7 @@ import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-technical-stage',
@@ -43,6 +44,8 @@ export class TechnicalStageComponent implements OnInit {
   @Input() candidateId: string | null = null;
   @Input() userEmail: string | undefined = undefined;
 
+  currentUserId: string | null = null;
+
   technicalSheduleModalOpen: boolean = false;
   feedbackModalOpen: boolean = false;
   finalizeModalOpen: boolean = false;
@@ -63,13 +66,19 @@ export class TechnicalStageComponent implements OnInit {
     private fb: FormBuilder,
     private readonly _swal: SweetAlert,
     private router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _authService: AuthService
   ) {}
 
   ngOnInit(): void {
     if (!this.interview && this.applicationId) {
       this.getStageDetails();
     }
+    this._authService.company$.subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.id || user._id || null;
+      }
+    });
     this.initForm();
     this.initFeedbackForm();
     this.initFinalizeForm();
@@ -155,7 +164,21 @@ export class TechnicalStageComponent implements OnInit {
   }
 
   openFinalizeModal() {
-    this.finalizeModalOpen = true;
+    if (!this.finalizeModalOpen) {
+      if (this.interview?.evaluators) {
+        for (const evaluator of this.interview.evaluators) {
+          if (!evaluator.feedback) {
+            this._swal.showWarningToast(
+              'Feedback Missing',
+              'Please wait for all evaluators to submit their feedback.'
+            );
+            return;
+          }
+        }
+      }
+      this.finalizeForm.reset();
+    }
+    this.finalizeModalOpen = !this.finalizeModalOpen;
   }
 
   closeFinalizeModal() {
@@ -212,7 +235,9 @@ export class TechnicalStageComponent implements OnInit {
     const formData = this.finalizeForm.value;
     const data = {
       ...formData,
-      interviewId: this.interview?._id
+      interviewId: this.interview?._id,
+      nextStage: 'hired',
+      applicationId: this.applicationId,
     };
 
     this.isSaving = true;
@@ -235,6 +260,18 @@ export class TechnicalStageComponent implements OnInit {
         this._cdr.detectChanges();
       }
     });
+  }
+
+  isFeedbackSubmitted(): boolean {
+    const currentUserId = this.getCurrentUserId();
+    if (!this.interview || !this.interview.evaluators || !currentUserId) {
+      return false;
+    }
+    return this.interview.evaluators.some(
+      (evaluator) =>
+        (typeof evaluator.interviewerId === 'string' ? evaluator.interviewerId : (evaluator.interviewerId as any)?._id) === currentUserId &&
+        !!evaluator.feedback
+    );
   }
 
   SetupReSheduleForm() {
@@ -375,6 +412,9 @@ export class TechnicalStageComponent implements OnInit {
   canJoinInterview(): boolean {
     if (!this.interview) return false;
     const currentUserId = this.getCurrentUserId();
+    console.log('current user id ',currentUserId)
+    console.log('scheduled by ',this.interview.scheduledBy)
+    console.log('scheduled by ',this.interview.scheduledBy === currentUserId)
     if (this.interview.scheduledBy === currentUserId) {
       return true;
     }
@@ -405,7 +445,7 @@ export class TechnicalStageComponent implements OnInit {
   }
 
   private getCurrentUserId(): string {
-    return localStorage.getItem('userId') || '';
+    return this.currentUserId || '';
   }
 
 }

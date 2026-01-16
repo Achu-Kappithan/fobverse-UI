@@ -407,7 +407,7 @@
               </button>
               <button
                 (click)="switchStages('hired_declined')"
-                [disabled]="!isStageEnabled('hired_declined')"
+                [disabled]="!isStageEnabled('hired')"
                 class="px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"
                 [ngClass]="{
                   'bg-blue text-white shadow-md': currentStageId === 'hired_declined',

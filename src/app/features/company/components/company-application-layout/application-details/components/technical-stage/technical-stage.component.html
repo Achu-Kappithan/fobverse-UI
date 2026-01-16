@@ -72,9 +72,19 @@
     <!-- Interview Panel / Assigned To -->
     <div class="px-6 pb-6">
       <div class="bg-purple-50 rounded-xl p-5 border border-purple-100 theme-transition">
-        <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider mb-4">
-          Assigned To (Interview Panel)
-        </label>
+        <div class="flex justify-between items-center mb-4">
+          <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider mb-0">
+            Assigned To (Interview Panel)
+          </label>
+          
+          <button
+            *ngIf="(interview.status === 'Scheduled' || interview.status === 'Rescheduled') && !isFeedbackSubmitted()"
+            (click)="openFeedbackModal()"
+            class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all border border-purple/60 bg-white text-purple hover:bg-purple hover:!text-white shadow-sm"
+          >
+            Update Feedback
+          </button>
+        </div>
         
         <div class="flex flex-wrap gap-3">
           <div
@@ -126,28 +136,19 @@
       <div class="flex flex-wrap gap-3 items-center">
         
         <!-- Finalize Result Button -->
+        <!-- Finalize Result Button -->
         <button
-          *ngIf="interview.status === 'Completed'"
           (click)="openFinalizeModal()"
-          class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all border-2 border-emerald-500 bg-transparent text-emerald-600 hover:bg-emerald-600 hover:!text-white dark:bg-emerald-900/40 dark:text-emerald-400 dark:border-emerald-600 dark:hover:bg-emerald-600 dark:hover:!text-white flex items-center gap-2 shadow-sm"
+          class="inline-flex items-center justify-center gap-2 bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-800 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg border-b-4 border-indigo-900"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Finalize
+          Finalize Result
         </button>
 
         <!-- Update Feedback Button -->
-        <button
-          *ngIf="interview.status === 'Scheduled' || interview.status === 'Rescheduled' || interview.status === 'Completed'"
-          (click)="openFeedbackModal()"
-          class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all border-2 border-purple/60 bg-transparent text-purple hover:bg-purple hover:!text-white dark:border-purple/50 dark:bg-purple/10 dark:text-purple-300 dark:hover:bg-purple dark:hover:!text-white flex items-center gap-2 shadow-sm"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
-          Update Feedback
-        </button>
+
 
         <!-- Reschedule Button -->
         <button
@@ -209,6 +210,53 @@
             {{ evaluator.feedback || "No feedback provided yet" }}
           </p>
         </div>
+      </div>
+
+      <!-- Final Result Feedback -->
+      <div
+        *ngIf="interview.overallFeedback"
+        class="bg-indigo-50 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow theme-transition border-l-4 border-indigo-500"
+      >
+        <div class="flex justify-between items-start mb-2">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-900 theme-transition">Final Result</p>
+              <p class="text-xs text-gray-500 mt-0.5 theme-transition">
+                {{ interview.updatedAt | date: 'MMM d, y' }}
+              </p>
+            </div>
+          </div>
+          <span
+            [ngClass]="{
+              'bg-green-100 text-green-800': interview.finalResult === 'Pass',
+              'bg-red-100 text-red-800': interview.finalResult === 'Fail'
+            }"
+            class="px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide theme-transition"
+          >
+            {{ interview.finalResult }}
+          </span>
+        </div>
+        <p class="text-sm text-gray-800 mb-1 leading-relaxed pl-14 theme-transition">
+          {{ interview.overallFeedback }}
+        </p>
       </div>
     </div>
   </div>
