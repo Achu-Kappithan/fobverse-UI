@@ -91,8 +91,8 @@
       <div class="flex items-center">
         <button
           *ngIf="
-            interview.status === 'Scheduled' ||
-            interview.status === 'Rescheduled'
+            (interview.status === 'Scheduled' ||
+            interview.status === 'Rescheduled') && !isFeedbackSubmitted()
           "
           (click)="openFeedbackModal()"
           class="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg text-xs font-semibold hover:bg-purple-700 transition duration-150 shadow-md whitespace-nowrap"
@@ -154,13 +154,14 @@
     </div>
 
     <div class="space-y-4">
+      <!-- Evaluators Feedback (Existing) -->
       <div
         class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
       >
         <div class="flex justify-between items-start mb-2">
           <div class="flex items-center gap-3">
             <img
-              src="https://i.pravatar.cc/40?img=5"
+              [src]="'/profileimages/defaultProfile.jpg'"
               class="w-10 h-10 rounded-full"
               alt="Maria Kelly"
             />
@@ -176,6 +177,53 @@
         </div>
         <p class="text-sm text-dark-gray mb-3 leading-relaxed">
           {{ interview.evaluators[0].feedback }}
+        </p>
+      </div>
+
+      <!-- Final Result Feedback (New) -->
+      <div
+        *ngIf="interview.overallFeedback"
+        class="bg-indigo-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200 border-l-4 border-indigo-500"
+      >
+        <div class="flex justify-between items-start mb-2">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-gray-800">Final Result</p>
+              <p class="text-xs text-gray-500">
+                {{ interview.updatedAt | date }}
+              </p>
+            </div>
+          </div>
+          <span
+            [ngClass]="{
+              'bg-green-100 text-green-800': interview.finalResult === 'Pass',
+              'bg-red-100 text-red-800': interview.finalResult === 'Fail'
+            }"
+            class="px-2 py-1 rounded-md text-xs font-bold uppercase tracking-wide"
+          >
+            {{ interview.finalResult }}
+          </span>
+        </div>
+        <p class="text-sm text-gray-800 mb-1 leading-relaxed">
+          {{ interview.overallFeedback }}
         </p>
       </div>
     </div>

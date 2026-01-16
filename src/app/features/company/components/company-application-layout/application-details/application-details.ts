@@ -150,11 +150,11 @@ export class ApplicationDetails implements OnInit {
 
   getStages(stage: string ): void {
     switch (stage) {
-      case Stages.Shortlisted:
+      case Stages.Default:
         this.currentStageIndex = 0;
         break;
 
-      case Stages.Telephone:
+      case Stages.Shortlisted:
         this.currentStageIndex = 1;
         break;
 
@@ -168,7 +168,6 @@ export class ApplicationDetails implements OnInit {
 
       default: 
         this.currentStageIndex = -1;
-        break;
     }
   }
 
@@ -178,5 +177,20 @@ export class ApplicationDetails implements OnInit {
     if (index < this.currentStageIndex) return 'completed';
     if (index === this.currentStageIndex) return 'current';
     return 'pending';
+  }
+
+  isStageEnabled(stageId: string): boolean {
+    switch (stageId) {
+      case 'shortlisted':
+        return true; 
+      case 'telephone':
+        return this.currentStageIndex >= 1;
+      case 'technical_analysis':
+        return this.currentStageIndex >= 2;
+      case 'hired_declined':
+        return this.currentStageIndex >= 3;
+      default:
+        return false;
+    }
   }
 }

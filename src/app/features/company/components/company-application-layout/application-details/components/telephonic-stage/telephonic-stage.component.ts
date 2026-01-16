@@ -17,6 +17,7 @@ import { SheduleResponceInterface } from '../../../../../interfaces/company.inte
 import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
 import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
+import { AuthService } from '../../../../../../auth/services/auth.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -81,12 +82,14 @@ export class TelephonicStageComponent implements OnInit {
   isFeedbackModalOpen: boolean = false;
   isFinalizeModalOpen: boolean = false;
   selectedHr: InternalUserInterface | null = null;
+  currentUserId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private readonly _ApplicationService: CompanyApplication,
     private readonly _swal: SweetAlert,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +99,11 @@ export class TelephonicStageComponent implements OnInit {
     if (!this.interview && this.applicationId) {
       this.getStageDetails();
     }
+    this._authService.company$.subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.id || user._id || null;
+      }
+    });
   }
 
   initSeduleFrom() {
@@ -123,11 +131,11 @@ export class TelephonicStageComponent implements OnInit {
   getStageDetails() {
     this.isLoading = true;
     this._ApplicationService
-      .getStageDetails(this.applicationId!, 'telephone')
+      .getStageDetails(this.applicationId!, 'shortlisted')
       .subscribe({
         next: (res) => {
           if (res.success) {
-            if (res.data.stage == 'telephone') {
+            if (res.data.stage == 'shortlisted') {
               this.interview = res.data;
               console.log('current stage  details ', this.interview);
               this.isLoading = false;
@@ -190,7 +198,7 @@ export class TelephonicStageComponent implements OnInit {
       scheduledDate: data.scheduledDate,
       scheduledTime: data.scheduledTime,
       applicationId: this.applicationId,
-      stage: 'telephone',
+      stage: 'shortlisted',
       evaluators: evaluator,
       userEmail: this.userEmail,
     };
@@ -222,7 +230,7 @@ export class TelephonicStageComponent implements OnInit {
     this.saveComplete = false;
     const data = {
       applicationId: this.applicationId!,
-      stage: 'telephone',
+      stage: 'shortlisted',
       userEmail: this.userEmail!,
     };
 
@@ -282,11 +290,24 @@ export class TelephonicStageComponent implements OnInit {
   }
 
   openFinalizeModal() {
-    this.isFinalizeModalOpen = !this.isFinalizeModalOpen;
     if (!this.isFinalizeModalOpen) {
+      if (this.interview?.evaluators) {
+        for (const evaluator of this.interview.evaluators) {
+          if (!evaluator.feedback) {
+            this._swal.showWarningToast(
+              'Feedback Missing',
+              'Please wait for all evaluators to submit their feedback.'
+            );
+            return;
+          }
+        }
+      }
       this.finalizeResultForm.reset();
     }
+    this.isFinalizeModalOpen = !this.isFinalizeModalOpen;
   }
+
+  @Output() updateStage = new EventEmitter<void>();
 
   submitFinalizeResult() {
     if (this.finalizeResultForm.invalid) {
@@ -301,6 +322,8 @@ export class TelephonicStageComponent implements OnInit {
     data = {
       ...data,
       interviewId: this.interview?._id,
+      applicationId: this.applicationId,
+      nextStage:'technical_analysis'
     };
 
     this._ApplicationService.finalizeTelephoneResult(data).subscribe({
@@ -313,6 +336,10 @@ export class TelephonicStageComponent implements OnInit {
           this._swal.showSuccessToast(res.message);
           this.openFinalizeModal();
           this._cdr.detectChanges();
+          
+          if (res.data.finalResult === 'Pass') {
+            this.updateStage.emit();
+          }
         }
       },
       error: (err) => {
@@ -336,5 +363,16 @@ export class TelephonicStageComponent implements OnInit {
         },
       });
     }
+  }
+
+  isFeedbackSubmitted(): boolean {
+    if (!this.interview || !this.interview.evaluators || !this.currentUserId) {
+      return false;
+    }
+    return this.interview.evaluators.some(
+      (evaluator) =>
+        (evaluator.interviewerId === this.currentUserId) &&
+        !!evaluator.feedback
+    );
   }
 }
