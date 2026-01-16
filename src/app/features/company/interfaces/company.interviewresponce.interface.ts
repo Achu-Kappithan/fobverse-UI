@@ -35,6 +35,10 @@ export interface FinalizeResultInterface {
 
   finalResult: string;
 
+  applicationId:string;
+
+  nextStage:string;
+
   finalFeedback: string;
 
   interviewId?: string;

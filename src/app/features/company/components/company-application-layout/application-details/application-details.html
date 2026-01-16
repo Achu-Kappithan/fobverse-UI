@@ -367,44 +367,56 @@
             <div class="flex gap-2 mb-6">
               <button
                 (click)="switchStages('shortlisted')"
-                class="px-4 py-1.5 rounded-lg text-sm font-semibold"
+                [disabled]="!isStageEnabled('shortlisted')"
+                class="px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"
                 [ngClass]="{
                   'bg-blue text-white shadow-md': currentStageId === 'shortlisted',
-                  'bg-lavender text-purple': currentStageId !== 'shortlisted'
+                  'bg-lavender text-purple': currentStageId !== 'shortlisted',
+                   'opacity-50 cursor-not-allowed': !isStageEnabled('shortlisted')
                 }"
               >
                 Qualified
+                 <i *ngIf="!isStageEnabled('shortlisted')" class="fas fa-lock text-xs"></i>
               </button>
 
               <button
                 (click)="switchStages('telephone')"
-                class="px-4 py-1.5 rounded-lg text-sm font-semibold"
+                [disabled]="!isStageEnabled('telephone')"
+                class="px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"
                 [ngClass]="{
                   'bg-blue text-white shadow-md': currentStageId === 'telephone',
-                  'bg-lavender text-purple': currentStageId !== 'telephone'
+                  'bg-lavender text-purple': currentStageId !== 'telephone',
+                   'opacity-50 cursor-not-allowed': !isStageEnabled('telephone')
                 }"
               >
                 Telephoneic
+                 <i *ngIf="!isStageEnabled('telephone')" class="fas fa-lock text-xs"></i>
               </button>
               <button
                 (click)="switchStages('technical_analysis')"
-                class="px-4 py-1.5 rounded-lg text-sm font-semibold"
+                [disabled]="!isStageEnabled('technical_analysis')"
+                class="px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"
                 [ngClass]="{
                   'bg-blue text-white shadow-md': currentStageId === 'technical_analysis',
-                  'bg-lavender text-purple': currentStageId !== 'technical_analysis'
+                  'bg-lavender text-purple': currentStageId !== 'technical_analysis',
+                   'opacity-50 cursor-not-allowed': !isStageEnabled('technical_analysis')
                 }"
               >
                 Interview
+                 <i *ngIf="!isStageEnabled('technical_analysis')" class="fas fa-lock text-xs"></i>
               </button>
               <button
                 (click)="switchStages('hired_declined')"
-                class="px-4 py-1.5 rounded-lg text-sm font-semibold"
-                 [ngClass]="{
+                [disabled]="!isStageEnabled('hired_declined')"
+                class="px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2"
+                [ngClass]="{
                   'bg-blue text-white shadow-md': currentStageId === 'hired_declined',
-                  'bg-lavender text-purple': currentStageId !== 'hired_declined'
+                  'bg-lavender text-purple': currentStageId !== 'hired_declined',
+                   'opacity-50 cursor-not-allowed': !isStageEnabled('hired_declined')
                 }"
               >
                 Hired / Declined
+                 <i *ngIf="!isStageEnabled('hired_declined')" class="fas fa-lock text-xs"></i>
               </button>
             </div>
             <!-- StageLoader -->

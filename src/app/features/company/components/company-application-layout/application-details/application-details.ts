@@ -150,11 +150,11 @@ export class ApplicationDetails implements OnInit {
 
   getStages(stage: string ): void {
     switch (stage) {
-      case Stages.Shortlisted:
+      case Stages.Default:
         this.currentStageIndex = 0;
         break;
 
-      case Stages.Telephone:
+      case Stages.Shortlisted:
         this.currentStageIndex = 1;
         break;
 
@@ -168,6 +168,15 @@ export class ApplicationDetails implements OnInit {
 
       default: 
         this.currentStageIndex = -1;
+        // Handle cases where stage might be 'telephone' if it still exists in DB but not in flow
+        if (stage === Stages.Telephone) {
+             this.currentStageIndex = 1; // Treat as shortlisted/ready for telephone? Or 2? 
+             // Based on user saying "no telephone need", let's assume it maps to Shortlisted or we ignore it.
+             // Safer to map to 1 if it implies "doing telephone". 
+             // But strictly following user "only defalt , shortlisted , techinal and hired".
+             // Let's stick to the 4 explicit cases.
+             this.currentStageIndex = 1; 
+        }
         break;
     }
   }
@@ -178,5 +187,20 @@ export class ApplicationDetails implements OnInit {
     if (index < this.currentStageIndex) return 'completed';
     if (index === this.currentStageIndex) return 'current';
     return 'pending';
+  }
+
+  isStageEnabled(stageId: string): boolean {
+    switch (stageId) {
+      case 'shortlisted':
+        return true; 
+      case 'telephone':
+        return this.currentStageIndex >= 1;
+      case 'technical_analysis':
+        return this.currentStageIndex >= 2;
+      case 'hired_declined':
+        return this.currentStageIndex >= 3;
+      default:
+        return false;
+    }
   }
 }

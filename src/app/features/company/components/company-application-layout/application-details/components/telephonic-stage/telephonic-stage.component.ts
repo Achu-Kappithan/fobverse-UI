@@ -86,7 +86,7 @@ export class TelephonicStageComponent implements OnInit {
     private fb: FormBuilder,
     private readonly _ApplicationService: CompanyApplication,
     private readonly _swal: SweetAlert,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -123,11 +123,11 @@ export class TelephonicStageComponent implements OnInit {
   getStageDetails() {
     this.isLoading = true;
     this._ApplicationService
-      .getStageDetails(this.applicationId!, 'telephone')
+      .getStageDetails(this.applicationId!, 'shortlisted')
       .subscribe({
         next: (res) => {
           if (res.success) {
-            if (res.data.stage == 'telephone') {
+            if (res.data.stage == 'shortlisted') {
               this.interview = res.data;
               console.log('current stage  details ', this.interview);
               this.isLoading = false;
@@ -190,7 +190,7 @@ export class TelephonicStageComponent implements OnInit {
       scheduledDate: data.scheduledDate,
       scheduledTime: data.scheduledTime,
       applicationId: this.applicationId,
-      stage: 'telephone',
+      stage: 'shortlisted',
       evaluators: evaluator,
       userEmail: this.userEmail,
     };
@@ -222,7 +222,7 @@ export class TelephonicStageComponent implements OnInit {
     this.saveComplete = false;
     const data = {
       applicationId: this.applicationId!,
-      stage: 'telephone',
+      stage: 'shortlisted',
       userEmail: this.userEmail!,
     };
 
@@ -301,6 +301,8 @@ export class TelephonicStageComponent implements OnInit {
     data = {
       ...data,
       interviewId: this.interview?._id,
+      applicationId: this.applicationId,
+      nextStage:'technical_analysis'
     };
 
     this._ApplicationService.finalizeTelephoneResult(data).subscribe({
