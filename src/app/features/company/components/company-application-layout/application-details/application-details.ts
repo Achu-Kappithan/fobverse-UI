@@ -62,7 +62,7 @@ export class ApplicationDetails implements OnInit {
   currentStageId: string = 'shortlisted';
   interviewScheduled: boolean = true;
   
-  hiringStages = ['Shortlisted', 'Telephonic', 'Technical', 'Hired/Reject'];
+  hiringStages = ['Shortlisted', 'Telephonic', 'Technical', 'Hired'];
 
   constructor(
     private readonly _route: ActivatedRoute,
