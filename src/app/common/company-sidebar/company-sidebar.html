@@ -48,15 +48,16 @@
             </ng-container>
           </a>
         </li>
-        <!-- Candidates Profile -->
         <li>
           <a
+            [routerLink]="['/company/all-applicants']"
+            [routerLinkActive]="'bg-purple text-white'"
             class="flex items-center p-2 rounded font-medium text-dark-gray dark:text-dark-text hover-bg-light transition-colors"
             [ngClass]="{'justify-center': !isOpen}"
           >
             <i class="fas fa-users" [ngClass]="{'mr-2': isOpen}"></i>
             <ng-container *ngIf="isOpen">
-              <span class="sidebar-item-text">Candidates Profile</span>
+              <span class="sidebar-item-text">All Applicants</span>
             </ng-container>
           </a>
         </li>

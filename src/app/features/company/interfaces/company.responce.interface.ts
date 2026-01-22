@@ -155,6 +155,10 @@ export interface ApplicationInterface {
   profile?: { _id:string , profileImg: string} 
 
   createdAt:string
+
+  jobId: string;
+
+  jobDetails?: any;
 }
 
 export interface applicationWithProfile {
@@ -185,4 +189,18 @@ export interface applicationWithProfile {
   createdAt:string;
 
   profile: CandidateInterface
+}
+
+export interface PaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  meta: {
+    totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+    totalPages: number;
+  };
+  statusCode: number;
+  timestamp: string;
 }

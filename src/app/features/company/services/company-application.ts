@@ -10,6 +10,7 @@ import {
   ApplicationInterface,
   applicationWithProfile,
   InternalUserInterface,
+  PaginatedResponse,
 } from '../interfaces/company.responce.interface';
 import {
   SheduleInterface,
@@ -157,6 +158,30 @@ export class CompanyApplication {
     return this._http.get<ApiResponce<any>>(
       `/api/interview/all-stages`,
       { params: { applicationId: applicationId } }
+    );
+  }
+
+  getCompanyApplicants(
+    params: { page?: number; limit?: number; search?: string; filtervalue?: string }
+  ): Observable<PaginatedResponse<ApplicationInterface[]>> {
+    let httpParms = new HttpParams();
+
+    const limit = params.limit || 5;
+    const page = params.page || 1;
+
+    httpParms = httpParms.set('limit', limit.toString());
+    httpParms = httpParms.set('page', page.toString());
+
+    if (params.search) {
+      httpParms = httpParms.set('search', params.search);
+    }
+    if (params.filtervalue) {
+      httpParms = httpParms.set('filtervalue', params.filtervalue);
+    }
+
+    return this._http.get<PaginatedResponse<ApplicationInterface[]>>(
+      `/api/applications/all-applicants`,
+      { params: httpParms }
     );
   }
 }
