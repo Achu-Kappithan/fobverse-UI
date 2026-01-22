@@ -218,11 +218,7 @@
                             class="font-semibold flex items-center"
                           >
                             <i
-                              [ngClass]="{
-                                    'fas fa-check-circle': !applicant.Rejected,
-                                    'fas fa-times-circle': applicant.Rejected
-                                }"
-                              class="mr-1"
+                              [class]="applicant.Rejected ? 'fas fa-times-circle mr-1' : 'fas fa-check-circle mr-1'"
                             ></i>
                             {{ applicant.Rejected ? 'Rejected' : 'Active'}}
                           </span>
@@ -341,11 +337,7 @@
                             class="font-semibold flex items-center"
                           >
                             <i
-                              [ngClass]="{
-                                    'fas fa-check-circle': !applicant.Rejected,
-                                    'fas fa-times-circle': applicant.Rejected
-                                }"
-                              class="mr-1"
+                              [class]="applicant.Rejected ? 'fas fa-times-circle mr-1' : 'fas fa-check-circle mr-1'"
                             ></i>
                             {{ applicant.Rejected ? 'Rejected' : 'Active'}}
                           </span>
@@ -378,14 +370,14 @@
                   >
                     <a
                       [routerLink]="['viewprofile']"
-                      [queryParams]="{id:applicant._id}"
+                      [queryParams]="{id:applicant.profile?._id}"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View Profile
                       <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                     <a
-                      [routerLink]="['viewapplication',applicant._id,currentJobdetails?._id]"
+                      [routerLink]="['viewapplication',applicant._id,applicant?.candidateId]"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View application
@@ -530,11 +522,7 @@
                             class="font-semibold flex items-center"
                           >
                             <i
-                              [ngClass]="{
-                                    'fas fa-check-circle': !applicant.Rejected,
-                                    'fas fa-times-circle': applicant.Rejected
-                                }"
-                              class="mr-1"
+                              [class]="applicant.Rejected ? 'fas fa-times-circle mr-1' : 'fas fa-check-circle mr-1'"
                             ></i>
                             {{ applicant.Rejected ? 'Rejected' : 'Active'}}
                           </span>
@@ -567,14 +555,14 @@
                   >
                     <a
                       [routerLink]="['viewprofile']"
-                      [queryParams]="{id:applicant._id}"
+                      [queryParams]="{id:applicant.profile?._id}"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View Profile
                       <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                     <a
-                      [routerLink]="['viewapplication',applicant._id,currentJobdetails?._id]"
+                      [routerLink]="['viewapplication',applicant._id,applicant?.candidateId]"
                       class="text-purple font-medium hover:text-blue transition-colors flex items-center"
                     >
                       View application
@@ -596,17 +584,111 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
       <div class="flex items-center mb-4 md:mb-0">
         <h2 class="text-xl font-semibold mr-2">Hired Applicants:</h2>
-        <span class="text-xl text-gray-500">...</span>
+        <span class="text-xl text-gray-500">{{ ApplicationList.length }}</span>
       </div>
     </div>
     <div class="bg-poster rounded-lg text-dark-gray p-4 hide-scrollbar">
       <div class="flex-shrink-0 w-full rounded-lg">
+        <div *ngIf="isLoading" class="flex justify-center items-center py-10">
+          <div class="loader"></div>
+        </div>
+
         <div
+          *ngIf="!isLoading && ApplicationList.length === 0"
+          class="flex justify-center items-center py-10"
+        >
+          <p class="text-gray-500 text-lg">No applicants found.</p>
+        </div>
+
+        <div
+          *ngIf="!isLoading && ApplicationList.length > 0"
           class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 overflow-x-auto hide-scrollbar"
         >
           <div class="flex-shrink-0 w-full">
-            <div class="flex items-center justify-between mb-4"></div>
-            <div class="flex flex-wrap -m-1"></div>
+            <div class="flex flex-wrap -m-1">
+              <div
+                *ngFor="let applicant of ApplicationList"
+                class="p-2 w-1/2 sm:w-1/3 lg:w-1/2 xl:w-1/4"
+              >
+                <div
+                  class="bg-white rounded-lg shadow p-4 border border-gray-200 h-full flex flex-col justify-between"
+                >
+                  <div class="px-4">
+                    <div class="flex justify-between items-start gap-3">
+                      <div class="flex-1 flex flex-col text-left">
+                        <h2
+                          class="text-lg sm:text-xl font-semibold text-dark-gray mb-1"
+                        >
+                          {{ applicant.name }}
+                        </h2>
+                        <p class="text-gray-500 text-sm flex gap-x-4">
+                          <span>Created:</span>
+                          <span class="text-gray-700"
+                            >{{ applicant.createdAt | date: 'shortDate' }}</span
+                          >
+                        </p>
+                        <p class="text-gray-500 text-sm flex gap-x-7">
+                          <span>Stage:</span>
+                          <span class="text-gray-700"
+                            >{{ applicant.Stages }}</span
+                          >
+                        </p>
+                        <div class="flex items-center text-sm flex gap-x-5">
+                          <span class="font-medium mr-1 text-gray-500"
+                            >Status:</span
+                          >
+                          <span
+                             class="text-green-600 font-semibold flex items-center"
+                          >
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Hired
+                          </span>
+                        </div>
+                      </div>
+                      <img
+                        [src]="applicant.profile?.profileImg ? baseUrl + applicant.profile?.profileImg : '/profileimages/defaultProfile.jpg'"
+                        [alt]="applicant.name + ' Logo'"
+                        class="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover flex-shrink-0"
+                      />
+                    </div>
+
+                    <div class="flex items-center justify-between text-base">
+                      <span class="font-bold text-gray-700">Score</span>
+                      <span
+                        class="font-bold flex items-center text-lg text-gold"
+                      >
+                        <span class="mr-1">{{applicant.atsScore}}</span>
+                        <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                          <path
+                            d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="flex justify-between items-center mx-4 gap-4 mt-auto p-2 border-t border-gray-200"
+                  >
+                    <a
+                      [routerLink]="['viewprofile']"
+                      [queryParams]="{id:applicant.profile?._id}"
+                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+                    >
+                      View Profile
+                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                    <a
+                      [routerLink]="['viewapplication',applicant._id,applicant?.candidateId]"
+                      class="text-purple font-medium hover:text-blue transition-colors flex items-center"
+                    >
+                      View application
+                      <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

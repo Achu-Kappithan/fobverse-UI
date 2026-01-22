@@ -116,9 +116,10 @@ export class HiringStatusComponent implements OnInit, OnChanges {
       const hiredStage: StageDetail = {
         stageName: 'Hired',
         stageType: 'hired',
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+        date: data.atsStage?.updatedAt ? this.formatDate(data.atsStage.updatedAt) : this.formatDate(new Date().toISOString()),
         status: 'Completed',
-        description: 'Candidate has been selected for the position. Offer letter sent.'
+        description: 'Candidate has successfully completed all interview stages and has been officially hired for the position.',
+        finalFeedback: data.techStage?.overallFeedback || undefined
       };
       this.journeyData.push(hiredStage);
     }
