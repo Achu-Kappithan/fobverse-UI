@@ -150,4 +150,13 @@ export class CompanyApplication {
       data
     );
   }
+
+  getAllStages(
+    applicationId: string
+  ): Observable<ApiResponce<any>> {
+    return this._http.get<ApiResponce<any>>(
+      `/api/interview/all-stages`,
+      { params: { applicationId: applicationId } }
+    );
+  }
 }

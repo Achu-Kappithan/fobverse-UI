@@ -116,8 +116,10 @@ export class CompanyJobapplications implements OnInit {
       this.fetchAllApplicaton();
     } else if (this.activeView === 'shortlisted') {
       this.shortlistedApplications();
-    }else if (this.activeView === 'technicals') {
-      this.TechinicalApplications();
+    } else if (this.activeView === 'technicals') {
+      this.TechnicalApplications();
+    } else if (this.activeView === 'hired') {
+      this.hiredApplications();
     }
   }
 
@@ -176,8 +178,14 @@ export class CompanyJobapplications implements OnInit {
     this.fetchAllApplicaton();
   }
 
-  TechinicalApplications() {
+  TechnicalApplications() {
     this.QueryParams.filtervalue = 'technical_analysis'
+    this.QueryParams.page = 1;
+    this.fetchAllApplicaton();
+  }
+
+  hiredApplications() {
+    this.QueryParams.filtervalue = 'hired'
     this.QueryParams.page = 1;
     this.fetchAllApplicaton();
   }
@@ -214,7 +222,7 @@ export class CompanyJobapplications implements OnInit {
 
   get pagenumbers(): number[] {
     const pageNumber: number[] = [];
-    for (let i = 1; i < this.paginationMeta.totalPages; i++) {
+    for (let i = 1; i <= this.paginationMeta.totalPages; i++) {
       pageNumber.push(i);
     }
     return pageNumber;

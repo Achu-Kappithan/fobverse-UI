@@ -62,7 +62,7 @@ export class ApplicationDetails implements OnInit {
   currentStageId: string = 'shortlisted';
   interviewScheduled: boolean = true;
   
-  hiringStages = ['Shortlisted', 'Telephonic', 'Technical', 'Hired'];
+  hiringStages = ['Qualified', 'Telephonic', 'Technical', 'Hired'];
 
   constructor(
     private readonly _route: ActivatedRoute,
@@ -155,6 +155,7 @@ export class ApplicationDetails implements OnInit {
         break;
 
       case Stages.Shortlisted:
+      case Stages.Telephone:
         this.currentStageIndex = 1;
         break;
 
@@ -175,7 +176,13 @@ export class ApplicationDetails implements OnInit {
     if (this.currentStageIndex === -1) return 'pending';
 
     if (index < this.currentStageIndex) return 'completed';
-    if (index === this.currentStageIndex) return 'current';
+    if (index === this.currentStageIndex) {
+      // If candidate is hired, the last stage (index 3) should show as completed
+      if (index === 3 && (this.applicationDetails?.Stages as any) === Stages.Hired) {
+        return 'completed';
+      }
+      return 'current';
+    }
     return 'pending';
   }
 
