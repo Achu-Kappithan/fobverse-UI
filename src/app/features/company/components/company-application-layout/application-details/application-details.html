@@ -260,11 +260,6 @@
             >
               Hiring Progress
             </button>
-            <button
-              class="px-6 py-2 text-gray-500 font-semibold hover:text-dark-gray focus:outline-none"
-            >
-              Interview Schedule
-            </button>
           </div>
           <div *ngIf="activeContent('Profile')" class="p-6">
             <!-- Personal Info Section -->
@@ -451,7 +446,8 @@
               
                <app-hiring-status
                   *ngIf="activeStage('hired_declined')"
-                  [status]="'current'">
+                  [status]="applicationDetails?.Stages ?? null"
+                  [applicationId]="applicationId">
                </app-hiring-status>
             </div>
           </div>
