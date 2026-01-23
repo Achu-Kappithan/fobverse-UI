@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CompanyApplication } from '../../services/company-application';
 import { ApplicationInterface, Stages } from '../../interfaces/company.responce.interface';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-all-applicants',
@@ -16,6 +17,8 @@ export class AllApplicantsComponent implements OnInit {
   private readonly _companyService = inject(CompanyApplication);
   private readonly _router = inject(Router);
   private readonly _cdr = inject(ChangeDetectorRef);
+
+  baseUrl:string = environment.cloudinaryBaseUrl
 
   applicants: ApplicationInterface[] = [];
   searchQuery: string = '';
@@ -81,7 +84,23 @@ export class AllApplicantsComponent implements OnInit {
   }
 
   viewApplication(applicantId: string, jobId: string, canId: string): void {
-    this._router.navigate(['/company/joblist/applications', jobId, 'viewapplication', applicantId, canId]);
+    if (!jobId || !applicantId || !canId) {
+      console.error('Navigation failed: Missing required IDs', { jobId, applicantId, canId });
+      return;
+    }
+    
+    console.log('Navigating to application details:', { jobId, applicantId, canId });
+    
+    // Construct the full path: /company/joblist/applications/:jobId/viewapplication/:appId/:canId
+    this._router.navigate(['/company/joblist/applications', jobId, 'viewapplication', applicantId, canId])
+      .then(success => {
+        if (!success) {
+          console.error('Navigation failed! Path might be incorrect or guarded.');
+        }
+      })
+      .catch(err => {
+        console.error('Navigation error:', err);
+      });
   }
 
   getStageClass(stage: string): string {
