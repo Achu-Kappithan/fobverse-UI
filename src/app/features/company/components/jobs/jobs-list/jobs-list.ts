@@ -36,7 +36,6 @@ export class JobsList implements OnInit {
     { header: 'Postdate', field: 'createdAt', type: 'date' },
     { header: 'dueDate', field: 'dueDate', type: 'date' },
     { header: 'jobType', field: 'jobType', type: 'jobType' },
-    { header: 'Applications', field: 'applications', type: 'progress' },
     { header: 'vacancies', field: 'vacancies', type: 'number' },
     { header: 'Action', field: '_id', type: 'dropdown',
       options:[
