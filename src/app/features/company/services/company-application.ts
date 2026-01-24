@@ -18,6 +18,7 @@ import {
   updatefeedbackInterface,
   FinalizeResultInterface,
 } from '../interfaces/company.interviewresponce.interface';
+import { Schedule } from '../interfaces/schedule.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -183,5 +184,15 @@ export class CompanyApplication {
       `/api/applications/all-applicants`,
       { params: httpParms }
     );
+  }
+
+  getMySchedules(status?: string): Observable<ApiResponce<Schedule[]>> {
+    let httpParams = new HttpParams();
+    if (status) {
+      httpParams = httpParams.set('status', status);
+    }
+    return this._http.get<ApiResponce<Schedule[]>>(`/api/interview/my-schedules`, {
+      params: httpParams,
+    });
   }
 }

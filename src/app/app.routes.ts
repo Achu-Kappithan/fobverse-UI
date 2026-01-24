@@ -214,6 +214,13 @@ export const routes: Routes = [
           ).then((m) => m.AllApplicantsComponent),
       },
       {
+        path: 'my-schedules',
+        loadComponent: () =>
+          import(
+            './features/company/components/my-schedules/my-schedules'
+          ).then((m) => m.MySchedulesComponent),
+      },
+      {
         path: 'joblist',
         loadComponent: () =>
           import('./features/company/components/jobs/jobs').then((m) => m.Jobs),
