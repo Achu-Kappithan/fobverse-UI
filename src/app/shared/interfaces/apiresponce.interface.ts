@@ -7,11 +7,25 @@ export interface ApiResponce<T> {
   timestamp: string;
 }
 
+export interface PaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  meta: {
+    totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+    totalPages: number;
+  };
+  statusCode: number;
+  timestamp: string;
+}
+
 export interface PagenatedApiResponce<T> {
   success: boolean;
-  data: T ,
+  data: T;
   message?: string;
-  meta?: PaginationMeta; 
+  meta?: PaginationMeta;
   timestamp: string;
 }
 

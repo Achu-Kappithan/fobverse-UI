@@ -1,0 +1,97 @@
+.stage-inreview {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fdba74;
+}
+
+.stage-shortlisted {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.stage-rejected {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.stage-hired {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #6ee7b7;
+}
+
+.stage-interviewed {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+}
+
+.stage-declined {
+  background-color: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fda4af;
+}
+
+/* Dark mode overrides for stages if needed */
+:host-context(.dark) .stage-inreview {
+  background-color: rgba(194, 65, 12, 0.1);
+  color: #fdba74;
+}
+
+:host-context(.dark) .stage-shortlisted {
+  background-color: rgba(21, 128, 61, 0.1);
+  color: #86efac;
+}
+
+:host-context(.dark) .stage-rejected {
+  background-color: rgba(185, 28, 28, 0.1);
+  color: #fecaca;
+}
+
+:host-context(.dark) .stage-hired {
+  background-color: rgba(4, 120, 87, 0.1);
+  color: #6ee7b7;
+}
+
+:host-context(.dark) .stage-interviewed {
+  background-color: rgba(29, 78, 216, 0.1);
+  color: #93c5fd;
+}
+
+:host-context(.dark) .stage-declined {
+  background-color: rgba(190, 18, 60, 0.1);
+  color: #fda4af;
+}
+
+.table-container {
+  min-height: 400px;
+}
+
+.applicants-container {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom scrollbar for the container if needed */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
