@@ -141,6 +141,13 @@ export const routes: Routes = [
             './features/company/components/company-public-profile/company-public-profile'
           ).then((m) => m.CompanyPublicProfile),
       },
+      {
+        path: 'companylist',
+        loadComponent: () =>
+          import(
+            './features/candidate/components/candidate-companylist/candidate-companylist'
+          ).then((m) => m.CandidateCompanylist),
+      },
     ],
   },
 

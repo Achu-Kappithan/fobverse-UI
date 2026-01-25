@@ -1,0 +1,63 @@
+:host {
+  --primary-purple: #7a3ebb;
+}
+
+/* Card Hover Effects */
+.job-card-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.job-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Logo Animation within card hover */
+.logo-animate {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .logo-animate {
+  transform: scale(1.1) rotate(2deg);
+}
+
+/* Modern Skeleton Pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.bg-skeleton {
+  background-color: #f3f4f6;
+}
+
+/* Banner Hover Effects */
+.banner-interactive:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+  box-shadow: 0 15px 40px -10px rgba(122, 62, 187, 0.05);
+}
+
+:host-context(.dark) .banner-interactive:hover {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+/* Search Bar Hover Effects */
+.search-bar-interactive {
+  border: 1px solid transparent;
+}
+
+.search-bar-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.12);
+  border-color: rgba(122, 62, 187, 0.1);
+}
+
+.search-bar-interactive:focus-within {
+  box-shadow: 0 0 0 4px rgba(122, 62, 187, 0.08);
+  border-color: var(--primary-purple);
+  transform: translateY(-2px);
+}
