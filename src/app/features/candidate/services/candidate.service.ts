@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
 import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
+import { companyListParamsInterface } from '../interfaces/candidate.companylist.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +67,26 @@ export class CandidateService {
   applayJob(id:string,data:jobApplicationDto):Observable<PlainResponce>{
     console.log(data)
     return this._http.post<PlainResponce>(`/api/applications/applyjob?id=${id}`,data)
+  }
+
+  getAllCompanies(
+    params: companyListParamsInterface,
+  ): Observable<any> {
+    let httpParams = new HttpParams();
+
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+    if (params.page) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+    if (params.limit) {
+      httpParams = httpParams.set('limit', params.limit.toString());
+    }
+
+    return this._http.get<any>(
+      '/api/candidate/all-companies',
+      { params: httpParams },
+    );
   }
 }
