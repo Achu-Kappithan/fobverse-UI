@@ -112,6 +112,13 @@ export const routes: Routes = [
           ).then((m) => m.UpdateProfile),
       },
       {
+        path: 'my-applications',
+        loadComponent: () =>
+          import(
+            './features/candidate/components/my-applications/my-applications'
+          ).then((m) => m.MyApplicationsComponent),
+      },
+      {
         path: 'joblist',
         loadComponent: () =>
           import(

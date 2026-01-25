@@ -5,6 +5,7 @@ import { CandidateInterface } from '../interfaces/candidate.interface';
 import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
 import { companyListParamsInterface } from '../interfaces/candidate.companylist.interface';
+import { ApplicationsResponse, ApplicationQueryParams } from '../interfaces/candidate.application.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,28 @@ export class CandidateService {
     return this._http.get<any>(
       '/api/candidate/all-companies',
       { params: httpParams },
+    );
+  }
+
+  getMyApplications(params: ApplicationQueryParams): Observable<ApplicationsResponse> {
+    let httpParams = new HttpParams();
+
+    if (params.page) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+    if (params.limit) {
+      httpParams = httpParams.set('limit', params.limit.toString());
+    }
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+    if (params.stage) {
+      httpParams = httpParams.set('stage', params.stage);
+    }
+
+    return this._http.get<ApplicationsResponse>(
+      '/api/candidate/my-applications',
+      { params: httpParams }
     );
   }
 }
