@@ -2,9 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
-import { ApiResponce, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponce, PaginatedResponse, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
 import { companyListParamsInterface } from '../interfaces/candidate.companylist.interface';
+import { ApplicationQueryParams, CandidateApplication } from '../interfaces/candidate.application.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,28 @@ export class CandidateService {
     return this._http.get<any>(
       '/api/candidate/all-companies',
       { params: httpParams },
+    );
+  }
+
+  getMyApplications(params: ApplicationQueryParams): Observable<PaginatedResponse<CandidateApplication[]>> {
+    let httpParams = new HttpParams();
+
+    if (params.page) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+    if (params.limit) {
+      httpParams = httpParams.set('limit', params.limit.toString());
+    }
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+    if (params.stage) {
+      httpParams = httpParams.set('filtervalue', params.stage);
+    }
+
+    return this._http.get<PaginatedResponse<CandidateApplication[]>>(
+      '/api/candidate/my-applications',
+      { params: httpParams }
     );
   }
 }

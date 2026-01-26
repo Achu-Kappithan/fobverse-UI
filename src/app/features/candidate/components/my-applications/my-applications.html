@@ -1,0 +1,237 @@
+<div class="min-h-screen bg-lavander py-8 px-4 sm:px-6 lg:px-8 theme-transition">
+  <div class="max-w-7xl mx-auto">
+    <!-- Modern Header -->
+    <div class="mb-8 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-purple rounded-2xl mb-4 shadow-lg text-white">
+        <i class="fas fa-briefcase text-2xl"></i>
+      </div>
+      <h1 class="text-4xl font-bold text-dark-gray mb-2">My Applications</h1>
+      <p class="text-gray-600">Track your job applications and stay updated on your progress</p>
+    </div>
+
+    <!-- Single Container Box -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden theme-transition">
+      <!-- Search and Filter Bar -->
+      <div class="bg-gray-50 border-b border-gray-200 p-6 theme-transition">
+        <div class="flex flex-col lg:flex-row gap-4 items-end">
+          <!-- Search Input -->
+          <div class="flex-1 w-full">
+            <label for="search" class="block text-sm font-semibold text-dark-gray mb-2">
+              Search Applications
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+              </div>
+              <input
+                id="search"
+                type="text"
+                [formControl]="searchControl"
+                placeholder="Search by job role or company name..."
+                class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple focus:border-transparent transition-all bg-white text-dark-gray placeholder-gray-400"
+              />
+            </div>
+          </div>
+
+          <!-- Stage Filter -->
+          <div class="w-full lg:w-64">
+            <label for="stage" class="block text-sm font-semibold text-dark-gray mb-2">
+              Filter by Stage
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-filter text-gray-400"></i>
+              </div>
+              <select
+                id="stage"
+                [formControl]="stageControl"
+                class="w-full pl-11 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple focus:border-transparent transition-all bg-white text-dark-gray appearance-none cursor-pointer"
+              >
+                <option *ngFor="let stage of stages" [value]="stage.value">
+                  {{ stage.label }}
+                </option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <i class="fas fa-chevron-down text-gray-400 text-sm"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clear Filters Button -->
+          <button 
+            *ngIf="searchControl.value || stageControl.value"
+            (click)="clearFilters()" 
+            class="px-5 py-3 text-sm font-medium text-purple bg-purple-50 hover:bg-purple-100 rounded-xl transition-colors flex items-center gap-2 whitespace-nowrap border border-transparent hover:border-purple-100"
+          >
+            <i class="fas fa-times-circle"></i>
+            Clear Filters
+          </button>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="mt-4 flex items-center justify-between text-sm">
+          <span *ngIf="!loading" class="text-gray-600">
+            Showing <span class="font-semibold text-purple">{{ applications.length }}</span> of 
+            <span class="font-semibold text-purple">{{ totalItems }}</span> applications
+          </span>
+          <span *ngIf="loading" class="text-gray-500 flex items-center">
+            <i class="fas fa-circle-notch fa-spin mr-2"></i>
+            Updating records...
+          </span>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="flex justify-center items-center py-32 bg-white">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-16 w-16 border-4 border-lavender border-t-purple mx-auto mb-4"></div>
+          <p class="text-gray-600 font-medium">Loading your applications...</p>
+        </div>
+      </div>
+
+      <!-- Applications Grid -->
+      <div *ngIf="!loading && applications.length > 0" class="p-6 bg-white theme-transition">
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div *ngFor="let app of applications" class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-xl hover:scale-[1.01] transition-all duration-300 application-card group">
+            <div class="p-6">
+              <!-- Company Header -->
+              <div class="flex items-start gap-4 mb-5">
+                <div class="relative">
+                  <img 
+                    [src]="app.companyLogo ? baseUrl+app.companyLogo : '/profileimages/logodefault.jpg'" 
+                    [alt]="app.companyName"
+                    class="w-14 h-14 rounded-xl object-cover border border-gray-100 shadow-sm logo-animate"
+                  />
+                  <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full" *ngIf="app.applicationStatus"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-bold text-dark-gray truncate group-hover:text-purple transition-colors">{{ app.jobRole }}</h3>
+                  <p class="text-sm font-medium text-purple-700 truncate mb-2">{{ app.companyName }}</p>
+                  <span [ngClass]="getStatusColor(app.Stages)" class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap shadow-sm">
+                    {{ app.Stages | titlecase }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Info Stack -->
+              <div class="space-y-3.5 mb-6">
+                <div class="flex items-center text-sm text-gray-600">
+                  <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 text-gray-400 group-hover:bg-lavender group-hover:text-purple transition-colors">
+                    <i class="fas fa-map-marker-alt text-xs"></i>
+                  </div>
+                  <span class="truncate font-medium">{{ app.jobLocation.join(', ') }}</span>
+                </div>
+                
+                <div class="flex items-center text-sm text-gray-600">
+                  <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 text-gray-400 group-hover:bg-lavender group-hover:text-purple transition-colors">
+                    <i class="fas fa-briefcase text-xs"></i>
+                  </div>
+                  <span class="font-medium">{{ getJobTypeLabel(app.jobType) }}</span>
+                </div>
+
+                <div class="flex items-center text-sm text-gray-600">
+                  <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 text-gray-400 group-hover:bg-lavender group-hover:text-purple transition-colors">
+                    <i class="fas fa-calendar-alt text-xs"></i>
+                  </div>
+                  <span class="font-medium text-gray-500">Applied {{ app.createdAt | date:'mediumDate' }}</span>
+                </div>
+                
+                <!-- ATS Section -->
+                <div class="pt-2">
+                  <div class="flex justify-between items-center text-xs font-bold text-gray-500 mb-2">
+                    <span class="flex items-center">
+                      <i class="fas fa-chart-line mr-1.5 text-purple opacity-70"></i>
+                      ATS SCORE
+                    </span>
+                    <span class="text-purple">{{ app.atsScore }}%</span>
+                  </div>
+                  <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden shadow-inner">
+                    <div 
+                      class="bg-purple h-full rounded-full transition-all duration-1000 ease-out" 
+                      [style.width.%]="app.atsScore"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Footer -->
+              <div class="pt-5 flex items-center justify-between border-t border-gray-100 mt-2">
+                <div class="flex flex-col">
+                  <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-0.5">Last update</span>
+                  <span class="text-xs text-gray-500 font-medium">{{ app.updatedAt | date:'shortTime' }}, {{ app.updatedAt | date:'MMMM d' }}</span>
+                </div>
+                <button 
+                  [routerLink]="['../joblist/applications', app.jobId, 'viewapplication', app._id]"
+                  class="text-sm font-bold text-purple hover:text-hover-purpule transition-colors flex items-center gap-1.5 px-1 py-1"
+                >
+                  View Application Details
+                  <i class="fas fa-arrow-right text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading && applications.length === 0" class="text-center py-32 bg-white">
+        <div class="mb-6 relative inline-block">
+          <div class="absolute -inset-4 bg-lavender rounded-full animate-pulse opacity-50"></div>
+          <i class="fas fa-folder-open text-6xl text-purple opacity-40 relative"></i>
+        </div>
+        <h3 class="text-xl font-bold text-dark-gray">No applications found</h3>
+        <p class="text-gray-500 mt-2 max-w-sm mx-auto">
+          {{ searchControl.value || stageControl.value ? 'We couldn\'t find any applications matching your current filter settings.' : 'You haven\'t applied to any jobs yet. Start your journey today!' }}
+        </p>
+        <button 
+          *ngIf="!searchControl.value && !stageControl.value"
+          [routerLink]="['../joblist']" 
+          class="mt-8 inline-flex items-center px-8 py-3.5 border border-transparent text-sm font-bold rounded-xl shadow-lg text-white bg-purple hover:bg-hover-purpule transition-all hover:scale-105"
+        >
+          <i class="fas fa-search mr-2"></i>
+          Explore Opportunities
+        </button>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="!loading && applications.length > 0 && totalPages > 1" class="px-6 py-6 border-t border-gray-200 bg-gray-50 theme-transition">
+        <nav class="flex justify-center" aria-label="Pagination">
+          <div class="inline-flex rounded-xl shadow-sm overflow-hidden border border-gray-200">
+            <!-- Previous Button -->
+            <button
+              (click)="onPageChange(currentPage - 1)"
+              [disabled]="currentPage === 1"
+              class="relative inline-flex items-center px-4 py-2 bg-white text-sm font-semibold text-dark-gray hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border-r border-gray-200"
+            >
+              <i class="fas fa-chevron-left mr-2 text-xs"></i>
+              Previous
+            </button>
+
+            <!-- Page Numbers -->
+            <button
+              *ngFor="let page of getPaginationRange()"
+              (click)="onPageChange(page)"
+              [class.bg-purple]="page === currentPage"
+              [class.text-white]="page === currentPage"
+              [class.bg-white]="page !== currentPage"
+              [class.text-dark-gray]="page !== currentPage"
+              class="relative inline-flex items-center px-4 py-2 text-sm font-bold hover:bg-lavender hover:text-purple transition-colors"
+            >
+              {{ page }}
+            </button>
+
+            <!-- Next Button -->
+            <button
+              (click)="onPageChange(currentPage + 1)"
+              [disabled]="currentPage === totalPages"
+              class="relative inline-flex items-center px-4 py-2 bg-white text-sm font-semibold text-dark-gray hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border-l border-gray-200"
+            >
+              Next
+              <i class="fas fa-chevron-right ml-2 text-xs"></i>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
