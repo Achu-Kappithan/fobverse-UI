@@ -88,11 +88,12 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
+          console.log('My Applications Response:', response);
           this.applications = response.data;
-          this.currentPage = response.currentPage;
-          this.totalPages = response.totalPages;
-          this.totalItems = response.totalItems;
-          this.itemsPerPage = response.itemsPerPage;
+          this.currentPage = response.meta.currentPage;
+          this.totalPages = response.meta.totalPages;
+          this.totalItems = response.meta.totalItems;
+          this.itemsPerPage = response.meta.itemsPerPage;
           this.loading = false;
           this._cdr.detectChanges()
         },
@@ -114,10 +115,16 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
 
   getStatusColor(stage: string): string {
     switch (stage.toLowerCase()) {
-      case 'hired': return 'bg-green-100 text-green-800';
-      case 'shortlisted': return 'bg-blue-100 text-blue-800';
-      case 'technical_analysis': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'hired':
+        return 'bg-green-100 text-green-800 border-green-200 border';
+      case 'shortlisted':
+        return 'bg-blue-100 text-blue-800 border-blue-200 border';
+      case 'technical_analysis':
+        return 'bg-purple-50 text-purple-700 border-purple-100 border';
+      case 'rejected':
+        return 'bg-red-100 text-red-800 border-red-200 border';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200 border';
     }
   }
 
@@ -133,9 +140,11 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   }
 
   clearFilters(): void {
-    this.searchControl.setValue('');
-    this.stageControl.setValue('');
+    this.itemsPerPage = 6;
     this.currentPage = 1;
+    this.searchControl.setValue('', { emitEvent: false });
+    this.stageControl.setValue('', { emitEvent: false });
+    this.loadApplications();
     this._cdr.detectChanges();
   }
 

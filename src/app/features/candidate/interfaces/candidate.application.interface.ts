@@ -16,14 +16,6 @@ export interface CandidateApplication {
   companyId: string;
 }
 
-export interface ApplicationsResponse {
-  data: CandidateApplication[];
-  message: string;
-  currentPage: number;
-  totalItems: number;
-  totalPages: number;
-  itemsPerPage: number;
-}
 
 export interface ApplicationQueryParams {
   page?: number;
