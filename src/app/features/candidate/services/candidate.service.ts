@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
 import { ApiResponce, PaginatedResponse, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
-import { companyListParamsInterface } from '../interfaces/candidate.companylist.interface';
+import {
+  ComapnyProfileInterface,
+  companyListParamsInterface,
+} from '../interfaces/candidate.companylist.interface';
 import { ApplicationQueryParams, CandidateApplication } from '../interfaces/candidate.application.interface';
 
 @Injectable({
@@ -72,7 +75,7 @@ export class CandidateService {
 
   getAllCompanies(
     params: companyListParamsInterface,
-  ): Observable<any> {
+  ): Observable<PaginatedResponse<ComapnyProfileInterface[]>> {
     let httpParams = new HttpParams();
 
     if (params.search) {
@@ -85,7 +88,7 @@ export class CandidateService {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
 
-    return this._http.get<any>(
+    return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
       '/api/candidate/all-companies',
       { params: httpParams },
     );

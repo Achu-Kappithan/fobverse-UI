@@ -177,7 +177,6 @@ export class ApplicationDetails implements OnInit {
 
     if (index < this.currentStageIndex) return 'completed';
     if (index === this.currentStageIndex) {
-      // If candidate is hired, the last stage (index 3) should show as completed
       if (index === 3 && (this.applicationDetails?.Stages as any) === Stages.Hired) {
         return 'completed';
       }

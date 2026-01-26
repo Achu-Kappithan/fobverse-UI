@@ -5,6 +5,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { CandidateApplication, ApplicationQueryParams } from '../../interfaces/candidate.application.interface';
+import { PaginatedResponse } from '../../../../shared/interfaces/apiresponce.interface';
 import { environment } from '../../../../../env/environment';
 
 @Component({
@@ -87,7 +88,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     this._candidateService.getMyApplications(params)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response) => {
+        next: (response: PaginatedResponse<CandidateApplication[]>) => {
           console.log('My Applications Response:', response);
           this.applications = response.data;
           this.currentPage = response.meta.currentPage;
