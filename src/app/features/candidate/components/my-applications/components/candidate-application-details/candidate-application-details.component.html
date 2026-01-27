@@ -1,0 +1,203 @@
+<div class="min-h-screen bg-lavender py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Back Button -->
+    <div class="mb-6">
+      <button 
+        [routerLink]="['/candidate/my-applications']" 
+        class="inline-flex items-center text-purple font-bold hover:text-hover-purpule transition-colors"
+      >
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to Applications
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-purple border-t-transparent"></div>
+    </div>
+
+    <div *ngIf="!isLoading && application" class="space-y-6">
+      <!-- Header Card -->
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+        <div class="flex flex-col md:flex-row md:items-center gap-6">
+          <img 
+            [src]="application.atsStage.profile?.profileUrl ? (application.atsStage.profile.profileUrl.startsWith('http') ? application.atsStage.profile.profileUrl : (baseUrl + application.atsStage.profile.profileUrl)) : '/profileimages/logodefault.jpg'" 
+            [alt]="application.atsStage.name"
+            class="w-20 h-20 rounded-2xl object-cover shadow-md border border-gray-50"
+          />
+          <div class="flex-1">
+            <h1 class="text-3xl font-extrabold text-dark-gray mb-1">Application for Job</h1>
+            <p class="text-xl font-medium text-purple mb-4">Candidate: {{ application.atsStage.name }}</p>
+            <div class="flex flex-wrap gap-3">
+              <span [ngClass]="getStatusColor(application.atsStage.Stages)" class="px-4 py-1.5 rounded-full text-sm font-bold tracking-wide shadow-sm">
+                {{ application.atsStage.Stages | titlecase }}
+              </span>
+              <span class="flex items-center gap-2 text-gray-500 bg-gray-50 px-4 py-1.5 rounded-full text-sm font-medium border border-gray-100">
+                <i class="fas fa-envelope text-purple opacity-70"></i>
+                {{ application.atsStage.email }}
+              </span>
+              <span class="flex items-center gap-2 text-gray-500 bg-gray-50 px-4 py-1.5 rounded-full text-sm font-medium border border-gray-100">
+                <i class="fas fa-phone text-purple opacity-70"></i>
+                {{ application.atsStage.phone }}
+              </span>
+            </div>
+          </div>
+          <div class="text-right hidden md:block">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Applied On</p>
+            <p class="text-lg font-bold text-dark-gray">{{ application.atsStage.createdAt | date:'mediumDate' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Tabs/Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column: Quick Info -->
+        <div class="lg:col-span-1 space-y-6">
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-50">
+            <h3 class="text-lg font-bold text-dark-gray mb-4">Application Details</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between items-center text-sm mb-2">
+                  <span class="font-bold text-gray-500">ATS Match Score</span>
+                  <span class="font-extrabold text-purple">{{ application.atsStage.atsScore }}%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden shadow-inner">
+                  <div 
+                    class="bg-gradient-to-r from-purple to-indigo-500 h-full rounded-full transition-all duration-1000" 
+                    [style.width.%]="application.atsStage.atsScore"
+                  ></div>
+                </div>
+                <p class="text-[11px] text-gray-400 mt-2 italic">Minimum criteria: {{ application.atsStage.atsCriteria }}%</p>
+              </div>
+              <div class="pt-2">
+                <p class="text-xs font-bold text-gray-400 uppercase mb-2">Qualification</p>
+                <p class="text-sm text-dark-gray">{{ application.atsStage.qualification | titlecase }}</p>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-gray-400 uppercase mb-2">Experience</p>
+                <p class="text-sm text-dark-gray">{{ application.atsStage.experience }} Years</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-50">
+            <h3 class="text-lg font-bold text-dark-gray mb-4">Documents</h3>
+            <a [href]="application.atsStage.resumeUrl.startsWith('http') ? application.atsStage.resumeUrl : (baseUrl + application.atsStage.resumeUrl)" target="_blank" class="flex items-center gap-4 p-3 rounded-xl border border-dashed border-purple/30 bg-purple/5 hover:bg-purple/10 transition-colors group">
+              <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-purple text-xl group-hover:scale-110 transition-transform">
+                <i class="fas fa-file-pdf"></i>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-dark-gray">Resume.pdf</p>
+                <p class="text-xs text-purple">View Document</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Hiring Status & Current Stage (Tabbed) -->
+        <div class="lg:col-span-2 space-y-6">
+           <!-- Classic Tab Header -->
+           <div class="border-b border-gray-200 flex gap-8 px-2">
+             <button 
+               (click)="switchTab('progress')"
+               [class.active-tab]="currentTab === 'progress'"
+               class="pb-3 text-sm font-bold transition-all duration-300 flex items-center gap-2 relative group"
+               [ngClass]="currentTab === 'progress' ? 'text-purple' : 'text-gray-400 hover:text-gray-600'"
+             >
+               <i class="fas fa-route text-xs"></i>
+               INTERVIEW PROGRESS
+               <div *ngIf="currentTab === 'progress'" class="absolute bottom-0 left-0 w-full h-0.5 bg-purple rounded-full"></div>
+             </button>
+             
+             <button 
+               (click)="switchTab('current')"
+               *ngIf="getCurrentStageData()"
+               [class.active-tab]="currentTab === 'current'"
+               class="pb-3 text-sm font-bold transition-all duration-300 flex items-center gap-2 relative group"
+               [ngClass]="currentTab === 'current' ? 'text-purple' : 'text-gray-400 hover:text-gray-600'"
+             >
+               <i class="fas fa-clock text-xs"></i>
+               CURRENT STAGE
+               <div *ngIf="currentTab === 'current'" class="absolute bottom-0 left-0 w-full h-0.5 bg-purple rounded-full"></div>
+             </button>
+           </div>
+
+           <!-- Progress View -->
+           <div *ngIf="currentTab === 'progress'" class="animate-fade-in">
+             <app-candidate-hiring-status 
+               [applicationId]="applicationId" 
+               [status]="application.atsStage.Stages"
+               [fullData]="application"
+             ></app-candidate-hiring-status>
+           </div>
+
+           <!-- Current Stage Details View -->
+           <div *ngIf="currentTab === 'current' && getCurrentStageData() as stageData" class="animate-fade-in">
+             <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+               <div class="flex items-start gap-4">
+                 <div class="w-12 h-12 rounded-xl bg-purple flex items-center justify-center text-white shrink-0 shadow-lg shadow-purple/20">
+                   <i class="fas" [ngClass]="stageData.stage === 'shortlisted' ? 'fa-phone-alt' : 'fa-video'"></i>
+                 </div>
+                 <div class="flex-1">
+                   <div class="flex justify-between items-center mb-1">
+                     <h3 class="text-xl font-bold text-dark-gray">Current Status: {{ stageData.stage === 'shortlisted' ? 'Telephonic Interview' : 'Technical Interview' }}</h3>
+                     <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-bold uppercase tracking-wider">Scheduled</span>
+                   </div>
+                   <p class="text-gray-600 mb-6">You have an upcoming interview. Please find the details below:</p>
+                   
+                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                     <div class="flex items-center gap-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100">
+                       <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-purple shadow-sm">
+                         <i class="far fa-calendar-alt text-lg"></i>
+                       </div>
+                       <div>
+                         <span class="block text-[10px] uppercase font-bold text-gray-400">Date</span>
+                         <span class="font-bold text-base">{{ stageData.scheduledDate | date:'fullDate' }}</span>
+                       </div>
+                     </div>
+                     <div class="flex items-center gap-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100">
+                       <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-purple shadow-sm">
+                         <i class="far fa-clock text-lg"></i>
+                       </div>
+                       <div>
+                         <span class="block text-[10px] uppercase font-bold text-gray-400">Time</span>
+                         <span class="font-bold text-base">{{ stageData.scheduledTime }}</span>
+                       </div>
+                     </div>
+                     <div class="flex items-center gap-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100">
+                       <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-purple shadow-sm">
+                         <i class="fas fa-users text-lg"></i>
+                       </div>
+                       <div>
+                         <span class="block text-[10px] uppercase font-bold text-gray-400">Interviewers</span>
+                         <span class="font-bold text-base">{{ getEvaluatorNames(stageData.evaluators) }}</span>
+                       </div>
+                     </div>
+                     <div *ngIf="stageData.meetingLink" class="flex items-center gap-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100">
+                      <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-green-600 shadow-sm">
+                        <i class="fas fa-link text-lg"></i>
+                      </div>
+                      <div>
+                        <span class="block text-[10px] uppercase font-bold text-gray-400">Online Meeting</span>
+                        <a [routerLink]="['video-interview', stageData.meetingLink.split('/').pop()]" class="text-purple font-bold hover:underline text-base">Join Interview Room</a>
+                      </div>
+                    </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && !application" class="text-center py-20 bg-white rounded-2xl shadow-xl mt-6">
+      <i class="fas fa-search text-gray-200 text-7xl mb-4"></i>
+      <h2 class="text-2xl font-bold text-dark-gray">Application Not Found</h2>
+      <p class="text-gray-500 mt-2 max-w-sm mx-auto">We couldn't retrieve the details for this application. It may have been removed or you don't have access.</p>
+      <button [routerLink]="['../../../']" class="mt-8 px-8 py-3 bg-purple text-white font-bold rounded-xl shadow-lg hover:bg-hover-purpule transition-all">
+        Go Back
+      </button>
+    </div>
+  </div>
+</div>

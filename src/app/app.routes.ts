@@ -142,6 +142,29 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'joblist/applications/:jobId/viewapplication/:appId',
+        loadComponent: () =>
+          import(
+            './features/layout/video-layout-component/video-layout-component'
+          ).then((m) => m.VideoLayoutComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './features/candidate/components/my-applications/components/candidate-application-details/candidate-application-details.component'
+              ).then((m) => m.CandidateApplicationDetailsComponent),
+          },
+          {
+            path: 'video-interview/:roomId',
+            loadComponent: () =>
+              import(
+                './features/video-interview/video-interview.component'
+              ).then((m) => m.VideoInterviewComponent),
+          },
+        ],
+      },
+      {
         path: 'joblist/companyprofile',
         loadComponent: () =>
           import(

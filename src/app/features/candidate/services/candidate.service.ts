@@ -4,8 +4,11 @@ import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
 import { ApiResponce, PaginatedResponse, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
-import { companyListParamsInterface } from '../interfaces/candidate.companylist.interface';
-import { ApplicationQueryParams, CandidateApplication } from '../interfaces/candidate.application.interface';
+import {
+  ComapnyProfileInterface,
+  companyListParamsInterface,
+} from '../interfaces/candidate.companylist.interface';
+import { ApplicationQueryParams, CandidateApplication, DetailedApplicationResponse } from '../interfaces/candidate.application.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +75,7 @@ export class CandidateService {
 
   getAllCompanies(
     params: companyListParamsInterface,
-  ): Observable<any> {
+  ): Observable<PaginatedResponse<ComapnyProfileInterface[]>> {
     let httpParams = new HttpParams();
 
     if (params.search) {
@@ -85,7 +88,7 @@ export class CandidateService {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
 
-    return this._http.get<any>(
+    return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
       '/api/candidate/all-companies',
       { params: httpParams },
     );
@@ -112,4 +115,18 @@ export class CandidateService {
       { params: httpParams }
     );
   }
+
+  getAllStages(applicationId: string): Observable<ApiResponce<any>> {
+    return this._http.get<ApiResponce<any>>(
+      `/api/interview/all-stages`,
+      { params: { applicationId: applicationId } }
+    );
+  }
+
+  getApplicationDetails(applicationId: string): Observable<ApiResponce<DetailedApplicationResponse>> {
+    return this._http.get<ApiResponce<DetailedApplicationResponse>>(
+      `/api/candidate/application-details/${applicationId}`
+    );
+  }
 }
+
