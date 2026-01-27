@@ -8,7 +8,7 @@ import {
   ComapnyProfileInterface,
   companyListParamsInterface,
 } from '../interfaces/candidate.companylist.interface';
-import { ApplicationQueryParams, CandidateApplication } from '../interfaces/candidate.application.interface';
+import { ApplicationQueryParams, CandidateApplication, DetailedApplicationResponse } from '../interfaces/candidate.application.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -115,4 +115,18 @@ export class CandidateService {
       { params: httpParams }
     );
   }
+
+  getAllStages(applicationId: string): Observable<ApiResponce<any>> {
+    return this._http.get<ApiResponce<any>>(
+      `/api/interview/all-stages`,
+      { params: { applicationId: applicationId } }
+    );
+  }
+
+  getApplicationDetails(applicationId: string): Observable<ApiResponce<DetailedApplicationResponse>> {
+    return this._http.get<ApiResponce<DetailedApplicationResponse>>(
+      `/api/candidate/application-details/${applicationId}`
+    );
+  }
 }
+

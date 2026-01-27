@@ -142,6 +142,13 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'joblist/applications/:jobId/viewapplication/:appId',
+        loadComponent: () =>
+          import(
+            './features/candidate/components/my-applications/components/candidate-application-details/candidate-application-details.component'
+          ).then((m) => m.CandidateApplicationDetailsComponent),
+      },
+      {
         path: 'joblist/companyprofile',
         loadComponent: () =>
           import(
