@@ -69,7 +69,10 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
         stageType: 'qualified',
         date: this.formatDate(data.atsStage.createdAt),
         status: 'Completed',
-        description: `Your application has been qualified for this position with an ATS score of ${data.atsStage.atsScore}.`
+        result: data.atsStage.Rejected ? 'Fail' : 'Pass',
+        description: data.atsStage.Rejected 
+          ? `Your application has been rejected for this position.` 
+          : `Your application has been qualified for this position with an ATS score of ${data.atsStage.atsScore}.`
       };
       this.journeyData.push(atsStage);
     }

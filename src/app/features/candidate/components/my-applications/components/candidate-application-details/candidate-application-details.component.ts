@@ -57,6 +57,9 @@ export class CandidateApplicationDetailsComponent implements OnInit {
   }
 
   getStatusColor(stage: string | undefined): string {
+    if (this.application?.atsStage?.Rejected) {
+      return 'bg-red-100 text-red-800 border-red-200 border';
+    }
     if (!stage) return 'bg-gray-100 text-gray-800 border-gray-200 border';
     switch (stage.toLowerCase()) {
       case 'hired':
