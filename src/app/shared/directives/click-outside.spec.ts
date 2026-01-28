@@ -1,8 +1,10 @@
-import { ClickOutside } from './click-outside';
+import { ClickOutsideDirective } from './click-outside';
 
-describe('ClickOutside', () => {
+describe('ClickOutsideDirective', () => {
   it('should create an instance', () => {
-    const directive = new ClickOutside();
+    // Note: In Angular, directives usually need an ElementRef to be instantiated.
+    // However, for a simple 'should create' test, we can mock it if needed.
+    const directive = new ClickOutsideDirective({ nativeElement: document.createElement('div') } as any);
     expect(directive).toBeTruthy();
   });
 });
