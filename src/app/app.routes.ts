@@ -113,10 +113,38 @@ export const routes: Routes = [
       },
       {
         path: 'my-applications',
-        loadComponent: () =>
-          import(
-            './features/candidate/components/my-applications/my-applications'
-          ).then((m) => m.MyApplicationsComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './features/candidate/components/my-applications/my-applications'
+              ).then((m) => m.MyApplicationsComponent),
+          },
+          {
+            path: 'applications/:jobId/viewapplication/:appId',
+            loadComponent: () =>
+              import(
+                './features/layout/video-layout-component/video-layout-component'
+              ).then((m) => m.VideoLayoutComponent),
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  import(
+                    './features/candidate/components/my-applications/components/candidate-application-details/candidate-application-details.component'
+                  ).then((m) => m.CandidateApplicationDetailsComponent),
+              },
+              {
+                path: 'video-interview/:roomId',
+                loadComponent: () =>
+                  import(
+                    './features/video-interview/video-interview.component'
+                  ).then((m) => m.VideoInterviewComponent),
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'joblist',
@@ -142,41 +170,23 @@ export const routes: Routes = [
         ],
       },
       {
-        path: 'joblist/applications/:jobId/viewapplication/:appId',
-        loadComponent: () =>
-          import(
-            './features/layout/video-layout-component/video-layout-component'
-          ).then((m) => m.VideoLayoutComponent),
+        path: 'companylist',
         children: [
           {
             path: '',
             loadComponent: () =>
               import(
-                './features/candidate/components/my-applications/components/candidate-application-details/candidate-application-details.component'
-              ).then((m) => m.CandidateApplicationDetailsComponent),
+                './features/candidate/components/candidate-companylist/candidate-companylist'
+              ).then((m) => m.CandidateCompanylist),
           },
           {
-            path: 'video-interview/:roomId',
+            path: 'companyprofile',
             loadComponent: () =>
               import(
-                './features/video-interview/video-interview.component'
-              ).then((m) => m.VideoInterviewComponent),
+                './features/company/components/company-public-profile/company-public-profile'
+              ).then((m) => m.CompanyPublicProfile),
           },
         ],
-      },
-      {
-        path: 'joblist/companyprofile',
-        loadComponent: () =>
-          import(
-            './features/company/components/company-public-profile/company-public-profile'
-          ).then((m) => m.CompanyPublicProfile),
-      },
-      {
-        path: 'companylist',
-        loadComponent: () =>
-          import(
-            './features/candidate/components/candidate-companylist/candidate-companylist'
-          ).then((m) => m.CandidateCompanylist),
       },
     ],
   },
