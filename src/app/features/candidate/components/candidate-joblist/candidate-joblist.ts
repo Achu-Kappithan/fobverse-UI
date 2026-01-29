@@ -20,8 +20,8 @@ export class CandidateJoblist  implements OnInit {
   baseUrl:string = environment.cloudinaryBaseUrl
   listView:boolean = false
   isLoading:boolean = false
-  openModals = new Map<string,boolean>()
-  selectedJobDetailsMap = new Map<string, CandidateJobsInterface>()
+  isApplyModalOpen: boolean = false;
+  selectedJob: CandidateJobsInterface | null = null;
 
   jobList:CandidateJobsInterface[] = []
 
@@ -33,20 +33,20 @@ export class CandidateJoblist  implements OnInit {
   selectedDueDate: string | null = null;
 
   availableJobTypes = [
-    { name: CandidatejobType.FullTime, count: '?' }, 
-    { name: CandidatejobType.PartTmime, count: '?' },
-    { name: CandidatejobType.OnSite, count: '?' },
-    { name: CandidatejobType.Remote, count: '?'}
+    { name: CandidatejobType.FullTime }, 
+    { name: CandidatejobType.PartTime },
+    { name: CandidatejobType.OnSite },
+    { name: CandidatejobType.Remote }
   ];
 
   salaryRanges = [
     { label: 'Any', min: null, max: null },
-    { label: '$0 - 20k', min: 0, max: 20000 },
-    { label: '$20k - 40k', min: 20000, max: 40000 },
-    { label: '$40k - 60k', min: 40000, max: 60000 },
-    { label: '$60k - 80k', min: 60000, max: 80000 },
-    { label: '$80k - 100k', min: 80000, max: 100000 },
-    { label: '$100k+', min: 100000, max: null },
+    { label: '₹0 - 20k', min: 0, max: 20000 },
+    { label: '₹20k - 40k', min: 20000, max: 40000 },
+    { label: '₹40k - 60k', min: 40000, max: 60000 },
+    { label: '₹60k - 80k', min: 60000, max: 80000 },
+    { label: '₹80k - 100k', min: 80000, max: 100000 },
+    { label: '₹100k+', min: 100000, max: null },
   ];
   selectedSalaryRangeOption: { label: string, min: number | null, max: number | null } = this.salaryRanges[0];
 
@@ -165,21 +165,17 @@ export class CandidateJoblist  implements OnInit {
   }
 
   toggleModal(jobId: string, job: CandidateJobsInterface): void {
-    const currentState = this.openModals.get(jobId);
-    this.openModals.set(jobId, !currentState);
-    if (!currentState) {
-      this.selectedJobDetailsMap.set(jobId, job);
-    } else {
-      this.selectedJobDetailsMap.delete(jobId); 
-    }
+    this.selectedJob = job;
+    this.isApplyModalOpen = true;
   }
 
-  isModalOpen(jobId:string):boolean{
-    return this.openModals.get(jobId) || false
+  isModalOpen(jobId: string): boolean {
+    return this.isApplyModalOpen && this.selectedJob?._id === jobId;
   }
 
-  closeModal(jobId: string): void {
-    this.openModals.set(jobId, false);
+  closeModal(): void {
+    this.isApplyModalOpen = false;
+    this.selectedJob = null;
   }
 
 

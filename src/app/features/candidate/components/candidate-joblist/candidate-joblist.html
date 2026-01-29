@@ -139,9 +139,6 @@
                     class="mr-2 accent-purple-600"
                   />
                   <span class="text-gray-600">{{ type.name }}</span>
-                  <span class="ml-auto text-sm text-gray-500"
-                    >{{ type.count }}</span
-                  >
                 </label>
               </div>
             </div>
@@ -189,7 +186,7 @@
               >
                 <div class="flex items-start space-x-4">
                   <div
-                    [routerLink]="['companyprofile']"
+                  [routerLink]="['/candidate/companylist/companyprofile']"
                     [queryParams]="{id:job.companyId?._id}"
                     class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center overflow-hidden logo-animate group-hover:scale-110 group-hover:rotate-2 shadow-sm"
                   >
@@ -257,12 +254,6 @@
                     Apply now
                   </button>
                 </div>
-                <app-candidate-applyjob
-                  [isOpen]="isModalOpen(job._id!)"
-                  [uniqueIdentifier]="job._id!"
-                  (close)="closeModal(job._id!)"
-                  [jobDetails]="selectedJobDetailsMap.get(job._id!)"
-                ></app-candidate-applyjob>
               </div>
             </div>
           </div>
@@ -308,7 +299,7 @@
               </div>
 
               <div
-                [routerLink]="['companyprofile']"
+                [routerLink]="['/candidate/companylist/companyprofile']"
                 [queryParams]="{id:job.companyId?._id}"
                 class="flex items-center mb-4"
               >
@@ -345,7 +336,7 @@
                       <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/CD7F32/000000?text=C" alt="Avatar 3">
                     </div> -->
                 <span class="text-gray-600 text-sm"
-                  >{{ job.vacancies }} applicants</span
+                  >{{ job.vacancies }} vacancies</span
                 >
               </div>
 
@@ -363,12 +354,6 @@
                 >
                   Apply now
                 </button>
-                <app-candidate-applyjob
-                  [isOpen]="isModalOpen(job._id!)"
-                  [uniqueIdentifier]="job._id!"
-                  (close)="closeModal(job._id!)"
-                  [jobDetails]="selectedJobDetailsMap.get(job._id!)"
-                ></app-candidate-applyjob>
               </div>
             </div>
           </div>
@@ -406,5 +391,13 @@
     </div>
   </div>
 </div>
+
+<app-candidate-applyjob
+    *ngIf="isApplyModalOpen"
+    [isOpen]="isApplyModalOpen"
+    [uniqueIdentifier]="selectedJob?._id || ''"
+    (close)="closeModal()"
+    [jobDetails]="selectedJob!"
+></app-candidate-applyjob>
 
 
