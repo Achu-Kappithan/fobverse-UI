@@ -20,8 +20,8 @@ export class CandidateJoblist  implements OnInit {
   baseUrl:string = environment.cloudinaryBaseUrl
   listView:boolean = false
   isLoading:boolean = false
-  openModals = new Map<string,boolean>()
-  selectedJobDetailsMap = new Map<string, CandidateJobsInterface>()
+  isApplyModalOpen: boolean = false;
+  selectedJob: CandidateJobsInterface | null = null;
 
   jobList:CandidateJobsInterface[] = []
 
@@ -165,21 +165,17 @@ export class CandidateJoblist  implements OnInit {
   }
 
   toggleModal(jobId: string, job: CandidateJobsInterface): void {
-    const currentState = this.openModals.get(jobId);
-    this.openModals.set(jobId, !currentState);
-    if (!currentState) {
-      this.selectedJobDetailsMap.set(jobId, job);
-    } else {
-      this.selectedJobDetailsMap.delete(jobId); 
-    }
+    this.selectedJob = job;
+    this.isApplyModalOpen = true;
   }
 
-  isModalOpen(jobId:string):boolean{
-    return this.openModals.get(jobId) || false
+  isModalOpen(jobId: string): boolean {
+    return this.isApplyModalOpen && this.selectedJob?._id === jobId;
   }
 
-  closeModal(jobId: string): void {
-    this.openModals.set(jobId, false);
+  closeModal(): void {
+    this.isApplyModalOpen = false;
+    this.selectedJob = null;
   }
 
 

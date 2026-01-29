@@ -257,12 +257,6 @@
                     Apply now
                   </button>
                 </div>
-                <app-candidate-applyjob
-                  [isOpen]="isModalOpen(job._id!)"
-                  [uniqueIdentifier]="job._id!"
-                  (close)="closeModal(job._id!)"
-                  [jobDetails]="selectedJobDetailsMap.get(job._id!)"
-                ></app-candidate-applyjob>
               </div>
             </div>
           </div>
@@ -363,12 +357,6 @@
                 >
                   Apply now
                 </button>
-                <app-candidate-applyjob
-                  [isOpen]="isModalOpen(job._id!)"
-                  [uniqueIdentifier]="job._id!"
-                  (close)="closeModal(job._id!)"
-                  [jobDetails]="selectedJobDetailsMap.get(job._id!)"
-                ></app-candidate-applyjob>
               </div>
             </div>
           </div>
@@ -406,5 +394,13 @@
     </div>
   </div>
 </div>
+
+<app-candidate-applyjob
+    *ngIf="isApplyModalOpen"
+    [isOpen]="isApplyModalOpen"
+    [uniqueIdentifier]="selectedJob?._id || ''"
+    (close)="closeModal()"
+    [jobDetails]="selectedJob!"
+></app-candidate-applyjob>
 
 

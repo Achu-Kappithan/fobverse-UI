@@ -23,13 +23,14 @@ import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface
 import { AuthService } from '../../../auth/services/auth.service';
 import { CandidateService } from '../../services/candidate.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
+import { ClickOutsideDirective } from '../../../../shared/directives/click-outside';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { QualificationOption } from '../../interfaces/candidate.interface';
 import { QualificationLevel } from '../../enums/candidate.enum';
 
 @Component({
   selector: 'app-candidate-applyjob',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ClickOutsideDirective],
   templateUrl: './candidate-applyjob.html',
   styleUrl: './candidate-applyjob.css',
 })
