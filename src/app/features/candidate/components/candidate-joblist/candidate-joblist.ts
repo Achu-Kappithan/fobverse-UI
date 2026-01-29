@@ -33,20 +33,20 @@ export class CandidateJoblist  implements OnInit {
   selectedDueDate: string | null = null;
 
   availableJobTypes = [
-    { name: CandidatejobType.FullTime, count: '?' }, 
-    { name: CandidatejobType.PartTmime, count: '?' },
-    { name: CandidatejobType.OnSite, count: '?' },
-    { name: CandidatejobType.Remote, count: '?'}
+    { name: CandidatejobType.FullTime }, 
+    { name: CandidatejobType.PartTime },
+    { name: CandidatejobType.OnSite },
+    { name: CandidatejobType.Remote }
   ];
 
   salaryRanges = [
     { label: 'Any', min: null, max: null },
-    { label: '$0 - 20k', min: 0, max: 20000 },
-    { label: '$20k - 40k', min: 20000, max: 40000 },
-    { label: '$40k - 60k', min: 40000, max: 60000 },
-    { label: '$60k - 80k', min: 60000, max: 80000 },
-    { label: '$80k - 100k', min: 80000, max: 100000 },
-    { label: '$100k+', min: 100000, max: null },
+    { label: '₹0 - 20k', min: 0, max: 20000 },
+    { label: '₹20k - 40k', min: 20000, max: 40000 },
+    { label: '₹40k - 60k', min: 40000, max: 60000 },
+    { label: '₹60k - 80k', min: 60000, max: 80000 },
+    { label: '₹80k - 100k', min: 80000, max: 100000 },
+    { label: '₹100k+', min: 100000, max: null },
   ];
   selectedSalaryRangeOption: { label: string, min: number | null, max: number | null } = this.salaryRanges[0];
 

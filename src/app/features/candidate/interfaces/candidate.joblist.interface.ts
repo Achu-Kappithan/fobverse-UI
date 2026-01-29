@@ -18,7 +18,7 @@ export interface jobsPagesAndFilterInterface {
 
 export enum CandidatejobType {
   FullTime = 'fulltime',
-  PartTmime = 'parttime',
+  PartTime = 'parttime',
   Remote = 'remote',
   OnSite = 'onsite'
 }
