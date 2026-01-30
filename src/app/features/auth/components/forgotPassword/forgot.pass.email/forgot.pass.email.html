@@ -39,9 +39,11 @@
 
             <button 
                 type="submit" 
-                class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition-colors duration-300 font-medium"
+                [disabled]="isLoading"
+                class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition-colors duration-300 font-medium flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-                Send Reset Link
+                <span *ngIf="isLoading" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                {{ isLoading ? 'Sending Link...' : 'Send Reset Link' }}
             </button>
             </form>
         </div>

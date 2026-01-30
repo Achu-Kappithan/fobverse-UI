@@ -24,6 +24,7 @@ export class SetNewPassword implements OnInit {
   showPassword = false;
   showConfirmPassword = false;
   verificationToken: string = '';
+  isLoading: boolean = false;
 
   private readonly _authService = inject(AuthService);
   private readonly _route = inject(ActivatedRoute);
@@ -68,6 +69,7 @@ export class SetNewPassword implements OnInit {
 
   onSubmit() {
     if (this.resetForm.valid) {
+      this.isLoading = true;
       const newPassword = this.resetForm.value.password;
       console.log('New password:', newPassword);
       const data = {
@@ -76,6 +78,7 @@ export class SetNewPassword implements OnInit {
       };
       this._authService.updateNewPassword(data).subscribe({
         next: (response) => {
+          this.isLoading = false;
           console.log('Updated Password Responce', response);
           if (response.success) {
             this._swal.showSuccessToast(response.message);
@@ -86,6 +89,7 @@ export class SetNewPassword implements OnInit {
           }
         },
         error: (error) => {
+          this.isLoading = false;
           console.log('error regading new password updation', error);
           this._swal.showErrorToast(error.error.message);
           this.resetForm.reset();

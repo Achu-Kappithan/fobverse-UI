@@ -192,9 +192,9 @@
                     </div>
                     <!-- Skills Container (for dynamically added tags) -->
                     <div id="skillsContainer" [formArrayName]="'skills'" class="flex flex-wrap gap-2">
-                        <div *ngFor="let skillControl of skills.controls; let i = index" class="flex items-center bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full shadow-sm">
-                            <input [formControlName]="i" type="text" class="bg-transparent outline-none text-purple-800" style="width: auto;" [class.border-red-500]="skillControl.invalid && (skillControl.dirty || skillControl.touched)">
-                            <button type="button" (click)="removeSkills(i)" class="ml-2 text-purple-600 hover:text-purple-800 focus:outline-none">
+                        <div *ngFor="let skillControl of skills.controls; let i = index" class="badge-pill badge-purple">
+                            <input [formControlName]="i" type="text" class="badge-input" style="width: auto;" [class.border-red-500]="skillControl.invalid && (skillControl.dirty || skillControl.touched)">
+                            <button type="button" (click)="removeSkills(i)" class="focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
@@ -223,9 +223,9 @@
                     </div>
                     <!-- Education Container (for dynamically added items) -->
                     <div id="educationContainer" [formArrayName]="'education'" class="space-y-2">
-                        <div *ngFor="let eduControl of education.controls; let i = index" class="flex items-center justify-between p-3 bg-gray-50 rounded-md border border-gray-200 shadow-sm">
-                            <input [formControlName]="i" type="text" class="flex-1 bg-transparent outline-none" [class.border-red-500]="eduControl.invalid && (eduControl.dirty || eduControl.touched)">
-                            <button type="button" (click)="removeEducation(i)" class="ml-2 text-red-600 hover:text-red-800">
+                        <div *ngFor="let eduControl of education.controls; let i = index" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
+                            <input [formControlName]="i" type="text" class="flex-1 !bg-transparent outline-none text-gray-800 dark:text-gray-200 font-medium" [class.border-red-500]="eduControl.invalid && (eduControl.dirty || eduControl.touched)">
+                            <button type="button" (click)="removeEducation(i)" class="ml-2 text-red-600 hover:text-red-800 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -254,9 +254,9 @@
                     </div>
                     <!-- Experience Container (for dynamically added items) -->
                     <div id="experienceContainer" [formArrayName]="'experience'" class="space-y-2">
-                        <div *ngFor="let expControl of experience.controls; let i = index" class="flex items-center justify-between p-3 bg-gray-50 rounded-md border border-gray-200 shadow-sm">
-                            <input [formControlName]="i" type="text" class="flex-1 bg-transparent outline-none" [class.border-red-500]="expControl.invalid && (expControl.dirty || expControl.touched)">
-                            <button type="button" (click)="removeExperience(i)" class="ml-2 text-red-600 hover:text-red-800">
+                        <div *ngFor="let expControl of experience.controls; let i = index" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
+                            <input [formControlName]="i" type="text" class="flex-1 !bg-transparent outline-none text-gray-800 dark:text-gray-200 font-medium" [class.border-red-500]="expControl.invalid && (expControl.dirty || expControl.touched)">
+                            <button type="button" (click)="removeExperience(i)" class="ml-2 text-red-600 hover:text-red-800 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --dark-mode: selector;
   --color-purple: #7a3ebb;
   --color-light-purple: #8567c1;
   --color-hover-purpule: #9f73f7;
@@ -9,6 +10,8 @@
   --color-dark-gray: #1a1a1a;
   --color-gray: #b0b0b0;
   --color-yellow-soft: #fff9db;
+  --color-dark-purple: #6a35a0;
+  --color-dark-lavender: #2d3748;
 }
 
 /* Base Font */
@@ -95,9 +98,48 @@ html.dark .text-yellow-soft {
   color: #ffffff;
 }
 
+.apply-btn {
+  background-color: #7a3ebb;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.apply-btn:hover {
+  background-color: #5c32e6;
+}
+
 html.dark .bg-hover-action:hover {
   background-color: #9f7aea; 
   color: #ffffff;
+}
+
+/* Specific theme classes for Login and Auth */
+.text-navy {
+  color: #252f4a;
+}
+html.dark .text-navy {
+  color: #e2e8f0;
+}
+
+.bg-purple-ultra-light {
+  background-color: #f7f3ff;
+}
+html.dark .bg-purple-ultra-light {
+  background-color: #1a1c2e;
+}
+
+.border-divider {
+  border-color: #dcdfe4;
+}
+html.dark .border-divider {
+  border-color: #374151;
+}
+
+.border-lavender-light {
+  border-color: #eae6ff;
+}
+html.dark .border-lavender-light {
+  border-color: #2d3748;
 }
 
 /* Dark mode border color */
@@ -411,6 +453,14 @@ html.dark .text-purple-700 {
   color: #c084fc;
 }
 
+.bg-purple-50 {
+  background-color: #f5f3ff;
+}
+
+.text-purple-700 {
+  color: #7c3aed;
+}
+
 /* Dark mode status badges - Green */
 html.dark .bg-green-100 {
   background-color: rgba(6, 78, 59, 0.3);
@@ -487,3 +537,47 @@ html.dark .border-blue-200 {
   border-color: #1e3a8a;
 }
 
+
+/* Custom Badge Pill Styles */
+.badge-pill {
+    display: flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+
+.badge-purple {
+    background-color: #f3e8ff; /* purple-100 */
+    color: #581c87; /* purple-900 - Darker for better contrast */
+}
+
+html.dark .badge-purple {
+    background-color: rgba(88, 28, 135, 0.3); /* purple-900 with alpha */
+    color: #ddd6fe; /* purple-200 */
+}
+
+.badge-pill input {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: inherit !important;
+    width: auto;
+    font-weight: 500;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.badge-pill button {
+    margin-left: 0.5rem;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.badge-pill button:hover {
+    opacity: 1;
+}

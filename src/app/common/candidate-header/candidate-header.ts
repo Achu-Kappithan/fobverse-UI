@@ -71,6 +71,7 @@ export class CandidateHeader implements OnInit {
 
   closeModal(): void {
     this.opendModal = null;
+    this.isNotificationModalOpen = false;
     this._cdr.detectChanges();
   }
 

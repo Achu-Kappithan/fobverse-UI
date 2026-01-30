@@ -47,7 +47,6 @@ export class CandidateApplyjob implements OnInit {
   jobApplayForm!: FormGroup;
   selectedFileName: string = '';
   selectedFile: File | null = null;
-  userData :UserPartial | null = null
   isSubmitting: boolean = false;
 
   constructor(
@@ -56,23 +55,32 @@ export class CandidateApplyjob implements OnInit {
     private readonly _candidateService: CandidateService,
     private readonly _cloudinaryService: CloudinaryService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert
+    private readonly _swal: SweetAlert,
   ) {}
 
   ngOnInit(): void {
     this.initForm();
-    this.getUser();
-    this.populateForm();
     this.populateQualificationOptions()
     this.setupFormChanges()
 
     this._AuthService.candidate$.subscribe((val) => {
       this.currentUser = val;
+      if (val) {
+        this.jobApplayForm.patchValue(val);
+      }
     });
-  }
 
-  getUser(){
-    this._AuthService.candidate$.subscribe(val=> this.userData = val)
+    this._candidateService.GetPorfile().subscribe({
+      next: (res) => {
+        if (res.success && res.data) {
+          const phone = res.data.contactInfo?.find(c => c.type === 'phoneNumber')?.value;
+          if (phone) {
+            this.jobApplayForm.patchValue({ phone });
+          }
+          this._cdr.detectChanges();
+        }
+      }
+    });
   }
 
   initForm() {
@@ -81,7 +89,7 @@ export class CandidateApplyjob implements OnInit {
         '',
         [
           Validators.required,
-          Validators.maxLength(20),
+          Validators.maxLength(50),
           Validators.pattern(/^[a-zA-Z\s]*$/),
         ],
       ],
@@ -92,10 +100,6 @@ export class CandidateApplyjob implements OnInit {
       resume: [null, [Validators.required, this.fileValidator()]],
       useExistingResume: [false]
     });
-  }
-
-  populateForm(){
-    this.jobApplayForm.patchValue(this.userData!)
   }
 
   setupFormChanges() {
@@ -200,6 +204,7 @@ export class CandidateApplyjob implements OnInit {
         console.error('No resume selected and "use existing" not checked.');
         this._swal.showErrorToast('Please upload a resume or select "Use resume from my profile".');
         this.isSubmitting = false;
+        this._cdr.detectChanges()
         return;
       }
 
@@ -221,6 +226,7 @@ export class CandidateApplyjob implements OnInit {
             },
             error: (err) => {
               this.isSubmitting = false;
+              this._cdr.detectChanges()
               console.error('Error updating profile in backend:', err);
               this._swal.showErrorToast(
                 err.error?.message || 'Failed to apply for this role.'
@@ -230,6 +236,7 @@ export class CandidateApplyjob implements OnInit {
         },
         error: (err) => {
           this.isSubmitting = false;
+          this._cdr.detectChanges()
           console.error('Error during Cloudinary upload or signature:', err);
           this._swal.showErrorToast('Failed to upload resume.');
         },

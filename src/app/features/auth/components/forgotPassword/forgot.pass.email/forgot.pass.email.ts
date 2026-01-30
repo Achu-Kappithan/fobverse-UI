@@ -8,9 +8,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { response } from 'express';
 import { SweetAlert } from '../../../../../shared/services/sweet-alert';
-import { error } from 'console';
 
 @Component({
   selector: 'app-forgot.pass.email',
@@ -21,6 +19,7 @@ import { error } from 'console';
 export class ForgotPassEmail implements OnInit {
   forgotPasswordForm!: FormGroup;
   userType: string = '';
+  isLoading: boolean = false;
 
   private readonly _authService = inject(AuthService);
   private readonly _route = inject(ActivatedRoute);
@@ -45,10 +44,12 @@ export class ForgotPassEmail implements OnInit {
 
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
+      this.isLoading = true;
       const email = this.forgotPasswordForm.value.email;
       const user = { email: email, role: this.userType };
       this._authService.validateFogotpassEmail(user).subscribe({
         next: (response) => {
+          this.isLoading = false;
           console.log('Reseponce forgotpassword', response);
           if (response.success) {
             this._swal.showSuccessToast(response.message);
@@ -59,6 +60,7 @@ export class ForgotPassEmail implements OnInit {
           }
         },
         error: (error) => {
+          this.isLoading = false;
           console.log('error updatePassword', error);
           this._swal.showErrorToast(error.error.message);
           this.forgotPasswordForm.reset();

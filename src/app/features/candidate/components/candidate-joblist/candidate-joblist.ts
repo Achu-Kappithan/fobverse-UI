@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CandidateService } from '../../services/candidate.service';
 import { SweetAlert } from '../../../../shared/services/sweet-alert';
 import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface } from '../../interfaces/candidate.joblist.interface';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
@@ -16,7 +16,7 @@ import { environment } from '../../../../../env/environment';
   templateUrl: './candidate-joblist.html',
   styleUrl: './candidate-joblist.css'
 })
-export class CandidateJoblist  implements OnInit {
+export class CandidateJoblist  implements OnInit, OnDestroy {
   baseUrl:string = environment.cloudinaryBaseUrl
   listView:boolean = false
   isLoading:boolean = false
@@ -25,6 +25,7 @@ export class CandidateJoblist  implements OnInit {
 
   jobList:CandidateJobsInterface[] = []
 
+  private destroy$ = new Subject<void>();
   searchValue = new Subject<string>()
 
   selectedJobTypes: string[] = []; 
@@ -78,7 +79,8 @@ export class CandidateJoblist  implements OnInit {
 
     this.searchValue.pipe(
       debounceTime(300),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
     )
     .subscribe( val =>{
       this.QueryParms.search = val
@@ -178,5 +180,8 @@ export class CandidateJoblist  implements OnInit {
     this.selectedJob = null;
   }
 
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

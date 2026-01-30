@@ -26,6 +26,7 @@ export class CandidateSignup implements OnInit {
   signupForm!: FormGroup;
   userType: string = '';
   imagePath: string = '';
+  isLoading: boolean = false;
 
   constructor(private route: ActivatedRoute) {
     this.route.data.subscribe((data) => {
@@ -74,6 +75,7 @@ export class CandidateSignup implements OnInit {
 
   handleSubmit(): void {
     if (this.signupForm.valid) {
+      this.isLoading = true;
       const { fullName, email, password } = this.signupForm.value;
       const userData = {
         name: fullName,
@@ -84,14 +86,22 @@ export class CandidateSignup implements OnInit {
       console.log('Signup form', userData);
       this._Authservice.registerCandidate(userData).subscribe({
         next: (response) => {
-          console.log('registration responce comes from the backend', response);
+          this.isLoading = false;
+          console.log('registration response comes from the backend', response);
           this._swal.showSuccessToast(response.message);
           this.signupForm.reset();
           this._router.navigate(['/login']);
         },
         error: (error) => {
-          console.log(error);
-          this._swal.showErrorToast(error.error.message);
+          this.isLoading = false;
+          console.error('Registration error:', error);
+          let errorMessage = 'An unexpected error occurred';
+          if (error.error && error.error.message) {
+            errorMessage = Array.isArray(error.error.message)
+              ? error.error.message[0]
+              : error.error.message;
+          }
+          this._swal.showErrorToast(errorMessage);
         },
       });
     } else {

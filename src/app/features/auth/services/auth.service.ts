@@ -22,6 +22,7 @@ import {
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +37,7 @@ export class AuthService {
   public isUserLoaded = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isUserLoaded.asObservable();
   private _router = inject(Router);
+  private _socialAuthService = inject(SocialAuthService);
 
   constructor(
     private _http: HttpClient,
@@ -136,6 +138,7 @@ export class AuthService {
       .post(`/api/auth/logout`, {}, { withCredentials: true })
       .subscribe({
         next: (res) => {
+          this._socialAuthService.signOut().catch(err => console.log('Social sign out failed or already signed out'));
           if (User == 'company') {
             this.CompanySubject.next(null);
             this._router.navigate(['/companylogin']);
