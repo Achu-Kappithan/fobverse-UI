@@ -30,6 +30,9 @@ export const authInterceptor: HttpInterceptorFn = (
     'auth/google',
     'auth/adminlogin',
     'auth/forgotpassword',
+    'auth/updatepassword',
+    'auth/verify-email',
+    'auth/getuser',
   ];
 
   const isPublicRequest = publicPaths.some((path) => req.url.includes(path));
@@ -69,7 +72,19 @@ function handle401Error(
       catchError((error) => {
         isRefreshing = false;
         authService.adminSubject.next(null);
-        router.navigate(['/login']);
+        
+        // Prevent redirection if the user is already on a public page
+        const publicRoutes = ['/login', '/signup', '/forgotpassword', '/email', '/adminlogin', '/companylogin', '/companysignup'];
+        const currentUrl = router.url.split('?')[0]; // Ignore query params
+        const isPublicRoute = publicRoutes.some(route => currentUrl.startsWith(route) || currentUrl === '/');
+
+        if (!isPublicRoute) {
+          console.log('Redirecting to login due to unauthorized protected request');
+          router.navigate(['/login']);
+        } else {
+          console.log('Suppressed redirect to login as user is already on a public route:', currentUrl);
+        }
+        
         return throwError(() => error);
       }),
       finalize(() => {

@@ -25,6 +25,39 @@ import { JobsPublicView } from './features/company/components/jobs-public-view/j
 import { VideoLayoutComponent } from './features/layout/video-layout-component/video-layout-component';
 
 export const routes: Routes = [
+  // forgoPassword
+  {
+    path: 'forgotpassword',
+    loadComponent: () =>
+      import(
+        './features/layout/forgotpasswordcomponent/forgotpasswordcomponent'
+      ).then((m) => m.Forgotpasswordcomponent),
+    children: [
+      {
+        path: 'email',
+        component: ForgotPassEmail,
+      },
+      {
+        path: 'newpassword',
+        component: SetNewPassword,
+      },
+    ],
+  },
+
+  // email
+  {
+    path: 'email',
+    loadComponent: () =>
+      import('./features/layout/email-component/email-component').then(
+        (m) => m.EmailComponent
+      ),
+    children: [
+      { path: 'verification', component: EmailVerification },
+      { path: 'failed', component: EmailVerificationFaild },
+      { path: 'success', component: EmailVerificationSuccess },
+    ],
+  },
+
   {
     path: '',
     component: Authcomponent,
@@ -69,20 +102,6 @@ export const routes: Routes = [
     ],
   },
 
-  // email
-
-  {
-    path: 'email',
-    loadComponent: () =>
-      import('./features/layout/email-component/email-component').then(
-        (m) => m.EmailComponent
-      ),
-    children: [
-      { path: 'verification', component: EmailVerification },
-      { path: 'failed', component: EmailVerificationFaild },
-      { path: 'success', component: EmailVerificationSuccess },
-    ],
-  },
 
   // candidate
 
@@ -451,23 +470,4 @@ export const routes: Routes = [
     ],
   },
 
-  // forgoPassword
-
-  {
-    path: 'forgotpassword',
-    loadComponent: () =>
-      import(
-        './features/layout/forgotpasswordcomponent/forgotpasswordcomponent'
-      ).then((m) => m.Forgotpasswordcomponent),
-    children: [
-      {
-        path: 'email',
-        component: ForgotPassEmail,
-      },
-      {
-        path: 'newpassword',
-        component: SetNewPassword,
-      },
-    ],
-  },
 ];

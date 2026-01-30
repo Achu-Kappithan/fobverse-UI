@@ -1,15 +1,15 @@
-<div class="bg-white dark:bg-gray-900 min-h-screen">
-  <div class="text-center shadow-lg bg-white dark:bg-gray-800 p-16 banner-interactive transition-all duration-500 border-b dark:border-gray-700">
-    <h1 class="text-4xl md:text-5xl font-bold text-dark-gray dark:text-gray-100 mb-4">
+<div class="bg-white min-h-screen">
+  <div class="text-center shadow-lg bg-white p-16 banner-interactive transition-all duration-500 border-b">
+    <h1 class="text-4xl md:text-5xl font-bold text-dark-gray mb-4">
       Find your <span class="text-blue-500">dream job</span>
     </h1>
-    <p class="text-gray-600 dark:text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+    <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
       Find your next career at companies like HubSpot, Nike, and Dropbox
     </p>
 
     <div class="max-w-4xl mx-auto">
       <div
-        class="flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-700 rounded-xl shadow-lg p-4 search-bar-interactive transition-all duration-300 border border-gray-50 dark:border-gray-600"
+        class="flex flex-col md:flex-row gap-4 bg-white rounded-xl shadow-lg p-4 search-bar-interactive transition-all duration-300 border border-gray-50"
       >
         <div class="flex-1 flex items-center">
           <svg
@@ -28,24 +28,19 @@
           <input
             type="text"
             placeholder="Job title or keyword"
-            class="w-full outline-none text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 bg-transparent"
+            class="w-full outline-none text-gray-700 placeholder-gray-400 bg-transparent"
             (input)="onSearchInput($event)"
           />
         </div>
-        <button
-          class="apply-btn text-white px-8 py-3 rounded-lg font-semibold whitespace-nowrap"
-        >
-          Search
-        </button>
       </div>
     </div>
   </div>
 
-  <div class="bg-lavender dark:bg-gray-900 min-h-screen">
-    <div class="bg-lavender dark:bg-gray-900">
+  <div class="bg-lavender min-h-screen">
+    <div class="bg-lavender">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <h1 class="text-2xl font-bold text-dark-gray dark:text-gray-100">Job Listings</h1>
+          <h1 class="text-2xl font-bold text-dark-gray">Job Listings</h1>
 
           <div class="flex items-center space-x-3">
             <button
@@ -101,11 +96,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col lg:flex-row gap-8">
         <div class="lg:w-1/4 shadow-xl">
-          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 sticky top-8 border border-transparent dark:border-gray-700">
-            <h2 class="text-lg font-semibold text-dark-gray dark:text-gray-100 mb-6">Filter</h2>
+          <div class="bg-white rounded-lg p-6 sticky top-8 border border-transparent">
+            <h2 class="text-lg font-semibold text-dark-gray mb-6">Filter</h2>
 
             <div class="mb-6">
-              <h3 class="font-medium text-dark-gray dark:text-gray-200 mb-3">Salary Range</h3>
+              <h3 class="font-medium text-dark-gray mb-3">Salary Range</h3>
               <div class="space-y-2">
                 <label
                   *ngFor="let range of salaryRanges"
@@ -119,13 +114,13 @@
                     (change)="onSalaryRangeChange()"
                     class="mr-2 accent-purple-600"
                   />
-                  <span class="text-gray-600 dark:text-gray-400">{{ range.label }}</span>
+                  <span class="text-gray-600">{{ range.label }}</span>
                 </label>
               </div>
             </div>
 
             <div class="mb-6">
-              <h3 class="font-medium text-dark-gray dark:text-gray-200 mb-3">Job Type</h3>
+              <h3 class="font-medium text-dark-gray mb-3">Job Type</h3>
               <div class="space-y-2">
                 <label
                   *ngFor="let type of availableJobTypes"
@@ -138,7 +133,7 @@
                     (change)="onJobTypeChange($event, type.name)"
                     class="mr-2 accent-purple-600"
                   />
-                  <span class="text-gray-600 dark:text-gray-400">{{ type.name }}</span>
+                  <span class="text-gray-600">{{ type.name }}</span>
                 </label>
               </div>
             </div>
@@ -179,7 +174,7 @@
           <div class="grid gap-6">
             <div
               *ngFor="let job of jobList"
-              class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all duration-300 job-card-transition job-card-hover group border border-gray-100 dark:border-gray-700"
+              class="bg-white rounded-lg shadow-lg p-6 transition-all duration-300 job-card-transition job-card-hover group border border-gray-100"
             >
               <div
                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between"
@@ -196,11 +191,11 @@
                     />
                   </div>
                   <div class="flex-1">
-                    <h3 class="text-xl font-semibold text-dark-gray dark:text-gray-100 mb-1">
+                    <h3 class="text-xl font-semibold text-dark-gray mb-1">
                       {{ job.title }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-2">{{ job.companyId?.name }}</p>
-                    <p class="text-gray-500 dark:text-gray-500 text-sm mb-3">
+                    <p class="text-gray-600 mb-2">{{ job.companyId?.name }}</p>
+                    <p class="text-gray-50 text-sm mb-3">
                       {{ job.jobType }} • {{ job.location.join(', ') }} • {{
                       job.experience ? job.experience[0] : 'Any' }}
                     </p>
@@ -243,7 +238,7 @@
                   <button
                     [routerLink]="['jobsview']"
                     [queryParams]="{id:job._id}"
-                    class="bg-purple-50 text-purple-700 px-2 py-1 rounded-lg font-medium text-sm hover:bg-purple-100 transition-colors flex items-center"
+                    class="bg-purple-50 text-purple-700 px-3 py-2 rounded-lg font-medium text-sm border border-purple-100 hover:bg-purple-100 transition-colors flex items-center"
                   >
                     <i class="fas fa-eye mr-1"></i> View Details
                   </button>
@@ -263,11 +258,11 @@
           >
             <div
               *ngFor="let job of jobList"
-              class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200 dark:border-gray-700 job-card-transition job-card-hover group transition-all duration-300"
+              class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between border border-gray-200 job-card-transition job-card-hover group transition-all duration-300"
             >
               <div>
                 <div class="flex justify-between items-start mb-4">
-                  <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                  <h2 class="text-xl font-semibold text-gray-800">
                     {{ job.title }}
                   </h2>
                   <!-- <svg
@@ -290,7 +285,7 @@
                     class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md font-medium mr-2"
                     >{{ job.jobType.toUpperCase() }}</span
                   >
-                  <span class="text-gray-600 dark:text-gray-400"
+                  <span class="text-gray-600"
                     >Salary: {{ job.salary.min | currency:'INR':'symbol':'1.0-0'
                     }} - {{ job.salary.max | currency:'INR':'symbol':'1.0-0'
                     }}</span
@@ -305,15 +300,15 @@
               >
                 <img
                   [src]="job.companyId?.logoUrl ? baseUrl+job.companyId?.logoUrl : '/profileimages/logodefault.jpg'"
-                  class="w-16 h-16 rounded-full mr-3 logo-animate group-hover:scale-110 group-hover:rotate-2 shadow-sm border border-gray-100 dark:border-gray-700"
+                  class="w-16 h-16 rounded-full mr-3 logo-animate group-hover:scale-110 group-hover:rotate-2 shadow-sm border border-gray-100"
                 />
                 <div>
-                  <p class="font-medium text-gray-800 dark:text-gray-100">
+                  <p class="font-medium text-gray-800">
                     {{ job.companyId?.name }}
                   </p>
-                  <p class="text-gray-600 dark:text-gray-400 text-sm flex items-center">
+                  <p class="text-gray-600 text-sm flex items-center">
                     <svg
-                      class="w-4 h-4 mr-1 text-gray-500 dark:text-gray-500"
+                      class="w-4 h-4 mr-1 text-gray-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -335,7 +330,7 @@
                       <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/C0C0C0/000000?text=B" alt="Avatar 2">
                       <img class="w-8 h-8 rounded-full border-2 border-white" src="https://placehold.co/32x32/CD7F32/000000?text=C" alt="Avatar 3">
                     </div> -->
-                <span class="text-gray-600 dark:text-gray-400 text-sm"
+                <span class="text-gray-600 text-sm"
                   >{{ job.vacancies }} vacancies</span
                 >
               </div>
@@ -344,7 +339,7 @@
                 <button
                   [routerLink]="['jobsview']"
                   [queryParams]="{id:job._id}"
-                  class="flex-1 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-300"
+                  class="flex-1 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg border border-purple-100 hover:bg-purple-100 transition duration-300"
                 >
                   <i class="fas fa-eye mr-1"></i> View details
                 </button>
@@ -365,7 +360,7 @@
         <button
           (click)="onPageChange(paginationMeta.currentPage - 1)"
           [disabled]="paginationMeta.currentPage === 1"
-          class="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 dark:border-gray-700"
+          class="px-4 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
         >
           Previous
         </button>
@@ -375,17 +370,15 @@
           [class.bg-purple-700]="paginationMeta.currentPage === page"
           [class.text-white]="paginationMeta.currentPage === page"
           [class.bg-white]="paginationMeta.currentPage !== page"
-          [class.dark:bg-gray-800]="paginationMeta.currentPage !== page"
           [class.text-gray-700]="paginationMeta.currentPage !== page"
-          [class.dark:text-gray-200]="paginationMeta.currentPage !== page"
-          class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:border-gray-700"
+          class="px-4 py-2 border rounded-lg hover:bg-gray-100"
         >
           {{ page }}
         </button>
         <button
           (click)="onPageChange(paginationMeta.currentPage + 1)"
           [disabled]="paginationMeta.currentPage === paginationMeta.totalPages"
-          class="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 dark:border-gray-700"
+          class="px-4 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
         >
           Next
         </button>
