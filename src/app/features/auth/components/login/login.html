@@ -1,49 +1,49 @@
 <div class="bg-white">
     <div class="min-h-screen bg-white flex flex-col lg:flex-row overflow-hidden">
-        <div class="relative bg-[#f7f3ff] w-full lg:w-[634px] p-8 flex flex-col items-center justify-center lg:py-0 lg:px-20">
+        <div class="relative bg-purple-ultra-light w-full lg:w-[634px] p-8 flex flex-col items-center justify-center lg:py-0 lg:px-20">
             <div class="absolute top-5 left-8 lg:left-20 flex items-center space-x-2">
                 <div class="w-8 h-8 bg-[#6A45F5] rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-lg">J</span>
                 </div>
-                <span class="text-[#252F4A] font-bold text-2xl">JobVerse</span>
+                <span class="text-navy font-bold text-2xl">JobVerse</span>
             </div>
 
             <div class="hidden lg:block relative w-full h-full">
-                <div class="w-full h-full bg-[#f7f3ff]"></div>
+                <div class="w-full h-full bg-purple-ultra-light"></div>
                 
                 <div class="absolute top-20 left-4 z-[9999]  ">
-                    <div class="w-[165px] h-[152px] bg-white border border-[#DCDFE4] rounded-lg p-5 shadow-sm">
+                    <div class="w-[165px] h-[152px] bg-white border border-divider rounded-lg p-5 shadow-sm">
                         <div class="flex space-x-2 mb-4">
                             <span class="text-[#6A45F5] font-bold text-2xl">FobVerse</span>
                         </div>
                         <div>
-                            <span class="block text-[#252F4A] font-bold text-xl">100K+</span>
-                            <span class="block text-[#252F4A] text-base opacity-50">People got hired</span>
+                            <span class="block text-navy font-bold text-xl">100K+</span>
+                            <span class="block text-navy text-base opacity-50">People got hired</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-[#f7f3ff] border-4 border-[#EAE6FF] rounded-3xl flex items-center justify-center overflow-hidden">
+                <div class="absolute top-[180px] left-[120px] w-[283px] h-[calc(100vh-200px)] bg-purple-ultra-light border-4 border-lavender-light rounded-3xl flex items-center justify-center overflow-hidden">
                   <img [src]="imagePath" alt="My Image" class="max-w-full max-h-full object-contain">
                 </div>
 
               <div class="absolute bottom-20 left-[220px]">
-                <div class="w-[277px] h-[198px] bg-white border border-[#DCDFE4] rounded-lg p-5 relative shadow-sm">
+                <div class="w-[277px] h-[198px] bg-white border border-divider rounded-lg p-5 relative shadow-sm">
                   <div class="flex items-start space-x-4">
                     <div class="flex-shrink-0">
                       <div class="w-16 h-16 bg-[#F9DA6C] rounded-full flex items-center justify-center">
-                        <svg class="w-8 h-8 text-[#252F4A]" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-navy" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                         </svg>
                       </div>
                     </div>
                     <div class="flex-1 relative">
                       <div class="mb-2">
-                        <span class="block text-[#252F4A] font-semibold text-sm opacity-50">Adam Sandler</span>
-                        <span class="block text-[#252F4A] text-sm opacity-50">Lead Engineer at Canva</span>
+                        <span class="block text-navy font-semibold text-sm opacity-50">Adam Sandler</span>
+                        <span class="block text-navy text-sm opacity-50">Lead Engineer at Canva</span>
                       </div>
                       <!-- Inline opening quote -->
-                      <p class="text-[#252F4A] font-semibold text-base">
+                      <p class="text-navy font-semibold text-base">
                         <span class="text-[#6A45F5] text-4xl font-bold leading-none mr-1">"</span>
                         Great platform for the job seeker that searching for new career heights."
                       </p>
@@ -53,7 +53,7 @@
               </div>
             </div>
 
-            <div class="lg:hidden text-center text-[#252F4A] my-8">
+            <div class="lg:hidden text-center text-navy my-8">
                 <h2 class="text-2xl font-semibold">Join JobVerse today!</h2>
                 <p class="text-lg opacity-70">Find your dream job with ease.</p>
             </div>
@@ -76,7 +76,7 @@
             </div>
 
             <div class="text-center">
-              <h1 class="text-[#252F4A] font-semibold text-2xl sm:text-3xl">Get more opportunities</h1>
+              <h1 class="text-navy font-semibold text-2xl sm:text-3xl">Get more opportunities</h1>
             </div>
 
             <!-- Google Sign Up -->
@@ -119,7 +119,7 @@
                   </div>
                 </div>
                 <div class="space-y-2">
-                  <label for="email" class="block text-[#252F4A] text-base">Email Address</label>
+                  <label for="email" class="block text-navy text-base">Email Address</label>
                   <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <!-- Heroicons: Envelope -->
@@ -135,8 +135,8 @@
                       formControlName="email"
                       type="email"
                       placeholder="Enter email address"
-                      class="w-full h-12 pl-10 pr-3 border border-[#DCDFE4] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
-                      {{loginForm.get('email')?.invalid && loginForm.get('email')?.touched ?'border-red-500' : 'border-[#DCDFE4]'}}"
+                      class="w-full h-12 pl-10 pr-3 border border-divider rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
+                      {{loginForm.get('email')?.invalid && loginForm.get('email')?.touched ?'border-red-500' : 'border-divider'}}"
                     
                     />
                   </div>
@@ -148,7 +148,7 @@
 
                 <!-- Password Field -->
                 <div class="space-y-2">
-                  <label for="password" class="block text-[#252F4A] text-base">Password</label>
+                  <label for="password" class="block text-navy text-base">Password</label>
                   <div class="relative">
                     <input
                       id="password"
@@ -156,8 +156,8 @@
                       formControlName="password"
                       type="password"
                       placeholder="Enter password"
-                      class="w-full h-12 px-3 pr-10 pl-3 border border-[#DCDFE4] rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
-                      {{loginForm.get('password')?.invalid && loginForm.get('password')?.touched ?'border-red-500' : 'border-[#DCDFE4]'}}"
+                      class="w-full h-12 px-3 pr-10 pl-3 border border-divider rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
+                      {{loginForm.get('password')?.invalid && loginForm.get('password')?.touched ?'border-red-500' : 'border-divider'}}"
                       appPasswordvalidator
                       [minLength]="8"
                       [requireUppercase]="true"
@@ -217,7 +217,7 @@
               </form>
             <div class="flex flex-col items-center space-y-2 mt-4">
               <div *ngIf="userType !=='admin'" class="flex justify-center space-x-2">
-                <span class="text-[#252F4A] text-base opacity-70">Don’t have an account?</span>
+                <span class="text-navy text-base opacity-70">Don’t have an account?</span>
                 <a routerLink="/signup" class="text-[#6A45F5] font-semibold text-base hover:underline">Sign Up</a>
               </div>
 
@@ -227,7 +227,7 @@
             </div>
 
             <!-- Terms -->
-            <p class="text-[#252F4A] text-sm text-center px-4">
+            <p class="text-navy text-sm text-center px-4">
               By clicking 'Continue', you acknowledge that you have read and accept the
               <a href="#" class="text-[#6A45F5] hover:underline">Terms of Service</a>
               and

@@ -100,6 +100,35 @@ html.dark .bg-hover-action:hover {
   color: #ffffff;
 }
 
+/* Specific theme classes for Login and Auth */
+.text-navy {
+  color: #252f4a;
+}
+html.dark .text-navy {
+  color: #e2e8f0;
+}
+
+.bg-purple-ultra-light {
+  background-color: #f7f3ff;
+}
+html.dark .bg-purple-ultra-light {
+  background-color: #1a1c2e;
+}
+
+.border-divider {
+  border-color: #dcdfe4;
+}
+html.dark .border-divider {
+  border-color: #374151;
+}
+
+.border-lavender-light {
+  border-color: #eae6ff;
+}
+html.dark .border-lavender-light {
+  border-color: #2d3748;
+}
+
 /* Dark mode border color */
 .border-purple {
   border-color: #6a35a0;
