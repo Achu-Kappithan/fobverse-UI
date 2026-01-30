@@ -1,18 +1,18 @@
-<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2 bg-white dark:bg-dark-lavender shadow-md transition-colors duration-300 ease-in-out">
+<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2 bg-white shadow-md transition-colors duration-300 ease-in-out">
     <div class="flex items-center">
         <img src="/logo/logo.png" alt="Fobverse Logo" class="h-10 mr-4">
     </div>
     <div class="flex items-center space-x-4">
-        <button (click)="toggleDarkMode()" class="p-2 rounded-full transition-colors duration-200 hover:bg-lavender dark:hover:bg-dark-purple" aria-label="Toggle dark mode">
+        <button (click)="toggleDarkMode()" class="p-2 rounded-full transition-colors duration-200 hover-bg-light" aria-label="Toggle dark mode">
             <i class="fas text-lg" [ngClass]="{'fa-moon text-dark-gray dark:text-dark-text': isDarkMode, 'fa-sun text-dark-gray': !isDarkMode}"></i>
         </button>
         <div class="relative profile-menu-container">
-            <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover:bg-lavender dark:hover:bg-dark-purple">
+            <button (click)="toggleProfileMenu()" class="flex items-center p-2 rounded-full transition-colors duration-200 hover-bg-light">
                 <img [src]="activeUser?.profileImg ? cloudinaryBaseUrl + activeUser?.profileImg:'/profileimages/defaultProfile.jpg'" alt="User Avatar" class="h-8 w-8 rounded-full">
             </button>
-            <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-lavender rounded-md shadow-lg py-1 z-10">
-                <a [routerLink]="['userprofile']" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-purple">Profile</a>
-                <a (click)="logOut()" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-lavender dark:hover:bg-dark-purple">Logout</a>
+            <div *ngIf="isProfileMenuOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-lavender rounded-md shadow-lg py-1 z-10 border dark:border-gray-700">
+                <a [routerLink]="['userprofile']" class="block px-4 py-2 text-sm text-dark-gray dark:text-dark-text hover-bg-light">Profile</a>
+                <a (click)="logOut()" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover-bg-light">Logout</a>
             </div>
         </div>
     </div>

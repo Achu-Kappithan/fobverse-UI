@@ -28,8 +28,13 @@
         <button
           type="submit"
           form="job-form"
-          class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          [disabled]="isSaving"
+          class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-all"
         >
+          @if (isSaving) {
+          <div class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+          Saving...
+          } @else {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-4 w-4 inline-block mr-1"
@@ -45,6 +50,7 @@
             />
           </svg>
           Save Changes
+          }
         </button>
       </div>
     </header>

@@ -210,7 +210,7 @@
             <!-- Login Link -->
             <div class="flex justify-center space-x-2">
               <span class="text-navy text-base opacity-70">Already have an account?</span>
-              <a routerLink="/" class="text-[#6A45F5] font-semibold text-base hover:underline">Login</a>
+              <a [routerLink]="userType === 'company_admin' ? '/companylogin' : '/login'" class="text-[#6A45F5] font-semibold text-base hover:underline">Login</a>
             </div>
 
             <!-- Terms -->

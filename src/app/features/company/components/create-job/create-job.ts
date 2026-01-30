@@ -31,6 +31,7 @@ export class CreateJob implements OnInit {
   creatJob!: FormGroup;
   minDate: string = '';
   locationPattern = /^[A-Za-z\s]+$/;
+  isSaving: boolean = false;
 
   suggestions: { [key: number]: string[] | undefined } = {};
 
@@ -190,6 +191,7 @@ export class CreateJob implements OnInit {
     console.log('Form Errors:', this.getFormValidationErrors());
 
     if (this.creatJob.valid) {
+      this.isSaving = true;
       const data: JobsInterface = this.creatJob.value;
       console.log('Form Submitted Successfully!', data);
 
@@ -200,10 +202,12 @@ export class CreateJob implements OnInit {
             this._swal.showSuccessToast(res.message);
             this._router.navigate(['../'], { relativeTo: this._route });
           }
+          this.isSaving = false;
         },
         error: (err) => {
           console.log(err);
           this._swal.showErrorToast(err.error.message);
+          this.isSaving = false;
         },
       });
     } else {

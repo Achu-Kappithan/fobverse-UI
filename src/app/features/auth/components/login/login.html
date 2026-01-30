@@ -218,7 +218,7 @@
             <div class="flex flex-col items-center space-y-2 mt-4">
               <div *ngIf="userType !=='admin'" class="flex justify-center space-x-2">
                 <span class="text-navy text-base opacity-70">Don’t have an account?</span>
-                <a routerLink="/signup" class="text-[#6A45F5] font-semibold text-base hover:underline">Sign Up</a>
+                <a [routerLink]="userType === 'company_admin' ? '/companysignup' : '/signup'" class="text-[#6A45F5] font-semibold text-base hover:underline">Sign Up</a>
               </div>
 
               <div>
