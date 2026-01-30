@@ -589,3 +589,48 @@ html.dark .badge-purple {
 .badge-pill button:hover {
     opacity: 1;
 }
+
+/* Profile Dropdown Custom Classes */
+.profile-dropdown-card {
+  background-color: #ffffff;
+  border: 1px solid #f3f4f6;
+}
+
+html.dark .profile-dropdown-card {
+  background-color: #1a1c2e; /* dark-lavender from @theme */
+  border-color: #374151;
+}
+
+.profile-dropdown-header {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+html.dark .profile-dropdown-header {
+  border-bottom-color: #374151;
+}
+
+.profile-dropdown-item {
+  color: #4b5563; /* text-gray-600 */
+}
+
+.profile-dropdown-item:hover {
+  background-color: #f5f3ff; /* bg-purple-50 */
+  color: #7c3aed; /* text-purple-600 */
+}
+
+html.dark .profile-dropdown-item {
+  color: #cbd5e0; /* text-gray-300 */
+}
+
+html.dark .profile-dropdown-item:hover {
+  background-color: rgba(124, 58, 237, 0.1);
+  color: #a78bfa; /* text-purple-400 */
+}
+
+.profile-icon-bg {
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+html.dark .profile-icon-bg {
+  background-color: #1f2937; /* bg-gray-800 */
+}
