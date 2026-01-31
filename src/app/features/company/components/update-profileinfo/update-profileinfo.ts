@@ -1,9 +1,10 @@
 import { CommonModule} from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ComapnyProfileInterface, ContactInfoItem } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { catchError,forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { GalleryImageDisplay } from '../../../../shared/interfaces/cloudinarysignature.responce.interface';
@@ -11,20 +12,21 @@ import { CloudinaryService } from '../../../../shared/services/cloudinary.servic
 
 @Component({
   selector: 'app-update-profileinfo',
-  imports: [CommonModule,ReactiveFormsModule,RouterModule],
+  imports: [CommonModule,ReactiveFormsModule,RouterModule, LoadingSpinner],
   templateUrl: './update-profileinfo.html',
   styleUrl: './update-profileinfo.css'
 })
 export class UpdateProfileinfo implements OnInit ,OnDestroy {
  companyProfileForm!: FormGroup;
  profileData:ComapnyProfileInterface | null = null
- loading:boolean = false
+ isSaving:boolean = false
  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
 
   selectedLogoFile: File | null = null;
   logoPreviewUrl: string | ArrayBuffer | null = null
 
   imageGalleryDisplay: GalleryImageDisplay[] = [];
+  private loadingToastId: number | null = null;
 
   private destroy$ = new Subject<void>()
 
@@ -33,7 +35,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     private readonly _companyService:CompanyService,
     private readonly _cloudinaryService:CloudinaryService,
     private readonly _cdr : ChangeDetectorRef,
-    private readonly _swal : SweetAlert,
+    private readonly _toast : ToastService,
     private readonly _router :Router,
     private readonly _route :ActivatedRoute
   ) { }
@@ -233,12 +235,11 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
 
   async onSubmit():Promise<void> {
     if (this.companyProfileForm.invalid) {
-      this._swal.showErrorToast('Please fill all required fields')
+      this._toast.error('Please fill all required fields')
       this.companyProfileForm.markAllAsTouched()
       return
     }
-    this.loading = true
-    this._swal.showLoadingToast('Uploading images and updating profile....')
+    this.isSaving = true
 
  try {
       const uploadObservables: Observable<any>[] = [];
@@ -260,7 +261,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
           ),
           catchError(error => {
             console.error('Logo upload failed:', error);
-            this._swal.showErrorToast('Failed to upload company logo.');
+            this._toast.error('Failed to upload company logo.');
             return of(null); 
           })
         );
@@ -285,7 +286,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
           ),
           catchError(error => {
             console.error(`Gallery image ${index} upload failed:`, error);
-            this._swal.showErrorToast(`Failed to upload gallery image ${index + 1}.`);
+            this._toast.error(`Failed to upload gallery image ${index + 1}.`);
             return of(null);
           })
         );
@@ -340,18 +341,17 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
         .toPromise();
 
       if (res && res.success) {
-        this._swal.showSuccessToast(res.message);
+        this._toast.success(res.message);
         this._router.navigate(["../"],{ relativeTo: this._route })
       } else {
-        this._swal.showErrorToast(res!.message);
+        this._toast.error(res!.message);
       }
 
     } catch (error: any) {
       console.error("Profile update failed:", error);
-      this._swal.showErrorToast(error.error?.message || 'An unexpected error occurred during profile update.');
+      this._toast.error(error.error?.message || 'An unexpected error occurred during profile update.');
     } finally {
-      this.loading = false;
-      this._swal.closeToast(); 
+      this.isSaving = false;
       this._cdr.detectChanges(); 
     }
   }

@@ -8,7 +8,7 @@ import { SheduleResponceInterface } from '../../../../../interfaces/company.inte
 import { CompanyApplication } from '../../../../../services/company-application';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
-import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -64,7 +64,7 @@ export class TechnicalStageComponent implements OnInit {
     private readonly _ApplicationService: CompanyApplication,
     private _cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private router: Router,
     private _route: ActivatedRoute,
     private _authService: AuthService
@@ -168,9 +168,8 @@ export class TechnicalStageComponent implements OnInit {
       if (this.interview?.evaluators) {
         for (const evaluator of this.interview.evaluators) {
           if (!evaluator.feedback) {
-            this._swal.showWarningToast(
-              'Feedback Missing',
-              'Please wait for all evaluators to submit their feedback.'
+            this._toast.warning(
+              'Feedback Missing: Please wait for all evaluators to submit their feedback.'
             );
             return;
           }
@@ -212,7 +211,7 @@ export class TechnicalStageComponent implements OnInit {
           this.isSaving = false;
           this.saveComplete = true;
           this.closeFeedbackModal();
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           setTimeout(() => (this.saveComplete = false), 2000);
           this._cdr.detectChanges();
         }
@@ -220,7 +219,7 @@ export class TechnicalStageComponent implements OnInit {
       error: (err) => {
         this.isSaving = false;
         console.log('error updating feedback', err);
-        this._swal.showErrorToast(err.error?.message || 'Failed to update feedback');
+        this._toast.error(err.error?.message || 'Failed to update feedback');
         this._cdr.detectChanges();
       }
     });
@@ -248,7 +247,7 @@ export class TechnicalStageComponent implements OnInit {
           this.isSaving = false;
           this.saveComplete = true;
           this.closeFinalizeModal();
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           setTimeout(() => (this.saveComplete = false), 2000);
           this._cdr.detectChanges();
         }
@@ -256,7 +255,7 @@ export class TechnicalStageComponent implements OnInit {
       error: (err) => {
         this.isSaving = false;
         console.log('error finalizing result', err);
-        this._swal.showErrorToast(err.error?.message || 'Failed to finalize result');
+        this._toast.error(err.error?.message || 'Failed to finalize result');
         this._cdr.detectChanges();
       }
     });
@@ -350,13 +349,13 @@ export class TechnicalStageComponent implements OnInit {
           this.interview = res.data;
 
           this.sheduleModalclose();
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           this._cdr.detectChanges();
         }
       },
       error: (err) => {
         console.log('error regading shedule interview ', err);
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
       },
     });
   }
@@ -378,13 +377,13 @@ export class TechnicalStageComponent implements OnInit {
           this.isSaving = false;
           this.saveComplete = true;
           setTimeout(() => (this.saveComplete = false), 500);
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           this._cdr.detectChanges();
         }
       },
       error: (err) => {
         console.log('error regading cancel interview');
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
       },
@@ -437,10 +436,10 @@ export class TechnicalStageComponent implements OnInit {
       if (roomId) {
         this.router.navigate(['video-interview', roomId],{relativeTo: this._route});
       } else {
-        this._swal.showErrorToast('Invalid meeting link');
+        this._toast.error('Invalid meeting link');
       }
     } else {
-      this._swal.showErrorToast('No meeting link available');
+      this._toast.error('No meeting link available');
     }
   }
 

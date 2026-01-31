@@ -24,7 +24,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { CandidateService } from '../../services/candidate.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { QualificationOption } from '../../interfaces/candidate.interface';
 import { QualificationLevel } from '../../enums/candidate.enum';
 
@@ -55,7 +55,7 @@ export class CandidateApplyjob implements OnInit {
     private readonly _candidateService: CandidateService,
     private readonly _cloudinaryService: CloudinaryService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -202,7 +202,7 @@ export class CandidateApplyjob implements OnInit {
           );
       } else {
         console.error('No resume selected and "use existing" not checked.');
-        this._swal.showErrorToast('Please upload a resume or select "Use resume from my profile".');
+        this._toast.error('Please upload a resume or select "Use resume from my profile".');
         this.isSubmitting = false;
         this._cdr.detectChanges()
         return;
@@ -220,7 +220,7 @@ export class CandidateApplyjob implements OnInit {
             next: (res) => {
               this.isSubmitting = false;
               if (res.success) {
-                this._swal.showSuccessToast(res.message);
+                this._toast.success(res.message);
                 this.onClose();
               }
             },
@@ -228,7 +228,7 @@ export class CandidateApplyjob implements OnInit {
               this.isSubmitting = false;
               this._cdr.detectChanges()
               console.error('Error updating profile in backend:', err);
-              this._swal.showErrorToast(
+              this._toast.error(
                 err.error?.message || 'Failed to apply for this role.'
               );
             },
@@ -238,7 +238,7 @@ export class CandidateApplyjob implements OnInit {
           this.isSubmitting = false;
           this._cdr.detectChanges()
           console.error('Error during Cloudinary upload or signature:', err);
-          this._swal.showErrorToast('Failed to upload resume.');
+          this._toast.error('Failed to upload resume.');
         },
       });
     } else if (!this.isSubmitting) {

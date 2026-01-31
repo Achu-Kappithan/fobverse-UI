@@ -1,0 +1,21 @@
+<div class="toast-container">
+  <div *ngFor="let toast of toasts$ | async" 
+       [class]="'toast-item ' + getTypeClass(toast.type)"
+       [class.closing]="toast.closing"
+       (click)="removeToast(toast.id)">
+    <div class="toast-icon">
+      <i [class]="getIcon(toast.type)"></i>
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">{{ toast.title }}</div>
+      <div class="toast-message" *ngIf="toast.message">{{ toast.message }}</div>
+    </div>
+    <button class="toast-close" (click)="removeToast(toast.id); $event.stopPropagation()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="toast-progress" 
+         *ngIf="toast.duration" 
+         [style.animationDuration.ms]="toast.duration">
+    </div>
+  </div>
+</div>

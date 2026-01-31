@@ -97,10 +97,10 @@
     }
     </div>
     
-    <div *ngIf=" InternalUsers.length ==0 " class="col-span-full text-center p-8">
-      <p class="text-gray-600 text-lg">No companies found.</p>
+    <div *ngIf="!isLoading && InternalUsers.length === 0" class="col-span-full text-center p-8">
+      <p class="text-gray-600 text-lg">No internal users found.</p>
       <p class="text-gray-500 text-sm mt-2">
-        There might be no companies registered yet, or an error occurred.
+        There might be no internal users registered yet, or an error occurred.
       </p>
     </div>
 

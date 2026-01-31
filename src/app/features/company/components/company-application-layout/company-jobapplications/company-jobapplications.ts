@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../../services/company-service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { PaginationMeta } from '../../../../../shared/interfaces/apiresponce.interface';
 import {
   debounceTime,
@@ -46,7 +46,7 @@ export class CompanyJobapplications implements OnInit {
     private readonly _CompanyApplicationService: CompanyApplication,
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private readonly _cdr: ChangeDetectorRef,
     private _fb: FormBuilder
   ) {}
@@ -140,7 +140,7 @@ export class CompanyJobapplications implements OnInit {
       },
       error: (err) => {
         console.log('error regading ger application ', err);
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
         this.isLoading = false;
         this._cdr.detectChanges();
       },
@@ -158,12 +158,12 @@ export class CompanyJobapplications implements OnInit {
               (this.paginationMeta = res.meta ? res.meta : this.paginationMeta);
             this.closeModal();
             this._cdr.detectChanges();
-            this._swal.showSuccessToast(res.message);
+            this._toast.success(res.message);
           }
         },
         error: (err) => {
           console.log('error regading the update new score', err);
-          this._swal.showErrorToast(err.error.message);
+          this._toast.error(err.error.message);
         },
       });
     } else {

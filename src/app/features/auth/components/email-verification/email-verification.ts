@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
 import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
 import { AuthService } from '../../services/auth.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-email-verification',
@@ -21,7 +21,7 @@ export class EmailVerification implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: AuthService,
-    private _swal: SweetAlert
+    private _toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -107,10 +107,10 @@ export class EmailVerification implements OnInit {
         next: (response) => {
           console.log(response);
           if (response.success) {
-            this._swal.showSuccessToast('Email verified successfully!');
+            this._toast.success('Email verified successfully!');
             this._router.navigate(['/email/success']);
           } else {
-            this._swal.showErrorToast(response.message!);
+            this._toast.error(response.message!);
             const reasonForRoute = 'api_generic_failure';
             this._router.navigate(['/email/failed'], {
               queryParams: { reason: reasonForRoute },

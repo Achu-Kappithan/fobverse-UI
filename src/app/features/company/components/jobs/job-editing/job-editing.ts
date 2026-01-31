@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { JobsInterface } from '../../../interfaces/company.responce.interface';
 import { OpenDirOptions } from 'fs';
 import { Subscription } from 'rxjs';
@@ -29,7 +29,7 @@ export class JobEditing implements OnInit , OnDestroy {
   constructor(
     private fb: FormBuilder,
     private readonly _companyService: CompanyService,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute
   ) {
@@ -72,13 +72,13 @@ export class JobEditing implements OnInit , OnDestroy {
             this.jobDetails = res.data;
             this.populateForm(); 
           } else {
-            this._swal.showErrorToast('Job not found');
+            this._toast.error('Job not found');
             this._router.navigate(['./'],{relativeTo:this._route})
           }
         },
         error: (err) => {
           console.error("error getting job details for editing:", err);
-          this._swal.showErrorToast(err.error.message);
+          this._toast.error(err.error.message);
           this._router.navigate(['./'],{relativeTo:this._route})
         }
       });
@@ -222,20 +222,20 @@ export class JobEditing implements OnInit , OnDestroy {
         next:(res =>{
           if(res.success){
             this.jobDetails = res.data
-            this._swal.showSuccessToast(res.message)
+            this._toast.success(res.message)
             this._router.navigate(['../'],{relativeTo:this._route})
           }
           this.loading = false;
         }),
         error:(err =>{
           console.log("error for updating jobDetails",err)
-          this._swal.showErrorToast(err.error.message)
+          this._toast.error(err.error.message)
           this.loading = false;
         })
       })
     } else {
       this.jobEditForm.markAllAsTouched(); 
-      this._swal.showErrorToast('Validation Error', 'Please fill out all required fields and correct any errors.');
+      this._toast.error('Validation Error: Please fill out all required fields and correct any errors.');
       console.log('Form is invalid:', this.jobEditForm.value);
     }
   }

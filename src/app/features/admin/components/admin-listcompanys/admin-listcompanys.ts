@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCompanyService } from '../../services/admin-company-service';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
@@ -39,7 +39,7 @@ export class AdminListcompanys implements OnInit {
   constructor(
     private readonly _companyService: AdminCompanyService,
     private _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert
+    private readonly _toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class AdminListcompanys implements OnInit {
         if (res.success) {
           company.isActive = !company.isActive;
           this._cdr.detectChanges();
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           console.log('status update responce ', res);
         } else {
           console.log('error regading updating status', res);
@@ -70,7 +70,7 @@ export class AdminListcompanys implements OnInit {
       },
       error: (err) => {
         console.log('staus updation faild ', err);
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
       },
     });
   }

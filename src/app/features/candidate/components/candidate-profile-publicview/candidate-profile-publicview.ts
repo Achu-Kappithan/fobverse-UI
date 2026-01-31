@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CandidateInterface } from '../../interfaces/candidate.interface';
 import { CandidateService } from '../../services/candidate.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
@@ -26,7 +26,7 @@ export class CandidateProfilePublicview implements OnInit {
 
   constructor(
     private readonly _candidateService:CandidateService,
-    private readonly _swal:SweetAlert,
+    private readonly _toast:ToastService,
     private readonly _cdr:ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
     private readonly _router:Router,
@@ -70,7 +70,7 @@ export class CandidateProfilePublicview implements OnInit {
       }),
       error:(err =>{
         console.log("error regading fetch candidate profiel public view",err)
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
         this.isLoading= false
         this._cdr.detectChanges()
       })

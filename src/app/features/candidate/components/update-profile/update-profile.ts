@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CandidateInterface, ContactInfoItem } from '../../interfaces/candidate.interface';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { forkJoin, Observable, of, switchMap } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { Router, RouterModule } from '@angular/router';
@@ -27,12 +27,13 @@ export class UpdateProfile implements OnInit {
 
   selectedCover: File | null = null;
   coverPreviewUrl: string | ArrayBuffer | null = null;
-  cludBaseUrl:string = environment.cloudinaryBaseUrl
+  cludBaseUrl:string = environment.cloudinaryBaseUrl;
+  loadingToastId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private readonly _candidateService: CandidateService,
     private readonly _cloudinaryService: CloudinaryService,
     private readonly _router: Router
@@ -50,7 +51,7 @@ export class UpdateProfile implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching profile data:', err);
-        this._swal.showErrorToast('Failed to load profile data.');
+        this._toast.error('Failed to load profile data.');
         this.isLoading = false;
         this._cdr.detectChanges();
       },
@@ -251,7 +252,7 @@ export class UpdateProfile implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.updateProfileForm.invalid) {
-      this._swal.showErrorToast('Please fill all required fields');
+      this._toast.error('Please fill all required fields');
       this.updateProfileForm.markAllAsTouched();
       this._cdr.detectChanges(); 
       return;
@@ -259,7 +260,7 @@ export class UpdateProfile implements OnInit {
 
     const finalProfileData = { ...this.updateProfileForm.value };
     this.isLoading = true;
-    this._swal.showLoadingToast('Uploading images and updating profile....');
+    this.loadingToastId = this._toast.loading('Uploading images and updating profile....');
 
     try {
       const publicIdBase = this.profileData?.name ? this.profileData.name.toLowerCase().replace(/\s/g, '_') : 'default';
@@ -333,18 +334,18 @@ export class UpdateProfile implements OnInit {
               console.log("Profile Updated successfully in the backend", res);
               if (res.success && res.data) {
                 this.profileData = res.data;
-                this._swal.showSuccessToast('Profile updated successfully!');
+                if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+                this._toast.success('Profile updated successfully!');
                 this._router.navigate(['candidate/profile'])
               }
               this.isLoading = false;
-              this._swal.closeToast();
               this._cdr.detectChanges();
             },
             error: (err) => {
               console.error('Error updating profile in the backend', err);
               this.isLoading = false;
-              this._swal.closeToast();
-              this._swal.showErrorToast('Failed to update profile!');
+              if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+              this._toast.error('Failed to update profile!');
               this._cdr.detectChanges();
             }
           });
@@ -352,8 +353,8 @@ export class UpdateProfile implements OnInit {
         error: (err) => {
           console.error('Error during cloudinary upload or Signature:', err);
           this.isLoading = false;
-          this._swal.closeToast();
-          this._swal.showErrorToast('Image upload failed!');
+          if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+          this._toast.error('Image upload failed!');
           this._cdr.detectChanges();
         }
       });
@@ -361,8 +362,8 @@ export class UpdateProfile implements OnInit {
     } catch (error) {
       console.error("Caught an unexpected error in onSubmit:", error);
       this.isLoading = false;
-      this._swal.closeToast();
-      this._swal.showErrorToast('An unexpected error occurred!');
+      if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+      this._toast.error('An unexpected error occurred!');
       this._cdr.detectChanges();
     }
   }

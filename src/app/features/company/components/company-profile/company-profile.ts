@@ -8,7 +8,7 @@ import { filter, Observable, Subject, switchMap, takeUntil} from 'rxjs';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { environment } from '../../../../../env/environment';
 
@@ -54,7 +54,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
     private readonly _cdr:ChangeDetectorRef,
     private readonly _router : Router,
     private readonly _route: ActivatedRoute,
-    private readonly _swal : SweetAlert
+    private readonly _toast : ToastService
   ){
   }
 
@@ -187,7 +187,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
               if(resdata.success && resdata.data){
                 this.company$ = resdata.data
                 this.isLoading = false
-                this._swal.showSuccessToast(resdata.message)
+                this._toast.success(resdata.message)
                 this.closeModal(); 
                 this.teamMembersForm.reset();
                 this.selectedImageFile = null;
@@ -197,7 +197,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
             error : (error)=>{
               console.log("Error updating profile in backend",error)
               this.isLoading  =false
-              this._swal.showErrorToast(error.error.message)
+              this._toast.error(error.error.message)
               this._cdr.detectChanges()
             }
           })
@@ -205,13 +205,13 @@ export class CompanyProfile implements OnInit,OnDestroy {
         error:(err)=>{
           console.log("error for updating profile ",err)
           this.isLoading = false
-          this._swal.showErrorToast(err.error.message)
+          this._toast.error(err.error.message)
           this._cdr.detectChanges()
         }
       })
     }else{
       this.teamMembersForm.markAllAsTouched()
-      this._swal.showInfoToast("Some of the input fields are missing.")
+      this._toast.info("Some of the input fields are missing.")
     }
   }
 

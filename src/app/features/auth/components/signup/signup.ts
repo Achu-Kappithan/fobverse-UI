@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +20,7 @@ import { SweetAlert } from '../../../../shared/services/sweet-alert';
 })
 export class CandidateSignup implements OnInit {
   private readonly _Authservice = inject(AuthService);
-  private _swal = inject(SweetAlert);
+  private _toast = inject(ToastService);
   private _router = inject(Router);
 
   signupForm!: FormGroup;
@@ -88,7 +88,7 @@ export class CandidateSignup implements OnInit {
         next: (response) => {
           this.isLoading = false;
           console.log('registration response comes from the backend', response);
-          this._swal.showSuccessToast(response.message);
+          this._toast.success(response.message);
           this.signupForm.reset();
           this._router.navigate(['/login']);
         },
@@ -101,7 +101,7 @@ export class CandidateSignup implements OnInit {
               ? error.error.message[0]
               : error.error.message;
           }
-          this._swal.showErrorToast(errorMessage);
+          this._toast.error(errorMessage);
         },
       });
     } else {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside';
 import { AdminCandidate } from '../../services/admin-candidate';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfac
 import { CandidateInterface } from '../../../candidate/interfaces/candidate.interface';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-admin-candidates-list',
@@ -41,7 +42,8 @@ export class AdminCandidatesList  implements OnInit {
   constructor( 
     private readonly _adminCandidateService:AdminCandidate,
     private readonly _cdr :ChangeDetectorRef,
-    private readonly _route:ActivatedRoute 
+    private readonly _route:ActivatedRoute,
+    private readonly _toast:ToastService
   ) {}
 
   ngOnInit(): void {
@@ -70,8 +72,12 @@ export class AdminCandidatesList  implements OnInit {
         if(res.success){
           console.log("updated status ",res)
           candidate.isActive = !candidate.isActive
+          this._toast.success(res.message || 'Status updated successfully')
           this._cdr.detectChanges()
         }
+      },
+      error: (err) => {
+        this._toast.error(err.error?.message || 'Failed to update status')
       }
     })
   }

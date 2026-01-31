@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-forgot.pass.email',
@@ -23,7 +23,7 @@ export class ForgotPassEmail implements OnInit {
 
   private readonly _authService = inject(AuthService);
   private readonly _route = inject(ActivatedRoute);
-  private readonly _swal = inject(SweetAlert);
+  private readonly _toast = inject(ToastService);
   private readonly _router = inject(Router);
 
   ngOnInit(): void {
@@ -52,17 +52,17 @@ export class ForgotPassEmail implements OnInit {
           this.isLoading = false;
           console.log('Reseponce forgotpassword', response);
           if (response.success) {
-            this._swal.showSuccessToast(response.message);
+            this._toast.success(response.message);
             this._router.navigate(['/login']);
           } else {
-            this._swal.showErrorToast(response.message);
+            this._toast.error(response.message);
             this.forgotPasswordForm.reset();
           }
         },
         error: (error) => {
           this.isLoading = false;
           console.log('error updatePassword', error);
-          this._swal.showErrorToast(error.error.message);
+          this._toast.error(error.error.message);
           this.forgotPasswordForm.reset();
         },
       });

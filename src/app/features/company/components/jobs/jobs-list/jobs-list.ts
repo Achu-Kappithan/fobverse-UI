@@ -8,7 +8,7 @@ import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/inter
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.responce.interface';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { LoadingSpinner } from "../../../../../common/loading-spinner/loading-spinner";
 
 @Component({
@@ -27,7 +27,7 @@ export class JobsList implements OnInit {
     private readonly _router: Router,
     private readonly _companyService:CompanyService,
     private readonly _cdr :ChangeDetectorRef,
-    private readonly _swal : SweetAlert
+    private readonly _toast : ToastService
   ) {}
 
   public tablecolumns: TableColumn[] = [
@@ -88,7 +88,7 @@ export class JobsList implements OnInit {
       error:(err =>{
         console.log("error get from  getalljobs : ",err)
         this.isLoading = false
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
         this._cdr.detectChanges()
       })
     })

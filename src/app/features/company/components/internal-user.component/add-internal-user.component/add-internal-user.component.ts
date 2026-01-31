@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { CompanyService } from '../../../services/company-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-add-internal-user.component',
@@ -28,7 +28,7 @@ createUserForm!: FormGroup;
     private readonly _companyService: CompanyService,
     private readonly _router :Router,
     private readonly _route: ActivatedRoute,
-    private readonly _swal: SweetAlert
+    private readonly _toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -80,13 +80,13 @@ createUserForm!: FormGroup;
       next:(res =>{
         if(res.success){
           console.log("updated responce",res.data)
-          this._swal.showSuccessToast(res.message!)
+          this._toast.success(res.message!)
           this.createUserForm.reset()
           this._router.navigate(['../'], { relativeTo: this._route });       
         }
       }),
       error: (err =>{
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
         console.log("error while updating the user",err)
       })
     })

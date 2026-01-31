@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Observable, switchMap, of } from 'rxjs'; 
 import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,13 +24,14 @@ export class UserProfile implements OnInit {
   previewImage: string | null = null;
   selectedFile: File | null = null;
   cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload";
+  private loadingToastId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private readonly _companyService: CompanyService,
     private readonly _cloudinaryService: CloudinaryService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert
+    private readonly _toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +76,7 @@ export class UserProfile implements OnInit {
       error: (err) => {
         console.error("Error fetching user profile ", err);
         this.isLoading = false;
-        this._swal.showErrorToast('Failed to fetch user profile.');
+        this._toast.error('Failed to fetch user profile.');
         this._cdr.detectChanges();
       }
     });
@@ -131,11 +132,12 @@ export class UserProfile implements OnInit {
   onUpdateProfileSubmit(): void {
     if (this.updateProfileForm.invalid) {
       this.updateProfileForm.markAllAsTouched();
-      this._swal.showErrorToast('Please correct the form errors.');
+      this._toast.error('Please correct the form errors.');
       return;
     }
     this.isLoading = true;
-    this._swal.showLoadingToast('Updating profile...');
+    this.loadingToastId = this._toast.loading('Updating profile...');
+    
     const profileData: UpdateInternalUserInterface = {
       name: this.updateProfileForm.get('name')?.value,
       email: this.updateProfileForm.get('email')?.value,
@@ -169,10 +171,11 @@ export class UserProfile implements OnInit {
         }
         this._companyService.updateUserProfile(profileData).subscribe({
           next: (res) => {
+            if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
             if (res.success && res.data) {
               this.userProfile = res.data;
               this.previewImage = this.userProfile!.profileImg ? `${this.cloudinaryBaseUrl}${this.userProfile.profileImg}` : null;
-              this._swal.showSuccessToast('Profile updated successfully!');
+              this._toast.success('Profile updated successfully!');
               this.setActiveCard('profile');
             }
             this.isLoading = false;
@@ -180,7 +183,8 @@ export class UserProfile implements OnInit {
           },
           error: (err) => {
             console.error("Error updating profile in backend:", err);
-            this._swal.showErrorToast(err.error?.message || 'Failed to update profile.');
+            if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+            this._toast.error(err.error?.message || 'Failed to update profile.');
             this.isLoading = false;
             this._cdr.detectChanges();
           }
@@ -188,7 +192,8 @@ export class UserProfile implements OnInit {
       },
       error: (err) => {
         console.error("Error during Cloudinary upload or signature:", err);
-        this._swal.showErrorToast('Failed to upload profile picture.');
+        if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+        this._toast.error('Failed to upload profile picture.');
         this.isLoading = false;
         this._cdr.detectChanges();
       }
@@ -200,16 +205,18 @@ export class UserProfile implements OnInit {
       this.passwordChangeForm.markAllAsTouched();
       const confirmPasswordControl = this.passwordChangeForm.get('confirmNewPassword');
       if (confirmPasswordControl && confirmPasswordControl.errors?.['mismatch']) {
-        this._swal.showErrorToast('Passwords do not match.');
+        this._toast.error('Passwords do not match.');
       }
       return;
     }
     this.isLoading = true;
-    this._swal.showLoadingToast('Updating password...');
+    this.loadingToastId = this._toast.loading('Updating password...');
+    
     const { currentPassword, newPassword } = this.passwordChangeForm.value;
     this._companyService.changePassword(currentPassword, newPassword).subscribe({
       next: (res) => {
-        this._swal.showSuccessToast('Password changed successfully.');
+        if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+        this._toast.success('Password changed successfully.');
         this.isLoading = false;
         this.passwordChangeForm.reset();
         this.setActiveCard('profile');
@@ -217,7 +224,8 @@ export class UserProfile implements OnInit {
       },
       error: (err) => {
         console.error("Error changing password:", err);
-        this._swal.showErrorToast(err.error?.message || 'Failed to change password.');
+        if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
+        this._toast.error(err.error?.message || 'Failed to change password.');
         this.isLoading = false;
         this._cdr.detectChanges();
       }

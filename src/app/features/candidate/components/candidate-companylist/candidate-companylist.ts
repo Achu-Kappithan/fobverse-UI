@@ -11,7 +11,7 @@ import {
 } from '../../interfaces/candidate.companylist.interface';
 
 import { CandidateService } from '../../services/candidate.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-candidate-companylist',
@@ -44,7 +44,7 @@ export class CandidateCompanylist implements OnInit {
   constructor(
     private readonly _candidateService: CandidateService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +81,7 @@ export class CandidateCompanylist implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching companies:', err);
-        this._swal.showErrorToast('Failed to load companies');
+        this._toast.error('Failed to load companies');
         this.isLoading = false;
         this._cdr.detectChanges();
       },

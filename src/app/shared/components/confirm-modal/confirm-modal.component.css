@@ -1,0 +1,147 @@
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 11000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.confirm-card {
+  background: #ffffff;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.confirm-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.confirm-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.confirm-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.confirm-message {
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.confirm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancel, .btn-confirm {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.btn-confirm {
+  background: #7c3aed; /* Default Theme Purple */
+  color: white;
+}
+
+.btn-confirm:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* Types */
+.type-danger .confirm-icon {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.type-danger .btn-confirm {
+  background: #ef4444;
+}
+
+.type-warning .confirm-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.type-info .confirm-icon {
+  background: #e0e7ff;
+  color: #6366f1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Dark Mode */
+:host-context(html.dark) .confirm-card {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+:host-context(html.dark) .confirm-title {
+  color: #f9fafb;
+}
+
+:host-context(html.dark) .confirm-message {
+  color: #9ca3af;
+}
+
+:host-context(html.dark) .btn-cancel {
+  background: #374151;
+  color: #d1d5db;
+}
+
+:host-context(html.dark) .btn-cancel:hover {
+  background: #4b5563;
+  color: #f9fafb;
+}
