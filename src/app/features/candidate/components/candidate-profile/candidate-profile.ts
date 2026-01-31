@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { switchMap } from 'rxjs';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { environment } from '../../../../../env/environment';
@@ -33,7 +33,7 @@ export class CandidateProfile implements OnInit {
   constructor(
     private readonly _candidateService: CandidateService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private readonly _sanitizer: DomSanitizer,
     private readonly _cloudinaryService: CloudinaryService
   ) {}
@@ -87,7 +87,7 @@ export class CandidateProfile implements OnInit {
 
   updateRsume() {
     if (!this.selectedFile) {
-      this._swal.showInfoToast('No new file selected to update.');
+      this._toast.info('No new file selected to update.');
       return;
     }
 
@@ -126,7 +126,7 @@ export class CandidateProfile implements OnInit {
                 if (res.success && res.data) {
                   this.profileData = res.data;
                   this.setResumeUrls();
-                  this._swal.showSuccessToast('Resume updated successfully!');
+                  this._toast.success('Resume updated successfully!');
                   this.closeModal();
                 }
                 this.isLoading = false;
@@ -134,7 +134,7 @@ export class CandidateProfile implements OnInit {
               },
               error: (err) => {
                 console.error('Error updating resume URL in backend:', err);
-                this._swal.showErrorToast(
+                this._toast.error(
                   err.error?.message || 'Failed to update resume.'
                 );
                 this.isLoading = false;
@@ -145,7 +145,7 @@ export class CandidateProfile implements OnInit {
         },
         error: (err) => {
           console.error('Error during Cloudinary upload:', err);
-          this._swal.showErrorToast('Failed to upload resume file.');
+          this._toast.error('Failed to upload resume file.');
           this.isLoading = false;
           this._cdr.detectChanges();
         },

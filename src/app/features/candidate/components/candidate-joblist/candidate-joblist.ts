@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CandidateService } from '../../services/candidate.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
 import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface } from '../../interfaces/candidate.joblist.interface';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
@@ -54,7 +54,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
   constructor(
     private readonly _candidateService:CandidateService,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _swal:SweetAlert
+    private readonly _toast:ToastService
   ){}
 
   paginationMeta:PaginationMeta = {
@@ -109,7 +109,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
       }),
       error:(err)=>{
         console.log('error for geting Alljobs: ',err)
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()
       }

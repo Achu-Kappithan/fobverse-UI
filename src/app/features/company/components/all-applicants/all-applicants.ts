@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -17,6 +18,7 @@ export class AllApplicantsComponent implements OnInit {
   private readonly _companyService = inject(CompanyApplication);
   private readonly _router = inject(Router);
   private readonly _cdr = inject(ChangeDetectorRef);
+  private readonly _toast = inject(ToastService);
 
   baseUrl:string = environment.cloudinaryBaseUrl
 
@@ -53,6 +55,7 @@ export class AllApplicantsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching applicants:', err);
+        this._toast.error(err.error?.message || 'Failed to fetch applicants');
       }
     });
   }

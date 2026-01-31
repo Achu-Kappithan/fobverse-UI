@@ -8,5 +8,5 @@ import { Component, Input, SimpleChanges } from '@angular/core';
   styleUrl: './loading-spinner.css'
 })
 export class LoadingSpinner {
-
+  @Input() message: string = 'Loading, please wait...';
 }

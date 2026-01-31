@@ -11,7 +11,7 @@ import { environment } from '../../../../../../env/environment';
 import { TextTransformPipe } from '../../../../../shared/pipes/text-transform-pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Stages } from '../../../../../shared/enums/Interview-stages.enum';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { QualifiedStageComponent } from './components/qualified-stage/qualified-stage.component';
 import { TelephonicStageComponent } from './components/telephonic-stage/telephonic-stage.component';
@@ -69,7 +69,7 @@ export class ApplicationDetails implements OnInit {
     private readonly _router: Router,
     private readonly _ApplicationService: CompanyApplication,
     private readonly _sanitizer: DomSanitizer,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private _cdr: ChangeDetectorRef
   ) {}
 
@@ -105,10 +105,8 @@ export class ApplicationDetails implements OnInit {
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.log(
-            'error  regading  fetch applicationDetails with profile',
-            err
-          );
+          console.error('Error fetching applicationDetails:', err);
+          this._toast.error(err.error?.message || 'Failed to fetch application details');
           this._cdr.detectChanges();
         },
       });

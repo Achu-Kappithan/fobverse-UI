@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.responce.interface';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../../common/loading-spinner/loading-spinner';
 import { Subscription } from 'rxjs';
@@ -26,7 +26,7 @@ export class JobView implements OnInit,OnDestroy{
     private readonly _route:ActivatedRoute,
     private readonly _companyService:CompanyService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _swal: SweetAlert
+    private readonly _toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -51,13 +51,13 @@ export class JobView implements OnInit,OnDestroy{
         }),
         error:(err =>{
           console.log("error for getingJobDetails",err)
-          this._swal.showErrorToast(err.error.message)
+          this._toast.error(err.error.message)
           this.isLoading = false
           this._cdr.detectChanges()
         })
       })
     }else{
-      this._swal.showErrorToast('Current jobReference is Missing')
+      this._toast.error('Current jobReference is Missing')
       console.log("jobId is empty")
       this.isLoading= false
       this._cdr.detectChanges()

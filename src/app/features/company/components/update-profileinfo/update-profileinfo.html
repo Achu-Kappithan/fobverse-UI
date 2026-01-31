@@ -1,4 +1,11 @@
-<div class="min-h-screen  p-4 sm:p-6 lg:p-8">
+<div class="min-h-screen  p-4 sm:p-6 lg:p-8 relative">
+  <!-- Saving Animation Overlay -->
+  <div *ngIf="isSaving" class="fixed inset-0 z-[100] flex items-center justify-center bg-white/60 backdrop-blur-[2px]">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl border border-purple-100 flex flex-col items-center">
+      <app-loading-spinner message="Saving changes..."></app-loading-spinner>
+    </div>
+  </div>
+
   <form [formGroup]="companyProfileForm" (ngSubmit)="onSubmit()" class="max-w-7xl mx-auto space-y-6">
 
     <div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between">
@@ -16,15 +23,15 @@
         </svg>
         Back
       </button>
-        <button type="submit" [disabled]="loading" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
-          <svg *ngIf="!loading" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button type="submit" [disabled]="isSaving" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+          <svg *ngIf="!isSaving" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          <svg *ngIf="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg *ngIf="isSaving" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          {{ loading ? 'Saving...' : 'Save Changes' }}
+          {{ isSaving ? 'Saving...' : 'Save Changes' }}
         </button>
       </div>
     </div>
@@ -225,12 +232,12 @@
     </div>
 
     <div class="flex justify-end pt-4">
-      <button type="submit" [disabled]="loading" class="px-6 py-3 text-lg font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
-        <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <button type="submit" [disabled]="isSaving" class="px-6 py-3 text-lg font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+        <svg *ngIf="isSaving" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        {{ loading ? 'Saving...' : 'Save All Changes' }}
+        {{ isSaving ? 'Saving...' : 'Save All Changes' }}
       </button>
     </div>
   </form>

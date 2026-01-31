@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company-service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { JobsInterface } from '../../interfaces/company.responce.interface';
 import {
   debounceTime,
@@ -40,7 +40,7 @@ export class CreateJob implements OnInit {
   constructor(
     private fb: FormBuilder,
     private readonly _companyService: CompanyService,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly _cdr: ChangeDetectorRef
@@ -199,14 +199,14 @@ export class CreateJob implements OnInit {
         next: (res) => {
           console.log('Response from backend', res);
           if (res.success) {
-            this._swal.showSuccessToast(res.message);
+            this._toast.success(res.message);
             this._router.navigate(['../'], { relativeTo: this._route });
           }
           this.isSaving = false;
         },
         error: (err) => {
           console.log(err);
-          this._swal.showErrorToast(err.error.message);
+          this._toast.error(err.error.message);
           this.isSaving = false;
         },
       });

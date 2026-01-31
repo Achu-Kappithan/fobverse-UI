@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
 import { AdminCompanyService } from '../../services/admin-company-service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../shared/interfaces/table.interface';
@@ -26,7 +26,7 @@ export class AdminJoblist  implements OnInit {
   constructor(
     private readonly _adminService:AdminCompanyService,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private readonly _router:Router
   ) {}
 
@@ -87,7 +87,7 @@ export class AdminJoblist  implements OnInit {
       }),
       error:(err)=>{
         console.log('error for geting Alljobs: ',err)
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()
       }
@@ -98,13 +98,13 @@ export class AdminJoblist  implements OnInit {
     const {action,row}= event
     if(action ==='Activate'){
       if(row.activeStatus){
-        this._swal.showErrorToast("Current User Status is Active")
+        this._toast.error("Current User Status is Active")
       }else{
         this.updateJobStatus(row)
       }
     }else if(action ==='deactivate'){
       if(!row.activeStatus){
-        this._swal.showErrorToast('Current User Status is Inactive')
+        this._toast.error('Current User Status is Inactive')
       }else{
         this.updateJobStatus(row)
       }
@@ -119,12 +119,12 @@ export class AdminJoblist  implements OnInit {
         if(res.success){
           job.activeStatus = !job.activeStatus
           this._cdr.detectChanges()
-          this._swal.showSuccessToast(res.message)
+          this._toast.success(res.message)
         }
       }),
       error:(err =>{
         console.log("error regading Activate job Status ",err)
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
       })
     })
   }

@@ -16,7 +16,7 @@ import {
 import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
 import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
-import { SweetAlert } from '../../../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { AuthService } from '../../../../../../auth/services/auth.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -87,7 +87,7 @@ export class TelephonicStageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private readonly _ApplicationService: CompanyApplication,
-    private readonly _swal: SweetAlert,
+    private readonly _toast: ToastService,
     private _cdr: ChangeDetectorRef,
     private _authService: AuthService
   ) {}
@@ -214,13 +214,13 @@ export class TelephonicStageComponent implements OnInit {
           this.interview = res.data;
 
           this.sheduleModalclose();
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           this._cdr.detectChanges();
         }
       },
       error: (err) => {
         console.log('error regading shedule interview ', err);
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
       },
     });
   }
@@ -242,13 +242,13 @@ export class TelephonicStageComponent implements OnInit {
           this.isSaving = false;
           this.saveComplete = true;
           setTimeout(() => (this.saveComplete = false), 500);
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           this._cdr.detectChanges();
         }
       },
       error: (err) => {
         console.log('error regading Cancell interview');
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
       },
@@ -275,13 +275,13 @@ export class TelephonicStageComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.interview = res.data;
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           this.openFeedbackModal();
           this._cdr.detectChanges();
         }
       },
       error: (err) => {
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
         this.openFeedbackModal();
         this._cdr.detectChanges();
         console.log('error regading update feedback', err);
@@ -294,9 +294,8 @@ export class TelephonicStageComponent implements OnInit {
       if (this.interview?.evaluators) {
         for (const evaluator of this.interview.evaluators) {
           if (!evaluator.feedback) {
-            this._swal.showWarningToast(
-              'Feedback Missing',
-              'Please wait for all evaluators to submit their feedback.'
+            this._toast.warning(
+              'Feedback Missing: Please wait for all evaluators to submit their feedback.'
             );
             return;
           }
@@ -333,7 +332,7 @@ export class TelephonicStageComponent implements OnInit {
           this.isSaving = false;
           this.saveComplete = true;
           setTimeout(() => (this.saveComplete = false), 2000);
-          this._swal.showSuccessToast(res.message);
+          this._toast.success(res.message);
           this.openFinalizeModal();
           this._cdr.detectChanges();
           
@@ -343,7 +342,7 @@ export class TelephonicStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        this._swal.showErrorToast(err.error.message);
+        this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
         console.log('error regarding finalize result', err);

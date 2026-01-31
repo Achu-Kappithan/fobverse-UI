@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ComapnyProfileInterface, JobsInterface } from '../../interfaces/company.responce.interface';
 import { CompanyService } from '../../services/company-service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
@@ -29,7 +29,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
 
   constructor(
     private readonly _companyService:CompanyService,
-    private readonly _swal:SweetAlert,
+    private readonly _toast:ToastService,
     private readonly _cdr:ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
     private readonly _router:Router 
@@ -60,7 +60,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
        }),
        error:(err =>{
         console.log("error regading fet company public view profile",err)
-        this._swal.showErrorToast(err.error.message)
+        this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()
        })

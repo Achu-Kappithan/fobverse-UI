@@ -9,7 +9,8 @@ import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/inter
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { environment } from '../../../../../../env/environment';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
+import { ConfirmService } from '../../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-user-list.component',
@@ -45,7 +46,8 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly _ComapnyService: CompanyService,
     private  _cdr: ChangeDetectorRef,
-    private readonly _swal:SweetAlert,
+    private readonly _toast:ToastService,
+    private readonly _confirmService: ConfirmService,
   ){}
 
   ngOnInit(): void {
@@ -120,21 +122,31 @@ export class UserListComponent implements OnInit, OnDestroy {
     return pageNumber
   }
 
-  removeUser(id:string,index:number){
+  async removeUser(id:string,index:number){
     console.log(id)
     console.log("index is ",index)
     
+    const confirmed = await this._confirmService.confirm({
+      title: 'Remove User',
+      message: 'Are you sure you want to remove this internal user? This action cannot be undone.',
+      confirmText: 'Remove',
+      cancelText: 'Cancel',
+      type: 'danger'
+    });
+
+    if (!confirmed) return;
+
     this._ComapnyService.removeUser(id).subscribe({
       next:(res =>{
         if(res.success){
-          this._swal.showSuccessToast(res.message)
+          this._toast.success(res.message)
           this.InternalUsers.splice(index,1)
           this._cdr.detectChanges()
         }
       }),
       error:(err =>{
-        console.log("error regading removeing user", err)
-        this._swal.showErrorToast(err.error.message)
+        console.log("error regregarding removeing user", err)
+        this._toast.error(err.error.message)
       })
     })
   }

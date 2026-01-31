@@ -15,7 +15,7 @@ import {
 } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
-import { SweetAlert } from '../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 
 @Component({
@@ -40,7 +40,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
 
   private _AuthService = inject(AuthService);
   private _router = inject(Router);
-  private _swal = inject(SweetAlert);
+  private _toast = inject(ToastService);
   private _googleService = inject(SocialAuthService);
   private _route = inject(ActivatedRoute);
   private _googlesub?: Subscription;
@@ -60,7 +60,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
               next: (response) => {
                 console.log('Backend response:', response);
                 if (response.success) {
-                  this._swal.showSuccessToast(
+                  this._toast.success(
                     response.message ?? 'Login Successfull'
                   );
                   console.log('logedin user role', response.data?.role);
@@ -73,8 +73,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
               },
               error: (error) => {
                 console.error('Error during login:', error);
-                this._swal.showErrorToast(error.error.message) ??
-                  'Google login faild';
+                this._toast.error(error.error.message);
               },
             });
           }
@@ -111,14 +110,14 @@ export class CandidateLogin implements OnInit, OnDestroy {
           next: (response) => {
             console.log('adminLogin Resoponse', response);
             if (response.success) {
-              this._swal.showSuccessToast(
+              this._toast.success(
                 response.message ?? 'Login Successfull....'
               );
               this._router.navigate(['/admin/dashboard']);
             }
           },
           error: (error) => {
-            this._swal.showErrorToast(error.error.message);
+            this._toast.error(error.error.message);
             this.loginForm.reset();
           },
         });
@@ -126,12 +125,12 @@ export class CandidateLogin implements OnInit, OnDestroy {
         this._AuthService.candidateLogin(userdata).subscribe({
           next: (response) => {
             if (response.success) {
-              this._swal.showSuccessToast(
+              this._toast.success(
                 response.message ?? 'Login SuccessFull'
               );
               this._router.navigate(['/candidate/home']);
             } else {
-              this._swal.showErrorToast(
+              this._toast.error(
                 response.message ?? 'Invalid Email or Password'
               );
               this.loginForm.reset();
@@ -139,7 +138,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
           },
           error: (err) => {
             console.error('Login error:', err);
-            this._swal.showErrorToast(err.statusText, err.error.message);
+            this._toast.error(err.statusText, err.error.message);
             this.loginForm.reset();
           },
         });
@@ -149,14 +148,14 @@ export class CandidateLogin implements OnInit, OnDestroy {
           next: (res) => {
             console.log('companylogin Responce', res);
             if (res.success) {
-              this._swal.showSuccessToast(res.message ?? 'Login SuccessFull');
+              this._toast.success(res.message ?? 'Login SuccessFull');
               this._router.navigate(['/company/home']);
               this.loginForm.reset();
             }
           },
           error: (err) => {
             console.log('error regading company login', err);
-            this._swal.showErrorToast(
+            this._toast.error(
               err.error.message ?? 'Error regading login  plz try again..!'
             );
           },

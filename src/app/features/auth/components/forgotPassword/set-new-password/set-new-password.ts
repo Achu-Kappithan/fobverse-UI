@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SweetAlert } from '../../../../../shared/services/sweet-alert';
+import { ToastService } from '../../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-set-new-password',
@@ -29,7 +29,7 @@ export class SetNewPassword implements OnInit {
   private readonly _authService = inject(AuthService);
   private readonly _route = inject(ActivatedRoute);
   private readonly _router = inject(Router);
-  private readonly _swal = inject(SweetAlert);
+  private readonly _toast = inject(ToastService);
 
   ngOnInit(): void {
     this._route.queryParams.subscribe((token) => {
@@ -81,17 +81,17 @@ export class SetNewPassword implements OnInit {
           this.isLoading = false;
           console.log('Updated Password Responce', response);
           if (response.success) {
-            this._swal.showSuccessToast(response.message);
+            this._toast.success(response.message);
             this._router.navigate(['/login']);
           } else {
-            this._swal.showErrorToast(response.message);
+            this._toast.error(response.message);
             this.resetForm.reset();
           }
         },
         error: (error) => {
           this.isLoading = false;
           console.log('error regading new password updation', error);
-          this._swal.showErrorToast(error.error.message);
+          this._toast.error(error.error.message);
           this.resetForm.reset();
         },
       });
