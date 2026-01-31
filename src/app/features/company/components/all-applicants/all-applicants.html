@@ -1,11 +1,11 @@
 <div class="applicants-container p-6 min-h-screen">
   <!-- Section 1: Header Section (Count, Search, and Filter) -->
   <div
-    class="header-section mb-6 bg-white dark:bg-dark-lavender p-4 rounded-xl shadow-md border border-gray-100 dark:border-dark-gray-light flex flex-col md:flex-row justify-between items-center gap-4"
+    class="header-section mb-6 bg-white p-4 rounded-xl shadow-md border border-divider flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-300"
   >
     <div class="count-badge">
       <h1
-        class="text-xl font-bold text-dark-gray dark:text-dark-text whitespace-nowrap"
+        class="text-xl font-bold text-dark-gray whitespace-nowrap"
       >
         Total Applicants: {{ totalApplicants }}
       </h1>
@@ -23,7 +23,7 @@
           [(ngModel)]="searchQuery"
           (input)="onSearchChange()"
           placeholder="Search Applicants"
-          class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple w-full md:w-64 dark:bg-dark-lavender-light dark:border-dark-gray-light dark:text-dark-text"
+          class="pl-10 pr-4 py-2 border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-purple w-full md:w-64 bg-white text-dark-gray"
         />
       </div>
 
@@ -31,7 +31,7 @@
         <select
           [(ngModel)]="selectedStage"
           (change)="onStageFilterChange()"
-          class="pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple appearance-none bg-white dark:bg-dark-lavender-light dark:border-dark-gray-light dark:text-dark-text"
+          class="pl-4 pr-10 py-2 border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-purple appearance-none bg-white text-dark-gray"
         >
           <option *ngFor="let stage of hiringStages" [value]="stage.value">
             {{ stage.label }}
@@ -46,11 +46,11 @@
 
   <!-- Section 2: Table Section -->
   <div
-    class="table-section mb-6 bg-white dark:bg-dark-lavender rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-dark-gray-light"
+    class="table-section mb-6 bg-white rounded-xl shadow-md overflow-hidden border border-divider transition-all duration-300"
   >
     <div *ngIf="applicants.length === 0" class="p-20 text-center">
       <i class="fas fa-users text-6xl text-gray-200 mb-4 block"></i>
-      <p class="text-gray-500 dark:text-dark-text text-lg">
+      <p class="text-gray text-lg">
         No applicants found matching your criteria.
       </p>
     </div>
@@ -59,35 +59,35 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr
-            class="bg-gray-50 dark:bg-dark-lavender-light border-b border-gray-100 dark:border-dark-gray-light"
+            class="bg-gray-50 border-b border-divider"
           >
             <th
-              class="p-4 font-semibold text-gray-600 dark:text-dark-text cursor-pointer hover:text-purple text-sm"
+              class="p-4 font-semibold text-gray cursor-pointer hover:text-purple text-sm"
             >
               Full Name
             </th>
             <th
-              class="p-4 font-semibold text-gray-600 dark:text-dark-text cursor-pointer hover:text-purple text-sm"
+              class="p-4 font-semibold text-gray cursor-pointer hover:text-purple text-sm"
             >
               Score
             </th>
             <th
-              class="p-4 font-semibold text-gray-600 dark:text-dark-text cursor-pointer hover:text-purple text-sm"
+              class="p-4 font-semibold text-gray cursor-pointer hover:text-purple text-sm"
             >
               Hiring Stage
             </th>
             <th
-              class="p-4 font-semibold text-gray-600 dark:text-dark-text cursor-pointer hover:text-purple text-sm"
+              class="p-4 font-semibold text-gray cursor-pointer hover:text-purple text-sm"
             >
               Status
             </th>
             <th
-              class="p-4 font-semibold text-gray-600 dark:text-dark-text cursor-pointer hover:text-purple text-sm"
+              class="p-4 font-semibold text-gray cursor-pointer hover:text-purple text-sm"
             >
               Applied Date
             </th>
             <th
-              class="p-4 font-semibold text-gray-600 dark:text-dark-text cursor-pointer hover:text-purple text-sm"
+              class="p-4 font-semibold text-gray cursor-pointer hover:text-purple text-sm"
             >
               Job Role
             </th>
@@ -101,7 +101,7 @@
         <tbody>
           <tr
             *ngFor="let applicant of applicants"
-            class="border-b border-gray-50 dark:border-dark-gray-light hover:bg-gray-50 dark:hover:bg-dark-lavender-light transition-colors"
+            class="border-b border-divider hover:bg-gray-50 transition-colors"
           >
             <td class="p-4">
               <div class="flex items-center space-x-3">
@@ -110,7 +110,7 @@
                   alt=""
                   class="w-10 h-10 rounded-full border-2 border-gray-100 object-cover"
                 />
-                <span class="font-medium text-gray-900 dark:text-dark-text"
+                <span class="font-medium text-dark-gray"
                   >{{ applicant.name }}</span
                 >
               </div>
@@ -118,7 +118,7 @@
             <td class="p-4">
               <div class="flex items-center space-x-1">
                 <i class="fas fa-star text-yellow-400"></i>
-                <span class="text-gray-700 dark:text-dark-text"
+                <span class="text-dark-gray"
                   >{{ applicant.atsScore | number:'1.1-2' }}</span
                 >
               </div>
@@ -137,10 +137,10 @@
                 {{ getStatusLabel(applicant.Rejected) }}
               </span>
             </td>
-            <td class="p-4 text-gray-600 dark:text-dark-text text-sm">
+            <td class="p-4 text-gray text-sm">
               {{ applicant.createdAt | date:'dd MMM, yyyy' }}
             </td>
-            <td class="p-4 text-gray-600 dark:text-dark-text text-sm">
+            <td class="p-4 text-gray text-sm">
               {{ applicant.jobDetails?.title || 'N/A' }}
             </td>
             <td class="p-4">
@@ -161,16 +161,16 @@
 
   <!-- Section 3: Pagination Section -->
   <div
-    class="pagination-section flex justify-between items-center p-4 bg-white dark:bg-dark-lavender rounded-xl shadow-md border border-gray-100 dark:border-dark-gray-light"
+    class="pagination-section flex justify-between items-center p-4 bg-white rounded-xl shadow-md border border-divider transition-all duration-300"
   >
     <div
-      class="flex items-center space-x-2 text-sm text-gray-600 dark:text-dark-text"
+      class="flex items-center space-x-2 text-sm text-gray"
     >
       <span>Rows per page:</span>
       <select
         [(ngModel)]="pageSize"
         (change)="onSearchChange()"
-        class="border border-gray-200 rounded px-2 py-1 focus:outline-none dark:bg-dark-lavender dark:border-dark-gray-light"
+        class="border border-divider rounded px-2 py-1 focus:outline-none bg-white text-dark-gray"
       >
         <option [value]="5">5</option>
         <option [value]="10">10</option>
@@ -191,7 +191,7 @@
         *ngFor="let page of pages"
         (click)="onPageChange(page)"
         [class]="'w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all ' + 
-                 (currentPage === page ? 'bg-purple text-white shadow-md' : 'text-gray-600 hover:bg-lavender dark:text-dark-text dark:hover:bg-dark-lavender-light')"
+                 (currentPage === page ? 'bg-purple text-white shadow-md' : 'text-gray hover:bg-lavender')"
       >
         {{ page }}
       </button>

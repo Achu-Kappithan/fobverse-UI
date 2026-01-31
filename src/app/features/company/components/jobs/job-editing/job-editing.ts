@@ -21,6 +21,7 @@ export class JobEditing implements OnInit , OnDestroy {
   jobId: string | null = null;
   jobDetails: JobsInterface | null = null;
   jobEditForm!: FormGroup;
+  loading: boolean = false;
 
   minDate: string = '';
   locationPattern = /^[A-Za-z\s]+$/;
@@ -213,6 +214,7 @@ export class JobEditing implements OnInit , OnDestroy {
   updateChanges() {
     console.log("works")
     if (this.jobEditForm.valid) {
+      this.loading = true;
       console.log("form valid  redy to update")
       const formData = this.jobEditForm.value;
       this._companyService.updateJobDetails(this.jobId!,formData)
@@ -223,10 +225,12 @@ export class JobEditing implements OnInit , OnDestroy {
             this._swal.showSuccessToast(res.message)
             this._router.navigate(['../'],{relativeTo:this._route})
           }
+          this.loading = false;
         }),
         error:(err =>{
           console.log("error for updating jobDetails",err)
           this._swal.showErrorToast(err.error.message)
+          this.loading = false;
         })
       })
     } else {

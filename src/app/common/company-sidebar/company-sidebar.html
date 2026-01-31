@@ -1,5 +1,5 @@
 <div
-  class="fixed left-0 top-16 bottom-0 bg-white dark:bg-dark-lavender transition-all duration-300 ease-in-out custom-scrollbar z-10"
+  class="fixed left-0 top-16 bottom-0 bg-white transition-all duration-300 ease-in-out custom-scrollbar z-10"
   [ngClass]="{'w-64': isOpen, 'w-16': !isOpen}"
 >
   <div class="p-4 h-full overflow-y-auto">
@@ -10,7 +10,7 @@
       <button
         (click)="toggleSidebar()"
         type="button"
-        class="text-dark-gray dark:text-dark-text hover:bg-lavender dark:hover:bg-dark-lavender p-2 rounded transition-colors"
+        class="text-dark-gray dark:text-dark-text hover-bg-light p-2 rounded transition-colors"
         [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'"
       >
         <i
@@ -104,7 +104,7 @@
         </li>
       </ul>
 
-      <div class="mt-6 pt-4 border-t border-gray dark:border-dark-gray-light">
+      <div class="mt-6 pt-4 border-t border-divider">
         <h3
           *ngIf="isOpen"
           class="text-dark-gray dark:text-dark-text text-sm font-bold mb-2 pl-2"

@@ -201,6 +201,6 @@ export class ApplicationDetails implements OnInit {
   }
 
   back() {
-    this._router.navigate(['../../../'], { relativeTo: this._route });
+    this._router.navigate(['../../'], { relativeTo: this._route });
   }
 }
