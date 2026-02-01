@@ -113,7 +113,8 @@ export class CandidateLogin implements OnInit, OnDestroy {
               this._toast.success(
                 response.message ?? 'Login Successfull....'
               );
-              this._router.navigate(['/admin/dashboard']);
+              const returnUrl = this._route.snapshot.queryParams['returnUrl'];
+              this._router.navigateByUrl(returnUrl ?? '/admin/dashboard');
             }
           },
           error: (error) => {
@@ -128,7 +129,8 @@ export class CandidateLogin implements OnInit, OnDestroy {
               this._toast.success(
                 response.message ?? 'Login SuccessFull'
               );
-              this._router.navigate(['/candidate/home']);
+              const returnUrl = this._route.snapshot.queryParams['returnUrl'];
+              this._router.navigateByUrl(returnUrl ?? '/candidate/home');
             } else {
               this._toast.error(
                 response.message ?? 'Invalid Email or Password'
@@ -149,7 +151,8 @@ export class CandidateLogin implements OnInit, OnDestroy {
             console.log('companylogin Responce', res);
             if (res.success) {
               this._toast.success(res.message ?? 'Login SuccessFull');
-              this._router.navigate(['/company/home']);
+              const returnUrl = this._route.snapshot.queryParams['returnUrl'];
+              this._router.navigateByUrl(returnUrl ?? '/company/home');
               this.loginForm.reset();
             }
           },
