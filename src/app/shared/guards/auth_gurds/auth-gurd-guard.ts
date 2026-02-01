@@ -27,7 +27,9 @@ export const authGurdGuard: CanActivateFn = (route, state) => {
             console.log(
               'authGurdGuard: User is NOT logged in. Redirecting to /login'
             );
-            return router.createUrlTree(['/login']);
+            return router.createUrlTree(['/login'], {
+              queryParams: { returnUrl: state.url },
+            });
           }
         })
       );

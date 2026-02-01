@@ -60,6 +60,7 @@ export class AuthService {
   candidateLogin(
     candidate: loginInterface
   ): Observable<ApiResponce<UserPartial>> {
+    this.isUserLoaded.next(false);
     return this._http
       .post<ApiResponce<UserPartial>>(`/api/auth/login`, candidate, {
         withCredentials: true,
@@ -67,11 +68,16 @@ export class AuthService {
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('responce service data', res.data);
-            if (res.data.role == 'admin') {
-              this.adminSubject.next(res.data);
-            }
+            console.log('Login successful, updating CandidateSubject', res.data);
+            this.adminSubject.next(null);
+            this.CompanySubject.next(null);
+            this.CandidateSubject.next(res.data);
           }
+          this.isUserLoaded.next(true);
+        }),
+        catchError((err) => {
+          this.isUserLoaded.next(true);
+          return throwError(() => err);
         })
       );
   }
@@ -97,12 +103,16 @@ export class AuthService {
             );
           } else {
             this.adminSubject.next(null);
+            this.CompanySubject.next(null);
+            this.CandidateSubject.next(null);
             console.log('no active user found');
           }
           this.isUserLoaded.next(true);
         }),
         catchError((err) => {
           this.adminSubject.next(null);
+          this.CompanySubject.next(null);
+          this.CandidateSubject.next(null);
           this.isUserLoaded.next(true);
           return throwError(() => err);
         })
@@ -158,34 +168,77 @@ export class AuthService {
     googleId: string,
     userType: string
   ): Observable<ApiResponce<UserPartial>> {
-    return this._http.get<ApiResponce<UserPartial>>(
-      `/api/auth/google?googleId=${googleId}&role=${userType}`,
-      { withCredentials: true }
-    );
+    this.isUserLoaded.next(false);
+    return this._http
+      .get<ApiResponce<UserPartial>>(
+        `/api/auth/google?googleId=${googleId}&role=${userType}`,
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((res) => {
+          if (res.success && res.data) {
+            console.log('Google login successful, updating subjects', res.data);
+            if (userType === 'admin') this.adminSubject.next(res.data);
+            else if (userType === 'candidate') this.CandidateSubject.next(res.data);
+            else this.CompanySubject.next(res.data);
+          }
+          this.isUserLoaded.next(true);
+        }),
+        catchError((err) => {
+          this.isUserLoaded.next(true);
+          return throwError(() => err);
+        })
+      );
   }
 
   adminLogin(loginInfo: loginInterface): Observable<ApiResponce<UserPartial>> {
+    this.isUserLoaded.next(false);
     return this._http
       .post<ApiResponce<UserPartial>>(`/api/auth/admin/login`, loginInfo, {
         withCredentials: true,
       })
       .pipe(
         tap((res) => {
-          if (res.data && res.success) {
+          if (res.success && res.data) {
+            console.log('Admin login successful, updating adminSubject', res.data);
             this.adminSubject.next(res.data);
+            this.CompanySubject.next(null);
+            this.CandidateSubject.next(null);
           }
+          this.isUserLoaded.next(true);
+        }),
+        catchError((err) => {
+          this.isUserLoaded.next(true);
+          return throwError(() => err);
         })
       );
   }
 
   companyUsersLogin(
     loginInfo: loginInterface
-  ): Observable<ApiResponce<ComapnyProfileInterface>> {
-    return this._http.post<ApiResponce<ComapnyProfileInterface>>(
-      '/api/auth/companyuserslogin',
-      loginInfo,
-      { withCredentials: true }
-    );
+  ): Observable<ApiResponce<ComapnyProfileInterface | any>> {
+    this.isUserLoaded.next(false);
+    return this._http
+      .post<ApiResponce<ComapnyProfileInterface | any>>(
+        '/api/auth/companyuserslogin',
+        loginInfo,
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((res) => {
+          if (res.success && res.data) {
+            console.log('Company user login successful, updating CompanySubject', res.data);
+            this.adminSubject.next(null);
+            this.CandidateSubject.next(null);
+            this.CompanySubject.next(res.data);
+          }
+          this.isUserLoaded.next(true);
+        }),
+        catchError((err) => {
+          this.isUserLoaded.next(true);
+          return throwError(() => err);
+        })
+      );
   }
 
   validateFogotpassEmail(

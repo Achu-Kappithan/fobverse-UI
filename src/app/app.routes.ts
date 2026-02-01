@@ -15,6 +15,9 @@ import { UserListComponent } from './features/company/components/internal-user.c
 import { isLogoutGuard } from './shared/guards/auth_gurds/is-logout-guard';
 import { authGurdGuard } from './shared/guards/auth_gurds/auth-gurd-guard';
 import { isAdminGuard } from './shared/guards/admin_guards/is-admin-guard';
+import { isCompanyAdminGuard } from './shared/guards/company_guards/is-company-admin.guard';
+import { isHrUserGuard } from './shared/guards/company_guards/is-hr-user.guard';
+import { isInterviewerGuard } from './shared/guards/company_guards/is-interviewer.guard';
 import { CandidateLogin } from './features/auth/components/login/login';
 import { CandidateSignup } from './features/auth/components/signup/signup';
 import { CreateJob } from './features/company/components/create-job/create-job';
@@ -218,6 +221,7 @@ export const routes: Routes = [
       import('./features/layout/company-component/company-component').then(
         (m) => m.CompanyComponent
       ),
+    canActivate: [authGurdGuard, isInterviewerGuard],
     children: [
       {
         path: 'home',
@@ -233,10 +237,12 @@ export const routes: Routes = [
           {
             path: 'updateprofile',
             component: UpdateProfileinfo,
+            canActivate: [isCompanyAdminGuard],
           },
           {
             path: 'newjob',
             component: CreateJob,
+            canActivate: [isHrUserGuard],
           },
           {
             path: 'publicview',
@@ -254,6 +260,7 @@ export const routes: Routes = [
           import(
             './features/company/components/internal-user.component/internal-user.component'
           ).then((m) => m.InternalUserComponent),
+        canActivate: [isCompanyAdminGuard],
         children: [
           {
             path: '',
@@ -278,6 +285,7 @@ export const routes: Routes = [
           import(
             './features/company/components/all-applicants/all-applicants'
           ).then((m) => m.AllApplicantsComponent),
+        canActivate: [isInterviewerGuard]
       },
       {
         path: 'my-schedules',
@@ -290,6 +298,7 @@ export const routes: Routes = [
         path: 'joblist',
         loadComponent: () =>
           import('./features/company/components/jobs/jobs').then((m) => m.Jobs),
+        canActivate: [isInterviewerGuard],
         children: [
           {
             path: '',
@@ -305,6 +314,7 @@ export const routes: Routes = [
           {
             path: 'jobedit',
             component: JobEditing,
+            canActivate: [isHrUserGuard],
           },
           {
             path: 'applications/:id',

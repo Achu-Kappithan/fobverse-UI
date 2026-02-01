@@ -32,7 +32,6 @@ export const authInterceptor: HttpInterceptorFn = (
     'auth/forgotpassword',
     'auth/updatepassword',
     'auth/verify-email',
-    'auth/getuser',
   ];
 
   const isPublicRequest = publicPaths.some((path) => req.url.includes(path));
