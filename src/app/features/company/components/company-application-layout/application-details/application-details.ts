@@ -147,7 +147,7 @@ export class ApplicationDetails implements OnInit {
 
 
   getStages(stage: string ): void {
-    switch (stage) {
+    switch (stage?.toLowerCase()) {
       case Stages.Default:
         this.currentStageIndex = 0;
         break;

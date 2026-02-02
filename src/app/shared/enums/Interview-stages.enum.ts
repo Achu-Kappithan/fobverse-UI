@@ -1,7 +1,7 @@
 
 export enum Stages {
   Default = 'default',
-  Shortlisted = 'Shortlisted',
+  Shortlisted = 'shortlisted',
   Telephone = 'telephone',
   Technical = 'technical_analysis',
   Hired = 'hired',
