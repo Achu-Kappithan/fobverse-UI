@@ -84,4 +84,10 @@ export class NotificationService {
     const unreadCount = notifications.filter(notif => !notif.isRead).length;
     this.unreadCountSubject.next(unreadCount);
   }
+
+  clear() {
+    this.notificationSubject.next([]);
+    this.unreadCountSubject.next(0);
+  }
 }
+

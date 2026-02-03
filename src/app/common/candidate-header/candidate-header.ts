@@ -49,9 +49,8 @@ export class CandidateHeader implements OnInit {
       this._cdr.detectChanges();
     });
 
-    this._notificationService.loadInitialData();
-    
     this._authService.isLoading$.subscribe((loaded) => {
+
       this.isLoaded = loaded;
       this._cdr.detectChanges();
     });
