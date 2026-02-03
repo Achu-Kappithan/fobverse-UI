@@ -4,8 +4,8 @@ import { ThemeService } from './shared/services/theme/theme.service';
 import { SocketService } from './shared/services/socket/socket.service';
 import { NotificationService } from './shared/services/notification/notification.service';
 import { AuthService } from './features/auth/services/auth.service';
-import { ToastComponent } from './shared/components/toast/toast.component';
-import { ConfirmModalComponent } from './shared/components/confirm-modal/confirm-modal.component';
+import { ToastComponent } from './common/toast/toast.component';
+import { ConfirmModalComponent } from './common/confirm-modal/confirm-modal.component';
 import { combineLatest, filter, switchMap } from 'rxjs';
 
 @Component({
