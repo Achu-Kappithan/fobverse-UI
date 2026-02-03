@@ -39,6 +39,7 @@
                     </button> -->
       </div>
       <div class="relative flex text-left">
+      <div class="relative flex items-center">
         <button
           (click)="toggleDarkMode()"
           class="p-2 mr-5 rounded-full transition-colors duration-200 hover:bg-lavender dark:hover:bg-gray-700"
@@ -50,263 +51,284 @@
           ></i>
         </button>
 
-        <button
-          (click)="openNotificationModal(); $event.stopPropagation()"
-          class="relative p-2 mr-3 rounded-full hover:bg-lavender dark:hover:bg-gray-700 transition-colors"
-          aria-label="Notifications"
-        >
-          <i class="fas fa-bell text-lg text-dark-gray dark:text-dark-text"></i>
-
-          <span
-            *ngIf="unreadMessageCount > 0"
-            class="absolute top-0 right-0 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 border-2 border-white dark:border-gray-800"
-          >
-            {{ unreadMessageCount > 99 ? '99+' : unreadMessageCount }}
-          </span>
-        </button>
-
-        <div
-          *ngIf="isNotificationModalOpen"
-          appClickOutside
-          (appClickOutside)="closeModal()"
-          class="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-50 border border-gray-100 dark:border-gray-700 top-full"
-        >
-          <!-- Header -->
-          <div
-            class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-purple to-light-purple dark:from-dark-purple dark:to-purple"
-          >
-            <div class="flex items-center gap-2">
-              <i class="fas fa-bell text-white"></i>
-              <h3 class="font-bold text-white">Notifications</h3>
-              <span
-                *ngIf="unreadMessageCount > 0"
-                class="bg-white text-purple text-xs font-bold px-2 py-0.5 rounded-full"
-              >
-                {{ unreadMessageCount }}
-              </span>
-            </div>
-            <button
-              *ngIf="unreadMessageCount > 0"
-              (click)="markAllAsRead()"
-              class="text-xs text-white/90 hover:text-white hover:underline font-medium transition-all"
-            >
-              Mark all read
-            </button>
-          </div>
-
-          <!-- Tabs -->
-          <div
-            class="flex border-b border-gray-100 dark:border-gray-700 text-sm bg-white dark:bg-gray-800"
-          >
-            <button
-              (click)="notificationTab = 'unread'"
-              [class.border-b-2]="notificationTab === 'unread'"
-              [class.border-purple]="notificationTab === 'unread'"
-              [class.text-purple]="notificationTab === 'unread'"
-              [class.text-gray]="notificationTab !== 'unread'"
-              class="flex-1 py-3 font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              Unread
-              <span *ngIf="unreadMessageCount > 0" class="ml-1 text-xs">
-                ({{ unreadMessageCount }})
-              </span>
-            </button>
-            <button
-              (click)="notificationTab = 'all'"
-              [class.border-b-2]="notificationTab === 'all'"
-              [class.border-purple]="notificationTab === 'all'"
-              [class.text-purple]="notificationTab === 'all'"
-              [class.text-gray]="notificationTab !== 'all'"
-              class="flex-1 py-3 font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              All
-              <span class="ml-1 text-xs">({{ notifications.length }})</span>
-            </button>
-          </div>
-
-          <!-- Notification List -->
-          <div class="max-h-96 overflow-y-auto custom-scrollbar bg-white dark:bg-gray-800">
-            <ng-container
-              *ngIf="getFilteredNotifications().length > 0; else noNotif"
-            >
-              <div
-                *ngFor="let notif of getFilteredNotifications()"
-                (click)="onNotificationClick(notif)"
-                class="p-4 border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-200"
-                [class.bg-blue-50]="!notif.isRead"
-                [class.dark:bg-gray-750]="!notif.isRead"
-              >
-                <div class="flex gap-3">
-                  <!-- Icon -->
-                  <div class="flex-shrink-0">
-                    <div
-                      class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm"
-                      [class.bg-purple]="!notif.isRead"
-                      [class.bg-gray-100]="notif.isRead"
-                      [class.dark:bg-gray-700]="notif.isRead"
-                    >
-                      <i
-                        [class]="'fas ' + getNotificationIcon(notif.type, notif.notificationType)"
-                        class="text-sm"
-                        [class.text-white]="!notif.isRead"
-                        [class.text-gray-500]="notif.isRead"
-                      ></i>
-                    </div>
-                  </div>
-
-                  <!-- Content -->
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-start justify-between gap-2">
-                      <h4
-                        class="text-sm text-dark-gray dark:text-white"
-                        [class.font-bold]="!notif.isRead"
-                        [class.font-medium]="notif.isRead"
-                      >
-                        {{ notif.title }}
-                      </h4>
-                      <div
-                        *ngIf="!notif.isRead"
-                        class="h-2 w-2 rounded-full bg-purple flex-shrink-0 mt-1"
-                      ></div>
-                    </div>
-
-                    <p
-                      class="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2"
-                    >
-                      {{ notif.message }}
-                    </p>
-
-                    <!-- Meta Information -->
-                    <div
-                      class="flex items-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-500"
-                    >
-                      <span class="flex items-center gap-1">
-                        <i class="far fa-clock"></i>
-                        {{ getRelativeTime(notif.createdAt, notif._id) }}
-                      </span>
-
-                      <!-- Additional meta info if available -->
-                      <span
-                        *ngIf="notif.meta?.date"
-                        class="flex items-center gap-1"
-                      >
-                        <i class="far fa-calendar"></i>
-                        {{ notif.meta?.date | date:'MMM d' }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-
-            <ng-template #noNotif>
-              <div class="p-12 text-center bg-white dark:bg-gray-800">
-                <div
-                  class="w-16 h-16 bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3"
-                >
-                  <i class="fas fa-bell-slash text-2xl text-gray-400"></i>
-                </div>
-                <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">
-                  No notifications found
-                </p>
-                <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">
-                  You're all caught up!
-                </p>
-              </div>
-            </ng-template>
-          </div>
-
-          <!-- Footer -->
-          <a
-            routerLink="/notifications"
-            (click)="closeModal()"
-            class="block py-3 text-center text-sm font-semibold text-purple dark:text-light-purple border-t border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          >
-            View All Notifications
-            <i class="fas fa-arrow-right ml-1 text-xs"></i>
-          </a>
-        </div>
-        <div class="relative flex items-center">
+        <ng-container *ngIf="candidate; else guestActions">
           <button
-            (click)="toggleModal('profileModal'); $event.stopPropagation()"
-            class="flex items-center space-x-2 text-dark-gray dark:text-white hover:text-purple dark:hover:text-light-purple focus:outline-none transition-colors"
+            (click)="openNotificationModal(); $event.stopPropagation()"
+            class="relative p-2 mr-3 rounded-full hover:bg-lavender dark:hover:bg-gray-700 transition-colors"
+            aria-label="Notifications"
           >
-            <div class="relative">
-              <img
-                [src]="candidate?.profileImg ? baseUrl+candidate?.profileImg : '/profileimages/defaultProfile.jpg'"
-                alt="Profile"
-                class="w-9 h-9 rounded-full border-2 border-purple/20 hover:border-purple transition-all object-cover"
-              />
-              <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></div>
-            </div>
+            <i class="fas fa-bell text-lg text-dark-gray dark:text-dark-text"></i>
+  
+            <span
+              *ngIf="unreadMessageCount > 0"
+              class="absolute top-0 right-0 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 border-2 border-white dark:border-gray-800"
+            >
+              {{ unreadMessageCount > 99 ? '99+' : unreadMessageCount }}
+            </span>
           </button>
-
-          <!-- Profile Dropdown -->
+  
           <div
-            *ngIf="isModalOpen('profileModal')"
+            *ngIf="isNotificationModalOpen"
             appClickOutside
             (appClickOutside)="closeModal()"
-            class="absolute right-0 top-full mt-3 w-64 profile-dropdown-card rounded-xl shadow-2xl z-50 overflow-hidden transform origin-top-right transition-all"
+            class="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-50 border border-gray-100 dark:border-gray-700 top-full"
           >
-            <!-- User Info Header -->
-            <div class="p-4 profile-dropdown-header">
-              <div class="flex items-center space-x-3">
-                <img
-                  [src]="candidate?.profileImg ? baseUrl+candidate?.profileImg : '/profileimages/defaultProfile.jpg'"
-                  alt="Profile"
-                  class="w-10 h-10 rounded-full border border-purple object-cover"
-                />
-                <div class="min-w-0">
-                  <p class="text-sm font-bold text-dark-gray dark:text-white truncate">
-                    {{candidate?.name || 'Candidate'}}
-                  </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
-                    {{candidate?.email}}
-                  </p>
-                </div>
+            <!-- Header -->
+            <div
+              class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-purple to-light-purple dark:from-dark-purple dark:to-purple"
+            >
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bell text-white"></i>
+                <h3 class="font-bold text-white">Notifications</h3>
+                <span
+                  *ngIf="unreadMessageCount > 0"
+                  class="bg-white text-purple text-xs font-bold px-2 py-0.5 rounded-full"
+                >
+                  {{ unreadMessageCount }}
+                </span>
               </div>
-            </div>
-
-            <!-- Menu Items -->
-            <div class="p-2">
-              <a
-                [routerLink]="['profile']"
-                (click)="closeModal()"
-                class="flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg transition-all group"
-              >
-                <div class="w-8 h-8 rounded-lg profile-icon-bg">
-                  <i class="fas fa-user-circle"></i>
-                </div>
-                <span class="font-medium">Your Profile</span>
-              </a>
-              
-              <a
-                href="#"
-                (click)="closeModal()"
-                class="flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg transition-all group"
-              >
-                <div class="w-8 h-8 rounded-lg profile-icon-bg">
-                  <i class="fas fa-cog"></i>
-                </div>
-                <span class="font-medium">Settings</span>
-              </a>
-            </div>
-
-            <div class="border-t border-gray-100 dark:border-gray-700 my-1 mx-2"></div>
-
-            <div class="p-2">
               <button
-                (click)="logOut('candidate')"
-                class="w-full flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg hover:text-red-600 dark:hover:text-red-400 transition-all group"
+                *ngIf="unreadMessageCount > 0"
+                (click)="markAllAsRead()"
+                class="text-xs text-white/90 hover:text-white hover:underline font-medium transition-all"
               >
-                <div class="w-8 h-8 rounded-lg profile-icon-bg flex items-center justify-center group-hover:bg-red-100 dark:group-hover:bg-red-900/40 group-hover:text-red-600 transition-colors">
-                  <i class="fas fa-sign-out-alt"></i>
-                </div>
-                <span class="font-medium">Sign out</span>
+                Mark all read
               </button>
             </div>
+  
+            <!-- Tabs -->
+            <div
+              class="flex border-b border-gray-100 dark:border-gray-700 text-sm bg-white dark:bg-gray-800"
+            >
+              <button
+                (click)="notificationTab = 'unread'"
+                [class.border-b-2]="notificationTab === 'unread'"
+                [class.border-purple]="notificationTab === 'unread'"
+                [class.text-purple]="notificationTab === 'unread'"
+                [class.text-gray]="notificationTab !== 'unread'"
+                class="flex-1 py-3 font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                Unread
+                <span *ngIf="unreadMessageCount > 0" class="ml-1 text-xs">
+                  ({{ unreadMessageCount }})
+                </span>
+              </button>
+              <button
+                (click)="notificationTab = 'all'"
+                [class.border-b-2]="notificationTab === 'all'"
+                [class.border-purple]="notificationTab === 'all'"
+                [class.text-purple]="notificationTab === 'all'"
+                [class.text-gray]="notificationTab !== 'all'"
+                class="flex-1 py-3 font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                All
+                <span class="ml-1 text-xs">({{ notifications.length }})</span>
+              </button>
+            </div>
+  
+            <!-- Notification List -->
+            <div class="max-h-96 overflow-y-auto custom-scrollbar bg-white dark:bg-gray-800">
+              <ng-container
+                *ngIf="getFilteredNotifications().length > 0; else noNotif"
+              >
+                <div
+                  *ngFor="let notif of getFilteredNotifications()"
+                  (click)="onNotificationClick(notif)"
+                  class="p-4 border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-200"
+                  [class.bg-blue-50]="!notif.isRead"
+                  [class.dark:bg-gray-750]="!notif.isRead"
+                >
+                  <div class="flex gap-3">
+                    <!-- Icon -->
+                    <div class="flex-shrink-0">
+                      <div
+                        class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm"
+                        [class.bg-purple]="!notif.isRead"
+                        [class.bg-gray-100]="notif.isRead"
+                        [class.dark:bg-gray-700]="notif.isRead"
+                      >
+                        <i
+                          [class]="'fas ' + getNotificationIcon(notif.type, notif.notificationType)"
+                          class="text-sm"
+                          [class.text-white]="!notif.isRead"
+                          [class.text-gray-500]="notif.isRead"
+                        ></i>
+                      </div>
+                    </div>
+  
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-start justify-between gap-2">
+                        <h4
+                          class="text-sm text-dark-gray dark:text-white"
+                          [class.font-bold]="!notif.isRead"
+                          [class.font-medium]="notif.isRead"
+                        >
+                          {{ notif.title }}
+                        </h4>
+                        <div
+                          *ngIf="!notif.isRead"
+                          class="h-2 w-2 rounded-full bg-purple flex-shrink-0 mt-1"
+                        ></div>
+                      </div>
+  
+                      <p
+                        class="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2"
+                      >
+                        {{ notif.message }}
+                      </p>
+  
+                      <!-- Meta Information -->
+                      <div
+                        class="flex items-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-500"
+                      >
+                        <span class="flex items-center gap-1">
+                          <i class="far fa-clock"></i>
+                          {{ getRelativeTime(notif.createdAt, notif._id) }}
+                        </span>
+  
+                        <!-- Additional meta info if available -->
+                        <span
+                          *ngIf="notif.meta?.date"
+                          class="flex items-center gap-1"
+                        >
+                          <i class="far fa-calendar"></i>
+                          {{ notif.meta?.date | date:'MMM d' }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+  
+              <ng-template #noNotif>
+                <div class="p-12 text-center bg-white dark:bg-gray-800">
+                  <div
+                    class="w-16 h-16 bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3"
+                  >
+                    <i class="fas fa-bell-slash text-2xl text-gray-400"></i>
+                  </div>
+                  <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                    No notifications found
+                  </p>
+                  <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">
+                    You're all caught up!
+                  </p>
+                </div>
+              </ng-template>
+            </div>
+  
+            <!-- Footer -->
+            <a
+              routerLink="/notifications"
+              (click)="closeModal()"
+              class="block py-3 text-center text-sm font-semibold text-purple dark:text-light-purple border-t border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              View All Notifications
+              <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
           </div>
-        </div>
+  
+          <div class="relative flex items-center">
+            <button
+              (click)="toggleModal('profileModal'); $event.stopPropagation()"
+              class="flex items-center space-x-2 text-dark-gray dark:text-white hover:text-purple dark:hover:text-light-purple focus:outline-none transition-colors"
+            >
+              <div class="relative">
+                <img
+                  [src]="candidate.profileImg ? baseUrl+candidate.profileImg : '/profileimages/defaultProfile.jpg'"
+                  alt="Profile"
+                  class="w-9 h-9 rounded-full border-2 border-purple/20 hover:border-purple transition-all object-cover"
+                />
+                <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></div>
+              </div>
+            </button>
+  
+            <!-- Profile Dropdown -->
+            <div
+              *ngIf="isModalOpen('profileModal')"
+              appClickOutside
+              (appClickOutside)="closeModal()"
+              class="absolute right-0 top-full mt-3 w-64 profile-dropdown-card rounded-xl shadow-2xl z-50 overflow-hidden transform origin-top-right transition-all"
+            >
+              <!-- User Info Header -->
+              <div class="p-4 profile-dropdown-header">
+                <div class="flex items-center space-x-3">
+                  <img
+                    [src]="candidate.profileImg ? baseUrl+candidate.profileImg : '/profileimages/defaultProfile.jpg'"
+                    alt="Profile"
+                    class="w-10 h-10 rounded-full border border-purple object-cover"
+                  />
+                  <div class="min-w-0">
+                    <p class="text-sm font-bold text-dark-gray dark:text-white truncate">
+                      {{candidate.name || 'Candidate'}}
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {{candidate.email}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Menu Items -->
+              <div class="p-2">
+                <a
+                  [routerLink]="['profile']"
+                  (click)="closeModal()"
+                  class="flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg transition-all group"
+                >
+                  <div class="w-8 h-8 rounded-lg profile-icon-bg">
+                    <i class="fas fa-user-circle"></i>
+                  </div>
+                  <span class="font-medium">Your Profile</span>
+                </a>
+                
+                <a
+                  href="#"
+                  (click)="closeModal()"
+                  class="flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg transition-all group"
+                >
+                  <div class="w-8 h-8 rounded-lg profile-icon-bg">
+                    <i class="fas fa-cog"></i>
+                  </div>
+                  <span class="font-medium">Settings</span>
+                </a>
+              </div>
+  
+              <div class="border-t border-gray-100 dark:border-gray-700 my-1 mx-2"></div>
+  
+              <div class="p-2">
+                <button
+                  (click)="logOut('candidate')"
+                  class="w-full flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg hover:text-red-600 dark:hover:text-red-400 transition-all group"
+                >
+                  <div class="w-8 h-8 rounded-lg profile-icon-bg flex items-center justify-center group-hover:bg-red-100 dark:group-hover:bg-red-900/40 group-hover:text-red-600 transition-colors">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </div>
+                  <span class="font-medium">Sign out</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #guestActions>
+          <div class="flex items-center space-x-4">
+            <a
+              [routerLink]="['/login']"
+              class="text-purple font-semibold hover:text-purple-700 transition-colors"
+            >
+              Login
+            </a>
+            <a
+              [routerLink]="['/register']"
+              class="bg-purple text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-all shadow-md hover:shadow-lg"
+            >
+              Sign Up
+            </a>
+          </div>
+        </ng-template>
+      </div>
       </div>
     </div>
   </div>
