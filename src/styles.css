@@ -629,12 +629,28 @@ html.dark .profile-dropdown-item:hover {
   color: #a78bfa; /* text-purple-400 */
 }
 
+.profile-dropdown-item:hover .profile-icon-bg {
+  background-color: #ede7ff !important; /* bg-lavender */
+  color: #7c3aed !important; /* text-purple-600 */
+}
+
+html.dark .profile-dropdown-item:hover .profile-icon-bg {
+  background-color: rgba(124, 58, 237, 0.3) !important;
+  color: #a78bfa !important;
+}
+
 .profile-icon-bg {
   background-color: #f9fafb; /* bg-gray-50 */
+  color: #6b7280; /* text-gray-500 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 html.dark .profile-icon-bg {
   background-color: #1f2937; /* bg-gray-800 */
+  color: #9ca3af; /* text-gray-400 */
 }
 
 /* Dashboard Specific Theme Classes */
