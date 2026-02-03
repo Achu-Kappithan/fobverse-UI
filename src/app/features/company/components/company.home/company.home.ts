@@ -57,4 +57,14 @@ export class CompanyHome implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
+
+  getMaxAppCount(): number {
+    if (!this.dashboardData?.jobStats?.length) return 0;
+    return Math.max(...this.dashboardData.jobStats.map(s => s.applicationCount), 1);
+  }
+
+  getJobPercentage(count: number): number {
+    const max = this.getMaxAppCount();
+    return (count / max) * 100;
+  }
 }
