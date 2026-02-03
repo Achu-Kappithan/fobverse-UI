@@ -1,12 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CompanyService } from '../../services/company-service';
+import { CompanyDashboardData } from '../../interfaces/company.responce.interface';
+import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-company.home',
-  imports: [RouterModule],
+  standalone: true,
+  imports: [RouterModule, CommonModule],
   templateUrl: './company.home.html',
   styleUrl: './company.home.css'
 })
-export class CompanyHome {
+export class CompanyHome implements OnInit, OnDestroy {
+  dashboardData: CompanyDashboardData | null = null;
+  isLoading = true;
+  error: string | null = null;
+  private _destroy$ = new Subject<void>();
+  baseUrl = environment.cloudinaryBaseUrl
 
+  constructor(
+    private _companyService: CompanyService,
+    private _cdr : ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.loadDashboardData();
+  }
+
+  loadDashboardData(): void {
+    this.isLoading = true;
+    this._companyService.getDashboardData()
+      .pipe(takeUntil(this._destroy$))
+      .subscribe({
+        next: (response) => {
+          console.log('dahshbord res',response)
+          if (response.success && response.data) {
+            this.dashboardData = response.data;
+          } else {
+            this.error = 'Failed to load dashboard data';
+          }
+          this.isLoading = false;
+          this._cdr.detectChanges()
+        },
+        error: (err) => {
+          console.error('Error loading dashboard:', err);
+          this.error = 'An error occurred while fetching dashboard data';
+          this.isLoading = false;
+          this._cdr.detectChanges()
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
 }

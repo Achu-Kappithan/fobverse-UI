@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { ApplicationInterface, ComapnyProfileInterface, InternalUserInterface, JobsInterface, populatecompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
+import { ApplicationInterface, ComapnyProfileInterface, CompanyDashboardData, InternalUserInterface, JobsInterface, populatecompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
 import { ApiResponce, PagenatedApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
 import { ApplicationQureryInterface } from '../interfaces/company.interface';
 
@@ -134,6 +134,10 @@ export class CompanyService {
 
   updateNewScore(data:{newScore:number,joId:string}):Observable<ApiResponce<ApplicationInterface[]>>{
     return this._http.patch<ApiResponce<ApplicationInterface[]>>(`/api/applications/updateScore`,data)
+  }
+
+  getDashboardData():Observable<ApiResponce<CompanyDashboardData>>{
+    return this._http.get<ApiResponce<CompanyDashboardData>>(`/api/company/dashboard`,{withCredentials: true})
   }
 
 }
