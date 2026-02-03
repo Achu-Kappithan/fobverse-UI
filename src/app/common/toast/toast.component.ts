@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService } from '../../services/toast/toast.service';
-import { Toast } from '../../services/toast/toast.model';
+import { ToastService } from '../../shared/services/toast/toast.service';
+import { Toast } from '../../shared/services/toast/toast.model';
 import { Observable, delay } from 'rxjs';
 
 @Component({
