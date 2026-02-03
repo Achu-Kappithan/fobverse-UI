@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
@@ -30,7 +30,6 @@ export class CandidateHome implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-    this.fetchUserDetails();
   }
 
   loadData(): void {
@@ -54,20 +53,6 @@ export class CandidateHome implements OnInit {
       });
   }
 
-  fetchUserDetails(): void {
-    setTimeout(() => {
-      if (!this.destroy$.isStopped) {
-        this._authService
-          .getCurrentUserDetails()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (userDetails) => {
-              console.log('User details fetched successfully:', userDetails);
-            },
-          });
-      }
-    }, 500);
-  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

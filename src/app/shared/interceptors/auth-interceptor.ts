@@ -72,9 +72,20 @@ function handle401Error(
         isRefreshing = false;
         authService.adminSubject.next(null);
         
-        // Prevent redirection if the user is already on a public page
-        const publicRoutes = ['/login', '/signup', '/forgotpassword', '/email', '/adminlogin', '/companylogin', '/companysignup'];
-        const currentUrl = router.url.split('?')[0]; // Ignore query params
+        const publicRoutes = [
+          '/login', 
+          '/signup', 
+          '/forgotpassword', 
+          '/email', 
+          '/adminlogin', 
+          '/companylogin', 
+          '/companysignup',
+          '/candidate/home',
+          '/candidate/joblist',
+          '/candidate/companylist'
+        ];
+
+        const currentUrl = router.url.split('?')[0]; 
         const isPublicRoute = publicRoutes.some(route => currentUrl.startsWith(route) || currentUrl === '/');
 
         if (!isPublicRoute) {

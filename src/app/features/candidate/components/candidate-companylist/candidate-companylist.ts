@@ -61,8 +61,9 @@ export class CandidateCompanylist implements OnInit {
 
   initialFetch() {
     this.isLoading = true;
-    this._candidateService.getAllCompanies(this.queryParams).subscribe({
+    this._candidateService.getPublicCompanies(this.queryParams).subscribe({
       next: (res) => {
+
         console.log('Fetched Companies:', res);
 
         if (res.data) {

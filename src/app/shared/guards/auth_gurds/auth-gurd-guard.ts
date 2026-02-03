@@ -2,10 +2,12 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { combineLatest, filter, map, switchMap, take } from 'rxjs';
+import { ToastService } from '../../services/toast/toast.service';
 
 export const authGurdGuard: CanActivateFn = (route, state) => {
   const _authService = inject(AuthService);
   const router = inject(Router);
+  const _toastService = inject(ToastService);
 
   return _authService.isUserLoaded.pipe(
     filter((loaded) => loaded === true),
@@ -27,6 +29,7 @@ export const authGurdGuard: CanActivateFn = (route, state) => {
             console.log(
               'authGurdGuard: User is NOT logged in. Redirecting to /login'
             );
+            _toastService.warning('Login Required', 'Please login to access this feature');
             return router.createUrlTree(['/login'], {
               queryParams: { returnUrl: state.url },
             });
@@ -36,3 +39,4 @@ export const authGurdGuard: CanActivateFn = (route, state) => {
     })
   );
 };
+

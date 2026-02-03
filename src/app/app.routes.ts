@@ -28,7 +28,13 @@ import { JobsPublicView } from './features/company/components/jobs-public-view/j
 import { VideoLayoutComponent } from './features/layout/video-layout-component/video-layout-component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'candidate/home',
+    pathMatch: 'full',
+  },
   // forgoPassword
+
   {
     path: 'forgotpassword',
     loadComponent: () =>
@@ -97,13 +103,9 @@ export const routes: Routes = [
         component: CandidateSignup,
         data: { userType: 'company_admin' },
       },
-      {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full',
-      },
     ],
   },
+
 
 
   // candidate
@@ -121,6 +123,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
+        canActivate: [authGurdGuard],
         loadComponent: () =>
           import(
             './features/candidate/components/candidate-profile/candidate-profile'
@@ -128,6 +131,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile/updateprofile',
+        canActivate: [authGurdGuard],
         loadComponent: () =>
           import(
             './features/candidate/components/update-profile/update-profile'
@@ -135,6 +139,7 @@ export const routes: Routes = [
       },
       {
         path: 'my-applications',
+        canActivate: [authGurdGuard],
         children: [
           {
             path: '',
@@ -168,6 +173,7 @@ export const routes: Routes = [
           },
         ],
       },
+
       {
         path: 'joblist',
         loadComponent: () =>

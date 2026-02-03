@@ -110,7 +110,7 @@ export class CandidateService {
     if (params.limit) httpParams = httpParams.set('limit', params.limit.toString());
 
     return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
-      '/api/candidate/all-companies-public',
+      '/api/candidate/all-companies',
       { params: httpParams },
     );
   }

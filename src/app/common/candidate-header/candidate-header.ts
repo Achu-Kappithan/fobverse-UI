@@ -24,8 +24,10 @@ export class CandidateHeader implements OnInit {
   unreadMessageCount = 0;
   notificationTab: 'unread' | 'all' = 'unread';
   notifications: NotificationInterface[] =[]
+  isLoaded: boolean = false;
 
   constructor(
+
     private readonly _authService: AuthService,
     private readonly _themeService: ThemeService,
     private readonly _notificationService: NotificationService,
@@ -48,14 +50,21 @@ export class CandidateHeader implements OnInit {
     });
 
     this._notificationService.loadInitialData();
+    
+    this._authService.isLoading$.subscribe((loaded) => {
+      this.isLoaded = loaded;
+      this._cdr.detectChanges();
+    });
 
     this._authService.candidate$.subscribe({
       next: (can) => {
         console.log('candidate data in backend ',can)
         this.candidate = can;
+        this._cdr.detectChanges();
       },
     });
   }
+
 
   logOut(user: string) {
     this._authService.logoutUser(user);
