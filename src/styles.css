@@ -634,3 +634,44 @@ html.dark .profile-dropdown-item:hover {
 html.dark .profile-icon-bg {
   background-color: #1f2937; /* bg-gray-800 */
 }
+
+/* Dashboard Specific Theme Classes */
+.dashboard-sub-bg {
+  background-color: #f7f3ff; /* bg-purple-ultra-light */
+}
+html.dark .dashboard-sub-bg {
+  background-color: #2d3748; /* bg-dark-lavender fallback */
+}
+
+.dashboard-card-inner {
+  background-color: #ffffff;
+  border: 1px solid #ede7ff; /* lavender border */
+}
+html.dark .dashboard-card-inner {
+  background-color: #2d3748;
+  border-color: #4a5568;
+}
+
+.btn-outline-purple-ref {
+  border: 1px solid #7a3ebb;
+  color: #7a3ebb;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-purple-ref:hover {
+  background-color: #7a3ebb !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 6px -1px rgba(122, 62, 187, 0.4);
+}
+
+html.dark .btn-outline-purple-ref {
+  background-color: transparent;
+  border-color: #9f7aea;
+  color: #9f7aea;
+}
+
+html.dark .btn-outline-purple-ref:hover {
+  background-color: #9f7aea !important;
+  color: #ffffff !important;
+}
