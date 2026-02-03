@@ -2,6 +2,7 @@ import { CandidateInterface } from "../../candidate/interfaces/candidate.interfa
 
 
 
+import { Schedule } from './schedule.interface';
 export interface InternalUserInterface {
   _id:string
   
@@ -204,3 +205,25 @@ export interface PaginatedResponse<T> {
   statusCode: number;
   timestamp: string;
 }
+
+export interface JobStat {
+  jobId: string;
+  jobTitle: string;
+  applicationCount: number;
+  active: boolean;
+}
+
+export interface CompanyDashboardData {
+  stats: {
+    totalJobs: number;
+    activeJobs: number;
+    totalApplications: number;
+    pendingApplications: number;
+    hiredCandidates: number;
+    interviewsScheduled: number;
+  };
+  recentApplications: ApplicationInterface[];
+  upcomingInterviews: Schedule[];
+  jobStats: JobStat[];
+}
+

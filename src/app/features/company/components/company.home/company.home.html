@@ -1,3 +1,151 @@
+<div class="bg-lavender min-h-[calc(100vh-5rem)] mt-16 dark:bg-dark-lavender font-sans transition-colors duration-300">
+  <div class="container mx-auto px-4 sm:px-6 py-6" *ngIf="!isLoading && !error">
+    
+    <!-- Welcome Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-dark-gray dark:text-dark-text tracking-tight">Company Dashboard</h1>
+      <p class="text-gray dark:text-dark-gray-light mt-1">Overview of your recruitment activities and performance.</p>
+    </div>
 
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Jobs -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-purple/10 dark:bg-dark-purple/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-briefcase text-purple dark:text-dark-purple text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Total Jobs</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.totalJobs || 0}}</p>
+      </div>
 
-<h2 class="text-center text-purple "> company dashbord</h2>
+      <!-- Active Jobs -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-blue/10 dark:bg-dark-blue/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-rocket text-blue dark:text-dark-blue text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Active Jobs</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.activeJobs || 0}}</p>
+      </div>
+
+      <!-- Total Applications -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-yellow/10 dark:bg-dark-yellow/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-user-group text-yellow dark:text-dark-yellow text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Total Applicants</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.totalApplications || 0}}</p>
+      </div>
+
+      <!-- Interviews Scheduled -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-green-500/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-calendar-check text-green-600 dark:text-dark-green text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Interviews</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.interviewsScheduled || 0}}</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Recent Applicants -->
+      <div class="lg:col-span-2 bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-gray/20 overflow-hidden">
+        <div class="p-6 border-b border-gray-50 dark:border-dark-gray/10 flex justify-between items-center">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Recent Applicants</h2>
+          <a routerLink="../all-applicants" class="text-purple dark:text-dark-purple text-sm font-semibold hover:underline">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-gray-50 dark:bg-dark-lavender/50">
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider">Candidate</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider">Job Applied</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-dark-gray/10">
+              <tr *ngFor="let app of dashboardData?.recentApplications" class="hover:bg-gray-50/50 dark:hover:bg-dark-lavender/10 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img [src]="app?.profile?.profileImg ?baseUrl+app?.profile?.profileImg :'/profileimages/defaultProfile.jpg'" class="h-10 w-10 rounded-full object-cover border border-gray-100 dark:border-dark-gray/20 mr-3">
+                    <div>
+                      <div class="text-sm font-semibold text-dark-gray dark:text-dark-text">{{app.name}}</div>
+                      <div class="text-xs text-gray dark:text-dark-gray-light">{{app.email}}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="text-sm text-dark-gray dark:text-dark-text font-medium">{{app.jobDetails?.title || 'Unknown Job'}}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span [class]="'px-2 py-1 text-xs font-semibold rounded-full ' + (app.Rejected ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600')">
+                    {{app.Rejected ? 'Rejected' : (app.Stages === 'default' ? 'Pending' : (app.Stages | titlecase))}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                  <button [routerLink]="['../joblist/applications', app.jobId, 'viewapplication', app._id, app.candidateId]" class="text-purple dark:text-dark-purple font-bold hover:text-purple-darker">Details</button>
+                </td>
+              </tr>
+              <tr *ngIf="!dashboardData?.recentApplications?.length">
+                <td colspan="4" class="px-6 py-12 text-center text-gray dark:text-dark-gray-light italic">No recent applications found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Upcoming Interviews -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-gray/20 flex flex-col">
+        <div class="p-6 border-b border-gray-50 dark:border-dark-gray/10">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Upcoming Interviews</h2>
+        </div>
+        <div class="p-6 space-y-4 flex-1 overflow-y-auto max-h-[500px]">
+          <div *ngFor="let interview of dashboardData?.upcomingInterviews" class="p-4 rounded-xl bg-gray-50 dark:bg-dark-lavender/50 border border-gray-100 dark:border-dark-gray/10 hover:border-purple/30 transition-all cursor-pointer">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-bold text-purple dark:text-dark-purple uppercase tracking-tighter">{{interview.stage | titlecase}}</span>
+              <span class="text-xs text-gray dark:text-dark-gray-light">{{interview.scheduledDate}}</span>
+            </div>
+            <h3 class="text-sm font-bold text-dark-gray dark:text-dark-text">{{interview.candidateName}}</h3>
+            <p class="text-xs text-gray dark:text-dark-gray-light truncate">For: {{interview.jobTitle}}</p>
+            <div class="mt-3 flex items-center text-xs text-gray-500">
+              <i class="fa-regular fa-clock mr-1"></i>
+              {{interview.scheduledTime}}
+            </div>
+          </div>
+          <div *ngIf="!dashboardData?.upcomingInterviews?.length" class="text-center py-10">
+             <i class="fa-solid fa-calendar-day text-gray-300 text-4xl mb-3 block"></i>
+             <p class="text-sm text-gray dark:text-dark-gray-light italic">No upcoming interviews scheduled.</p>
+          </div>
+        </div>
+        <div class="p-6 bg-gray-50/50 dark:bg-dark-lavender/20 border-t border-gray-50 dark:border-dark-gray/10">
+          <button routerLink="../my-schedules" class="w-full py-2 bg-white dark:bg-dark-gray/20 border border-purple dark:border-dark-purple text-purple dark:text-dark-purple text-sm font-bold rounded-lg hover:bg-purple hover:text-white transition-all">Go to Calendar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center min-h-[50vh]">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple mb-4"></div>
+    <p class="text-gray dark:text-dark-gray-light animate-pulse">Loading dashboard insights...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="flex flex-col items-center justify-center min-h-[50vh] px-4">
+    <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-900/10 text-center max-w-md">
+       <i class="fa-solid fa-triangle-exclamation text-red-500 text-4xl mb-4"></i>
+       <h2 class="text-lg font-bold text-red-900 dark:text-red-400 mb-2">Oops! Something went wrong</h2>
+       <p class="text-red-700 dark:text-red-300 mb-6">{{error}}</p>
+       <button (click)="loadDashboardData()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-bold">Try Again</button>
+    </div>
+  </div>
+</div>
