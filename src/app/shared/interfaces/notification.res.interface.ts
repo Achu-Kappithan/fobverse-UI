@@ -5,6 +5,7 @@ export interface NotificationInterface {
   candidateId: string;
 
   type: notificationType;
+  notificationType?: string; // Fallback for backend naming inconsistency
 
   title: string;
 
@@ -18,5 +19,5 @@ export interface NotificationInterface {
 
   isRead: boolean;
 
-  createdAt: string
+  createdAt?: string
 }

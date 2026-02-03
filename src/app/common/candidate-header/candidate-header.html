@@ -146,7 +146,7 @@
                       [class.dark:bg-gray-700]="notif.isRead"
                     >
                       <i
-                        [class]="'fas ' + getNotificationIcon(notif.type)"
+                        [class]="'fas ' + getNotificationIcon(notif.type, notif.notificationType)"
                         class="text-sm"
                         [class.text-white]="!notif.isRead"
                         [class.text-gray-500]="notif.isRead"
@@ -182,7 +182,7 @@
                     >
                       <span class="flex items-center gap-1">
                         <i class="far fa-clock"></i>
-                        {{ getRelativeTime(notif.createdAt) }}
+                        {{ getRelativeTime(notif.createdAt, notif._id) }}
                       </span>
 
                       <!-- Additional meta info if available -->

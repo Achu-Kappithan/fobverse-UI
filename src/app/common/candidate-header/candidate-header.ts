@@ -87,7 +87,6 @@ export class CandidateHeader implements OnInit {
   markAllAsRead() {
     this._notificationService.markAllAsRead().subscribe({
       next: () => {
-        // Notification service will update the observables
         this._cdr.detectChanges();
       },
       error: (err) => {
@@ -99,7 +98,6 @@ export class CandidateHeader implements OnInit {
   markAsRead(notificationId: string) {
     this._notificationService.markAsRead(notificationId).subscribe({
       next: () => {
-        // Notification service will update the observables
         this._cdr.detectChanges();
       },
       error: (err) => {
@@ -112,8 +110,6 @@ export class CandidateHeader implements OnInit {
     if (!notification.isRead) {
       this.markAsRead(notification._id);
     }
-    // You can add navigation logic here based on notification type
-    // For example: this.router.navigate(['/interview', notification.meta?.interviewId]);
   }
 
   getFilteredNotifications() {
@@ -123,22 +119,34 @@ export class CandidateHeader implements OnInit {
     return this.notifications;
   }
 
-  getNotificationIcon(type: string): string {
+  getNotificationIcon(type: string, notificationType?: string): string {
     const icons: { [key: string]: string } = {
       'RESCHEDULED': 'fa-calendar-alt',
       'SCHEDULED': 'fa-calendar-check',
       'CANCELLED': 'fa-calendar-times',
       'APPLICATION': 'fa-file-alt',
+      'APPLICATION_SUBMITTED': 'fa-file-signature',
       'MESSAGE': 'fa-envelope',
       'REMINDER': 'fa-bell',
       'default': 'fa-info-circle'
     };
-    return icons[type] || icons['default'];
+    return icons[type] || icons[notificationType || ''] || icons['default'];
   }
 
-  getRelativeTime(date: string | Date): string {
+  getRelativeTime(date: string | Date | undefined, id?: string): string {
+    let notificationDate: Date;
+
+    if (date) {
+      notificationDate = new Date(date);
+    } else if (id && id.length === 24) {
+      // Extract timestamp from MongoDB ObjectId
+      const timestamp = parseInt(id.substring(0, 8), 16) * 1000;
+      notificationDate = new Date(timestamp);
+    } else {
+      return 'Unknown time';
+    }
+
     const now = new Date();
-    const notificationDate = new Date(date);
     const diffInMs = now.getTime() - notificationDate.getTime();
     const diffInMins = Math.floor(diffInMs / 60000);
     const diffInHours = Math.floor(diffInMs / 3600000);
