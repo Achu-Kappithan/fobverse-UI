@@ -61,6 +61,85 @@
       </div>
     </div>
 
+    <!-- Analytics & Visualization Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Job Performance Chart -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-dark-gray/20">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Job Performance</h2>
+          <span class="text-xs text-gray dark:text-dark-gray-light">Applications per Job</span>
+        </div>
+        <div class="space-y-6">
+          <div *ngFor="let job of dashboardData?.jobStats | slice:0:5" class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-semibold text-dark-gray dark:text-dark-text truncate max-w-[200px]">{{job.jobTitle}}</span>
+              <span class="text-sm font-bold text-purple dark:text-dark-purple">{{job.applicationCount}}</span>
+            </div>
+            <div class="w-full bg-lavender/30 dark:bg-dark-lavender/50 rounded-full h-3 overflow-hidden">
+              <div class="bg-purple dark:bg-dark-purple h-full rounded-full transition-all duration-1000 ease-out" 
+                   [style.width.%]="getJobPercentage(job.applicationCount)">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!dashboardData?.jobStats?.length" class="py-10 text-center text-gray italic text-sm">
+            No job data available for visualization.
+          </div>
+        </div>
+      </div>
+
+      <!-- Hiring Pipeline Funnel -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-dark-gray/20">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Hiring Pipeline</h2>
+          <span class="text-xs text-gray dark:text-dark-gray-light">Conversion Funnel</span>
+        </div>
+        <div class="flex flex-col space-y-4">
+          <!-- Total Applications -->
+          <div class="flex items-center group">
+            <div class="w-24 text-right pr-4 text-xs font-bold text-gray uppercase tracking-tighter">Applied</div>
+            <div class="flex-1 bg-lavender/30 dark:bg-dark-lavender/50 rounded-lg p-3 relative overflow-hidden group-hover:bg-lavender/50 transition-colors">
+              <div class="absolute inset-y-0 left-0 bg-blue/20 w-full"></div>
+              <div class="relative flex justify-between items-center px-4">
+                <span class="text-sm font-bold text-blue dark:text-dark-blue">{{dashboardData?.stats?.totalApplications}}</span>
+                <span class="text-[10px] text-blue/60 font-bold">100%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Interviews -->
+          <div class="flex items-center group">
+            <div class="w-24 text-right pr-4 text-xs font-bold text-gray uppercase tracking-tighter">Interviews</div>
+            <div class="flex-1 bg-lavender/30 dark:bg-dark-lavender/50 rounded-lg p-3 relative overflow-hidden group-hover:bg-lavender/50 transition-colors">
+              <div class="absolute inset-y-0 left-0 bg-yellow/20" 
+                   [style.width.%]="(dashboardData?.stats?.interviewsScheduled! / dashboardData?.stats?.totalApplications!) * 100"></div>
+              <div class="relative flex justify-between items-center px-4">
+                <span class="text-sm font-bold text-yellow-600 dark:text-dark-yellow">{{dashboardData?.stats?.interviewsScheduled}}</span>
+                <span class="text-[10px] text-yellow-600/60 font-bold" *ngIf="dashboardData?.stats?.totalApplications">
+                  {{((dashboardData?.stats?.interviewsScheduled! / dashboardData?.stats?.totalApplications!) * 100) | number:'1.0-0'}}%
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- Hired -->
+          <div class="flex items-center group">
+            <div class="w-24 text-right pr-4 text-xs font-bold text-gray uppercase tracking-tighter">Hired</div>
+            <div class="flex-1 bg-lavender/30 dark:bg-dark-lavender/50 rounded-lg p-3 relative overflow-hidden group-hover:bg-lavender/50 transition-colors">
+              <div class="absolute inset-y-0 left-0 bg-green-500/20" 
+                   [style.width.%]="(dashboardData?.stats?.hiredCandidates! / dashboardData?.stats?.totalApplications!) * 100"></div>
+              <div class="relative flex justify-between items-center px-4">
+                <span class="text-sm font-bold text-green-600 dark:text-dark-green">{{dashboardData?.stats?.hiredCandidates}}</span>
+                <span class="text-[10px] text-green-600/60 font-bold" *ngIf="dashboardData?.stats?.totalApplications">
+                  {{((dashboardData?.stats?.hiredCandidates! / dashboardData?.stats?.totalApplications!) * 100) | number:'1.0-0'}}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-4 border-t border-lavender/10 text-center">
+           <p class="text-xs text-gray dark:text-dark-gray-light">Your goal: Increase <span class="text-purple font-bold">Applied → Interview</span> conversion by 15%</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Recent Applicants -->

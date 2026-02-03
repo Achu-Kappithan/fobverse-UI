@@ -146,7 +146,7 @@
                       [class.dark:bg-gray-700]="notif.isRead"
                     >
                       <i
-                        [class]="'fas ' + getNotificationIcon(notif.type)"
+                        [class]="'fas ' + getNotificationIcon(notif.type, notif.notificationType)"
                         class="text-sm"
                         [class.text-white]="!notif.isRead"
                         [class.text-gray-500]="notif.isRead"
@@ -182,7 +182,7 @@
                     >
                       <span class="flex items-center gap-1">
                         <i class="far fa-clock"></i>
-                        {{ getRelativeTime(notif.createdAt) }}
+                        {{ getRelativeTime(notif.createdAt, notif._id) }}
                       </span>
 
                       <!-- Additional meta info if available -->
@@ -246,10 +246,10 @@
             *ngIf="isModalOpen('profileModal')"
             appClickOutside
             (appClickOutside)="closeModal()"
-            class="absolute right-0 top-full mt-3 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl z-50 border border-gray-100 dark:border-gray-700 overflow-hidden transform origin-top-right transition-all"
+            class="absolute right-0 top-full mt-3 w-64 profile-dropdown-card rounded-xl shadow-2xl z-50 overflow-hidden transform origin-top-right transition-all"
           >
             <!-- User Info Header -->
-            <div class="p-4 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-100 dark:border-gray-700">
+            <div class="p-4 profile-dropdown-header">
               <div class="flex items-center space-x-3">
                 <img
                   [src]="candidate?.profileImg ? baseUrl+candidate?.profileImg : '/profileimages/defaultProfile.jpg'"
@@ -272,9 +272,9 @@
               <a
                 [routerLink]="['profile']"
                 (click)="closeModal()"
-                class="flex items-center space-x-3 px-3 py-2.5 text-sm text-dark-gray dark:text-gray-200 rounded-lg hover:bg-lavender dark:hover:bg-gray-700 transition-all group"
+                class="flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg transition-all group"
               >
-                <div class="w-8 h-8 rounded-lg bg-lavender/50 dark:bg-gray-700 flex items-center justify-center group-hover:bg-purple group-hover:text-white transition-colors">
+                <div class="w-8 h-8 rounded-lg profile-icon-bg">
                   <i class="fas fa-user-circle"></i>
                 </div>
                 <span class="font-medium">Your Profile</span>
@@ -283,9 +283,9 @@
               <a
                 href="#"
                 (click)="closeModal()"
-                class="flex items-center space-x-3 px-3 py-2.5 text-sm text-dark-gray dark:text-gray-200 rounded-lg hover:bg-lavender dark:hover:bg-gray-700 transition-all group"
+                class="flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg transition-all group"
               >
-                <div class="w-8 h-8 rounded-lg bg-lavender/50 dark:bg-gray-700 flex items-center justify-center group-hover:bg-purple group-hover:text-white transition-colors">
+                <div class="w-8 h-8 rounded-lg profile-icon-bg">
                   <i class="fas fa-cog"></i>
                 </div>
                 <span class="font-medium">Settings</span>
@@ -297,9 +297,9 @@
             <div class="p-2">
               <button
                 (click)="logOut('candidate')"
-                class="w-full flex items-center space-x-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 rounded-lg hover:bg-lavender dark:hover:bg-gray-700 hover:text-red-600 dark:hover:text-red-400 transition-all group"
+                class="w-full flex items-center space-x-3 px-3 py-2.5 text-sm profile-dropdown-item rounded-lg hover:text-red-600 dark:hover:text-red-400 transition-all group"
               >
-                <div class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center group-hover:bg-red-100 dark:group-hover:bg-red-900/40 group-hover:text-red-600 transition-colors">
+                <div class="w-8 h-8 rounded-lg profile-icon-bg flex items-center justify-center group-hover:bg-red-100 dark:group-hover:bg-red-900/40 group-hover:text-red-600 transition-colors">
                   <i class="fas fa-sign-out-alt"></i>
                 </div>
                 <span class="font-medium">Sign out</span>

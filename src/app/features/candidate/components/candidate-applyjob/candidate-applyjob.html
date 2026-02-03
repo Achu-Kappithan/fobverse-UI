@@ -33,8 +33,8 @@
                            class="appearance-none relative block w-full px-3 py-2 border border-divider placeholder-gray-500 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm theme-transition"/>
                     <div *ngIf="jobApplayForm.get('name')?.invalid && (jobApplayForm.get('name')?.dirty || jobApplayForm.get('name')?.touched)" class="mt-1 text-sm text-red-600">
                         <p *ngIf="jobApplayForm.get('name')?.errors?.['required']">Full name is required.</p>
-                        <p *ngIf="jobApplayForm.get('name')?.errors?.['maxlength']">Full name cannot exceed 50 characters.</p>
-                        <p *ngIf="jobApplayForm.get('name')?.errors?.['pattern']">Please enter a valid name (letters and spaces only).</p>
+                        <p *ngIf="jobApplayForm.get('name')?.errors?.['maxlength']">Full name cannot exceed 100 characters.</p>
+                        <p *ngIf="jobApplayForm.get('name')?.errors?.['pattern']">Please enter a valid name.</p>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                            class="appearance-none relative block w-full px-3 py-2 border border-divider placeholder-gray-500 text-dark-gray rounded-md focus:outline-none focus:ring-purple focus:border-purple sm:text-sm theme-transition"/>
                     <div *ngIf="jobApplayForm.get('phone')?.invalid && (jobApplayForm.get('phone')?.dirty || jobApplayForm.get('phone')?.touched)" class="mt-1 text-sm text-red-600">
                         <p *ngIf="jobApplayForm.get('phone')?.errors?.['required']">Phone number is required.</p>
-                        <p *ngIf="jobApplayForm.get('phone')?.errors?.['pattern']">Please enter a 10-digit phone number.</p>
+                        <p *ngIf="jobApplayForm.get('phone')?.errors?.['pattern']">Please enter a valid phone number.</p>
                     </div>
                 </div>
             </div>
