@@ -8,6 +8,7 @@ import { ThemeService } from '../../shared/services/theme/theme.service';
 import { environment } from '../../../env/environment';
 import { NotificationService } from '../../shared/services/notification/notification.service';
 import { NotificationInterface } from '../../shared/interfaces/notification.res.interface';
+import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-candidate-header',
@@ -31,7 +32,8 @@ export class CandidateHeader implements OnInit {
     private readonly _authService: AuthService,
     private readonly _themeService: ThemeService,
     private readonly _notificationService: NotificationService,
-    private readonly _cdr: ChangeDetectorRef
+    private readonly _cdr: ChangeDetectorRef,
+    private readonly _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -65,8 +67,18 @@ export class CandidateHeader implements OnInit {
   }
 
 
-  logOut(user: string) {
-    this._authService.logoutUser(user);
+  async logOut(user: string): Promise<void> {
+    const isConfirmed = await this._confirmService.confirm({
+      title: 'Logout Confirmation',
+      message: 'Are you sure you want to logout?',
+      confirmText: 'Logout',
+      cancelText: 'Cancel',
+      type: 'warning'
+    });
+
+    if (isConfirmed) {
+      this._authService.logoutUser(user);
+    }
   }
 
   toggleModal(id: string): void {

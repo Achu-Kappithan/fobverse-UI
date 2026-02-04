@@ -9,6 +9,7 @@ import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfac
 import { ComapnyProfileInterface } from '../../../company/interfaces/company.responce.interface';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
+import { ConfirmService } from '../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-admin-listcompanys',
@@ -39,7 +40,8 @@ export class AdminListcompanys implements OnInit {
   constructor(
     private readonly _companyService: AdminCompanyService,
     private _cdr: ChangeDetectorRef,
-    private readonly _toast: ToastService
+    private readonly _toast: ToastService,
+    private readonly _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +57,17 @@ export class AdminListcompanys implements OnInit {
     })
   }
 
-  UpdateStatus(company: ComapnyProfileInterface): void {
+  async UpdateStatus(company: ComapnyProfileInterface): Promise<void> {
+    const isConfirmed = await this._confirmService.confirm({
+      title: company.isActive ? 'Block Company' : 'Unblock Company',
+      message: `Are you sure you want to ${company.isActive ? 'block' : 'unblock'} ${company.name}?`,
+      type: company.isActive ? 'danger' : 'warning',
+      confirmText: company.isActive ? 'Block' : 'Unblock',
+      cancelText: 'Cancel'
+    });
+
+    if (!isConfirmed) return;
+
     console.log('updatestaus', company);
     this._companyService.updateStatus(company._id).subscribe({
       next: (res) => {

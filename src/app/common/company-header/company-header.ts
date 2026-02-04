@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { environment } from '../../../env/environment';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 import { ThemeService } from '../../shared/services/theme/theme.service';
+import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-company-header',
@@ -29,7 +30,8 @@ export class CompanyHeader implements OnInit {
     private readonly _authService: AuthService,
     private readonly _CompanyService: CompanyService,
     private readonly _cdr: ChangeDetectorRef,
-    private readonly _themeService: ThemeService
+    private readonly _themeService: ThemeService,
+    private readonly _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +63,18 @@ export class CompanyHeader implements OnInit {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 
-  logOut() {
-    this._authService.logoutUser('company');
+  async logOut(): Promise<void> {
+    const isConfirmed = await this._confirmService.confirm({
+      title: 'Logout Confirmation',
+      message: 'Are you sure you want to logout?',
+      confirmText: 'Logout',
+      cancelText: 'Cancel',
+      type: 'warning'
+    });
+
+    if (isConfirmed) {
+      this._authService.logoutUser('company');
+    }
   }
 
   @HostListener('document:click', ['$event'])
