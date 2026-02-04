@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminDashboardService } from '../../services/admin-dashboard.service';
 import { AdminDashboardStats } from '../../interfaces/admin-dashboard.interface';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -16,8 +17,13 @@ export class AdminDashboard implements OnInit {
   loading = true;
   error: string | null = null;
   currentDate = new Date();
+  baseUrl: string  = environment.cloudinaryBaseUrl
 
-  constructor(private dashboardService: AdminDashboardService) {}
+  constructor(
+    private _dashboardService: AdminDashboardService,
+    private _cdr : ChangeDetectorRef,
+
+  ) {}
 
   ngOnInit(): void {
     this.fetchStats();
@@ -25,14 +31,17 @@ export class AdminDashboard implements OnInit {
 
   fetchStats(): void {
     this.loading = true;
-    this.dashboardService.getDashboardStats().subscribe({
-      next: (response: any) => {
+    this._dashboardService.getDashboardStats().subscribe({
+      next: (response) => {
+        console.log(response)
         this.stats = response.data;
         this.loading = false;
+        this._cdr.detectChanges()
       },
       error: (err: any) => {
         this.error = 'Failed to load dashboard statistics';
         this.loading = false;
+        this._cdr.detectChanges()
         console.error(err);
       },
     });
