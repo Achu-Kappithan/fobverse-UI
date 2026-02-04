@@ -64,6 +64,15 @@ export class CandidateService {
     return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams });
   }
 
+  getPublicJobs(params: jobsPagesAndFilterInterface): Observable<ApiResponce<CandidateJobsInterface[]>> {
+    let httpParams = new HttpParams();
+    if(params.search) httpParams = httpParams.set('search',params.search);
+    if (params.page) httpParams = httpParams.set('page', params.page.toString());
+    if (params.limit) httpParams = httpParams.set('limit', params.limit.toString());
+    
+    return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs-public`, { params: httpParams });
+  }
+
     updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
     return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename})
   }
@@ -87,6 +96,18 @@ export class CandidateService {
     if (params.limit) {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
+
+    return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
+      '/api/candidate/all-companies',
+      { params: httpParams },
+    );
+  }
+
+  getPublicCompanies(params: companyListParamsInterface): Observable<PaginatedResponse<ComapnyProfileInterface[]>> {
+    let httpParams = new HttpParams();
+    if (params.search) httpParams = httpParams.set('search', params.search);
+    if (params.page) httpParams = httpParams.set('page', params.page.toString());
+    if (params.limit) httpParams = httpParams.set('limit', params.limit.toString());
 
     return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
       '/api/candidate/all-companies',
@@ -126,6 +147,12 @@ export class CandidateService {
   getApplicationDetails(applicationId: string): Observable<ApiResponce<DetailedApplicationResponse>> {
     return this._http.get<ApiResponce<DetailedApplicationResponse>>(
       `/api/candidate/application-details/${applicationId}`
+    );
+  }
+
+  getHomeDataPublic(): Observable<ApiResponce<{ jobs: CandidateJobsInterface[]; companies: ComapnyProfileInterface[] }>> {
+    return this._http.get<ApiResponce<{ jobs: CandidateJobsInterface[]; companies: ComapnyProfileInterface[] }>>(
+      '/api/candidate/home-data-public'
     );
   }
 }

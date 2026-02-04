@@ -9,6 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
 import { environment } from '../../../../../env/environment';
+import { AuthService } from '../../../auth/services/auth.service';
+import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
+
 
 @Component({
   selector: 'app-candidate-joblist',
@@ -22,8 +25,10 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
   isLoading:boolean = false
   isApplyModalOpen: boolean = false;
   selectedJob: CandidateJobsInterface | null = null;
+  candidate: UserPartial | null = null;
 
   jobList:CandidateJobsInterface[] = []
+
 
   private destroy$ = new Subject<void>();
   searchValue = new Subject<string>()
@@ -54,7 +59,8 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
   constructor(
     private readonly _candidateService:CandidateService,
     private readonly _cdr:ChangeDetectorRef,
-    private readonly _toast:ToastService
+    private readonly _toast:ToastService,
+    private readonly _authService:AuthService
   ){}
 
   paginationMeta:PaginationMeta = {
@@ -77,7 +83,15 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchAllJobs()
 
+    this._authService.candidate$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (can) => {
+        this.candidate = can;
+        this._cdr.detectChanges();
+      },
+    });
+
     this.searchValue.pipe(
+
       debounceTime(300),
       distinctUntilChanged(),
       takeUntil(this.destroy$)
@@ -96,12 +110,13 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
 
   fetchAllJobs(){
     this.isLoading = true
-    this._candidateService.getAlljobs(this.QueryParms)
+    this._candidateService.getPublicJobs(this.QueryParms)
     .subscribe({
         next:(res =>{
         console.log("responce for geting all jobs",res)
         if(res.success){
           this.jobList = res.data
+
           this.paginationMeta = res.meta!
           this.isLoading =false
           this._cdr.detectChanges()
@@ -167,9 +182,14 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
   }
 
   toggleModal(jobId: string, job: CandidateJobsInterface): void {
+    if (!this.candidate) {
+      this._toast.warning('Login Required', 'Please login as a candidate to apply for jobs');
+      return;
+    }
     this.selectedJob = job;
     this.isApplyModalOpen = true;
   }
+
 
   isModalOpen(jobId: string): boolean {
     return this.isApplyModalOpen && this.selectedJob?._id === jobId;

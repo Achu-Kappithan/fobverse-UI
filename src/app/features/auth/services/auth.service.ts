@@ -157,8 +157,9 @@ export class AuthService {
             this._router.navigate(['/adminlogin']);
           } else if(User ==='candidate') {
             this.CandidateSubject.next(null);
-            this._router.navigate(['/login']);
+            this._router.navigate(['/candidate/home']);
           }
+
           this.isUserLoaded.next(true);
         },
       });

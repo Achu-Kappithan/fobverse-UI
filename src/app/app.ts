@@ -38,9 +38,14 @@ export class App implements OnInit {
         const isLoggedIn = !!admin || !!company || !!candidate;
         if (isLoggedIn) {
           this._socketService.connect();
+          this._notificationService.loadInitialData();
           this._notificationService.loadUnreadCount();
           this._notificationService.listenToSocket();
+        } else {
+          this._notificationService.clear();
+          this._socketService.disconnect();
         }
       });
+
   }
 }
