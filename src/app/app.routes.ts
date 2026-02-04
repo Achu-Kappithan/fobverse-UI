@@ -25,8 +25,7 @@ import { JobView } from './features/company/components/jobs/job-view/job-view';
 import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
 import { CompanyPublicProfile } from './features/company/components/company-public-profile/company-public-profile';
 import { JobsPublicView } from './features/company/components/jobs-public-view/jobs-public-view';
-import { VideoLayoutComponent } from './features/layout/video-layout-component/video-layout-component';
-
+  
 export const routes: Routes = [
   {
     path: '',
@@ -215,6 +214,13 @@ export const routes: Routes = [
               ).then((m) => m.CompanyPublicProfile),
           },
         ],
+      },
+      {
+        path: 'about-us',
+        loadComponent: () =>
+          import(
+            './features/candidate/components/about-us/about-us'
+          ).then((m) => m.AboutUsComponent),
       },
     ],
   },

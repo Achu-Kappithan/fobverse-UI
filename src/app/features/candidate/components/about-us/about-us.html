@@ -1,0 +1,73 @@
+<div class="hero-gradient-bg min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Hero Section -->
+    <div class="text-center mb-16 animate-fade-in">
+      <h1 class="section-title text-5xl md:text-6xl mb-6">About Fobverse</h1>
+      <p class="section-subtitle text-xl max-w-3xl mx-auto">
+        Revolutionizing the way talent meets opportunity. We build bridges between ambitious candidates and world-class employers through innovation and technology.
+      </p>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
+      <div class="hero-glass-card">
+        <h2 class="text-3xl font-bold text-purple mb-6">Our Mission</h2>
+        <p class="text-lg text-dark-gray dark:text-gray-300 leading-relaxed mb-6">
+          At Fobverse, our mission is to empower every individual to find their dream career and every company to build their dream team. We believe that the right job can change a life, and the right person can transform a business.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <div class="glass-info-card flex items-center gap-3">
+            <i class="fas fa-check-circle text-purple text-xl"></i>
+            <span class="font-semibold">Trust & Transparency</span>
+          </div>
+          <div class="glass-info-card flex items-center gap-3">
+            <i class="fas fa-check-circle text-purple text-xl"></i>
+            <span class="font-semibold">Innovation First</span>
+          </div>
+          <div class="glass-info-card flex items-center gap-3">
+            <i class="fas fa-check-circle text-purple text-xl"></i>
+            <span class="font-semibold">User Centric</span>
+          </div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -top-10 -left-10 w-32 h-32 bg-purple/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-light-purple/10 rounded-full blur-3xl"></div>
+        <img src="/logo/logo.png" alt="About Fobverse" class="relative z-10 w-full max-w-md mx-auto drop-shadow-2xl animate-bounce-slow" />
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
+      <div class="dashboard-card-inner p-8 text-center rounded-2xl hover:scale-105 transition-transform">
+        <div class="text-4xl font-bold text-purple mb-2">10K+</div>
+        <div class="text-gray-600 dark:text-gray-400 font-medium">Active Jobs</div>
+      </div>
+      <div class="dashboard-card-inner p-8 text-center rounded-2xl hover:scale-105 transition-transform">
+        <div class="text-4xl font-bold text-purple mb-2">500+</div>
+        <div class="text-gray-600 dark:text-gray-400 font-medium">Partner Companies</div>
+      </div>
+      <div class="dashboard-card-inner p-8 text-center rounded-2xl hover:scale-105 transition-transform">
+        <div class="text-4xl font-bold text-purple mb-2">50K+</div>
+        <div class="text-gray-600 dark:text-gray-400 font-medium">Success Hires</div>
+      </div>
+      <div class="dashboard-card-inner p-8 text-center rounded-2xl hover:scale-105 transition-transform">
+        <div class="text-4xl font-bold text-purple mb-2">24/7</div>
+        <div class="text-gray-600 dark:text-gray-400 font-medium">Expert Support</div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="hero-glass-card text-center py-16">
+      <h2 class="text-4xl font-bold mb-8">Ready to start your journey?</h2>
+      <div class="flex flex-col sm:flex-row justify-center gap-6">
+        <a [routerLink]="['/candidate/joblist']" class="hero-primary-btn">
+          Explore Jobs <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+        <a [routerLink]="['/candidate/home']" class="hero-secondary-btn">
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
