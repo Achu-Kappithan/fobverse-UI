@@ -673,22 +673,6 @@ html.dark .profile-icon-bg {
   color: #9ca3af; /* text-gray-400 */
 }
 
-/* Dashboard Specific Theme Classes */
-.dashboard-sub-bg {
-  background-color: #f7f3ff; /* bg-purple-ultra-light */
-}
-html.dark .dashboard-sub-bg {
-  background-color: #2d3748; /* bg-dark-lavender fallback */
-}
-
-.dashboard-card-inner {
-  background-color: #ffffff;
-  border: 1px solid #ede7ff; /* lavender border */
-}
-html.dark .dashboard-card-inner {
-  background-color: #2d3748;
-  border-color: #4a5568;
-}
 
 .btn-outline-purple-ref {
   border: 1px solid #7a3ebb;
