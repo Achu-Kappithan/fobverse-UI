@@ -29,8 +29,11 @@
           class="text-dark-gray hover:text-purple-900 hover:font-bold hover:underline transition-colors"
           >My Application</a
         >
-        <a href="#" class="text-dark-gray hover:text-purple transition-colors"
-          >Customer Supports</a
+        <a
+          [routerLink]="['/candidate/about-us']"
+          [routerLinkActive]="'text-purple-900 font-bold text-lg underline'"
+          class="text-dark-gray hover:text-purple-900 hover:font-bold hover:underline transition-colors"
+          >About Us</a
         >
       </div>
       <div class="relative text-left space-x-4">
