@@ -35,42 +35,10 @@
         *ngFor="let can of candidates"
         class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center relative"
       >
-        <div
-          (appClickOutside)="closeDropdown(can.id!)"
-          class="absolute top-4 right-4"
-        >
-          <button
-            (click)="toggleDropdown(can.id!)"
-            class="text-gray-400 hover:text-gray-600 focus:outline-none"
-          >
-            <i class="fas fa-ellipsis-v text-lg"></i>
-          </button>
-
-          <div
-            [class.hidden]="!isdorpDownOpen[can.id!]"
-            class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10"
-          >
-            <a
-              (click)="UpdateStatus(can)"
-              class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender hover:text-white font-medium"
-            >
-              <span
-                [ngClass]="{'text-red-600': can.isActive,'text-green-600': !can.isActive}"
-                class="text-red-600"
-                >{{can.isActive?'Bolock User': 'Unblock User'}}</span
-              >
-            </a>
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-dark-gray hover:bg-lavender"
-              >Delete User</a
-            >
-          </div>
-        </div>
         <img
           [src]="can.profileUrl ? cludBaseUrl+can.profileUrl : '/profileimages/defaultProfile.jpg'"
           alt="User Avatar"
-          class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple"
+          class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-purple shadow-sm"
         />
         <h2 class="text-xl font-semibold text-dark-gray mb-1">{{can.name}}</h2>
         <p class="text-gray text-sm mb-2">
@@ -86,37 +54,42 @@
                     }"
             class="text-green-600 font-semibold flex items-center"
           >
-            <i
-              [ngClass]="{
-                  'fas fa-check-circle': can.isActive,
-                  'fas fa-times-circle': !can.isActive
-                }"
-              class="mr-1"
-            ></i>
+            <i *ngIf="can.isActive" class="fa-solid fa-circle-check mr-1"></i>
+            <i *ngIf="!can.isActive" class="fa-solid fa-circle-xmark mr-1"></i>
             {{ can.isActive ? 'Active' : 'Blocked' }}
           </span>
         </div>
 
-        <div class="flex items-center text-gray text-sm mb-4">
+        <div class="flex items-center text-gray text-sm mb-6">
           <i class="fas fa-map-marker-alt mr-1 text-purple"></i>
           <span>San Diego, CA</span>
         </div>
-        <a
-          [routerLink]="['/admin/candidates/viewprofile']"
-          [queryParams]="{id:can.id}"
-          class="text-purple font-medium hover:text-blue transition-colors flex items-center"
-        >
-          View Profile
-          <i class="fas fa-chevron-right ml-1 text-xs"></i>
-        </a>
+
+        <div class="flex justify-between items-center w-full mt-auto border-t border-divider pt-4 pb-2">
+          <a
+            [routerLink]="['/admin/candidates/viewprofile']"
+            [queryParams]="{id:can.id}"
+            class="text-purple font-bold hover:text-dark-purple transition-colors flex items-center text-sm"
+          >
+            View Profile
+            <i class="fas fa-chevron-right ml-1 text-xs"></i>
+          </a>
+          <button
+            (click)="UpdateStatus(can)"
+            class="text-sm font-bold transition-colors"
+            [ngClass]="can.isActive ? 'text-red-500 hover:text-red-700' : 'text-green-600 hover:text-green-800'"
+          >
+            {{ can.isActive ? 'Block' : 'Unblock' }}
+          </button>
+        </div>
       </div>
     </div>
   }
 
-    <div *ngIf="isLoading || candidates.length == 0" class="col-span-full text-center p-8">
-      <p class="text-gray-600 text-lg">No companies found.</p>
+    <div *ngIf="!isLoading && candidates.length == 0" class="col-span-full text-center p-8">
+      <p class="text-gray-600 text-lg">No candidates found.</p>
       <p class="text-gray-500 text-sm mt-2">
-        There might be no companies registered yet, or an error occurred.
+        There might be no candidates registered yet, or an error occurred.
       </p>
     </div>
 
@@ -152,10 +125,9 @@
             (change)="onLimitChange(QueryParms.limit!)"
             class="py-2 px-3 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm bg-white text-dark-gray"
           >
-            <option [ngValue]="3">3</option>
-            <option [ngValue]="6">6</option>
-            <option [ngValue]="9">9</option>
-            <option [ngValue]="15">15</option>
+            <option [ngValue]="4">4</option>
+            <option [ngValue]="8">8</option>
+            <option [ngValue]="12">12</option>
           </select>
         </div>
 

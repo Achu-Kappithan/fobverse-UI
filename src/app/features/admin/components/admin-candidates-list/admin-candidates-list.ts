@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { ClickOutsideDirective } from '../../../../shared/directives/click-outside';
 import { AdminCandidate } from '../../services/admin-candidate';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
@@ -10,15 +9,15 @@ import { CandidateInterface } from '../../../candidate/interfaces/candidate.inte
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
+import { ConfirmService } from '../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-admin-candidates-list',
-  imports: [ClickOutsideDirective,CommonModule,LoadingSpinner,FormsModule,RouterModule],
+  imports: [CommonModule,LoadingSpinner,FormsModule,RouterModule],
   templateUrl: './admin-candidates-list.html',
   styleUrl: './admin-candidates-list.css',
 })
 export class AdminCandidatesList  implements OnInit {
-  isdorpDownOpen: { [id: string]: boolean } = {};
   isLoading:boolean = false
   candidates:CandidateInterface[] = []
   ChildRouteActive:boolean = false
@@ -27,13 +26,13 @@ export class AdminCandidatesList  implements OnInit {
   QueryParms : QueryParmsInterface = {
     page : 1,
     search: '',
-    limit: 6
+    limit: 8
   }
 
   paginationMeta:PaginationMeta = {
     currentPage: 1,
     totalPages: 0,
-    itemsPerPage:6,
+    itemsPerPage:8,
     totalItems:0
   }
 
@@ -43,7 +42,8 @@ export class AdminCandidatesList  implements OnInit {
     private readonly _adminCandidateService:AdminCandidate,
     private readonly _cdr :ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
-    private readonly _toast:ToastService
+    private readonly _toast:ToastService,
+    private readonly _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -65,21 +65,29 @@ export class AdminCandidatesList  implements OnInit {
     this._cdr.detectChanges()
   }
 
-  UpdateStatus(candidate:CandidateInterface){
-    console.log(candidate)
+  async UpdateStatus(candidate: CandidateInterface) {
+    const isConfirmed = await this._confirmService.confirm({
+      title: candidate.isActive ? 'Block User' : 'Unblock User',
+      message: `Are you sure you want to ${candidate.isActive ? 'block' : 'unblock'} ${candidate.name}?`,
+      type: candidate.isActive ? 'danger' : 'warning',
+      confirmText: candidate.isActive ? 'Block' : 'Unblock',
+      cancelText: 'Cancel'
+    });
+
+    if (!isConfirmed) return;
+
     this._adminCandidateService.updateStatus(candidate.id!).subscribe({
-      next:(res)=>{
-        if(res.success){
-          console.log("updated status ",res)
-          candidate.isActive = !candidate.isActive
-          this._toast.success(res.message || 'Status updated successfully')
-          this._cdr.detectChanges()
+      next: (res) => {
+        if (res.success) {
+          candidate.isActive = !candidate.isActive;
+          this._toast.success(res.message || 'Status updated successfully');
+          this._cdr.detectChanges();
         }
       },
       error: (err) => {
-        this._toast.error(err.error?.message || 'Failed to update status')
+        this._toast.error(err.error?.message || 'Failed to update status');
       }
-    })
+    });
   }
 
   fetchAllCandidates():void{
@@ -106,14 +114,6 @@ export class AdminCandidatesList  implements OnInit {
       })
   }
 
-  toggleDropdown(id: string) {
-    this.isdorpDownOpen[id] = !this.isdorpDownOpen[id];
-    console.log(this.isdorpDownOpen)
-  }
-
-  closeDropdown(id: string) {
-    this.isdorpDownOpen[id] = false;
-  }
 
   onLimitChange(limit: number){
     this.QueryParms.limit = limit

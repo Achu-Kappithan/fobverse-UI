@@ -12,10 +12,12 @@ import { Router, RouterModule } from '@angular/router';
 import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
 import { environment } from '../../../env/environment';
 import { ThemeService } from '../../shared/services/theme/theme.service';
+import { ClickOutsideDirective } from '../../shared/directives/click-outside';
+import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-admin-header',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule, ClickOutsideDirective],
   templateUrl: './admin-header.html',
   styleUrl: './admin-header.css',
 })
@@ -34,7 +36,8 @@ export class AdminHeader implements OnInit {
 
   constructor(
     private readonly _authService: AuthService,
-    private readonly _themeService: ThemeService
+    private readonly _themeService: ThemeService,
+    private readonly _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +58,17 @@ export class AdminHeader implements OnInit {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 
-  logoutUser() {
-    this._authService.logoutUser('admin');
+  async logoutUser(): Promise<void> {
+    const isConfirmed = await this._confirmService.confirm({
+      title: 'Logout Confirmation',
+      message: 'Are you sure you want to logout?',
+      confirmText: 'Logout',
+      cancelText: 'Cancel',
+      type: 'warning'
+    });
+
+    if (isConfirmed) {
+      this._authService.logoutUser('admin');
+    }
   }
 }
