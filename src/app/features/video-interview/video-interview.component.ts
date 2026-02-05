@@ -6,7 +6,7 @@ import { SocketService } from '../../shared/services/socket/socket.service';
 import { PeerService } from '../../shared/services/peer/peer.service';
 import { ChatMessage, Participant } from '../../shared/interfaces/video-call.interface';
 import { AuthService } from '../auth/services/auth.service';
-import Swal from 'sweetalert2';
+import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-video-interview',
@@ -39,7 +39,8 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     private router: Router,
     private socketService: SocketService,
     private peerService: PeerService,
-    private authService: AuthService
+    private authService: AuthService,
+    private confirmService: ConfirmService
   ) {
 
     effect(() => {
@@ -294,39 +295,22 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   async leaveCall() {
-    const result = await Swal.fire({
+    const confirmed = await this.confirmService.confirm({
       title: 'Leave Call?',
-      text: "Are you sure you want to leave?",
-      icon: 'warning',
-      width: '24em',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, leave',
-      cancelButtonText: 'Cancel',
-      background: '#ffffff',
-      customClass: {
-        popup: 'dark:bg-slate-800 dark:text-white'
-      },
-      didOpen: (modalElement) => {
-        const icon = modalElement.querySelector('.swal2-icon') as HTMLElement;
-        if (icon) {
-            icon.style.width = '3em';
-            icon.style.height = '3em';
-            icon.style.fontSize = '0.8em'; 
-            icon.style.margin = '1.5em auto 1em'; 
-        }
-      }
+      message: 'Are you sure you want to leave?',
+      confirmText: 'Yes, leave',
+      cancelText: 'Cancel',
+      type: 'warning'
     });
 
-    if (result.isConfirmed) {
+    if (confirmed) {
       this.socketService.leaveVideoRoom({
         roomId: this.roomId,
         userId: this.userId
       });
 
       this.peerService.destroy();
-      this.router.navigate(['../../'], { relativeTo: this.route }); 
+      this.router.navigate(['../../'], { relativeTo: this.route });
     }
   }
 

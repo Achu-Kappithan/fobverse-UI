@@ -110,7 +110,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
 
   fetchAllJobs(){
     this.isLoading = true
-    this._candidateService.getPublicJobs(this.QueryParms)
+    this._candidateService.getAlljobs(this.QueryParms)
     .subscribe({
         next:(res =>{
         console.log("responce for geting all jobs",res)

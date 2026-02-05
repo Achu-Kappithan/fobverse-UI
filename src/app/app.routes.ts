@@ -137,6 +137,14 @@ export const routes: Routes = [
           ).then((m) => m.UpdateProfile),
       },
       {
+        path: 'settings',
+        canActivate: [authGurdGuard],
+        loadComponent: () =>
+          import(
+            './features/candidate/components/candidate-settings/candidate-settings'
+          ).then((m) => m.CandidateSettings),
+      },
+      {
         path: 'my-applications',
         canActivate: [authGurdGuard],
         children: [

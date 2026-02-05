@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../../../auth/services/auth.service';
+import { ConfirmService } from '../../../../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-technical-stage',
@@ -67,7 +68,8 @@ export class TechnicalStageComponent implements OnInit {
     private readonly _toast: ToastService,
     private router: Router,
     private _route: ActivatedRoute,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -360,7 +362,17 @@ export class TechnicalStageComponent implements OnInit {
     });
   }
 
-  triggerCancel() {
+  async triggerCancel() {
+    const confirmed = await this._confirmService.confirm({
+      title: 'Cancel Interview?',
+      message: 'Are you sure you want to cancel this interview?',
+      confirmText: 'Yes, cancel',
+      cancelText: 'No, keep it',
+      type: 'danger',
+    });
+
+    if (!confirmed) return;
+
     this.isSaving = true;
     this.saveComplete = false;
     const data = {

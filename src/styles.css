@@ -698,6 +698,101 @@ html.dark .btn-outline-purple-ref:hover {
   color: #ffffff !important;
 }
 
+/* Notification Modal Custom Classes */
+.notification-modal-card {
+  background-color: #ffffff;
+  border: 1px solid #f3f4f6;
+}
+
+html.dark .notification-modal-card {
+  background-color: #1a1c2e;
+  border-color: #374151;
+}
+
+.notification-modal-header {
+  background: linear-gradient(to right, #7a3ebb, #8567c1);
+}
+
+html.dark .notification-modal-header {
+  background: linear-gradient(to right, #6a35a0, #7a3ebb);
+}
+
+.notification-tab-container {
+  background-color: #ffffff;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+html.dark .notification-tab-container {
+  background-color: #1a1c2e;
+  border-bottom-color: #374151;
+}
+
+.notification-tab-btn:hover {
+  background-color: #f9fafb;
+}
+
+html.dark .notification-tab-btn:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.notification-list-container {
+  background-color: #ffffff;
+}
+
+html.dark .notification-list-container {
+  background-color: #1a1c2e;
+}
+
+.notification-modal-item {
+  background-color: #ffffff;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.notification-modal-item:hover {
+  background-color: #f9fafb;
+}
+
+html.dark .notification-modal-item {
+  background-color: #1a1c2e;
+  border-bottom-color: #374151;
+}
+
+html.dark .notification-modal-item:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.notification-unread-item {
+  background-color: #f0f7ff;
+}
+
+html.dark .notification-unread-item {
+  background-color: rgba(30, 58, 138, 0.2);
+}
+
+.notification-no-notif-bg {
+  background-color: #ffffff;
+}
+
+html.dark .notification-no-notif-bg {
+  background-color: #1a1c2e;
+}
+
+.notification-icon-bg-read {
+  background-color: #f3f4f6;
+}
+
+html.dark .notification-icon-bg-read {
+  background-color: #374151;
+}
+
+.notification-modal-footer {
+  border-top: 1px solid #f3f4f6;
+}
+
+html.dark .notification-modal-footer {
+  border-top-color: #374151;
+}
+
 /* Premium Home Page Classes */
 .hero-gradient-bg {
   background: linear-gradient(135deg, #ede7ff 0%, #ffffff 50%, rgba(122, 62, 187, 0.05) 100%);

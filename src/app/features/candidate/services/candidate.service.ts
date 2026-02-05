@@ -26,7 +26,7 @@ export class CandidateService {
   }
 
   updateProfile(data:CandidateInterface):Observable<ApiResponce<CandidateInterface>>{
-    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',data)
+    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updateprofile',data)
   }
 
   getAlljobs(params: jobsPagesAndFilterInterface): Observable<ApiResponce<CandidateJobsInterface[]>> {
@@ -64,16 +64,8 @@ export class CandidateService {
     return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams });
   }
 
-  getPublicJobs(params: jobsPagesAndFilterInterface): Observable<ApiResponce<CandidateJobsInterface[]>> {
-    let httpParams = new HttpParams();
-    if(params.search) httpParams = httpParams.set('search',params.search);
-    if (params.page) httpParams = httpParams.set('page', params.page.toString());
-    if (params.limit) httpParams = httpParams.set('limit', params.limit.toString());
-    
-    return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs-public`, { params: httpParams });
-  }
 
-    updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
+  updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
     return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename})
   }
 
@@ -154,6 +146,10 @@ export class CandidateService {
     return this._http.get<ApiResponce<{ jobs: CandidateJobsInterface[]; companies: ComapnyProfileInterface[] }>>(
       '/api/candidate/home-data-public'
     );
+  }
+
+  changePassword(currPass: string, newPass: string): Observable<ApiResponce<CandidateInterface>> {
+    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/change-pwd', { currPass, newPass });
   }
 }
 

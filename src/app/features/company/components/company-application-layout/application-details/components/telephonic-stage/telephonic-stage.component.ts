@@ -19,6 +19,7 @@ import { CompanyApplication } from '../../../../../services/company-application'
 import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { AuthService } from '../../../../../../auth/services/auth.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ConfirmService } from '../../../../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-telephonic-stage',
@@ -89,7 +90,8 @@ export class TelephonicStageComponent implements OnInit {
     private readonly _ApplicationService: CompanyApplication,
     private readonly _toast: ToastService,
     private _cdr: ChangeDetectorRef,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -225,7 +227,17 @@ export class TelephonicStageComponent implements OnInit {
     });
   }
 
-  triggerCancel() {
+  async triggerCancel() {
+    const revealed = await this._confirmService.confirm({
+      title: 'Cancel Interview?',
+      message: 'Are you sure you want to cancel this interview?',
+      confirmText: 'Yes, cancel',
+      cancelText: 'No, keep it',
+      type: 'danger',
+    });
+
+    if (!revealed) return;
+
     this.isSaving = true;
     this.saveComplete = false;
     const data = {
