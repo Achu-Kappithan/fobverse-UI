@@ -23,6 +23,8 @@ import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { LoggerService } from '../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../shared/constants/routes.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +40,7 @@ export class AuthService {
   isLoading$ = this.isUserLoaded.asObservable();
   private _router = inject(Router);
   private _socialAuthService = inject(SocialAuthService);
+  private _logger = inject(LoggerService);
 
   constructor(
     private _http: HttpClient,
@@ -68,7 +71,7 @@ export class AuthService {
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Login successful, updating CandidateSubject', res.data);
+            this._logger.info('Login successful, updating CandidateSubject', { user: res.data.email });
             this.adminSubject.next(null);
             this.CompanySubject.next(null);
             this.CandidateSubject.next(res.data);
@@ -83,7 +86,7 @@ export class AuthService {
   }
 
   getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
-    console.log('try to get user details');
+    this._logger.debug('Attempting to fetch current user details');
     return this._http
       .get<ApiResponce<UserPartial>>(`/api/auth/getuser`, {
         withCredentials: true,
@@ -98,14 +101,12 @@ export class AuthService {
             } else {
               this.CompanySubject.next(response.data);
             }
-            console.log(
-              `${response.data.email} is active ${response.data.role}`
-            );
+            this._logger.info(`Session active for: ${response.data.email} (${response.data.role})`);
           } else {
             this.adminSubject.next(null);
             this.CompanySubject.next(null);
             this.CandidateSubject.next(null);
-            console.log('no active user found');
+            this._logger.debug('No active session found');
           }
           this.isUserLoaded.next(true);
         }),
@@ -120,18 +121,15 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    console.log('Attempting to refresh token...');
+    this._logger.debug('Attempting to refresh token...');
     return this._http
       .post(`/api/auth/refresh`, {}, { withCredentials: true })
       .pipe(
         tap((response) => {
-          console.log(
-            'Refresh token successful. New access token set via cookie.',
-            response
-          );
+          this._logger.info('Refresh token successful. New access token set via cookie.');
         }),
         catchError((error) => {
-          console.error('Refresh token failed:', error);
+          this._logger.error('Refresh token failed', error);
           this.adminSubject.next(null);
           return of(null);
         })
@@ -148,16 +146,16 @@ export class AuthService {
       .post(`/api/auth/logout`, {}, { withCredentials: true })
       .subscribe({
         next: (res) => {
-          this._socialAuthService.signOut().catch(err => console.log('Social sign out failed or already signed out'));
+          this._socialAuthService.signOut().catch(err => this._logger.warn('Social sign out failed or already signed out'));
           if (User == 'company') {
             this.CompanySubject.next(null);
-            this._router.navigate(['/companylogin']);
+            this._router.navigate([`/${APP_ROUTES.COMPANY_LOGIN}`]);
           } else if (User === 'admin') {
             this.adminSubject.next(null);
-            this._router.navigate(['/adminlogin']);
+            this._router.navigate([`/${APP_ROUTES.ADMIN_LOGIN}`]);
           } else if(User ==='candidate') {
             this.CandidateSubject.next(null);
-            this._router.navigate(['/candidate/home']);
+            this._router.navigate([`/${APP_ROUTES.HOME}`]);
           }
 
           this.isUserLoaded.next(true);
@@ -178,7 +176,7 @@ export class AuthService {
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Google login successful, updating subjects', res.data);
+            this._logger.info('Google login successful, updating subjects', { user: res.data.email });
             if (userType === 'admin') this.adminSubject.next(res.data);
             else if (userType === 'candidate') this.CandidateSubject.next(res.data);
             else this.CompanySubject.next(res.data);
@@ -201,7 +199,7 @@ export class AuthService {
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Admin login successful, updating adminSubject', res.data);
+            this._logger.info('Admin login successful, updating adminSubject', { user: res.data.email });
             this.adminSubject.next(res.data);
             this.CompanySubject.next(null);
             this.CandidateSubject.next(null);
@@ -228,7 +226,7 @@ export class AuthService {
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Company user login successful, updating CompanySubject', res.data);
+            this._logger.info('Company user login successful, updating CompanySubject', { user: res.data.email });
             this.adminSubject.next(null);
             this.CandidateSubject.next(null);
             this.CompanySubject.next(res.data);

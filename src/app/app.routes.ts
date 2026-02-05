@@ -8,6 +8,7 @@ import { CompanyHome } from './features/company/components/company.home/company.
 import { ForgotPassEmail } from './features/auth/components/forgotPassword/forgot.pass.email/forgot.pass.email';
 import { SetNewPassword } from './features/auth/components/forgotPassword/set-new-password/set-new-password';
 import { UpdateProfileinfo } from './features/company/components/update-profileinfo/update-profileinfo';
+import { APP_ROUTES } from './shared/constants/routes.constants';
 
 // gurards
 import { AddInternalUserComponent } from './features/company/components/internal-user.component/add-internal-user.component/add-internal-user.component';
@@ -29,13 +30,13 @@ import { JobsPublicView } from './features/company/components/jobs-public-view/j
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'candidate/home',
+    redirectTo: APP_ROUTES.HOME,
     pathMatch: 'full',
   },
   // forgoPassword
 
   {
-    path: 'forgotpassword',
+    path: APP_ROUTES.FORGOT_PASSWORD,
     loadComponent: () =>
       import(
         './features/layout/forgotpasswordcomponent/forgotpasswordcomponent'
@@ -73,31 +74,31 @@ export const routes: Routes = [
       // Auth
 
       {
-        path: 'login',
+        path: APP_ROUTES.LOGIN,
         canActivate: [isLogoutGuard],
         component: CandidateLogin,
         data: { userType: 'candidate' },
       },
       {
-        path: 'signup',
+        path: APP_ROUTES.SIGNUP,
         canActivate: [isLogoutGuard],
         component: CandidateSignup,
         data: { userType: 'candidate' },
       },
       {
-        path: 'adminlogin',
+        path: APP_ROUTES.ADMIN_LOGIN,
         canActivate: [isLogoutGuard],
         component: CandidateLogin,
         data: { userType: 'admin' },
       },
       {
-        path: 'companylogin',
+        path: APP_ROUTES.COMPANY_LOGIN,
         canActivate: [isLogoutGuard],
         component: CandidateLogin,
         data: { userType: 'company_admin' },
       },
       {
-        path: 'companysignup',
+        path: APP_ROUTES.COMPANY_SIGNUP,
         canActivate: [isLogoutGuard],
         component: CandidateSignup,
         data: { userType: 'company_admin' },
@@ -110,7 +111,7 @@ export const routes: Routes = [
   // candidate
 
   {
-    path: 'candidate',
+    path: APP_ROUTES.CANDIDATE,
     loadComponent: () =>
       import('./features/layout/candidatecomponent/candidatecomponent').then(
         (m) => m.Candidatecomponent
@@ -236,7 +237,7 @@ export const routes: Routes = [
   //company
 
   {
-    path: 'company',
+    path: APP_ROUTES.COMPANY,
     loadComponent: () =>
       import('./features/layout/company-component/company-component').then(
         (m) => m.CompanyComponent
@@ -362,7 +363,7 @@ export const routes: Routes = [
                 loadComponent: () =>
                   import(
                     './features/layout/video-layout-component/video-layout-component'
-                  ).then((m) => m.VideoLayoutComponent),
+              ).then((m) => m.VideoLayoutComponent),
                 children: [
                   {
                     path: '',
@@ -402,7 +403,7 @@ export const routes: Routes = [
   // Admin
 
   {
-    path: 'admin',
+    path: APP_ROUTES.ADMIN,
     canActivate: [isAdminGuard, authGurdGuard],
     loadComponent: () =>
       import('./features/layout/admin-component/admin-component').then(

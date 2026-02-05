@@ -9,9 +9,12 @@ import { initializeUser } from './app.initializer';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { credentialsInterceptor } from './shared/interceptors/credentials-interceptor';
+import { ErrorHandler } from '@angular/core';
+import { GlobalErrorHandler } from './shared/services/error-handler/global-error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
