@@ -15,13 +15,13 @@ import {
   throwError,
 } from 'rxjs';
 import {
-  ApiResponce,
-  PlainResponce,
+  ApiResponse,
+  PlainResponse,
   UserPartial,
-} from '../../../shared/interfaces/apiresponce.interface';
+} from '../../../shared/interfaces/api-response.interface';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
+import { CompanyProfileInterface } from '../../company/interfaces/company.response.interface';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../shared/constants/routes.constants';
@@ -53,8 +53,8 @@ export class AuthService {
     });
   }
 
-  candidateVarification(token: string): Observable<ApiResponce<UserPartial>> {
-    return this._http.get<ApiResponce<UserPartial>>(
+  candidateVerification(token: string): Observable<ApiResponse<UserPartial>> {
+    return this._http.get<ApiResponse<UserPartial>>(
       `/api/auth/verify-email?token=${token}`,
       { withCredentials: true }
     );
@@ -62,10 +62,10 @@ export class AuthService {
 
   candidateLogin(
     candidate: loginInterface
-  ): Observable<ApiResponce<UserPartial>> {
+  ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponce<UserPartial>>(`/api/auth/login`, candidate, {
+      .post<ApiResponse<UserPartial>>(`/api/auth/login`, candidate, {
         withCredentials: true,
       })
       .pipe(
@@ -85,10 +85,10 @@ export class AuthService {
       );
   }
 
-  getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
+  getCurrentUserDetails(): Observable<ApiResponse<UserPartial>> {
     this._logger.debug('Attempting to fetch current user details');
     return this._http
-      .get<ApiResponce<UserPartial>>(`/api/auth/getuser`, {
+      .get<ApiResponse<UserPartial>>(`/api/auth/getuser`, {
         withCredentials: true,
       })
       .pipe(
@@ -166,10 +166,10 @@ export class AuthService {
   googleLogin(
     googleId: string,
     userType: string
-  ): Observable<ApiResponce<UserPartial>> {
+  ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .get<ApiResponce<UserPartial>>(
+      .get<ApiResponse<UserPartial>>(
         `/api/auth/google?googleId=${googleId}&role=${userType}`,
         { withCredentials: true }
       )
@@ -190,10 +190,10 @@ export class AuthService {
       );
   }
 
-  adminLogin(loginInfo: loginInterface): Observable<ApiResponce<UserPartial>> {
+  adminLogin(loginInfo: loginInterface): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponce<UserPartial>>(`/api/auth/admin/login`, loginInfo, {
+      .post<ApiResponse<UserPartial>>(`/api/auth/admin/login`, loginInfo, {
         withCredentials: true,
       })
       .pipe(
@@ -215,10 +215,10 @@ export class AuthService {
 
   companyUsersLogin(
     loginInfo: loginInterface
-  ): Observable<ApiResponce<ComapnyProfileInterface | any>> {
+  ): Observable<ApiResponse<CompanyProfileInterface | any>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponce<ComapnyProfileInterface | any>>(
+      .post<ApiResponse<CompanyProfileInterface | any>>(
         '/api/auth/companyuserslogin',
         loginInfo,
         { withCredentials: true }
@@ -240,16 +240,16 @@ export class AuthService {
       );
   }
 
-  validateFogotpassEmail(
+  validateForgotPasswordEmail(
     user: validateEmailAndRole
-  ): Observable<PlainResponce> {
-    return this._http.post<PlainResponce>(`/api/auth/forgotpassword`, user, {
+  ): Observable<PlainResponse> {
+    return this._http.post<PlainResponse>(`/api/auth/forgotpassword`, user, {
       withCredentials: true,
     });
   }
 
-  updateNewPassword(data: passwordUpdate): Observable<PlainResponce> {
-    return this._http.post<PlainResponce>(`/api/auth/updatepassword`, data, {
+  updateNewPassword(data: passwordUpdate): Observable<PlainResponse> {
+    return this._http.post<PlainResponse>(`/api/auth/updatepassword`, data, {
       withCredentials: true,
     });
   }

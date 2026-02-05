@@ -9,7 +9,7 @@ import { AuthService } from '../../features/auth/services/auth.service';
 import { CompanyService } from '../../features/company/services/company-service';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../env/environment';
-import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 

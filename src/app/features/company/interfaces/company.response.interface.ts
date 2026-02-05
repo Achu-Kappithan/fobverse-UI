@@ -41,7 +41,7 @@ export interface TeamMember {
   image?: string | undefined
 }
 
-export interface ComapnyProfileInterface {
+export interface CompanyProfileInterface {
   _id: string;
 
   userId: string;
@@ -70,12 +70,12 @@ export interface ComapnyProfileInterface {
 
   teamMembers?: TeamMember[];
 
-  benafits?:string[]
+  benefits?:string[]
 }
 
 export enum jobType {
   FullTime = 'fulltime',
-  PartTmime = 'parttime',
+  PartTime = 'parttime',
   Remote = 'remote',
   OnSite = 'onsite'
 }
@@ -113,11 +113,11 @@ export interface JobsInterface {
 
 export interface populatedJobInterface {
   jobDetails:JobsInterface,
-  profile: ComapnyProfileInterface[]
+  profile: CompanyProfileInterface[]
 }
 
-export interface populatecompanyProfile { 
-  company: ComapnyProfileInterface
+export interface PopulatedCompanyProfile { 
+  company: CompanyProfileInterface
   jobs:JobsInterface[]
 }
 

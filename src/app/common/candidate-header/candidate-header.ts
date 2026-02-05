@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { RouterModule } from '@angular/router';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { environment } from '../../../env/environment';
 import { NotificationService } from '../../shared/services/notification/notification.service';
-import { NotificationInterface } from '../../shared/interfaces/notification.res.interface';
+import { NotificationInterface } from '../../shared/interfaces/notification.response.interface';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 
 @Component({

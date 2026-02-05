@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ComapnyProfileInterface, JobsInterface } from '../../interfaces/company.responce.interface';
+import { CompanyProfileInterface, JobsInterface } from '../../interfaces/company.response.interface';
 import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -20,7 +20,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
   private _subscription: Subscription = new Subscription()
 
   isLoading:boolean = false
-  company$:ComapnyProfileInterface | null = null
+  company$:CompanyProfileInterface | null = null
   jobsLit: JobsInterface[] = []
   companyId:string | null = null
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
@@ -59,7 +59,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
         }
        }),
        error:(err =>{
-        console.log("error regading fet company public view profile",err)
+        console.log("error regarding get company public view profile",err)
         this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()

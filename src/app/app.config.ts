@@ -11,6 +11,7 @@ import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { credentialsInterceptor } from './shared/interceptors/credentials-interceptor';
 import { ErrorHandler } from '@angular/core';
 import { GlobalErrorHandler } from './shared/services/error-handler/global-error-handler';
+import { environment } from '../env/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,7 +31,7 @@ export const appConfig: ApplicationConfig = {
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('304451399030-adooleficc1nd40qr3igngh4d2dmbc8v.apps.googleusercontent.com') 
+            provider: new GoogleLoginProvider(environment.googleClientId) 
           }
         ],
         onError: (err: any) => console.error('Social login error:', err)

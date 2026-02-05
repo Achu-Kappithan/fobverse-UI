@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponse } from '../../../shared/interfaces/api-response.interface';
 import { ProfileInterface, UpdateAdminProfileInterface } from '../interfaces/admin-profile.interface';
 
 @Injectable({
@@ -13,15 +13,15 @@ export class AdminProfileService {
     private readonly _http: HttpClient
   ) {}
 
-  getUserProfile():Observable<ApiResponce<ProfileInterface>>{
-    return this._http.get<ApiResponce<ProfileInterface>>(`/api/admin/profile`)
+  getUserProfile():Observable<ApiResponse<ProfileInterface>>{
+    return this._http.get<ApiResponse<ProfileInterface>>(`/api/admin/profile`)
   }
 
-  updateUserProfile(dto:UpdateAdminProfileInterface):Observable<ApiResponce<UpdateAdminProfileInterface>>{
-    return this._http.post<ApiResponce<UpdateAdminProfileInterface>>('/api/admin/updateprofile',dto)
+  updateUserProfile(dto:UpdateAdminProfileInterface):Observable<ApiResponse<UpdateAdminProfileInterface>>{
+    return this._http.post<ApiResponse<UpdateAdminProfileInterface>>('/api/admin/updateprofile',dto)
   }
 
-  changePassword(currPass:string,newPass:string):Observable<ApiResponce<ProfileInterface>>{
-    return this._http.post<ApiResponce<ProfileInterface>>('/api/admin/updatepassword',{currPass:currPass,newPass:newPass})
+  changePassword(currPass:string,newPass:string):Observable<ApiResponse<ProfileInterface>>{
+    return this._http.post<ApiResponse<ProfileInterface>>('/api/admin/updatepassword',{currPass:currPass,newPass:newPass})
   }
 }

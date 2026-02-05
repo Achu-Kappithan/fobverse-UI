@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { environment } from '../../../../../env/environment';
-import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta } from '../../../../shared/interfaces/api-response.interface';
 import {
-  ComapnyProfileInterface,
+  CompanyProfileInterface,
   companyListParamsInterface,
 } from '../../interfaces/candidate.companylist.interface';
 
@@ -24,7 +24,7 @@ export class CandidateCompanylist implements OnInit {
   listView: boolean = false;
   isLoading: boolean = false;
 
-  companyList: ComapnyProfileInterface[] = [];
+  companyList: CompanyProfileInterface[] = [];
 
   searchValue = new Subject<string>();
 

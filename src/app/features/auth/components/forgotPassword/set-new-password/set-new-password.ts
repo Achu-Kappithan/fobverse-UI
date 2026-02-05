@@ -79,7 +79,7 @@ export class SetNewPassword implements OnInit {
       this._authService.updateNewPassword(data).subscribe({
         next: (response) => {
           this.isLoading = false;
-          console.log('Updated Password Responce', response);
+          console.log('Updated Password Response', response);
           if (response.success) {
             this._toast.success(response.message);
             this._router.navigate(['/login']);

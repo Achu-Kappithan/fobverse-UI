@@ -11,8 +11,8 @@ import { UpdateProfileinfo } from './features/company/components/update-profilei
 import { APP_ROUTES } from './shared/constants/routes.constants';
 
 // gurards
-import { AddInternalUserComponent } from './features/company/components/internal-user.component/add-internal-user.component/add-internal-user.component';
-import { UserListComponent } from './features/company/components/internal-user.component/user-list.component/user-list.component';
+import { AddInternalUserComponent } from './features/company/components/internal-user.component/add-internal-user/add-internal-user.component';
+import { UserListComponent } from './features/company/components/internal-user.component/user-list/user-list.component';
 import { isLogoutGuard } from './shared/guards/auth_gurds/is-logout-guard';
 import { authGurdGuard } from './shared/guards/auth_gurds/auth-gurd-guard';
 import { isAdminGuard } from './shared/guards/admin_guards/is-admin-guard';
@@ -279,8 +279,8 @@ export const routes: Routes = [
         path: 'internalusers',
         loadComponent: () =>
           import(
-            './features/company/components/internal-user.component/internal-user.component'
-          ).then((m) => m.InternalUserComponent),
+            './features/company/components/internal-user.component/internal-users.component'
+          ).then((m) => m.InternalUsersComponent),
         canActivate: [isCompanyAdminGuard],
         children: [
           {
@@ -418,7 +418,7 @@ export const routes: Routes = [
           ).then((m) => m.AdminDashboard),
       },
       {
-        path: 'companyes',
+        path: 'companies',
         loadComponent: () =>
           import('./features/admin/components/company/company').then(
             (m) => m.Company
@@ -428,8 +428,8 @@ export const routes: Routes = [
             path: '',
             loadComponent: () =>
               import(
-                './features/admin/components/admin-listcompanys/admin-listcompanys'
-              ).then((m) => m.AdminListcompanys),
+                './features/admin/components/admin-list-companies/admin-list-companies.component'
+              ).then((m) => m.AdminListCompaniesComponent),
           },
           {
             path: 'viewprofile',

@@ -19,7 +19,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable, of, switchMap } from 'rxjs';
-import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CandidateService } from '../../services/candidate.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';

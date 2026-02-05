@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
-import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 
@@ -27,11 +27,11 @@ export class EmailVerification implements OnInit {
   ngOnInit(): void {
     this.verificationSubscription = this._route.queryParams
       .pipe(
-        tap((parms) =>
-          console.log('token get from the parms ', parms['token'])
+        tap((params) =>
+          console.log('token get from the params ', params['token'])
         ),
-        switchMap((parms) => {
-          const token = parms['token'];
+        switchMap((params) => {
+          const token = params['token'];
           const startTime = Date.now();
           if (!token) {
             return of({
@@ -46,7 +46,7 @@ export class EmailVerification implements OnInit {
               )
             );
           } else {
-            return this._userService.candidateVarification(token).pipe(
+            return this._userService.candidateVerification(token).pipe(
               tap((response) =>
                 console.log('Component: Raw API response:', response)
               ),

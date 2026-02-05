@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyApplication } from '../../../services/company-application';
 import {
   applicationWithProfile,
-} from '../../../interfaces/company.responce.interface';
+} from '../../../interfaces/company.response.interface';
 import { CandidateInterface } from '../../../../candidate/interfaces/candidate.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

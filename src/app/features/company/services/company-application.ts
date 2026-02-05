@@ -5,19 +5,19 @@ import {
   CancelInterviewInterface,
 } from '../interfaces/company.interface';
 import { Observable } from 'rxjs';
-import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponse } from '../../../shared/interfaces/api-response.interface';
 import {
   ApplicationInterface,
   applicationWithProfile,
   InternalUserInterface,
   PaginatedResponse,
-} from '../interfaces/company.responce.interface';
+} from '../interfaces/company.response.interface';
 import {
-  SheduleInterface,
-  SheduleResponceInterface,
-  updatefeedbackInterface,
+  ScheduleInterface,
+  ScheduleResponseInterface,
+  UpdateFeedbackInterface,
   FinalizeResultInterface,
-} from '../interfaces/company.interviewresponce.interface';
+} from '../interfaces/company.interview-response.interface';
 import { Schedule } from '../interfaces/schedule.interface';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class CompanyApplication {
 
   getAllApplication(
     params: ApplicationQureryInterface
-  ): Observable<ApiResponce<ApplicationInterface[]>> {
+  ): Observable<ApiResponse<ApplicationInterface[]>> {
     let httpParms = new HttpParams();
 
     if (params.limit) {
@@ -47,7 +47,7 @@ export class CompanyApplication {
       throw new Error('jobId  Required');
     }
     httpParms = httpParms.set('jobId', params.jobId);
-    return this._http.get<ApiResponce<ApplicationInterface[]>>(
+    return this._http.get<ApiResponse<ApplicationInterface[]>>(
       `/api/applications/applicants`,
       { params: httpParms }
     );
@@ -56,39 +56,39 @@ export class CompanyApplication {
   getApplicationDetails(
     appId: string,
     canId: string
-  ): Observable<ApiResponce<applicationWithProfile>> {
-    return this._http.get<ApiResponce<applicationWithProfile>>(
+  ): Observable<ApiResponse<applicationWithProfile>> {
+    return this._http.get<ApiResponse<applicationWithProfile>>(
       `/api/applications/applicationDetails/${appId}/${canId}`
     );
   }
 
-  getHrlist(): Observable<ApiResponce<InternalUserInterface[]>> {
-    return this._http.get<ApiResponce<InternalUserInterface[]>>(
+  getHrlist(): Observable<ApiResponse<InternalUserInterface[]>> {
+    return this._http.get<ApiResponse<InternalUserInterface[]>>(
       `/api/company/hrusers`
     );
   }
 
-  getInterviewers(): Observable<ApiResponce<InternalUserInterface[]>> {
-    return this._http.get<ApiResponce<InternalUserInterface[]>>(
+  getInterviewers(): Observable<ApiResponse<InternalUserInterface[]>> {
+    return this._http.get<ApiResponse<InternalUserInterface[]>>(
       `/api/company/interviewers`
     );
   }
 
   sheduleInterview(
-    data: SheduleInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    data: ScheduleInterface
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
     console.log('data  for  sheduling interivew',data)
-    return this._http.post<ApiResponce<SheduleResponceInterface>>(
+    return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/shedule`,
       data
     );
   }
 
   sheduleTelyInterview(
-    data: SheduleInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    data: ScheduleInterface
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
     console.log('data  for  sheduling interivew',data)
-    return this._http.post<ApiResponce<SheduleResponceInterface>>(
+    return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/telephone/shedule`,
       data
     );
@@ -97,38 +97,38 @@ export class CompanyApplication {
   getStageDetails(
     applicationId: string,
     stage: string
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
-    return this._http.get<ApiResponce<SheduleResponceInterface>>(
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
+    return this._http.get<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/getstagedetails`,
       { params: { applicationId: applicationId, stage: stage } }
     );
   }
 
   updateFeedback(
-    data: updatefeedbackInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    data: UpdateFeedbackInterface
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
     console.log('updatting feedbak data', data);
-    return this._http.post<ApiResponce<SheduleResponceInterface>>(
+    return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/updatefeedback`,
       data
     );
   }
 
   ReSheduleTelyphone(
-    data: SheduleInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    data: ScheduleInterface
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
     console.log('detaisl for shedule tech',data)
-    return this._http.put<ApiResponce<SheduleResponceInterface>>(
+    return this._http.put<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/telephone/reshedule`,
       data
     );
   }
 
   ReShedule(
-    data: SheduleInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
+    data: ScheduleInterface
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
     console.log('detaisl for shedule tech',data)
-    return this._http.put<ApiResponce<SheduleResponceInterface>>(
+    return this._http.put<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/reshedule`,
       data
     );
@@ -136,8 +136,8 @@ export class CompanyApplication {
 
   cancelInterview(
     dto: CancelInterviewInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
-    return this._http.patch<ApiResponce<SheduleResponceInterface>>(
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
+    return this._http.patch<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/cancelinterview`,
       dto
     );
@@ -145,9 +145,9 @@ export class CompanyApplication {
 
   finalizeTelephoneResult(
     data: FinalizeResultInterface
-  ): Observable<ApiResponce<SheduleResponceInterface>> {
+  ): Observable<ApiResponse<ScheduleResponseInterface>> {
     console.log(data);
-    return this._http.post<ApiResponce<SheduleResponceInterface>>(
+    return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/finalize-result`,
       data
     );
@@ -155,8 +155,8 @@ export class CompanyApplication {
 
   getAllStages(
     applicationId: string
-  ): Observable<ApiResponce<any>> {
-    return this._http.get<ApiResponce<any>>(
+  ): Observable<ApiResponse<any>> {
+    return this._http.get<ApiResponse<any>>(
       `/api/interview/all-stages`,
       { params: { applicationId: applicationId } }
     );
@@ -186,12 +186,12 @@ export class CompanyApplication {
     );
   }
 
-  getMySchedules(status?: string): Observable<ApiResponce<Schedule[]>> {
+  getMySchedules(status?: string): Observable<ApiResponse<Schedule[]>> {
     let httpParams = new HttpParams();
     if (status) {
       httpParams = httpParams.set('status', status);
     }
-    return this._http.get<ApiResponce<Schedule[]>>(`/api/interview/my-schedules`, {
+    return this._http.get<ApiResponse<Schedule[]>>(`/api/interview/my-schedules`, {
       params: httpParams,
     });
   }

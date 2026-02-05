@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/api-response.interface';
 import { AdminCompanyService } from '../../services/admin-company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../shared/interfaces/table.interface';
 import { TableComponent } from '../../../../common/table-component/table-component';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
-import { AllJobsAdminResponce } from '../../interfaces/company.responce.interface';
+import { AllJobsAdminResponse } from '../../interfaces/company.response.interface';
 
 @Component({
   selector: 'app-admin-joblist',
@@ -20,7 +20,7 @@ import { AllJobsAdminResponce } from '../../interfaces/company.responce.interfac
 export class AdminJoblist  implements OnInit {
 
   isLoading:boolean = false
-  jobList:AllJobsAdminResponce[]=[]
+  jobList:AllJobsAdminResponse[]=[]
   serchValue = new Subject<string>()
 
   constructor(
@@ -77,7 +77,7 @@ export class AdminJoblist  implements OnInit {
     this.isLoading= true
     this._adminService.getAlljobs(this.QueryParms).subscribe({
       next:(res =>{
-        console.log("responce for geting all jobs",res)
+        console.log("response for getting all jobs",res)
         if(res.success){
           this.jobList = res.data
           this.paginationMeta = res.meta!
@@ -86,7 +86,7 @@ export class AdminJoblist  implements OnInit {
         }
       }),
       error:(err)=>{
-        console.log('error for geting Alljobs: ',err)
+        console.log('error for getting Alljobs: ',err)
         this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()
@@ -123,7 +123,7 @@ export class AdminJoblist  implements OnInit {
         }
       }),
       error:(err =>{
-        console.log("error regading Activate job Status ",err)
+        console.log("error regarding Activate job Status ",err)
         this._toast.error(err.error.message)
       })
     })

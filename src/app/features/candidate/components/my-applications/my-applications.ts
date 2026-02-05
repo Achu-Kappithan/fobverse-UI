@@ -5,7 +5,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { CandidateApplication, ApplicationQueryParams } from '../../interfaces/candidate.application.interface';
-import { PaginatedResponse } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginatedApiResponse } from '../../../../shared/interfaces/api-response.interface';
 import { environment } from '../../../../../env/environment';
 
 @Component({
@@ -88,13 +88,13 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     this._candidateService.getMyApplications(params)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response: PaginatedResponse<CandidateApplication[]>) => {
+        next: (response: PaginatedApiResponse<CandidateApplication[]>) => {
           console.log('My Applications Response:', response);
           this.applications = response.data;
-          this.currentPage = response.meta.currentPage;
-          this.totalPages = response.meta.totalPages;
-          this.totalItems = response.meta.totalItems;
-          this.itemsPerPage = response.meta.itemsPerPage;
+          this.currentPage = response.meta?.currentPage || 1;
+          this.totalPages = response.meta?.totalPages || 0;
+          this.totalItems = response.meta?.totalItems || 0;
+          this.itemsPerPage = response.meta?.itemsPerPage || 8;
           this.loading = false;
           this._cdr.detectChanges()
         },

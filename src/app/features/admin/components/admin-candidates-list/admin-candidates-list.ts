@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/api-response.interface';
 import { CandidateInterface } from '../../../candidate/interfaces/candidate.interface';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
@@ -97,9 +97,9 @@ export class AdminCandidatesList  implements OnInit {
           if(response.success && response.data){
             this.candidates = response.data ?? []
             this.paginationMeta = response.meta ?? this.paginationMeta
-            console.log("responce data",response.data, " responce meta: ",response.meta)
+            console.log("response data",response.data, " response meta: ",response.meta)
           }else{
-            console.log("faild to get responce",response)
+            console.log("failed to get response",response)
             this.candidates = []
           }
           this.isLoading = false

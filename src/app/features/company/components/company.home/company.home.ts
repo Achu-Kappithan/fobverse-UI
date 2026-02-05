@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company-service';
-import { CompanyDashboardData } from '../../interfaces/company.responce.interface';
+import { CompanyDashboardData } from '../../interfaces/company.response.interface';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../../env/environment';

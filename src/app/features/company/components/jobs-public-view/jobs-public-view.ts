@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ComapnyProfileInterface, JobsInterface } from '../../interfaces/company.responce.interface';
+import { CompanyProfileInterface, JobsInterface } from '../../interfaces/company.response.interface';
 import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -22,7 +22,7 @@ export class JobsPublicView  implements OnInit,OnDestroy {
   jobDetails:JobsInterface | null = null
   jobId:string | null = null
   responsibility:string[] =[]
-  profileData : ComapnyProfileInterface| null = null
+  profileData : CompanyProfileInterface| null = null
   baseUrl :string = environment.cloudinaryBaseUrl
 
   constructor(
@@ -60,7 +60,7 @@ export class JobsPublicView  implements OnInit,OnDestroy {
         }
       }),
       error: (err =>{
-        console.log("error regading job public view",err)
+        console.log("error regarding job public view",err)
         this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()

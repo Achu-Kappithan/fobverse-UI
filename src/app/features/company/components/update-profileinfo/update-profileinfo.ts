@@ -2,12 +2,12 @@ import { CommonModule} from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ComapnyProfileInterface, ContactInfoItem } from '../../interfaces/company.responce.interface';
+import { ContactInfoItem, CompanyProfileInterface } from '../../interfaces/company.response.interface';
 import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { catchError,forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
-import { GalleryImageDisplay } from '../../../../shared/interfaces/cloudinarysignature.responce.interface';
+import { GalleryImageDisplay } from '../../../../shared/interfaces/cloudinary-signature.response.interface';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 
 @Component({
@@ -18,7 +18,7 @@ import { CloudinaryService } from '../../../../shared/services/cloudinary.servic
 })
 export class UpdateProfileinfo implements OnInit ,OnDestroy {
  companyProfileForm!: FormGroup;
- profileData:ComapnyProfileInterface | null = null
+ profileData:CompanyProfileInterface | null = null
  isSaving:boolean = false
  baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
 
@@ -67,7 +67,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       officeLocation: this.fb.array([]),
       techStack: this.fb.array([]),
       imageGallery: this.fb.array([]),
-      benafits: this.fb.array([])
+      benefits: this.fb.array([])
     });
   }
 
@@ -82,7 +82,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       this.contactInfo.clear();
       this.officeLocation.clear();
       this.techStack.clear();
-      this.benafits.clear();
+      this.benefits.clear();
       this.imageGallery.clear(); 
       this.imageGalleryDisplay = [];
 
@@ -95,7 +95,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       this.profileData.contactInfo?.forEach(info => this.addContactInfo(info));
       this.profileData.officeLocation?.forEach(loc => this.addOfficeLocation(loc));
       this.profileData.techStack?.forEach(tech => this.addTechStack(tech));
-      this.profileData.benafits?.forEach(benefit => this.addBenefit(benefit));
+      this.profileData.benefits?.forEach(benefit => this.addBenefit(benefit));
 
       this.profileData.imageGallery?.forEach(imgUrl => {
       const fullUrl = `https://res.cloudinary.com/dl9iuhkmq/image/upload${imgUrl}`
@@ -188,8 +188,8 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     return this.companyProfileForm.get('imageGallery') as FormArray;
   }
 
-  get benafits(): FormArray {
-    return this.companyProfileForm.get('benafits') as FormArray;
+  get benefits(): FormArray {
+    return this.companyProfileForm.get('benefits') as FormArray;
   }
 
   addContactInfo(info?: ContactInfoItem): void {
@@ -221,11 +221,11 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
   }
 
   addBenefit(benefit?: string): void {
-    this.benafits.push(this.fb.control(benefit || '', Validators.required));
+    this.benefits.push(this.fb.control(benefit || '', Validators.required));
   }
 
   removeBenefit(index: number): void {
-    this.benafits.removeAt(index);
+    this.benefits.removeAt(index);
   }
 
   private stripCloudinaryBase(url: string): string {

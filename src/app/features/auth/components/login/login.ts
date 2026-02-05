@@ -108,7 +108,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
       if (this.userType === 'admin') {
         this._AuthService.adminLogin(userdata).subscribe({
           next: (response) => {
-            console.log('adminLogin Resoponse', response);
+            console.log('adminLogin Response', response);
             if (response.success) {
               this._toast.success(
                 response.message ?? 'Login Successfull....'
@@ -148,7 +148,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
         const logindata = this.loginForm.value;
         this._AuthService.companyUsersLogin(logindata).subscribe({
           next: (res) => {
-            console.log('companylogin Responce', res);
+            console.log('companylogin Response', res);
             if (res.success) {
               this._toast.success(res.message ?? 'Login SuccessFull');
               const returnUrl = this._route.snapshot.queryParams['returnUrl'];

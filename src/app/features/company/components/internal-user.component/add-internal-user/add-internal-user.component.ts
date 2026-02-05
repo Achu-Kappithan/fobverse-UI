@@ -79,7 +79,7 @@ createUserForm!: FormGroup;
     this._companyService.createUser(data).subscribe({
       next:(res =>{
         if(res.success){
-          console.log("updated responce",res.data)
+          console.log("updated response",res.data)
           this._toast.success(res.message!)
           this.createUserForm.reset()
           this._router.navigate(['../'], { relativeTo: this._route });       

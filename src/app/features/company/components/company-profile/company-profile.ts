@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CompanyService } from '../../services/company-service';
-import { ComapnyProfileInterface, TeamMember } from '../../interfaces/company.responce.interface';
+import { CompanyProfileInterface, TeamMember } from '../../interfaces/company.response.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule,} from '@angular/router';
@@ -32,7 +32,7 @@ import { environment } from '../../../../../env/environment';
 export class CompanyProfile implements OnInit,OnDestroy {
 
   isLoading:boolean = false
-  company$:ComapnyProfileInterface | null = null
+  company$:CompanyProfileInterface | null = null
   activeModalId:string | null = null
   ChildRouteActive = false
   logoUrl:string = "/profileimages/logodefault.jpg"

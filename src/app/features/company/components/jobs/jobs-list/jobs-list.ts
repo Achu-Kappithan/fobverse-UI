@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../../shared/interfaces/table.interface';
 import { TableComponent } from '../../../../../common/table-component/table-component';
 import { Router, RouterModule } from '@angular/router';
-import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/api-response.interface';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CompanyService } from '../../../services/company-service';
-import { JobsInterface } from '../../../interfaces/company.responce.interface';
+import { JobsInterface } from '../../../interfaces/company.response.interface';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { LoadingSpinner } from "../../../../../common/loading-spinner/loading-spinner";
 
@@ -77,7 +77,7 @@ export class JobsList implements OnInit {
     this._companyService.getAllJobs(this.QueryParms)
     .subscribe({
       next:(res=>{
-        console.log('responce for Get allJobs: ',res)
+        console.log('response for getting all jobs: ',res)
         if(res.success){
           this.jobs = res.data
           this.paginationMeta = res.meta ?? this.paginationMeta

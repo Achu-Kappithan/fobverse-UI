@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { SocketService } from '../socket/socket.service';
 import { HttpClient } from '@angular/common/http';
-import { ApiResponce } from '../../interfaces/apiresponce.interface';
-import { NotificationInterface } from '../../interfaces/notification.res.interface';
+import { ApiResponse } from '../../interfaces/api-response.interface';
+import { NotificationInterface } from '../../interfaces/notification.response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,14 +21,14 @@ export class NotificationService {
   ) {}
 
   loadUnreadCount() {
-    this.http.get<ApiResponce<{ count: number }>>('/api/notification/getunreadcount')
+    this.http.get<ApiResponse<{ count: number }>>('/api/notification/getunreadcount')
       .subscribe(res => {
         this.unreadCountSubject.next(res.data.count);
       });
   }
 
   loadInitialData() {
-    this.http.get<ApiResponce<NotificationInterface[]>>('/api/notification/getnotification')
+    this.http.get<ApiResponse<NotificationInterface[]>>('/api/notification/getnotification')
       .subscribe(res => {
         console.log('fetch inital notification',res)
         this.notificationSubject.next(res.data);

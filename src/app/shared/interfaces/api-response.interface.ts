@@ -1,5 +1,5 @@
 
-export interface ApiResponce<T> {
+export interface ApiResponse<T> {
   success: boolean;
   data: T ,
   message: string;
@@ -21,7 +21,7 @@ export interface PaginatedResponse<T> {
   timestamp: string;
 }
 
-export interface PagenatedApiResponce<T> {
+export interface PaginatedApiResponse<T> {
   success: boolean;
   data: T;
   message?: string;
@@ -49,11 +49,11 @@ export interface User {
 
 }
 
-export interface GoogleResponce {
+export interface GoogleResponse {
   
 }
 
-export interface PlainResponce {
+export interface PlainResponse {
   message: string,
   success:boolean,
 }

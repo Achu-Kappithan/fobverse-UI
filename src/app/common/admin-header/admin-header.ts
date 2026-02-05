@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { environment } from '../../../env/environment';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside';

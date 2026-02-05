@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CompanyApplication } from '../../services/company-application';
-import { ApplicationInterface, Stages } from '../../interfaces/company.responce.interface';
+import { ApplicationInterface, Stages } from '../../interfaces/company.response.interface';
 import { environment } from '../../../../../env/environment';
 
 @Component({

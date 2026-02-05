@@ -215,8 +215,8 @@
               Add Benefit
             </button>
           </div>
-          <div formArrayName="benafits" class="flex flex-wrap gap-2">
-            <div *ngFor="let benefitControl of benafits.controls; let i = index" class="relative flex items-center bg-green-100 rounded-md px-3 py-1 text-sm text-green-800">
+          <div formArrayName="benefits" class="flex flex-wrap gap-2">
+            <div *ngFor="let benefitControl of benefits.controls; let i = index" class="relative flex items-center bg-green-100 rounded-md px-3 py-1 text-sm text-green-800">
               <input type="text" [formControlName]="i" class="bg-transparent focus:outline-none focus:ring-0 w-full" placeholder="e.g., Full Healthcare">
               <button type="button" (click)="removeBenefit(i)" class="ml-2 text-green-600 hover:text-green-800">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -224,7 +224,7 @@
                 </svg>
               </button>
             </div>
-            <p *ngIf="!benafits.length" class="text-sm text-gray-500">No benefits added yet.</p>
+            <p *ngIf="!benefits.length" class="text-sm text-gray-500">No benefits added yet.</p>
           </div>
         </div>
 

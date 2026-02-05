@@ -13,8 +13,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
-import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
+import { ScheduleResponseInterface } from '../../../../../interfaces/company.interview-response.interface';
+import { InternalUserInterface } from '../../../../../interfaces/company.response.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
 import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { AuthService } from '../../../../../../auth/services/auth.service';
@@ -65,7 +65,7 @@ import { ConfirmService } from '../../../../../../../shared/services/confirm/con
   ],
 })
 export class TelephonicStageComponent implements OnInit {
-  interview: SheduleResponceInterface | null = null;
+  interview: ScheduleResponseInterface | null = null;
   @Input() applicationId: string | null = null;
   @Input() candidateId: string | null = null;
   @Input() userEmail: string | undefined = undefined;

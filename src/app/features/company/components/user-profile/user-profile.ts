@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../services/company-service';
-import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.responce.interface';
+import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.response.interface';
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, switchMap, of } from 'rxjs'; 

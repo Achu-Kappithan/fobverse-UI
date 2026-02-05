@@ -42,7 +42,7 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     this._candidateService.getApplicationDetails(this.applicationId!).subscribe({
       next: (response) => {
         if (response.success) {
-          console.log('responce data',response)
+          console.log('response data',response)
           this.application = response.data;
         }
         this.isLoading = false;

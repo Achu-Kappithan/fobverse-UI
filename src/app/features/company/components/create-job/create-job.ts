@@ -11,7 +11,7 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { JobsInterface } from '../../interfaces/company.responce.interface';
+import { JobsInterface } from '../../interfaces/company.response.interface';
 import {
   debounceTime,
   distinctUntilChanged,

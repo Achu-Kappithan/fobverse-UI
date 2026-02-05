@@ -9,6 +9,7 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
+import { ApiResponse, PlainResponse } from '../../../../../shared/interfaces/api-response.interface';
 
 @Component({
   selector: 'app-forgot.pass.email',
@@ -47,10 +48,10 @@ export class ForgotPassEmail implements OnInit {
       this.isLoading = true;
       const email = this.forgotPasswordForm.value.email;
       const user = { email: email, role: this.userType };
-      this._authService.validateFogotpassEmail(user).subscribe({
-        next: (response) => {
+      this._authService.validateForgotPasswordEmail(user).subscribe({
+        next: (response: PlainResponse) => {
           this.isLoading = false;
-          console.log('Reseponce forgotpassword', response);
+          console.log('Response forgotpassword', response);
           if (response.success) {
             this._toast.success(response.message);
             this._router.navigate(['/login']);
@@ -59,7 +60,7 @@ export class ForgotPassEmail implements OnInit {
             this.forgotPasswordForm.reset();
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           this.isLoading = false;
           console.log('error updatePassword', error);
           this._toast.error(error.error.message);

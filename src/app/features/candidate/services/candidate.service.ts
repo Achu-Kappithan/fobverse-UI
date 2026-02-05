@@ -2,10 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
-import { ApiResponce, PaginatedResponse, PlainResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponse, PaginatedResponse, PlainResponse } from '../../../shared/interfaces/api-response.interface';
 import { CandidateJobsInterface, jobApplicationDto, jobsPagesAndFilterInterface } from '../interfaces/candidate.joblist.interface';
 import {
-  ComapnyProfileInterface,
+  CompanyProfileInterface,
   companyListParamsInterface,
 } from '../interfaces/candidate.companylist.interface';
 import { ApplicationQueryParams, CandidateApplication, DetailedApplicationResponse } from '../interfaces/candidate.application.interface';
@@ -17,19 +17,19 @@ export class CandidateService {
 
   constructor(private readonly _http: HttpClient){}
 
-  GetPorfile():Observable<ApiResponce<CandidateInterface>>{
-    return this._http.get<ApiResponce<CandidateInterface>>(`api/candidate/getprofile`)
+  GetPorfile():Observable<ApiResponse<CandidateInterface>>{
+    return this._http.get<ApiResponse<CandidateInterface>>(`api/candidate/getprofile`)
   }
 
-  getPublicView(id:string):Observable<ApiResponce<CandidateInterface>>{
-    return this._http.get<ApiResponce<CandidateInterface>>(`/api/candidate/public/profile?id=${id}`)
+  getPublicView(id:string):Observable<ApiResponse<CandidateInterface>>{
+    return this._http.get<ApiResponse<CandidateInterface>>(`/api/candidate/public/profile?id=${id}`)
   }
 
-  updateProfile(data:CandidateInterface):Observable<ApiResponce<CandidateInterface>>{
-    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updateprofile',data)
+  updateProfile(data:CandidateInterface):Observable<ApiResponse<CandidateInterface>>{
+    return this._http.post<ApiResponse<CandidateInterface>>('/api/candidate/updateprofile',data)
   }
 
-  getAlljobs(params: jobsPagesAndFilterInterface): Observable<ApiResponce<CandidateJobsInterface[]>> {
+  getAlljobs(params: jobsPagesAndFilterInterface): Observable<ApiResponse<CandidateJobsInterface[]>> {
     let httpParams = new HttpParams();
 
     if(params.search){
@@ -61,22 +61,22 @@ export class CandidateService {
     if (params.dueDate) {
       httpParams = httpParams.set('dueDate', params.dueDate); 
     }
-    return this._http.get<ApiResponce<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams });
+    return this._http.get<ApiResponse<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams });
   }
 
 
-  updateResume(filename:string):Observable<ApiResponce<CandidateInterface>>{
-    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/updataprofile',{resumeUrl:filename})
+  updateResume(filename:string):Observable<ApiResponse<CandidateInterface>>{
+    return this._http.post<ApiResponse<CandidateInterface>>('/api/candidate/updataprofile', { resumeUrl: filename })
   }
 
-  applayJob(id:string,data:jobApplicationDto):Observable<PlainResponce>{
+  applayJob(id:string,data:jobApplicationDto):Observable<PlainResponse>{
     console.log(data)
-    return this._http.post<PlainResponce>(`/api/applications/applyjob?id=${id}`,data)
+    return this._http.post<PlainResponse>(`/api/applications/applyjob?id=${id}`,data)
   }
 
   getAllCompanies(
     params: companyListParamsInterface,
-  ): Observable<PaginatedResponse<ComapnyProfileInterface[]>> {
+  ): Observable<PaginatedResponse<CompanyProfileInterface[]>> {
     let httpParams = new HttpParams();
 
     if (params.search) {
@@ -89,19 +89,19 @@ export class CandidateService {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
 
-    return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
+    return this._http.get<PaginatedResponse<CompanyProfileInterface[]>>(
       '/api/candidate/all-companies',
       { params: httpParams },
     );
   }
 
-  getPublicCompanies(params: companyListParamsInterface): Observable<PaginatedResponse<ComapnyProfileInterface[]>> {
+  getPublicCompanies(params: companyListParamsInterface): Observable<PaginatedResponse<CompanyProfileInterface[]>> {
     let httpParams = new HttpParams();
     if (params.search) httpParams = httpParams.set('search', params.search);
     if (params.page) httpParams = httpParams.set('page', params.page.toString());
     if (params.limit) httpParams = httpParams.set('limit', params.limit.toString());
 
-    return this._http.get<PaginatedResponse<ComapnyProfileInterface[]>>(
+    return this._http.get<PaginatedResponse<CompanyProfileInterface[]>>(
       '/api/candidate/all-companies',
       { params: httpParams },
     );
@@ -129,27 +129,27 @@ export class CandidateService {
     );
   }
 
-  getAllStages(applicationId: string): Observable<ApiResponce<any>> {
-    return this._http.get<ApiResponce<any>>(
+  getAllStages(applicationId: string): Observable<ApiResponse<any>> {
+    return this._http.get<ApiResponse<any>>(
       `/api/interview/all-stages`,
       { params: { applicationId: applicationId } }
     );
   }
 
-  getApplicationDetails(applicationId: string): Observable<ApiResponce<DetailedApplicationResponse>> {
-    return this._http.get<ApiResponce<DetailedApplicationResponse>>(
+  getApplicationDetails(applicationId: string): Observable<ApiResponse<DetailedApplicationResponse>> {
+    return this._http.get<ApiResponse<DetailedApplicationResponse>>(
       `/api/candidate/application-details/${applicationId}`
     );
   }
 
-  getHomeDataPublic(): Observable<ApiResponce<{ jobs: CandidateJobsInterface[]; companies: ComapnyProfileInterface[] }>> {
-    return this._http.get<ApiResponce<{ jobs: CandidateJobsInterface[]; companies: ComapnyProfileInterface[] }>>(
+  getHomeDataPublic(): Observable<ApiResponse<{ jobs: CandidateJobsInterface[]; companies: CompanyProfileInterface[] }>> {
+    return this._http.get<ApiResponse<{ jobs: CandidateJobsInterface[]; companies: CompanyProfileInterface[] }>>(
       '/api/candidate/home-data-public'
     );
   }
 
-  changePassword(currPass: string, newPass: string): Observable<ApiResponce<CandidateInterface>> {
-    return this._http.post<ApiResponce<CandidateInterface>>('/api/candidate/change-pwd', { currPass, newPass });
+  changePassword(currPass: string, newPass: string): Observable<ApiResponse<CandidateInterface>> {
+    return this._http.post<ApiResponse<CandidateInterface>>('/api/candidate/change-pwd', { currPass, newPass });
   }
 }
 

@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../../services/company-service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
-import { PaginationMeta } from '../../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta } from '../../../../../shared/interfaces/api-response.interface';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -18,7 +18,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApplicationQureryInterface } from '../../../interfaces/company.interface';
-import { ApplicationInterface, JobsInterface } from '../../../interfaces/company.responce.interface';
+import { ApplicationInterface, JobsInterface } from '../../../interfaces/company.response.interface';
 import { environment } from '../../../../../../env/environment';
 import { CompanyApplication } from '../../../services/company-application';
 
@@ -131,7 +131,7 @@ export class CompanyJobapplications implements OnInit {
           this.ApplicationList = res.data;
           this.paginationMeta = res.meta ? res.meta : this.paginationMeta;
           console.log(
-            'responce get from thebacked  for applciatons',
+            'response get from the backed for applications',
             this.ApplicationList
           );
           this.isLoading = false;

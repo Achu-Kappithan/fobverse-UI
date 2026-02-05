@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { PaginationMeta } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta } from '../../../../shared/interfaces/api-response.interface';
 import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface } from '../../interfaces/candidate.joblist.interface';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
 import { environment } from '../../../../../env/environment';
 import { AuthService } from '../../../auth/services/auth.service';
-import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
 
 
 @Component({
@@ -113,7 +113,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
     this._candidateService.getAlljobs(this.QueryParms)
     .subscribe({
         next:(res =>{
-        console.log("responce for geting all jobs",res)
+        console.log("response for getting all jobs",res)
         if(res.success){
           this.jobList = res.data
 

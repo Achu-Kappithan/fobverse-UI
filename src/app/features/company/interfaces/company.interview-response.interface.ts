@@ -1,4 +1,4 @@
-export interface SheduleInterface{
+export interface ScheduleInterface{
 
   applicationId: string;
 
@@ -22,7 +22,7 @@ export interface SheduleInterface{
 
 }
 
-export interface updatefeedbackInterface {
+export interface UpdateFeedbackInterface {
 
   interviewId: string,
 
@@ -45,7 +45,7 @@ export interface FinalizeResultInterface {
 
 }
 
-export interface PanalInterface {
+export interface PanelInterface {
   interviewerId?: string;
   
   interviewerName: string;
@@ -55,7 +55,7 @@ export interface PanalInterface {
   result?: string;
 }
 
-export interface SheduleResponceInterface {
+export interface ScheduleResponseInterface {
   _id: string;
 
   applicationId: string;
@@ -74,7 +74,7 @@ export interface SheduleResponceInterface {
 
   status: string;
 
-  evaluators: PanalInterface[];
+  evaluators: PanelInterface[];
 
   overallFeedback?: string;
 

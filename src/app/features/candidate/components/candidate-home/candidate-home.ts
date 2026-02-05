@@ -3,7 +3,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { CandidateJobsInterface } from '../../interfaces/candidate.joblist.interface';
-import { ComapnyProfileInterface } from '../../interfaces/candidate.companylist.interface';
+import { CompanyProfileInterface } from '../../interfaces/candidate.companylist.interface';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
@@ -18,7 +18,7 @@ import { environment } from '../../../../../env/environment';
 export class CandidateHome implements OnInit {
   private destroy$ = new Subject<void>();
   jobs: CandidateJobsInterface[] = [];
-  companies: ComapnyProfileInterface[] = [];
+  companies: CompanyProfileInterface[] = [];
   isLoading = true;
   baseUrl = environment.cloudinaryBaseUrl
 
@@ -41,7 +41,7 @@ export class CandidateHome implements OnInit {
         next: (res) => {
           this.jobs = res.data?.jobs || [];
           this.companies = res.data?.companies || [];
-          console.log('jobs :',this.jobs, 'comapnyes :',this.companies)
+          console.log('jobs :',this.jobs, 'companies :',this.companies)
           this.isLoading = false;
           this._cdr.detectChanges()
         },

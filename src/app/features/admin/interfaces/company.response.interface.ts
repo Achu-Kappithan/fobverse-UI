@@ -2,12 +2,12 @@
 
 export enum jobType {
   FullTime = 'fulltime',
-  PartTmime = 'parttime',
+  PartTime = 'parttime',
   Remote = 'remote',
   OnSite = 'onsite',
 }
 
-export interface AllJobsAdminResponce {
+export interface AllJobsAdminResponse {
   title: string;
 
   _id: string;

@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { InternalUserInterface } from '../../../interfaces/company.responce.interface';
+import { InternalUserInterface } from '../../../interfaces/company.response.interface';
 import { CompanyService } from '../../../services/company-service';
 import { LoadingSpinner } from '../../../../../common/loading-spinner/loading-spinner';
 import { CommonModule } from '@angular/common';
 import { RoleDisplayPipe } from '../../../../../shared/pipes/role-display-pipe';
-import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/api-response.interface';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { environment } from '../../../../../../env/environment';
@@ -44,7 +44,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   searchTearms = new Subject<string>()
 
   constructor(
-    private readonly _ComapnyService: CompanyService,
+    private readonly _companyService: CompanyService,
     private  _cdr: ChangeDetectorRef,
     private readonly _toast:ToastService,
     private readonly _confirmService: ConfirmService,
@@ -70,10 +70,10 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   fetchAllInternalUsers(){
     this.isLoading = true
-    this._ComapnyService.getInternalUsers(this.QueryParams).subscribe({
+    this._companyService.getInternalUsers(this.QueryParams).subscribe({
       next:(res =>{
         if(res.success){
-          console.log("internal useres :",res.data)
+          console.log("internal users :",res.data)
           this.InternalUsers = res.data
           this.paginationMeta = res.meta ?? this. paginationMeta
         }
@@ -136,7 +136,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     if (!confirmed) return;
 
-    this._ComapnyService.removeUser(id).subscribe({
+    this._companyService.removeUser(id).subscribe({
       next:(res =>{
         if(res.success){
           this._toast.success(res.message)
@@ -145,7 +145,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
       }),
       error:(err =>{
-        console.log("error regregarding removeing user", err)
+        console.log("error regarding removing user", err)
         this._toast.error(err.error.message)
       })
     })

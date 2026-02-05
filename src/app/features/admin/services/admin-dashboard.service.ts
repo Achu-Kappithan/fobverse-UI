@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponce } from '../../../shared/interfaces/apiresponce.interface';
+import { ApiResponse } from '../../../shared/interfaces/api-response.interface';
 import { AdminDashboardStats } from '../interfaces/admin-dashboard.interface';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class AdminDashboardService {
 
   constructor(private http: HttpClient) {}
 
-  getDashboardStats(): Observable<ApiResponce<AdminDashboardStats>> {
-    return this.http.get<ApiResponce<AdminDashboardStats>>(`${this.apiUrl}/dashboard-stats`);
+  getDashboardStats(): Observable<ApiResponse<AdminDashboardStats>> {
+    return this.http.get<ApiResponse<AdminDashboardStats>>(`${this.apiUrl}/dashboard-stats`);
   }
 }

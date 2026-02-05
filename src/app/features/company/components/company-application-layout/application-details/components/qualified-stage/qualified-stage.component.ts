@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { applicationWithProfile } from '../../../../../interfaces/company.responce.interface';
+import { applicationWithProfile } from '../../../../../interfaces/company.response.interface';
 
 @Component({
   selector: 'app-qualified-stage',

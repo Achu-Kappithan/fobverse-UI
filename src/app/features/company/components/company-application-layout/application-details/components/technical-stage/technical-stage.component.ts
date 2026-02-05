@@ -4,10 +4,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
+import { ScheduleResponseInterface } from '../../../../../interfaces/company.interview-response.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
+import { InternalUserInterface } from '../../../../../interfaces/company.response.interface';
 import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -40,7 +40,7 @@ import { ConfirmService } from '../../../../../../../shared/services/confirm/con
   ],
 })
 export class TechnicalStageComponent implements OnInit {
-  interview: SheduleResponceInterface | null = null;
+  interview: ScheduleResponseInterface | null = null;
   @Input() applicationId: string | null = null;
   @Input() candidateId: string | null = null;
   @Input() userEmail: string | undefined = undefined;

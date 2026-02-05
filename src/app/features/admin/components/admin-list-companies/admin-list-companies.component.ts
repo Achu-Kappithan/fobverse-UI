@@ -5,20 +5,21 @@ import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinn
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
-import { ComapnyProfileInterface } from '../../../company/interfaces/company.responce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/api-response.interface';
+import { CompanyProfileInterface } from '../../../company/interfaces/company.response.interface';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
 import { ConfirmService } from '../../../../shared/services/confirm/confirm.service';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 
 @Component({
-  selector: 'app-admin-listcompanys',
+  selector: 'app-admin-list-companies',
   imports: [CommonModule,LoadingSpinner,FormsModule,RouterModule],
-  templateUrl: './admin-listcompanys.html',
-  styleUrl: './admin-listcompanys.css',
+  templateUrl: './admin-list-companies.component.html',
+  styleUrl: './admin-list-companies.component.css',
 })
-export class AdminListcompanys implements OnInit {
-  companies: ComapnyProfileInterface[] = [];
+export class AdminListCompaniesComponent implements OnInit {
+  companies: CompanyProfileInterface[] = [];
   isLoading: boolean = false;
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
@@ -41,7 +42,8 @@ export class AdminListcompanys implements OnInit {
     private readonly _companyService: AdminCompanyService,
     private _cdr: ChangeDetectorRef,
     private readonly _toast: ToastService,
-    private readonly _confirmService: ConfirmService
+    private readonly _confirmService: ConfirmService,
+    private readonly _logger: LoggerService
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class AdminListcompanys implements OnInit {
     })
   }
 
-  async UpdateStatus(company: ComapnyProfileInterface): Promise<void> {
+  async UpdateStatus(company: CompanyProfileInterface): Promise<void> {
     const isConfirmed = await this._confirmService.confirm({
       title: company.isActive ? 'Block Company' : 'Unblock Company',
       message: `Are you sure you want to ${company.isActive ? 'block' : 'unblock'} ${company.name}?`,
@@ -68,20 +70,20 @@ export class AdminListcompanys implements OnInit {
 
     if (!isConfirmed) return;
 
-    console.log('updatestaus', company);
+    this._logger.debug('updatestaus', company);
     this._companyService.updateStatus(company._id).subscribe({
       next: (res) => {
         if (res.success) {
           company.isActive = !company.isActive;
           this._cdr.detectChanges();
           this._toast.success(res.message);
-          console.log('status update responce ', res);
+          this._logger.info('status update response ', res);
         } else {
-          console.log('error regading updating status', res);
+          this._logger.warn('error regarding updating status', res);
         }
       },
       error: (err) => {
-        console.log('staus updation faild ', err);
+        this._logger.error('status updation failed ', err);
         this._toast.error(err.error.message);
       },
     });
@@ -91,13 +93,13 @@ export class AdminListcompanys implements OnInit {
     this.isLoading = true;
       this._companyService.getAllCompanies(this.currentQueryParms).subscribe({
         next: (response) => {
-          console.log("all company responce",response)
+          this._logger.debug("all company response",response)
           if (response && response.success) {
             this.companies = response.data ?? [];
             this.paginationMeta = response.meta ?? this.paginationMeta
-            console.log('assigneddata', this.companies, " meta :  ",this.paginationMeta);
+            this._logger.debug('assigneddata', this.companies, " meta :  ",this.paginationMeta);
           } else {
-            console.error(
+            this._logger.error(
               'Failed to fetch companies or data is unsuccessful:',
               response
             );
@@ -107,7 +109,7 @@ export class AdminListcompanys implements OnInit {
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Error fetching companies:', err);
+          this._logger.error('Error fetching companies:', err);
           this.companies = [];
           this.isLoading = false;
           this._cdr.detectChanges();
