@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
@@ -22,6 +23,7 @@ export class JobEditing implements OnInit , OnDestroy {
   jobDetails: JobsInterface | null = null;
   jobEditForm!: FormGroup;
   loading: boolean = false;
+  private readonly _logger = inject(LoggerService);
 
   minDate: string = '';
   locationPattern = /^[A-Za-z\s]+$/;
@@ -77,7 +79,7 @@ export class JobEditing implements OnInit , OnDestroy {
           }
         },
         error: (err) => {
-          console.error("error getting job details for editing:", err);
+          this._logger.error("Error getting job details for editing:", err);
           this._toast.error(err.error.message);
           this._router.navigate(['./'],{relativeTo:this._route})
         }
@@ -212,10 +214,10 @@ export class JobEditing implements OnInit , OnDestroy {
   }
 
   updateChanges() {
-    console.log("works")
+    this._logger.log("Update changes triggered");
     if (this.jobEditForm.valid) {
       this.loading = true;
-      console.log("form valid  redy to update")
+      this._logger.log("Form is valid, ready to update");
       const formData = this.jobEditForm.value;
       this._companyService.updateJobDetails(this.jobId!,formData)
       .subscribe({
@@ -228,7 +230,7 @@ export class JobEditing implements OnInit , OnDestroy {
           this.loading = false;
         }),
         error:(err =>{
-          console.log("error for updating jobDetails",err)
+          this._logger.error("Error for updating jobDetails", err);
           this._toast.error(err.error.message)
           this.loading = false;
         })
@@ -236,7 +238,7 @@ export class JobEditing implements OnInit , OnDestroy {
     } else {
       this.jobEditForm.markAllAsTouched(); 
       this._toast.error('Validation Error: Please fill out all required fields and correct any errors.');
-      console.log('Form is invalid:', this.jobEditForm.value);
+      this._logger.warn('Form is invalid:', this.jobEditForm.value);
     }
   }
 

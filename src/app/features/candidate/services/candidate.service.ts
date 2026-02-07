@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { Observable } from 'rxjs';
 import { CandidateInterface } from '../interfaces/candidate.interface';
 import { ApiResponse, PaginatedResponse, PlainResponse } from '../../../shared/interfaces/api-response.interface';
@@ -15,6 +16,7 @@ import { ApplicationQueryParams, CandidateApplication, DetailedApplicationRespon
 })
 export class CandidateService {
 
+  private readonly _logger = inject(LoggerService);
   constructor(private readonly _http: HttpClient){}
 
   GetPorfile():Observable<ApiResponse<CandidateInterface>>{
@@ -70,7 +72,7 @@ export class CandidateService {
   }
 
   applayJob(id:string,data:jobApplicationDto):Observable<PlainResponse>{
-    console.log(data)
+    this._logger.log('Applying for job:', data);
     return this._http.post<PlainResponse>(`/api/applications/applyjob?id=${id}`,data)
   }
 

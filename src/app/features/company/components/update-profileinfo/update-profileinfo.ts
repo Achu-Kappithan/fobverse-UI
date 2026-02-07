@@ -1,5 +1,6 @@
 import { CommonModule} from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactInfoItem, CompanyProfileInterface } from '../../interfaces/company.response.interface';
@@ -29,6 +30,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
   private loadingToastId: number | null = null;
 
   private destroy$ = new Subject<void>()
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private  fb: FormBuilder,
@@ -45,7 +47,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       this._companyService.companyProfile$.subscribe((val)=>{
         if (val) {
         this.profileData = val;
-        console.log("state Profiledata", this.profileData);
+        this._logger.log("Profile data loaded", { name: this.profileData?.name });
         this.populateForm();
         this._cdr.detectChanges()   
       }
@@ -110,7 +112,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     if (match && match[1]) {
       return match[1];
     }
-    console.warn('Could not extract publicId from URL:', url);
+    this._logger.warn('Could not extract publicId from URL:', url);
     return null;
   }
 
@@ -260,7 +262,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
             )
           ),
           catchError(error => {
-            console.error('Logo upload failed:', error);
+            this._logger.error('Logo upload failed:', error);
             this._toast.error('Failed to upload company logo.');
             return of(null); 
           })
@@ -285,7 +287,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
             )
           ),
           catchError(error => {
-            console.error(`Gallery image ${index} upload failed:`, error);
+            this._logger.error(`Gallery image ${index} upload failed:`, error);
             this._toast.error(`Failed to upload gallery image ${index + 1}.`);
             return of(null);
           })
@@ -348,7 +350,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       }
 
     } catch (error: any) {
-      console.error("Profile update failed:", error);
+      this._logger.error("Profile update failed:", error);
       this._toast.error(error.error?.message || 'An unexpected error occurred during profile update.');
     } finally {
       this.isSaving = false;

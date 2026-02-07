@@ -5,6 +5,8 @@ import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
 import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-email-verification',
@@ -21,14 +23,15 @@ export class EmailVerification implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: AuthService,
-    private _toast: ToastService
+    private _toast: ToastService,
+    private _logger: LoggerService
   ) {}
 
   ngOnInit(): void {
     this.verificationSubscription = this._route.queryParams
       .pipe(
         tap((params) =>
-          console.log('token get from the params ', params['token'])
+          this._logger.log('token get from the params ', params['token'])
         ),
         switchMap((params) => {
           const token = params['token'];
@@ -48,7 +51,7 @@ export class EmailVerification implements OnInit {
           } else {
             return this._userService.candidateVerification(token).pipe(
               tap((response) =>
-                console.log('Component: Raw API response:', response)
+                this._logger.log('Component: Raw API response:', response)
               ),
               catchError((error) => {
                 let errorMessage =
@@ -105,20 +108,20 @@ export class EmailVerification implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log(response);
+          this._logger.log('Verification result:', response);
           if (response.success) {
             this._toast.success('Email verified successfully!');
-            this._router.navigate(['/email/success']);
+            this._router.navigate([`/${APP_ROUTES.EMAIL_SUCCESS}`]);
           } else {
             this._toast.error(response.message!);
             const reasonForRoute = 'api_generic_failure';
-            this._router.navigate(['/email/failed'], {
+            this._router.navigate([`/${APP_ROUTES.EMAIL_FAILED}`], {
               queryParams: { reason: reasonForRoute },
             });
           }
         },
         error: (error) => {
-          console.log(error);
+          this._logger.error('Verification subscription error:', error);
         },
       });
   }

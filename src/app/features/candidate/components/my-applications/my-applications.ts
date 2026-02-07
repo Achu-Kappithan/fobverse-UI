@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +24,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   totalItems = 0;
   itemsPerPage = 6;
   baseUrl = environment.cloudinaryBaseUrl
+  private readonly _logger = inject(LoggerService);
 
   searchControl = new FormControl('');
   stageControl = new FormControl('');
@@ -89,7 +91,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: PaginatedApiResponse<CandidateApplication[]>) => {
-          console.log('My Applications Response:', response);
+          this._logger.log('My Applications loaded', { count: response.data?.length });
           this.applications = response.data;
           this.currentPage = response.meta?.currentPage || 1;
           this.totalPages = response.meta?.totalPages || 0;
@@ -99,7 +101,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
           this._cdr.detectChanges()
         },
         error: (error) => {
-          console.error('Error loading applications:', error);
+          this._logger.error('Error loading applications:', error);
           this.loading = false;
           this.applications = [];
           this._cdr.detectChanges()

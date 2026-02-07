@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from '../services/logger/logger.service';
 import { ApiResponse } from '../interfaces/api-response.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinary-signature.response.interface';
 import { Observable, tap } from 'rxjs';
@@ -12,12 +13,13 @@ export class CloudinaryService {
   constructor(
     private readonly _http:HttpClient
   ){}
+  private readonly _logger = inject(LoggerService);
   
     getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponse<CloudinarySignatureResponse>> {
       return this._http.post<ApiResponse<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params)
       .pipe(
         tap(res=>[
-          console.log("response get get cludinarySignature",res)
+          this._logger.log("Cloudinary signature fetched",res)
         ])
       )
     }
@@ -29,7 +31,7 @@ export class CloudinaryService {
       folder:string,
       publicIdBase:string
     ):Observable<any>{
-      console.log("data to upload cloud",file,signatureData,folder,publicIdBase)
+      this._logger.log("Cloudinary upload data", { folder, publicIdBase });
         const formData = new FormData()
         formData.append('file', file); 
         formData.append('api_key', signatureData.apiKey);
@@ -40,7 +42,7 @@ export class CloudinaryService {
         const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${signatureData.cloudName}/image/upload`
         return this._http.post(cloudinaryUploadUrl,formData).pipe(
         tap(res=>{
-          console.log("get response upload file cludinary",res)
+          this._logger.log("Cloudinary upload response",res)
         })
         )
     }

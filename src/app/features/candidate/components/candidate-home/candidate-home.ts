@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
@@ -21,6 +22,7 @@ export class CandidateHome implements OnInit {
   companies: CompanyProfileInterface[] = [];
   isLoading = true;
   baseUrl = environment.cloudinaryBaseUrl
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private _authService: AuthService,
@@ -41,12 +43,12 @@ export class CandidateHome implements OnInit {
         next: (res) => {
           this.jobs = res.data?.jobs || [];
           this.companies = res.data?.companies || [];
-          console.log('jobs :',this.jobs, 'companies :',this.companies)
+          this._logger.log('Home data loaded', { jobs: this.jobs.length, companies: this.companies.length });
           this.isLoading = false;
           this._cdr.detectChanges()
         },
         error: (err) => {
-          console.error('Error fetching home data:', err);
+           this._logger.error('Error fetching home data:', err);
           this.isLoading = false;
           this._cdr.detectChanges()
         }

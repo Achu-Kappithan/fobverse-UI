@@ -1,5 +1,6 @@
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { PaginationMeta } from '../../../../shared/interfaces/api-response.interface';
@@ -22,6 +23,7 @@ import { UserPartial } from '../../../../shared/interfaces/api-response.interfac
 export class CandidateJoblist  implements OnInit, OnDestroy {
   baseUrl:string = environment.cloudinaryBaseUrl
   listView:boolean = false
+  private readonly _logger = inject(LoggerService);
   isLoading:boolean = false
   isApplyModalOpen: boolean = false;
   selectedJob: CandidateJobsInterface | null = null;
@@ -113,7 +115,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
     this._candidateService.getAlljobs(this.QueryParms)
     .subscribe({
         next:(res =>{
-        console.log("response for getting all jobs",res)
+        this._logger.log("Fetched jobs:", res.data?.length);
         if(res.success){
           this.jobList = res.data
 
@@ -123,7 +125,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
         }
       }),
       error:(err)=>{
-        console.log('error for geting Alljobs: ',err)
+        this._logger.error('Error fetching jobs:', err);
         this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()
@@ -133,7 +135,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
 
   onSearchInput(event:Event){
     const term = (event.target as HTMLInputElement).value
-    console.log(term)
+    this._logger.log('Search term changed:', term);
     this.searchValue.next(term)
   }
 

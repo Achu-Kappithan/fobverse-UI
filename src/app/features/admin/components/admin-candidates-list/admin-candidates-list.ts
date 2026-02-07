@@ -10,6 +10,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ConfirmService } from '../../../../shared/services/confirm/confirm.service';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 
 @Component({
   selector: 'app-admin-candidates-list',
@@ -43,7 +44,8 @@ export class AdminCandidatesList  implements OnInit {
     private readonly _cdr :ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
     private readonly _toast:ToastService,
-    private readonly _confirmService: ConfirmService
+    private readonly _confirmService: ConfirmService,
+    private readonly _logger: LoggerService
   ) {}
 
   ngOnInit(): void {
@@ -97,16 +99,16 @@ export class AdminCandidatesList  implements OnInit {
           if(response.success && response.data){
             this.candidates = response.data ?? []
             this.paginationMeta = response.meta ?? this.paginationMeta
-            console.log("response data",response.data, " response meta: ",response.meta)
+            this._logger.log('Candidates fetched successfully');
           }else{
-            console.log("failed to get response",response)
+            this._logger.warn("failed to get response",response);
             this.candidates = []
           }
           this.isLoading = false
           this._cdr.detectChanges()
         },
         error:(err)=>{
-          console.log("error  while fetching the candiate list",err)
+          this._logger.error("error  while fetching the candiate list",err);
           this.candidates = []
           this.isLoading = false
           this._cdr.detectChanges()

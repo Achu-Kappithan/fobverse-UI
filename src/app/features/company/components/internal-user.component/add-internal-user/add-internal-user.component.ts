@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import {
   AbstractControl,
   FormControl,
@@ -23,6 +24,7 @@ export class AddInternalUserComponent implements OnInit {
 createUserForm!: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private readonly _companyService: CompanyService,
@@ -75,11 +77,11 @@ createUserForm!: FormGroup;
       return;
     }
     const {confirmPassword,...data }= this.createUserForm.value
-    console.log("form subminted data",data)
+    this._logger.log("Form submitted data", data);
     this._companyService.createUser(data).subscribe({
       next:(res =>{
         if(res.success){
-          console.log("updated response",res.data)
+          this._logger.log("User created successfully", res.data);
           this._toast.success(res.message!)
           this.createUserForm.reset()
           this._router.navigate(['../'], { relativeTo: this._route });       
@@ -87,7 +89,7 @@ createUserForm!: FormGroup;
       }),
       error: (err =>{
         this._toast.error(err.error.message)
-        console.log("error while updating the user",err)
+        this._logger.error("error while updating the user",err)
       })
     })
 

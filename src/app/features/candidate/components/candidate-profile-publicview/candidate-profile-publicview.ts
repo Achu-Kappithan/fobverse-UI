@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CandidateInterface } from '../../interfaces/candidate.interface';
 import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
@@ -23,6 +24,7 @@ export class CandidateProfilePublicview implements OnInit {
   pdfSrc: SafeResourceUrl | null = null;
   cludBaseUrl = environment.cloudinaryBaseUrl
   cludUrl:string = environment.cloudinaryUrl
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private readonly _candidateService:CandidateService,
@@ -36,7 +38,7 @@ export class CandidateProfilePublicview implements OnInit {
   ngOnInit(): void {
     this._route.queryParams.subscribe((val)=>{
       this.profileId = val['id']
-      console.log("profile id",this.profileId)
+      this._logger.log("profile id",this.profileId)
       if(this.profileId){
         this.fetchProfile()
       }
@@ -69,7 +71,7 @@ export class CandidateProfilePublicview implements OnInit {
         }
       }),
       error:(err =>{
-        console.log("error regading fetch candidate profiel public view",err)
+        this._logger.error("error regading fetch candidate profiel public view",err)
         this._toast.error(err.error.message)
         this.isLoading= false
         this._cdr.detectChanges()

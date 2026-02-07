@@ -3,10 +3,12 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
 } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import {
   CandidateJobsInterface,
 } from '../../interfaces/candidate.joblist.interface';
@@ -48,6 +50,7 @@ export class CandidateApplyjob implements OnInit {
   selectedFileName: string = '';
   selectedFile: File | null = null;
   isSubmitting: boolean = false;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private fb: FormBuilder,
@@ -171,7 +174,7 @@ export class CandidateApplyjob implements OnInit {
   handleSubmit() {
     if (this.jobApplayForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      console.log('Form is valid and ready for submission.');
+      this._logger.log('Form is valid and ready for submission.');
       const { resume, useExistingResume, ...data } = this.jobApplayForm.value;
       data.jobId = this.uniqueIdentifier;
       let uploadObservable: Observable<any>; 
@@ -201,7 +204,7 @@ export class CandidateApplyjob implements OnInit {
             })
           );
       } else {
-        console.error('No resume selected and "use existing" not checked.');
+        this._logger.error('No resume selected and "use existing" not checked.');
         this._toast.error('Please upload a resume or select "Use resume from my profile".');
         this.isSubmitting = false;
         this._cdr.detectChanges()
@@ -215,7 +218,7 @@ export class CandidateApplyjob implements OnInit {
               cloudinaryUploadResult.secure_url
             );
           }
-          console.log("data for submission", data);
+          this._logger.log("Form data for submission:", data);
           this._candidateService.applayJob(this.jobDetails?.companyId?._id!, data).subscribe({
             next: (res) => {
               this.isSubmitting = false;
@@ -227,7 +230,7 @@ export class CandidateApplyjob implements OnInit {
             error: (err) => {
               this.isSubmitting = false;
               this._cdr.detectChanges()
-              console.error('Error updating profile in backend:', err);
+              this._logger.error('Error applying for job:', err);
               this._toast.error(
                 err.error?.message || 'Failed to apply for this role.'
               );
@@ -237,12 +240,12 @@ export class CandidateApplyjob implements OnInit {
         error: (err) => {
           this.isSubmitting = false;
           this._cdr.detectChanges()
-          console.error('Error during Cloudinary upload or signature:', err);
+          this._logger.error('Error during Cloudinary upload or signature:', err);
           this._toast.error('Failed to upload resume.');
         },
       });
     } else if (!this.isSubmitting) {
-      console.log('Form is invalid. Please correct the errors.');
+      this._logger.warn('Form is invalid. Please correct the errors.');
       this.jobApplayForm.markAllAsTouched();
     }
   }

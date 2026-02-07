@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
+  inject,
   OnInit,
 } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth.service';
@@ -12,6 +13,7 @@ import { environment } from '../../../env/environment';
 import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
+import { LoggerService } from '../../shared/services/logger/logger.service';
 
 @Component({
   selector: 'app-company-header',
@@ -25,6 +27,7 @@ export class CompanyHeader implements OnInit {
   cloudinaryBaseUrl = environment.cloudinaryBaseUrl
   userPorfile: string | null = null
   activeUser:UserPartial | null = null
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private readonly _authService: AuthService,
@@ -41,16 +44,16 @@ export class CompanyHeader implements OnInit {
 
     this._authService.company$.subscribe({
       next: (comp) => {
-        console.log('active user', comp);
+        this._logger.log('active company user in header', comp);
         this.activeUser = comp
         this.userPorfile = this.cloudinaryBaseUrl+comp?.profileImg!;
-        console.log("userprofile",this.userPorfile)
+        this._logger.log("userprofile image path",this.userPorfile)
         this._cdr.detectChanges();
       },
     });
     this._CompanyService.companyProfile$.subscribe({
       next: (data) => {
-        console.log('active company profile', data);
+        this._logger.log('active company profile data in header', data);
       },
     });
   }

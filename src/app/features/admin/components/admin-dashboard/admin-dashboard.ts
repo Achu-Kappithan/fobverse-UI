@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { AdminDashboardService } from '../../services/admin-dashboard.service';
 import { AdminDashboardStats } from '../../interfaces/admin-dashboard.interface';
@@ -16,6 +17,7 @@ export class AdminDashboard implements OnInit {
   stats: AdminDashboardStats | null = null;
   loading = true;
   error: string | null = null;
+  private readonly _logger = inject(LoggerService);
   currentDate = new Date();
   baseUrl: string  = environment.cloudinaryBaseUrl
 
@@ -33,7 +35,7 @@ export class AdminDashboard implements OnInit {
     this.loading = true;
     this._dashboardService.getDashboardStats().subscribe({
       next: (response) => {
-        console.log(response)
+        this._logger.log('Dashboard stats fetched');
         this.stats = response.data;
         this.loading = false;
         this._cdr.detectChanges()
@@ -42,7 +44,7 @@ export class AdminDashboard implements OnInit {
         this.error = 'Failed to load dashboard statistics';
         this.loading = false;
         this._cdr.detectChanges()
-        console.error(err);
+        this._logger.error('Failed to load dashboard statistics:', err);
       },
     });
   }

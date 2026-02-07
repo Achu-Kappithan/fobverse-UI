@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CandidateService } from '../../services/candidate.service';
@@ -17,6 +18,7 @@ export class CandidateSettings implements OnInit {
   passwordChangeForm!: FormGroup;
   isLoading = false;
   private loadingToastId: number | null = null;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private fb: FormBuilder,
@@ -69,7 +71,7 @@ export class CandidateSettings implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error changing password:", err);
+        this._logger.error("Error changing password:", err);
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.error(err.error?.message || 'Failed to change password. Please check your current password.');
         this.isLoading = false;

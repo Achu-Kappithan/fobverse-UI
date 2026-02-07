@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../../services/company-service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
@@ -39,6 +40,7 @@ export class CompanyJobapplications implements OnInit {
   currentJobdetails: JobsInterface | null = null
 
   searchTearms = new Subject<string>();
+  private readonly _logger = inject(LoggerService);
   private _subscription: Subscription = new Subscription();
 
   constructor(
@@ -74,7 +76,7 @@ export class CompanyJobapplications implements OnInit {
     const saved = localStorage.getItem('jobDetails');
     this.currentJobdetails = saved ? JSON.parse(saved) : null;
     }
-    console.log('loaded job details',this.currentJobdetails)
+    this._logger.log('loaded job details',this.currentJobdetails);
 
 
     this._route.paramMap.subscribe((parms) => {
@@ -130,7 +132,7 @@ export class CompanyJobapplications implements OnInit {
         if (res.success && res.data) {
           this.ApplicationList = res.data;
           this.paginationMeta = res.meta ? res.meta : this.paginationMeta;
-          console.log(
+          this._logger.log(
             'response get from the backed for applications',
             this.ApplicationList
           );
@@ -139,7 +141,7 @@ export class CompanyJobapplications implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading ger application ', err);
+        this._logger.error('error regading ger application ', err);
         this._toast.error(err.error.message);
         this.isLoading = false;
         this._cdr.detectChanges();
@@ -150,7 +152,7 @@ export class CompanyJobapplications implements OnInit {
   submitNewScore() {
     if (this.atsForm.valid) {
       const value = { ...this.atsForm.value, jobId: this.jobId };
-      console.log(value);
+      this._logger.log(value);
       this._CompanySevice.updateNewScore(value).subscribe({
         next: (res) => {
           if (res.success) {
@@ -162,13 +164,13 @@ export class CompanyJobapplications implements OnInit {
           }
         },
         error: (err) => {
-          console.log('error regading the update new score', err);
+          this._logger.error('error regading the update new score', err);
           this._toast.error(err.error.message);
         },
       });
     } else {
       this.atsForm.markAllAsTouched;
-      console.log('form is invalid');
+      this._logger.warn('form is invalid');
     }
   }
 

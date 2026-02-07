@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.response.interface';
@@ -21,6 +22,7 @@ export class JobView implements OnInit,OnDestroy{
   jobId :string| null = null
   jobDetails:JobsInterface | null = null
   responsibility:string[] = [] 
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private readonly _route:ActivatedRoute,
@@ -41,7 +43,7 @@ export class JobView implements OnInit,OnDestroy{
     if(this.jobId){
       this._companyService.getJobDetails(this.jobId).subscribe({
         next:(res =>{
-          console.log('response for getJobDetails: ',res)
+          this._logger.log('Fetched job details successfully');
           if(res.success){
             this.jobDetails = res.data
             this.responsibility = res.data.responsibility.split('\n')
@@ -50,7 +52,7 @@ export class JobView implements OnInit,OnDestroy{
           }
         }),
         error:(err =>{
-          console.log("error for gettingJobDetails",err)
+          this._logger.error("Error fetching job details", err)
           this._toast.error(err.error.message)
           this.isLoading = false
           this._cdr.detectChanges()
@@ -58,7 +60,7 @@ export class JobView implements OnInit,OnDestroy{
       })
     }else{
       this._toast.error('Current jobReference is Missing')
-      console.log("jobId is empty")
+      this._logger.warn("jobId is empty")
       this.isLoading= false
       this._cdr.detectChanges()
     }

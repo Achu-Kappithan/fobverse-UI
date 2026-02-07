@@ -2,10 +2,12 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { combineLatest, filter, map, switchMap, take } from 'rxjs';
+import { LoggerService } from '../../services/logger/logger.service';
 
 export const isLogoutGuard: CanActivateFn = (route, state) => {
   const _authService = inject(AuthService);
   const router = inject(Router);
+  const _logger = inject(LoggerService);
 
   return _authService.isUserLoaded.pipe(
     filter((loaded) => loaded === true),
@@ -19,10 +21,10 @@ export const isLogoutGuard: CanActivateFn = (route, state) => {
         take(1),
         map(([adminUser, companyUser, candidateUser]) => {
           const isLoggedIn = !!adminUser || !!companyUser || !!candidateUser;
-          console.log('isLoggdIn (after load check):', isLoggedIn);
+          _logger.log('isLoggdIn (after load check):', isLoggedIn);
 
           if (isLoggedIn) {
-            console.log(
+            _logger.log(
               'isLoggedOutOnlyGuard: User already logged in. Redirecting.'
             );
             if (adminUser) {
@@ -34,7 +36,7 @@ export const isLogoutGuard: CanActivateFn = (route, state) => {
             }
             return router.createUrlTree(['/']);
           } else {
-            console.log(
+            _logger.log(
               'isLoggedOutOnlyGuard: Not logged in. Allowing access.'
             );
             return true;

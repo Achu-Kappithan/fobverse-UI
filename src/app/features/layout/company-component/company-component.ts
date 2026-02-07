@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component} from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { CompanyHeader } from '../../../common/company-header/company-header';
 import { CompanySidebar } from '../../../common/company-sidebar/company-sidebar';
 import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-sidebar';
@@ -14,6 +16,7 @@ import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-si
 export class CompanyComponent {
   isSidebarOpen: boolean = false;
   isVideoCall: boolean = false;
+  private readonly _logger = inject(LoggerService);
 
   constructor(private router: Router) {
     this.router.events.subscribe(() => {
@@ -31,7 +34,7 @@ export class CompanyComponent {
 
 
   handleSidebarStateChange(isOpen: boolean) {
-    console.log('Sidebar state changed to:', isOpen); 
+    this._logger.log('Sidebar state changed to:', isOpen); 
     this.isSidebarOpen = isOpen;
   }
 }

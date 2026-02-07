@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CandidateInterface } from '../../interfaces/candidate.interface';
 import { CandidateService } from '../../services/candidate.service';
 import { CommonModule } from '@angular/common';
@@ -29,6 +30,7 @@ export class CandidateProfile implements OnInit {
   isLoading: boolean = false;
   OpenedModal: string | null = null;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private readonly _candidateService: CandidateService,
@@ -56,7 +58,7 @@ export class CandidateProfile implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading candidate profile fetching', err);
+        this._logger.error('error regading candidate profile fetching', err);
         this.isLoading = false;
         this._cdr.detectChanges();
       },
@@ -133,7 +135,7 @@ export class CandidateProfile implements OnInit {
                 this._cdr.detectChanges();
               },
               error: (err) => {
-                console.error('Error updating resume URL in backend:', err);
+                this._logger.error('Error updating resume URL in backend:', err);
                 this._toast.error(
                   err.error?.message || 'Failed to update resume.'
                 );
@@ -144,7 +146,7 @@ export class CandidateProfile implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Error during Cloudinary upload:', err);
+          this._logger.error('Error during Cloudinary upload:', err);
           this._toast.error('Failed to upload resume file.');
           this.isLoading = false;
           this._cdr.detectChanges();
@@ -177,7 +179,7 @@ export class CandidateProfile implements OnInit {
       this.selectedFileName = file.name;
       this.selectedFile = file;
       const fileURL = URL.createObjectURL(file);
-      console.log(fileURL);
+      this._logger.log('Selected file URL:', fileURL);
       this.pdfSrc = this._sanitizer.bypassSecurityTrustResourceUrl(fileURL);
     }
   }

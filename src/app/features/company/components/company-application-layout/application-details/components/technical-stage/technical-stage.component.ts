@@ -3,7 +3,9 @@ import {
   Component,
   Input,
   OnInit,
+  inject
 } from '@angular/core';
+import { LoggerService } from '../../../../../../../shared/services/logger/logger.service';
 import { ScheduleResponseInterface } from '../../../../../interfaces/company.interview-response.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -46,6 +48,7 @@ export class TechnicalStageComponent implements OnInit {
   @Input() userEmail: string | undefined = undefined;
 
   currentUserId: string | null = null;
+  private readonly _logger = inject(LoggerService);
 
   technicalSheduleModalOpen: boolean = false;
   feedbackModalOpen: boolean = false;
@@ -116,15 +119,13 @@ export class TechnicalStageComponent implements OnInit {
         next: (res) => {
           if (res.success) {
               this.interview = res.data;
-              console.log('Interview data:', this.interview);
-              console.log('Evaluators array:', this.interview?.evaluators);
-              console.log('Number of evaluators:', this.interview?.evaluators?.length);
+              this._logger.log('Interview evaluators fetched');
               this.isLoading = false;
               this._cdr.detectChanges();
           }
         },
         error: (err) => {
-          console.log('error regading fetch stage details', err);
+          this._logger.error('error regading fetch stage details', err);
           this.isLoading = false;
           this._cdr.detectChanges();
         },
@@ -220,7 +221,7 @@ export class TechnicalStageComponent implements OnInit {
       },
       error: (err) => {
         this.isSaving = false;
-        console.log('error updating feedback', err);
+        this._logger.error('error updating feedback', err);
         this._toast.error(err.error?.message || 'Failed to update feedback');
         this._cdr.detectChanges();
       }
@@ -256,7 +257,7 @@ export class TechnicalStageComponent implements OnInit {
       },
       error: (err) => {
         this.isSaving = false;
-        console.log('error finalizing result', err);
+        this._logger.error('error finalizing result', err);
         this._toast.error(err.error?.message || 'Failed to finalize result');
         this._cdr.detectChanges();
       }
@@ -285,7 +286,7 @@ export class TechnicalStageComponent implements OnInit {
         })
         .filter(id => id !== ''); 
       
-      console.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
+      this._logger.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
       
       this.technicalScheduleForm.patchValue({
         scheduledDate: this.interview.scheduledDate,
@@ -302,7 +303,7 @@ export class TechnicalStageComponent implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.log('error fetching HR list', err);
+        this._logger.error('error fetching HR list', err);
       },
     });
   }
@@ -318,7 +319,7 @@ export class TechnicalStageComponent implements OnInit {
     const selectedInterviewerIds = data.interviewers;
     const validInterviewerIds = selectedInterviewerIds.filter((id: any) => typeof id === 'string' && id.trim() !== '');
     if (validInterviewerIds.length !== selectedInterviewerIds.length) {
-      console.warn('Found invalid interviewer IDs (filtered out):', 
+      this._logger.warn('Found invalid interviewer IDs (filtered out):', 
         selectedInterviewerIds.filter((id: any) => typeof id !== 'string' || id.trim() === '')
       );
     }
@@ -356,7 +357,7 @@ export class TechnicalStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading shedule interview ', err);
+        this._logger.error('error regading shedule interview ', err);
         this._toast.error(err.error.message);
       },
     });
@@ -394,7 +395,7 @@ export class TechnicalStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading cancel interview');
+        this._logger.error('error regading cancel interview');
         this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
@@ -423,9 +424,9 @@ export class TechnicalStageComponent implements OnInit {
   canJoinInterview(): boolean {
     if (!this.interview) return false;
     const currentUserId = this.getCurrentUserId();
-    console.log('current user id ',currentUserId)
-    console.log('scheduled by ',this.interview.scheduledBy)
-    console.log('scheduled by ',this.interview.scheduledBy === currentUserId)
+    this._logger.log('current user id ',currentUserId);
+    this._logger.log('scheduled by ',this.interview.scheduledBy);
+    this._logger.log('scheduled by matching',this.interview.scheduledBy === currentUserId);
     if (this.interview.scheduledBy === currentUserId) {
       return true;
     }
@@ -442,7 +443,7 @@ export class TechnicalStageComponent implements OnInit {
   }
 
   onJoinInterview() {
-    console.log('Joining interview...');
+    this._logger.log('Joining interview...');
     if (this.interview?.meetingLink) {
       const roomId = this.interview.meetingLink.split('/').pop();
       if (roomId) {

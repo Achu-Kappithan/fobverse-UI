@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company-service';
 import { CompanyDashboardData } from '../../interfaces/company.response.interface';
@@ -19,6 +20,7 @@ export class CompanyHome implements OnInit, OnDestroy {
   error: string | null = null;
   private _destroy$ = new Subject<void>();
   baseUrl = environment.cloudinaryBaseUrl
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private _companyService: CompanyService,
@@ -35,7 +37,7 @@ export class CompanyHome implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroy$))
       .subscribe({
         next: (response) => {
-          console.log('dahshbord res',response)
+          this._logger.log('Dashboard data loaded');
           if (response.success && response.data) {
             this.dashboardData = response.data;
           } else {
@@ -45,7 +47,7 @@ export class CompanyHome implements OnInit, OnDestroy {
           this._cdr.detectChanges()
         },
         error: (err) => {
-          console.error('Error loading dashboard:', err);
+          this._logger.error('Error loading dashboard:', err);
           this.error = 'An error occurred while fetching dashboard data';
           this.isLoading = false;
           this._cdr.detectChanges()

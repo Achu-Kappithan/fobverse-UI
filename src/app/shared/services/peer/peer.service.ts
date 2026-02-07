@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from '../logger/logger.service';
 import Peer, { MediaConnection } from 'peerjs';
 import { BehaviorSubject, Subject } from 'rxjs';
 
@@ -21,6 +22,7 @@ export class PeerService {
   public connectionErrorSubject = new Subject<Error>();
 
   constructor() {}
+  private readonly _logger = inject(LoggerService);
 
   /**
    * Initialize peer with user ID
@@ -64,28 +66,28 @@ export class PeerService {
         });
 
         this.peer.on('open', (id) => {
-          console.log('[Peer] Peer initialized with ID:', id);
+          this._logger.log('[Peer] Peer initialized with ID:', id);
           this.peerIdSubject.next(id);
           resolve(id);
         });
 
         this.peer.on('call', (call) => {
-          console.log('[Peer] Incoming call from:', call.peer);
+          this._logger.log('[Peer] Incoming call from:', call.peer);
           this.incomingCallSubject.next(call);
         });
 
         this.peer.on('error', (error) => {
-          console.error('[Peer] Error:', error);
+          this._logger.error('[Peer] Error:', error);
           this.connectionErrorSubject.next(error);
           reject(error);
         });
 
         this.peer.on('disconnected', () => {
-          console.log('[Peer] Disconnected');
+          this._logger.log('[Peer] Disconnected');
         });
 
       } catch (error) {
-        console.error('[Peer] Failed to initialize:', error);
+        this._logger.error('[Peer] Failed to initialize:', error);
         reject(error);
       }
     });
@@ -108,32 +110,32 @@ export class PeerService {
         return;
       }
 
-      console.log('[Peer] Calling peer:', remotePeerId);
+      this._logger.log('[Peer] Calling peer:', remotePeerId);
       const call = this.peer.call(remotePeerId, stream);
       
       // Set timeout for connection (30 seconds)
       const timeout = setTimeout(() => {
-        console.error('[Peer] Connection timeout for:', remotePeerId);
+        this._logger.error('[Peer] Connection timeout for:', remotePeerId);
         call.close();
         reject(new Error(`Connection timeout for peer ${remotePeerId}`));
       }, 30000);
 
       call.on('stream', (remoteStream) => {
         clearTimeout(timeout);
-        console.log('[Peer] Received remote stream from:', remotePeerId);
+        this._logger.log('[Peer] Received remote stream from:', remotePeerId);
         this.connections.set(remotePeerId, call);
         resolve(remoteStream);
       });
 
       call.on('close', () => {
         clearTimeout(timeout);
-        console.log('[Peer] Call closed with:', remotePeerId);
+        this._logger.log('[Peer] Call closed with:', remotePeerId);
         this.connections.delete(remotePeerId);
       });
 
       call.on('error', (error) => {
         clearTimeout(timeout);
-        console.error('[Peer] Call error with:', remotePeerId, error);
+        this._logger.error('[Peer] Call error with:', remotePeerId, error);
         this.connections.delete(remotePeerId);
         reject(error);
       });
@@ -145,22 +147,22 @@ export class PeerService {
    */
   answer(call: MediaConnection, stream: MediaStream): Promise<MediaStream> {
     return new Promise((resolve, reject) => {
-      console.log('[Peer] Answering call from:', call.peer);
+      this._logger.log('[Peer] Answering call from:', call.peer);
       call.answer(stream);
 
       call.on('stream', (remoteStream) => {
-        console.log('[Peer] Received remote stream from:', call.peer);
+        this._logger.log('[Peer] Received remote stream from:', call.peer);
         this.connections.set(call.peer, call);
         resolve(remoteStream);
       });
 
       call.on('close', () => {
-        console.log('[Peer] Call closed with:', call.peer);
+        this._logger.log('[Peer] Call closed with:', call.peer);
         this.connections.delete(call.peer);
       });
 
       call.on('error', (error) => {
-        console.error('[Peer] Call error:', error);
+        this._logger.error('[Peer] Call error:', error);
         reject(error);
       });
     });
@@ -190,7 +192,7 @@ export class PeerService {
       this.setLocalStream(stream);
       return stream;
     } catch (error) {
-      console.error('[Peer] getUserMedia error:', error);
+      this._logger.error('[Peer] getUserMedia error:', error);
       throw error;
     }
   }
@@ -236,7 +238,7 @@ export class PeerService {
         // Update video element
         this.updateLocalVideo();
       } catch (error) {
-        console.error('[Peer] Failed to restart camera:', error);
+        this._logger.error('[Peer] Failed to restart camera:', error);
         throw error;
       }
     }
@@ -256,7 +258,7 @@ export class PeerService {
    * Destroy all connections and peer instance
    */
   destroy() {
-    console.log('[Peer] Destroying peer and connections');
+    this._logger.log('[Peer] Destroying peer and connections');
     
     // Close all connections
     this.connections.forEach((connection, peerId) => {

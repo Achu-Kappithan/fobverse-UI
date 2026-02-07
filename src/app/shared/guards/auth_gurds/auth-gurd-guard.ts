@@ -3,11 +3,13 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { ToastService } from '../../services/toast/toast.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 export const authGurdGuard: CanActivateFn = (route, state) => {
   const _authService = inject(AuthService);
   const router = inject(Router);
   const _toastService = inject(ToastService);
+  const _logger = inject(LoggerService);
 
   return _authService.isUserLoaded.pipe(
     filter((loaded) => loaded === true),
@@ -23,10 +25,10 @@ export const authGurdGuard: CanActivateFn = (route, state) => {
           const isLoggedIn = !!adminUser || !!companyUser || !!candidateUser;
 
           if (isLoggedIn) {
-            console.log('authGurdGuard: User is logged in. Allowing access.');
+            _logger.log('authGurdGuard: User is logged in. Allowing access.');
             return true;
           } else {
-            console.log(
+            _logger.warn(
               'authGurdGuard: User is NOT logged in. Redirecting to /login'
             );
             _toastService.warning('Login Required', 'Please login to access this feature');

@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { RouterModule } from '@angular/router';
 import { InternalUserInterface } from '../../../interfaces/company.response.interface';
 import { CompanyService } from '../../../services/company-service';
@@ -21,6 +22,7 @@ import { ConfirmService } from '../../../../../shared/services/confirm/confirm.s
 export class UserListComponent implements OnInit, OnDestroy {
 
   cloudinaryBaseUrl = environment.cloudinaryBaseUrl
+  private readonly _logger = inject(LoggerService);
 
   private _subscriptions : Subscription = new Subscription()
   
@@ -64,7 +66,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.fetchAllInternalUsers()
       })
     )
-    console.log(this.InternalUsers)
+    this._logger.log('Internal users initialized');
   }
 
 
@@ -73,7 +75,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this._companyService.getInternalUsers(this.QueryParams).subscribe({
       next:(res =>{
         if(res.success){
-          console.log("internal users :",res.data)
+          this._logger.log("internal users fetched:", res.data?.length);
           this.InternalUsers = res.data
           this.paginationMeta = res.meta ?? this. paginationMeta
         }
@@ -81,7 +83,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this._cdr.detectChanges()
       }),
       error:(err =>{
-        console.log(err)
+        this._logger.error('Error fetching internal users:', err);
         this.isLoading= false
         this._cdr.detectChanges()
       })
@@ -123,8 +125,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   async removeUser(id:string,index:number){
-    console.log(id)
-    console.log("index is ",index)
+    this._logger.log("Removing user at index:", index);
     
     const confirmed = await this._confirmService.confirm({
       title: 'Remove User',
@@ -145,7 +146,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
       }),
       error:(err =>{
-        console.log("error regarding removing user", err)
+        this._logger.error("error regarding removing user", err)
         this._toast.error(err.error.message)
       })
     })

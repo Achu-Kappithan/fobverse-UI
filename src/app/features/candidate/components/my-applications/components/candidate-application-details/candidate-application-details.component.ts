@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
+import { LoggerService } from '../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CandidateService } from '../../../../services/candidate.service';
@@ -20,6 +21,7 @@ export class CandidateApplicationDetailsComponent implements OnInit {
   isLoading: boolean = false;
   baseUrl = environment.cloudinaryBaseUrl;
   currentTab: 'progress' | 'current' = 'progress';
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private _route: ActivatedRoute,
@@ -42,14 +44,14 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     this._candidateService.getApplicationDetails(this.applicationId!).subscribe({
       next: (response) => {
         if (response.success) {
-          console.log('response data',response)
+          this._logger.log('Application details fetched');
           this.application = response.data;
         }
         this.isLoading = false;
         this._cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error fetching application details:', error);
+        this._logger.error('Error fetching application details:', error);
         this.isLoading = false;
         this._cdr.detectChanges();
       }

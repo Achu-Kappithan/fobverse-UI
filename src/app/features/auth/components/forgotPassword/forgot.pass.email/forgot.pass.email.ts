@@ -9,6 +9,8 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../../shared/constants/routes.constants';
 import { ApiResponse, PlainResponse } from '../../../../../shared/interfaces/api-response.interface';
 
 @Component({
@@ -26,13 +28,14 @@ export class ForgotPassEmail implements OnInit {
   private readonly _route = inject(ActivatedRoute);
   private readonly _toast = inject(ToastService);
   private readonly _router = inject(Router);
+  private readonly _logger = inject(LoggerService);
 
   ngOnInit(): void {
     this._route.queryParams.subscribe((user) => {
       this.userType = user['user'];
     });
 
-    console.log('this is the data get from  qury ', this.userType);
+    this._logger.log('this is the data get from  qury ', this.userType);
 
     this.forgotPasswordForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -51,10 +54,10 @@ export class ForgotPassEmail implements OnInit {
       this._authService.validateForgotPasswordEmail(user).subscribe({
         next: (response: PlainResponse) => {
           this.isLoading = false;
-          console.log('Response forgotpassword', response);
+          this._logger.log('Response forgotpassword', response);
           if (response.success) {
             this._toast.success(response.message);
-            this._router.navigate(['/login']);
+            this._router.navigate([`/${APP_ROUTES.LOGIN}`]);
           } else {
             this._toast.error(response.message);
             this.forgotPasswordForm.reset();
@@ -62,7 +65,7 @@ export class ForgotPassEmail implements OnInit {
         },
         error: (error: any) => {
           this.isLoading = false;
-          console.log('error updatePassword', error);
+          this._logger.error('error updatePassword', error);
           this._toast.error(error.error.message);
           this.forgotPasswordForm.reset();
         },

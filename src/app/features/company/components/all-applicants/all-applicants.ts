@@ -1,4 +1,6 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +21,7 @@ export class AllApplicantsComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _toast = inject(ToastService);
+  private readonly _logger = inject(LoggerService);
 
   baseUrl:string = environment.cloudinaryBaseUrl
 
@@ -54,7 +57,7 @@ export class AllApplicantsComponent implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error fetching applicants:', err);
+        this._logger.error('Error fetching applicants:', err);
         this._toast.error(err.error?.message || 'Failed to fetch applicants');
       }
     });
@@ -88,21 +91,21 @@ export class AllApplicantsComponent implements OnInit {
 
   viewApplication(applicantId: string, jobId: string, canId: string): void {
     if (!jobId || !applicantId || !canId) {
-      console.error('Navigation failed: Missing required IDs', { jobId, applicantId, canId });
+      this._logger.error('Navigation failed: Missing required IDs', { jobId, applicantId, canId });
       return;
     }
     
-    console.log('Navigating to application details:', { jobId, applicantId, canId });
+    this._logger.log('Navigating to application details:', { jobId, applicantId, canId });
     
     // Construct the full path: /company/joblist/applications/:jobId/viewapplication/:appId/:canId
-    this._router.navigate(['/company/joblist/applications', jobId, 'viewapplication', applicantId, canId])
+    this._router.navigate([APP_ROUTES.COMPANY_JOB_APPLICATIONS, jobId, 'viewapplication', applicantId, canId])
       .then(success => {
         if (!success) {
-          console.error('Navigation failed! Path might be incorrect or guarded.');
+          this._logger.error('Navigation failed! Path might be incorrect or guarded.');
         }
       })
       .catch(err => {
-        console.error('Navigation error:', err);
+        this._logger.error('Navigation error:', err);
       });
   }
 

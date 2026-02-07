@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../services/company-service';
 import { CompanyProfileInterface, TeamMember } from '../../interfaces/company.response.interface';
 import { CommonModule } from '@angular/common';
@@ -37,6 +38,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
   ChildRouteActive = false
   logoUrl:string = "/profileimages/logodefault.jpg"
   baseUrl:string = environment.cloudinaryBaseUrl
+  private readonly _logger = inject(LoggerService);
 
   teamMembersForm!:FormGroup
   selectedImageFile:File | null = null
@@ -80,7 +82,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
         this._cdr.detectChanges()
       }),
       error:(err)=>{
-        console.log(err)
+        this._logger.error('Error fetching company profile:', err);
         this.isLoading = false
         this._cdr.detectChanges()
       }
@@ -173,17 +175,17 @@ export class CompanyProfile implements OnInit,OnDestroy {
 
       uploadObservable.subscribe({
         next: (cludUploadResult)=>{
-          console.log(cludUploadResult)
+          this._logger.log('Cloudinary upload result', cludUploadResult);
           if(cludUploadResult && cludUploadResult.secure_url){
             teamData.image = this.splitUrl(cludUploadResult.secure_url)
           }else{
             teamData.image = undefined
           }
 
-          console.log("team data before send to the backend",teamData)
+          this._logger.debug("team data before send to the backend",teamData);
           this._companyService.addTeamMembers(teamData).subscribe({
             next:(resdata) => {
-              console.log('member added response in backend ',resdata)
+              this._logger.info('member added response in backend ',resdata);
               if(resdata.success && resdata.data){
                 this.company$ = resdata.data
                 this.isLoading = false
@@ -195,7 +197,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
               }
             },
             error : (error)=>{
-              console.log("Error updating profile in backend",error)
+              this._logger.error("Error updating profile in backend",error);
               this.isLoading  =false
               this._toast.error(error.error.message)
               this._cdr.detectChanges()
@@ -203,7 +205,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
           })
         },
         error:(err)=>{
-          console.log("error for updating profile ",err)
+          this._logger.error("error for updating profile ",err);
           this.isLoading = false
           this._toast.error(err.error.message)
           this._cdr.detectChanges()

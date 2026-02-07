@@ -12,6 +12,8 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-set-new-password',
@@ -30,6 +32,7 @@ export class SetNewPassword implements OnInit {
   private readonly _route = inject(ActivatedRoute);
   private readonly _router = inject(Router);
   private readonly _toast = inject(ToastService);
+  private readonly _logger = inject(LoggerService);
 
   ngOnInit(): void {
     this._route.queryParams.subscribe((token) => {
@@ -71,7 +74,7 @@ export class SetNewPassword implements OnInit {
     if (this.resetForm.valid) {
       this.isLoading = true;
       const newPassword = this.resetForm.value.password;
-      console.log('New password:', newPassword);
+      this._logger.log('New password:', newPassword);
       const data = {
         password: newPassword,
         token: this.verificationToken,
@@ -79,10 +82,10 @@ export class SetNewPassword implements OnInit {
       this._authService.updateNewPassword(data).subscribe({
         next: (response) => {
           this.isLoading = false;
-          console.log('Updated Password Response', response);
+          this._logger.log('Updated Password Response', response);
           if (response.success) {
             this._toast.success(response.message);
-            this._router.navigate(['/login']);
+            this._router.navigate([`/${APP_ROUTES.LOGIN}`]);
           } else {
             this._toast.error(response.message);
             this.resetForm.reset();
@@ -90,7 +93,7 @@ export class SetNewPassword implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          console.log('error regading new password updation', error);
+          this._logger.error('error regading new password updation', error);
           this._toast.error(error.error.message);
           this.resetForm.reset();
         },

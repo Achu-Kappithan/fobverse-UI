@@ -5,7 +5,9 @@ import {
   Input,
   OnInit,
   Output,
+  inject
 } from '@angular/core';
+import { LoggerService } from '../../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -84,6 +86,7 @@ export class TelephonicStageComponent implements OnInit {
   isFinalizeModalOpen: boolean = false;
   selectedHr: InternalUserInterface | null = null;
   currentUserId: string | null = null;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private fb: FormBuilder,
@@ -139,14 +142,14 @@ export class TelephonicStageComponent implements OnInit {
           if (res.success) {
             if (res.data.stage == 'shortlisted') {
               this.interview = res.data;
-              console.log('current stage  details ', this.interview);
+              this._logger.log('current stage  details ', this.interview);
               this.isLoading = false;
               this._cdr.detectChanges();
             }
           }
         },
         error: (err) => {
-          console.log('error regading fetch stage details', err);
+          this._logger.error('error regading fetch stage details', err);
           this.isLoading = false;
           this._cdr.detectChanges();
         },
@@ -221,7 +224,7 @@ export class TelephonicStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading shedule interview ', err);
+        this._logger.error('error regading shedule interview ', err);
         this._toast.error(err.error.message);
       },
     });
@@ -259,7 +262,7 @@ export class TelephonicStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading Cancell interview');
+        this._logger.error('error regarding Cancell interview');
         this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
@@ -296,7 +299,7 @@ export class TelephonicStageComponent implements OnInit {
         this._toast.error(err.error.message);
         this.openFeedbackModal();
         this._cdr.detectChanges();
-        console.log('error regading update feedback', err);
+        this._logger.error('error regading update feedback', err);
       },
     });
   }
@@ -357,7 +360,7 @@ export class TelephonicStageComponent implements OnInit {
         this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
-        console.log('error regarding finalize result', err);
+        this._logger.error('error regarding finalize result', err);
       },
     });
   }
@@ -370,7 +373,7 @@ export class TelephonicStageComponent implements OnInit {
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.log('error regading  fetch  hr list ', err);
+          this._logger.error('error regading  fetch  hr list ', err);
         },
       });
     }

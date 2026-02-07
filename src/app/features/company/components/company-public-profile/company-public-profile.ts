@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyProfileInterface, JobsInterface } from '../../interfaces/company.response.interface';
 import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
@@ -25,6 +26,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
   companyId:string | null = null
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
   cludBaseUrl:string = environment.cloudinaryBaseUrl
+  private readonly _logger = inject(LoggerService);
 
 
   constructor(
@@ -39,7 +41,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
     this._subscription.add(
       this._route.queryParams.subscribe((val)=>{
         this.companyId = val['id']
-        console.log(this.companyId)
+        this._logger.log('Viewing company profile:', this.companyId);
         if(this.companyId){
           this.fetchCompanyDetails()
         }
@@ -59,7 +61,7 @@ export class CompanyPublicProfile implements OnInit, OnDestroy {
         }
        }),
        error:(err =>{
-        console.log("error regarding get company public view profile",err)
+        this._logger.error("error regarding get company public view profile",err)
         this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()

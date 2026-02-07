@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { LoggerService } from '../../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { CompanyApplication } from '../../../../../services/company-application';
 
@@ -34,6 +35,7 @@ export class HiringStatusComponent implements OnInit, OnChanges {
   journeyData: StageDetail[] = [];
   isLoading: boolean = false;
   errorMessage: string | null = null;
+  private readonly _logger = inject(LoggerService);
 
   constructor(private readonly _applicationService: CompanyApplication) {}
 
@@ -65,7 +67,7 @@ export class HiringStatusComponent implements OnInit, OnChanges {
         this.isLoading = false;
       },
       error: (error: any) => {
-        console.error('Error fetching all stages:', error);
+        this._logger.error('Error fetching all stages:', error);
         this.errorMessage = 'An error occurred while fetching data';
         this.isLoading = false;
       }

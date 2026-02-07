@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../services/company-service';
 import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.response.interface';
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
@@ -22,6 +23,7 @@ export class UserProfile implements OnInit {
   updateProfileForm!: FormGroup;
   passwordChangeForm!: FormGroup;
   previewImage: string | null = null;
+  private readonly _logger = inject(LoggerService);
   selectedFile: File | null = null;
   cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload";
   private loadingToastId: number | null = null;
@@ -74,7 +76,7 @@ export class UserProfile implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error fetching user profile ", err);
+        this._logger.error("Error fetching user profile ", err);
         this.isLoading = false;
         this._toast.error('Failed to fetch user profile.');
         this._cdr.detectChanges();
@@ -182,7 +184,7 @@ export class UserProfile implements OnInit {
             this._cdr.detectChanges();
           },
           error: (err) => {
-            console.error("Error updating profile in backend:", err);
+            this._logger.error("Error updating profile in backend:", err);
             if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
             this._toast.error(err.error?.message || 'Failed to update profile.');
             this.isLoading = false;
@@ -191,7 +193,7 @@ export class UserProfile implements OnInit {
         });
       },
       error: (err) => {
-        console.error("Error during Cloudinary upload or signature:", err);
+        this._logger.error("Error during Cloudinary upload or signature:", err);
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.error('Failed to upload profile picture.');
         this.isLoading = false;
@@ -223,7 +225,7 @@ export class UserProfile implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error changing password:", err);
+        this._logger.error("Error changing password:", err);
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.error(err.error?.message || 'Failed to change password.');
         this.isLoading = false;

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../shared/services/logger/logger.service';
 import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { RouterModule } from '@angular/router';
@@ -26,6 +27,7 @@ export class CandidateHeader implements OnInit {
   notificationTab: 'unread' | 'all' = 'unread';
   notifications: NotificationInterface[] =[]
   isLoaded: boolean = false;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
 
@@ -59,7 +61,7 @@ export class CandidateHeader implements OnInit {
 
     this._authService.candidate$.subscribe({
       next: (can) => {
-        console.log('candidate data in backend ',can)
+        this._logger.log('candidate data in header ',can)
         this.candidate = can;
         this._cdr.detectChanges();
       },
@@ -100,7 +102,7 @@ export class CandidateHeader implements OnInit {
   }
 
   openNotificationModal(){
-    console.log('works')
+    this._logger.log('Opening notification modal');
     this.isNotificationModalOpen = this.isNotificationModalOpen ? false : true
   }
 
@@ -110,7 +112,7 @@ export class CandidateHeader implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error marking all as read:', err);
+        this._logger.error('Error marking all as read:', err);
       }
     });
   }
@@ -121,7 +123,7 @@ export class CandidateHeader implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error marking notification as read:', err);
+        this._logger.error('Error marking notification as read:', err);
       }
     });
   }

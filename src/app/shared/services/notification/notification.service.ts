@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from '../logger/logger.service';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { SocketService } from '../socket/socket.service';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +20,7 @@ export class NotificationService {
     private socketService: SocketService,
     private http: HttpClient
   ) {}
+  private readonly _logger = inject(LoggerService);
 
   loadUnreadCount() {
     this.http.get<ApiResponse<{ count: number }>>('/api/notification/getunreadcount')
@@ -30,7 +32,7 @@ export class NotificationService {
   loadInitialData() {
     this.http.get<ApiResponse<NotificationInterface[]>>('/api/notification/getnotification')
       .subscribe(res => {
-        console.log('fetch inital notification',res)
+        this._logger.log('fetched initial notifications',res)
         this.notificationSubject.next(res.data);
       });
   }

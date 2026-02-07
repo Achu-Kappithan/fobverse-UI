@@ -1,5 +1,7 @@
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 import { Router, RouterModule } from '@angular/router';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/api-response.interface';
 import { AdminCompanyService } from '../../services/admin-company-service';
@@ -27,7 +29,8 @@ export class AdminJoblist  implements OnInit {
     private readonly _adminService:AdminCompanyService,
     private readonly _cdr:ChangeDetectorRef,
     private readonly _toast: ToastService,
-    private readonly _router:Router
+    private readonly _router:Router,
+    private readonly _logger:LoggerService
   ) {}
 
   paginationMeta:PaginationMeta = {
@@ -77,7 +80,7 @@ export class AdminJoblist  implements OnInit {
     this.isLoading= true
     this._adminService.getAlljobs(this.QueryParms).subscribe({
       next:(res =>{
-        console.log("response for getting all jobs",res)
+        this._logger.log("all jobs response fetched");
         if(res.success){
           this.jobList = res.data
           this.paginationMeta = res.meta!
@@ -86,7 +89,7 @@ export class AdminJoblist  implements OnInit {
         }
       }),
       error:(err)=>{
-        console.log('error for getting Alljobs: ',err)
+        this._logger.error('error for getting Alljobs: ',err);
         this._toast.error(err.error.message)
         this.isLoading = false
         this._cdr.detectChanges()
@@ -109,7 +112,7 @@ export class AdminJoblist  implements OnInit {
         this.updateJobStatus(row)
       }
     }else if(action ==='view'){
-      this._router.navigate(['/admin/joblist/viewjob'],{queryParams:{id:row._id}})
+      this._router.navigate([APP_ROUTES.ADMIN_VIEW_JOB],{queryParams:{id:row._id}})
     }
   }
 
@@ -123,7 +126,7 @@ export class AdminJoblist  implements OnInit {
         }
       }),
       error:(err =>{
-        console.log("error regarding Activate job Status ",err)
+        this._logger.error("error regarding Activate job Status ",err);
         this._toast.error(err.error.message)
       })
     })

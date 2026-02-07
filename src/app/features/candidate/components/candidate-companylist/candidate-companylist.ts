@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
@@ -23,6 +24,7 @@ export class CandidateCompanylist implements OnInit {
   baseUrl: string = environment.cloudinaryBaseUrl;
   listView: boolean = false;
   isLoading: boolean = false;
+  private readonly _logger = inject(LoggerService);
 
   companyList: CompanyProfileInterface[] = [];
 
@@ -64,7 +66,7 @@ export class CandidateCompanylist implements OnInit {
     this._candidateService.getPublicCompanies(this.queryParams).subscribe({
       next: (res) => {
 
-        console.log('Fetched Companies:', res);
+        this._logger.log('Fetched Companies:', res.data?.length);
 
         if (res.data) {
           this.companyList = res.data;
@@ -81,7 +83,7 @@ export class CandidateCompanylist implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error fetching companies:', err);
+        this._logger.error('Error fetching companies:', err);
         this._toast.error('Failed to load companies');
         this.isLoading = false;
         this._cdr.detectChanges();

@@ -1,5 +1,6 @@
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
@@ -29,7 +30,8 @@ export class AdminProfile {
     private fb: FormBuilder,
     private readonly _adminProfileService: AdminProfileService,
     private readonly _cloudinaryService:CloudinaryService,
-    private readonly _cdr: ChangeDetectorRef
+    private readonly _cdr: ChangeDetectorRef,
+    private readonly _logger: LoggerService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +57,7 @@ export class AdminProfile {
     this.isLoading = true;
     this._adminProfileService.getUserProfile().subscribe({
       next: (res) => {
-        console.log("Response for getUser", res);
+        this._logger.log("Response for getUser fetched");
         if (res.success && res.data) {
           this.userProfile = res.data;
           this.populateProfileForm();
@@ -67,7 +69,7 @@ export class AdminProfile {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error fetching user profile ", err);
+        this._logger.error("Error fetching user profile ", err);
         this.isLoading = false;
         this._cdr.detectChanges();
       }
@@ -166,7 +168,7 @@ export class AdminProfile {
 
           this._adminProfileService.updateUserProfile(profileData).subscribe({
             next: (res) => {
-              console.log("Profile updated successfully in backend", res);
+              this._logger.log("Profile updated successfully in backend");
               if (res.success && res.data) {
                 this.userProfile = res.data;
                 if (this.userProfile!.profileImg) {
@@ -179,14 +181,14 @@ export class AdminProfile {
               this._cdr.detectChanges();
             },
             error: (err) => {
-              console.error("Error updating profile in backend:", err);
+              this._logger.error("Error updating profile in backend:", err);
               this.isLoading = false;
               this._cdr.detectChanges();
             }
           });
         },
         error: (err) => {
-          console.error("Error during Cloudinary upload or signature:", err);
+          this._logger.error("Error during Cloudinary upload or signature:", err);
           this.isLoading = false;
           this._cdr.detectChanges();
         }
@@ -202,13 +204,13 @@ export class AdminProfile {
       const { currentPassword, newPassword } = this.passwordChangeForm.value;
       this._adminProfileService.changePassword(currentPassword, newPassword).subscribe({
         next: (res) => {
-          console.log("Password changed successfully", res);
+          this._logger.log("Password changed successfully");
           this.isLoading = false;
           this.passwordChangeForm.reset();
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.error("Error changing password:", err);
+          this._logger.error("Error changing password:", err);
           this.isLoading = false;
           this._cdr.detectChanges();
         }

@@ -11,6 +11,8 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-signup',
@@ -22,6 +24,7 @@ export class CandidateSignup implements OnInit {
   private readonly _Authservice = inject(AuthService);
   private _toast = inject(ToastService);
   private _router = inject(Router);
+  private _logger = inject(LoggerService);
 
   signupForm!: FormGroup;
   userType: string = '';
@@ -83,18 +86,18 @@ export class CandidateSignup implements OnInit {
         password: password,
         role: this.userType,
       };
-      console.log('Signup form', userData);
+      this._logger.log('Signup form', userData);
       this._Authservice.registerCandidate(userData).subscribe({
         next: (response) => {
           this.isLoading = false;
-          console.log('registration response comes from the backend', response);
+          this._logger.log('registration response comes from the backend', response);
           this._toast.success(response.message);
           this.signupForm.reset();
-          this._router.navigate(['/login']);
+          this._router.navigate([`/${APP_ROUTES.LOGIN}`]);
         },
         error: (error) => {
           this.isLoading = false;
-          console.error('Registration error:', error);
+          this._logger.error('Registration error:', error);
           let errorMessage = 'An unexpected error occurred';
           if (error.error && error.error.message) {
             errorMessage = Array.isArray(error.error.message)
@@ -105,7 +108,7 @@ export class CandidateSignup implements OnInit {
         },
       });
     } else {
-      console.log('Form is Invalid');
+      this._logger.warn('Form is Invalid');
       this.signupForm.markAllAsTouched();
     }
   }

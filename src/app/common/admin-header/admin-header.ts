@@ -14,6 +14,7 @@ import { environment } from '../../../env/environment';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
+import { LoggerService } from '../../shared/services/logger/logger.service';
 
 @Component({
   selector: 'app-admin-header',
@@ -33,6 +34,7 @@ export class AdminHeader implements OnInit {
 
   isProfileMenuOpen: boolean = false;
   private _router = inject(Router);
+  private _logger = inject(LoggerService);
 
   constructor(
     private readonly _authService: AuthService,
@@ -46,7 +48,7 @@ export class AdminHeader implements OnInit {
     })
     this._authService.admin$.subscribe((val) => {
       this.activeAdmin = val
-      console.log('current user in state', this.activeAdmin);
+      this._logger.log('current Admin in header', this.activeAdmin);
     });
   }
 

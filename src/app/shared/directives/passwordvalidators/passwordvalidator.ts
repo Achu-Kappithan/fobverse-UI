@@ -1,4 +1,5 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, inject, Input } from '@angular/core';
+import { LoggerService } from '../../services/logger/logger.service';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 @Directive({
@@ -17,8 +18,9 @@ export class Passwordvalidator implements Validator {
   @Input() requireSpecialChar: boolean = true
   @Input() minLength: number = 8
 
+  private readonly _logger = inject(LoggerService);
 validate(control: AbstractControl): ValidationErrors | null {
-  console.log("works")
+  this._logger.log("Password validation triggered");
     const value = control.value;
 
     if (!value) {

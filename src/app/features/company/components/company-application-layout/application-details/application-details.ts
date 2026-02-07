@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyApplication } from '../../../services/company-application';
 import {
@@ -56,6 +57,7 @@ export class ApplicationDetails implements OnInit {
   baseUrl: string = environment.cloudinaryBaseUrl;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
   resumePdfUrl: string | null = null;
+  private readonly _logger = inject(LoggerService);
   Math = Math;
   currentStageIndex: number = -1;
 
@@ -98,14 +100,14 @@ export class ApplicationDetails implements OnInit {
           this.addressValue = addressObj
             ? addressObj.value
             : 'No address available';
-          console.log(value);
+          this._logger.log('Application details loaded');
           this.setResumeUrl();
           this.getStages(value.data.Stages);
           this.isLoading = false;
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Error fetching applicationDetails:', err);
+          this._logger.error('Error fetching applicationDetails:', err);
           this._toast.error(err.error?.message || 'Failed to fetch application details');
           this._cdr.detectChanges();
         },

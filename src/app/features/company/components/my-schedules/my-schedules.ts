@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -16,6 +17,7 @@ export class MySchedulesComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _companyApplication = inject(CompanyApplication);
+  private readonly _logger = inject(LoggerService);
 
   schedules: Schedule[] = [];
   filteredSchedules: Schedule[] = [];
@@ -47,7 +49,7 @@ export class MySchedulesComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error fetching schedules:', err);
+        this._logger.error('Error fetching schedules:', err);
       },
     });
   }
@@ -112,9 +114,9 @@ export class MySchedulesComponent implements OnInit {
 
   viewApplication(schedule: Schedule): void {
 
-    console.log('jobid', schedule.jobId, 'applicationId' ,schedule.applicationId, 'canidateaId',schedule.candidateId )
+    this._logger.log('Viewing application details', { jobId: schedule.jobId, applicationId: schedule.applicationId });
     if (!schedule.jobId || !schedule.applicationId || !schedule.candidateId) {
-      console.error('Navigation failed: Missing required IDs', schedule);
+      this._logger.error('Navigation failed: Missing required IDs', schedule);
       return;
     }
 
@@ -128,11 +130,11 @@ export class MySchedulesComponent implements OnInit {
       ])
       .then((success) => {
         if (!success) {
-          console.error('Navigation failed! Path might be incorrect or guarded.');
+          this._logger.error('Navigation failed! Path might be incorrect or guarded.');
         }
       })
       .catch((err) => {
-        console.error('Navigation error:', err);
+        this._logger.error('Navigation error:', err);
       });
   }
 }

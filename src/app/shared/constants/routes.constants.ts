@@ -14,6 +14,7 @@ export const APP_ROUTES = {
   
   // Candidate
   CANDIDATE: 'candidate',
+  CANDIDATE_HOME: 'candidate/home',
   CANDIDATE_PROFILE: 'candidate/profile',
   CANDIDATE_UPDATE_PROFILE: 'candidate/profile/updateprofile',
   CANDIDATE_SETTINGS: 'candidate/settings',
@@ -36,6 +37,8 @@ export const APP_ROUTES = {
   COMPANY_ALL_APPLICANTS: 'company/all-applicants',
   COMPANY_SCHEDULES: 'company/my-schedules',
   COMPANY_JOBS: 'company/joblist',
+  COMPANY_JOB_APPLICATIONS: 'company/joblist/applications',
+  COMPANY_VIEW_APPLICATION: 'company/joblist/applications/viewapplication',
   COMPANY_JOB_EDIT: 'company/joblist/jobedit',
   
   // Admin
@@ -44,6 +47,7 @@ export const APP_ROUTES = {
   ADMIN_COMPANIES: 'admin/companies',
   ADMIN_CANDIDATES: 'admin/candidates',
   ADMIN_JOBS: 'admin/joblist',
+  ADMIN_VIEW_JOB: 'admin/joblist/viewjob',
   ADMIN_PROFILE: 'admin/profile',
 };
 

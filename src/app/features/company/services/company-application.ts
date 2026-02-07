@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from '../../../shared/services/logger/logger.service';
 import {
   ApplicationQureryInterface,
   CancelInterviewInterface,
@@ -24,6 +25,7 @@ import { Schedule } from '../interfaces/schedule.interface';
   providedIn: 'root',
 })
 export class CompanyApplication {
+  private readonly _logger = inject(LoggerService);
   constructor(private readonly _http: HttpClient) {}
 
   getAllApplication(
@@ -77,7 +79,7 @@ export class CompanyApplication {
   sheduleInterview(
     data: ScheduleInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
-    console.log('data  for  sheduling interivew',data)
+    this._logger.log('Scheduling interview', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/shedule`,
       data
@@ -87,7 +89,7 @@ export class CompanyApplication {
   sheduleTelyInterview(
     data: ScheduleInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
-    console.log('data  for  sheduling interivew',data)
+    this._logger.log('Scheduling telephone interview', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/telephone/shedule`,
       data
@@ -107,7 +109,7 @@ export class CompanyApplication {
   updateFeedback(
     data: UpdateFeedbackInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
-    console.log('updatting feedbak data', data);
+    this._logger.log('Updating feedback', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/updatefeedback`,
       data
@@ -117,7 +119,7 @@ export class CompanyApplication {
   ReSheduleTelyphone(
     data: ScheduleInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
-    console.log('detaisl for shedule tech',data)
+    this._logger.log('Rescheduling telephone interview', data);
     return this._http.put<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/telephone/reshedule`,
       data
@@ -127,7 +129,7 @@ export class CompanyApplication {
   ReShedule(
     data: ScheduleInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
-    console.log('detaisl for shedule tech',data)
+    this._logger.log('Rescheduling interview', data);
     return this._http.put<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/reshedule`,
       data
@@ -146,7 +148,7 @@ export class CompanyApplication {
   finalizeTelephoneResult(
     data: FinalizeResultInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
-    console.log(data);
+    this._logger.log('Finalizing telephone result', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
       `/api/interview/finalize-result`,
       data

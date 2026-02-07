@@ -17,6 +17,8 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-login',
@@ -44,6 +46,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
   private _googleService = inject(SocialAuthService);
   private _route = inject(ActivatedRoute);
   private _googlesub?: Subscription;
+  private _logger = inject(LoggerService);
 
   ngOnInit(): void {
     this._route.data.subscribe((data) => {
@@ -58,28 +61,28 @@ export class CandidateLogin implements OnInit, OnDestroy {
           if (user && user.idToken) {
             this._AuthService.googleLogin(user.idToken, this.userType).subscribe({
               next: (response) => {
-                console.log('Backend response:', response);
+                this._logger.log('Backend response:', response);
                 if (response.success) {
                   this._toast.success(
                     response.message ?? 'Login Successfull'
                   );
-                  console.log('logedin user role', response.data?.role);
+                  this._logger.info('logedin user role', response.data?.role);
                   if (response.data?.role === 'candidate') {
-                    this._router.navigate(['/candidate/home']);
+                    this._router.navigate([`/${APP_ROUTES.CANDIDATE_HOME}`]);
                   } else if (response.data?.role === 'company') {
-                    this._router.navigate(['/company/home']);
+                    this._router.navigate([`/${APP_ROUTES.COMPANY_HOME}`]);
                   }
                 }
               },
               error: (error) => {
-                console.error('Error during login:', error);
+                this._logger.error('Error during login:', error);
                 this._toast.error(error.error.message);
               },
             });
           }
         },
         error: (error) => {
-          console.error('Google auth state error:', error);
+          this._logger.error('Google auth state error:', error);
         },
       });
     });
@@ -103,18 +106,18 @@ export class CandidateLogin implements OnInit, OnDestroy {
         ...this.loginForm.value,
         role: this.userType,
       };
-      console.log('Form submitted successfully!', userdata);
+      this._logger.info('Form submitted successfully!', userdata);
 
       if (this.userType === 'admin') {
         this._AuthService.adminLogin(userdata).subscribe({
           next: (response) => {
-            console.log('adminLogin Response', response);
+            this._logger.log('adminLogin Response', response);
             if (response.success) {
               this._toast.success(
                 response.message ?? 'Login Successfull....'
               );
               const returnUrl = this._route.snapshot.queryParams['returnUrl'];
-              this._router.navigateByUrl(returnUrl ?? '/admin/dashboard');
+              this._router.navigateByUrl(returnUrl ?? `/${APP_ROUTES.ADMIN_DASHBOARD}`);
             }
           },
           error: (error) => {
@@ -130,7 +133,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
                 response.message ?? 'Login SuccessFull'
               );
               const returnUrl = this._route.snapshot.queryParams['returnUrl'];
-              this._router.navigateByUrl(returnUrl ?? '/candidate/home');
+              this._router.navigateByUrl(returnUrl ?? `/${APP_ROUTES.CANDIDATE_HOME}`);
             } else {
               this._toast.error(
                 response.message ?? 'Invalid Email or Password'
@@ -139,7 +142,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
             }
           },
           error: (err) => {
-            console.error('Login error:', err);
+            this._logger.error('Login error:', err);
             this._toast.error(err.statusText, err.error.message);
             this.loginForm.reset();
           },
@@ -148,16 +151,16 @@ export class CandidateLogin implements OnInit, OnDestroy {
         const logindata = this.loginForm.value;
         this._AuthService.companyUsersLogin(logindata).subscribe({
           next: (res) => {
-            console.log('companylogin Response', res);
+            this._logger.log('companylogin Response', res);
             if (res.success) {
               this._toast.success(res.message ?? 'Login SuccessFull');
               const returnUrl = this._route.snapshot.queryParams['returnUrl'];
-              this._router.navigateByUrl(returnUrl ?? '/company/home');
+              this._router.navigateByUrl(returnUrl ?? `/${APP_ROUTES.COMPANY_HOME}`);
               this.loginForm.reset();
             }
           },
           error: (err) => {
-            console.log('error regading company login', err);
+            this._logger.error('error regading company login', err);
             this._toast.error(
               err.error.message ?? 'Error regading login  plz try again..!'
             );
@@ -165,7 +168,7 @@ export class CandidateLogin implements OnInit, OnDestroy {
         });
       }
     } else {
-      console.log('Form is invalid');
+      this._logger.warn('Form is invalid');
       this.loginForm.markAllAsTouched();
     }
   }
