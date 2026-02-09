@@ -10,6 +10,7 @@ import {
   companyListParamsInterface,
 } from '../interfaces/candidate.companylist.interface';
 import { ApplicationQueryParams, CandidateApplication, DetailedApplicationResponse } from '../interfaces/candidate.application.interface';
+import { environment } from '../../../../env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,15 @@ export class CandidateService {
   constructor(private readonly _http: HttpClient){}
 
   GetPorfile():Observable<ApiResponse<CandidateInterface>>{
-    return this._http.get<ApiResponse<CandidateInterface>>(`api/candidate/getprofile`)
+    return this._http.get<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/getprofile`)
   }
 
   getPublicView(id:string):Observable<ApiResponse<CandidateInterface>>{
-    return this._http.get<ApiResponse<CandidateInterface>>(`/api/candidate/public/profile?id=${id}`)
+    return this._http.get<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/public/profile?id=${id}`)
   }
 
   updateProfile(data:CandidateInterface):Observable<ApiResponse<CandidateInterface>>{
-    return this._http.post<ApiResponse<CandidateInterface>>('/api/candidate/updateprofile',data)
+    return this._http.post<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/updateprofile`,data)
   }
 
   getAlljobs(params: jobsPagesAndFilterInterface): Observable<ApiResponse<CandidateJobsInterface[]>> {
@@ -63,17 +64,17 @@ export class CandidateService {
     if (params.dueDate) {
       httpParams = httpParams.set('dueDate', params.dueDate); 
     }
-    return this._http.get<ApiResponse<CandidateJobsInterface[]>>(`/api/jobs/getalljobs`, { params: httpParams });
+    return this._http.get<ApiResponse<CandidateJobsInterface[]>>(`${environment.apiUrl}/jobs/getalljobs`, { params: httpParams });
   }
 
 
   updateResume(filename:string):Observable<ApiResponse<CandidateInterface>>{
-    return this._http.post<ApiResponse<CandidateInterface>>('/api/candidate/updataprofile', { resumeUrl: filename })
+    return this._http.post<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/updataprofile`, { resumeUrl: filename })
   }
 
   applayJob(id:string,data:jobApplicationDto):Observable<PlainResponse>{
     this._logger.log('Applying for job:', data);
-    return this._http.post<PlainResponse>(`/api/applications/applyjob?id=${id}`,data)
+    return this._http.post<PlainResponse>(`${environment.apiUrl}/applications/applyjob?id=${id}`,data)
   }
 
   getAllCompanies(
@@ -126,32 +127,32 @@ export class CandidateService {
     }
 
     return this._http.get<PaginatedResponse<CandidateApplication[]>>(
-      '/api/candidate/my-applications',
+      `${environment.apiUrl}/candidate/my-applications`,
       { params: httpParams }
     );
   }
 
   getAllStages(applicationId: string): Observable<ApiResponse<any>> {
     return this._http.get<ApiResponse<any>>(
-      `/api/interview/all-stages`,
+      `${environment.apiUrl}/interview/all-stages`,
       { params: { applicationId: applicationId } }
     );
   }
 
   getApplicationDetails(applicationId: string): Observable<ApiResponse<DetailedApplicationResponse>> {
     return this._http.get<ApiResponse<DetailedApplicationResponse>>(
-      `/api/candidate/application-details/${applicationId}`
+      `${environment.apiUrl}/candidate/application-details/${applicationId}`
     );
   }
 
   getHomeDataPublic(): Observable<ApiResponse<{ jobs: CandidateJobsInterface[]; companies: CompanyProfileInterface[] }>> {
     return this._http.get<ApiResponse<{ jobs: CandidateJobsInterface[]; companies: CompanyProfileInterface[] }>>(
-      '/api/candidate/home-data-public'
+      `${environment.apiUrl}/candidate/home-data-public`
     );
   }
 
   changePassword(currPass: string, newPass: string): Observable<ApiResponse<CandidateInterface>> {
-    return this._http.post<ApiResponse<CandidateInterface>>('/api/candidate/change-pwd', { currPass, newPass });
+    return this._http.post<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/change-pwd`, { currPass, newPass });
   }
 }
 

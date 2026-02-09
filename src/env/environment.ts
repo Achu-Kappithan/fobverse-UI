@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  apiUrl: '/api',
   cloudinaryUrl: 'https://res.cloudinary.com/dl9iuhkmq',
   cloudinaryBaseUrl: "https://res.cloudinary.com/dl9iuhkmq/image/upload",
   socketUrl: 'http://localhost:3007',

@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../../shared/interfaces/api-response.interface';
+import { environment } from '../../../../env/environment';
 import { AdminDashboardStats } from '../interfaces/admin-dashboard.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminDashboardService {
-  private apiUrl = `/api/admin`;
+  private apiUrl = `${environment.apiUrl}/admin`;
 
   constructor(private http: HttpClient) {}
 

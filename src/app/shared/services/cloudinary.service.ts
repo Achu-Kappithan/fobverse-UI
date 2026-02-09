@@ -4,6 +4,7 @@ import { ApiResponse } from '../interfaces/api-response.interface';
 import { CloudinarySignatureResponse } from '../interfaces/cloudinary-signature.response.interface';
 import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class CloudinaryService {
   private readonly _logger = inject(LoggerService);
   
     getCloudinarySignature(params: { folder: string; publicIdPrefix?: string; tags?: string[] }): Observable<ApiResponse<CloudinarySignatureResponse>> {
-      return this._http.post<ApiResponse<CloudinarySignatureResponse>>(`/api/cloudinary/sign-upload`, params)
+      return this._http.post<ApiResponse<CloudinarySignatureResponse>>(`${environment.apiUrl}/cloudinary/sign-upload`, params)
       .pipe(
         tap(res=>[
           this._logger.log("Cloudinary signature fetched",res)

@@ -25,6 +25,7 @@ import { CompanyProfileInterface } from '../../company/interfaces/company.respon
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../shared/constants/routes.constants';
+import { environment } from '../../../../env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -48,14 +49,14 @@ export class AuthService {
   ) {}
 
   registerCandidate(candidate: CandidateRegistration): Observable<any> {
-    return this._http.post(`/api/auth/register`, candidate, {
+    return this._http.post(`${environment.apiUrl}/auth/register`, candidate, {
       withCredentials: true,
     });
   }
 
   candidateVerification(token: string): Observable<ApiResponse<UserPartial>> {
     return this._http.get<ApiResponse<UserPartial>>(
-      `/api/auth/verify-email?token=${token}`,
+      `${environment.apiUrl}/auth/verify-email?token=${token}`,
       { withCredentials: true }
     );
   }
@@ -65,7 +66,7 @@ export class AuthService {
   ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponse<UserPartial>>(`/api/auth/login`, candidate, {
+      .post<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/login`, candidate, {
         withCredentials: true,
       })
       .pipe(
@@ -88,7 +89,7 @@ export class AuthService {
   getCurrentUserDetails(): Observable<ApiResponse<UserPartial>> {
     this._logger.debug('Attempting to fetch current user details');
     return this._http
-      .get<ApiResponse<UserPartial>>(`/api/auth/getuser`, {
+      .get<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/getuser`, {
         withCredentials: true,
       })
       .pipe(
@@ -123,7 +124,7 @@ export class AuthService {
   refreshToken(): Observable<any> {
     this._logger.debug('Attempting to refresh token...');
     return this._http
-      .post(`/api/auth/refresh`, {}, { withCredentials: true })
+      .post(`${environment.apiUrl}/auth/refresh`, {}, { withCredentials: true })
       .pipe(
         tap((response) => {
           this._logger.info('Refresh token successful. New access token set via cookie.');
@@ -143,7 +144,7 @@ export class AuthService {
 
   logoutUser(User: string): void {
     this._http
-      .post(`/api/auth/logout`, {}, { withCredentials: true })
+      .post(`${environment.apiUrl}/auth/logout`, {}, { withCredentials: true })
       .subscribe({
         next: (res) => {
           this._socialAuthService.signOut().catch(err => this._logger.warn('Social sign out failed or already signed out'));
@@ -170,7 +171,7 @@ export class AuthService {
     this.isUserLoaded.next(false);
     return this._http
       .get<ApiResponse<UserPartial>>(
-        `/api/auth/google?googleId=${googleId}&role=${userType}`,
+        `${environment.apiUrl}/auth/google?googleId=${googleId}&role=${userType}`,
         { withCredentials: true }
       )
       .pipe(
@@ -193,7 +194,7 @@ export class AuthService {
   adminLogin(loginInfo: loginInterface): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponse<UserPartial>>(`/api/auth/admin/login`, loginInfo, {
+      .post<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/admin/login`, loginInfo, {
         withCredentials: true,
       })
       .pipe(
@@ -219,7 +220,7 @@ export class AuthService {
     this.isUserLoaded.next(false);
     return this._http
       .post<ApiResponse<CompanyProfileInterface | any>>(
-        '/api/auth/companyuserslogin',
+        `${environment.apiUrl}/auth/companyuserslogin`,
         loginInfo,
         { withCredentials: true }
       )
@@ -243,13 +244,13 @@ export class AuthService {
   validateForgotPasswordEmail(
     user: validateEmailAndRole
   ): Observable<PlainResponse> {
-    return this._http.post<PlainResponse>(`/api/auth/forgotpassword`, user, {
+    return this._http.post<PlainResponse>(`${environment.apiUrl}/auth/forgotpassword`, user, {
       withCredentials: true,
     });
   }
 
   updateNewPassword(data: passwordUpdate): Observable<PlainResponse> {
-    return this._http.post<PlainResponse>(`/api/auth/updatepassword`, data, {
+    return this._http.post<PlainResponse>(`${environment.apiUrl}/auth/updatepassword`, data, {
       withCredentials: true,
     });
   }

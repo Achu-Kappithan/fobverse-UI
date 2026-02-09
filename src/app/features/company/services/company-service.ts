@@ -21,7 +21,7 @@ export class CompanyService {
 
 
   getCompanyProfile():Observable<ApiResponse<CompanyProfileInterface>>{
-    return this._http.get<ApiResponse<CompanyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
+    return this._http.get<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
           this.CompanyProfileSubject.next(res.data!)
@@ -34,12 +34,12 @@ export class CompanyService {
   }
 
   getPublicView(id:string):Observable<ApiResponse<PopulatedCompanyProfile>>{
-    return this._http.get<ApiResponse<PopulatedCompanyProfile>>(`/api/company/public/profile?id=${id}`)
+    return this._http.get<ApiResponse<PopulatedCompanyProfile>>(`${environment.apiUrl}/company/public/profile?id=${id}`)
   }
 
 
   updateCompanyProfile(formData:FormData):Observable<ApiResponse<CompanyProfileInterface>>{
-    return this._http.patch<ApiResponse<CompanyProfileInterface>>(`/api/company/updateprofile`,formData)
+    return this._http.patch<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/updateprofile`,formData)
     .pipe(
       tap(res =>{
         if(res.success){
@@ -53,7 +53,7 @@ export class CompanyService {
   }
 
   createUser(user:InternalUserInterface):Observable<ApiResponse<CompanyProfileInterface>>{
-    return  this._http.post<ApiResponse<CompanyProfileInterface>>(`/api/company/createuser`,user)
+    return  this._http.post<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/createuser`,user)
   }
 
   getInternalUsers(params:QueryParmsInterface):Observable<PaginatedApiResponse<InternalUserInterface[]>>{
@@ -72,27 +72,27 @@ export class CompanyService {
       httpParms = httpParms.set('filtervalue',params.filtervalue)
     }
 
-    return this._http.get<PaginatedApiResponse<InternalUserInterface[]>>(`/api/company/internalusers`,{ params: httpParms,withCredentials:true})
+    return this._http.get<PaginatedApiResponse<InternalUserInterface[]>>(`${environment.apiUrl}/company/internalusers`,{ params: httpParms,withCredentials:true})
   }
 
   getUserProfile():Observable<ApiResponse<InternalUserInterface>>{
-    return this._http.get<ApiResponse<InternalUserInterface>>(`/api/company/userprofile`)
+    return this._http.get<ApiResponse<InternalUserInterface>>(`${environment.apiUrl}/company/userprofile`)
   }
 
   changePassword(currPass:string,newPass:string):Observable<ApiResponse<InternalUserInterface>>{
-    return this._http.post<ApiResponse<InternalUserInterface>>('/api/company/updatepassword',{currPass:currPass,newPass:newPass})
+    return this._http.post<ApiResponse<InternalUserInterface>>(`${environment.apiUrl}/company/updatepassword`,{currPass:currPass,newPass:newPass})
   }
 
   updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponse<InternalUserInterface>>{
-    return this._http.post<ApiResponse<InternalUserInterface>>('/api/company/updateuserprofile',dto)
+    return this._http.post<ApiResponse<InternalUserInterface>>(`${environment.apiUrl}/company/updateuserprofile`,dto)
   }
 
   addTeamMembers(dto:TeamMember):Observable<ApiResponse<CompanyProfileInterface>>{
-    return this._http.post<ApiResponse<CompanyProfileInterface>>(`/api/company/addteammember`,dto)
+    return this._http.post<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/addteammember`,dto)
   }
 
   addJobs(dto:JobsInterface):Observable<ApiResponse<JobsInterface>>{
-    return this._http.post<ApiResponse<JobsInterface>>(`/api/jobs/createjob`,dto)
+    return this._http.post<ApiResponse<JobsInterface>>(`${environment.apiUrl}/jobs/createjob`,dto)
   }
 
   getAllJobs(params:QueryParmsInterface):Observable<PaginatedApiResponse<JobsInterface[]>>{
@@ -107,19 +107,19 @@ export class CompanyService {
     if(params.search){
       httpParms = httpParms.set('search',params.search)
     }
-    return this._http.get<PaginatedApiResponse<JobsInterface[]>>(`api/jobs/getalljobs`,{params:httpParms, withCredentials:true})
+    return this._http.get<PaginatedApiResponse<JobsInterface[]>>(`${environment.apiUrl}/jobs/getalljobs`,{params:httpParms, withCredentials:true})
   }
 
   getJobDetails(id:string):Observable<ApiResponse<JobsInterface>>{
-    return this._http.get<ApiResponse<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`)
+    return this._http.get<ApiResponse<JobsInterface>>(`${environment.apiUrl}/jobs/jobdetails?id=${id}`)
   }
 
   getJobPublicView(id:string):Observable<ApiResponse<populatedJobInterface>>{
-    return this._http.get<ApiResponse<populatedJobInterface>>(`/api/jobs/publicview?id=${id}`)
+    return this._http.get<ApiResponse<populatedJobInterface>>(`${environment.apiUrl}/jobs/publicview?id=${id}`)
   }
 
   updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponse<JobsInterface>>{
-    return this._http.post<ApiResponse<JobsInterface>>(`/api/jobs/updatejob?id=${id}`,data)
+    return this._http.post<ApiResponse<JobsInterface>>(`${environment.apiUrl}/jobs/updatejob?id=${id}`,data)
   }
 
   searchLocations(query: string): Observable<string[]> {
@@ -130,15 +130,15 @@ export class CompanyService {
 
 
   removeUser(id:string):Observable<PlainResponse>{
-    return this._http.delete<PlainResponse>(`/api/company/removeuser?id=${id}`)
+    return this._http.delete<PlainResponse>(`${environment.apiUrl}/company/removeuser?id=${id}`)
   }
 
   updateNewScore(data:{newScore:number,joId:string}):Observable<ApiResponse<ApplicationInterface[]>>{
-    return this._http.patch<ApiResponse<ApplicationInterface[]>>(`/api/applications/updateScore`,data)
+    return this._http.patch<ApiResponse<ApplicationInterface[]>>(`${environment.apiUrl}/applications/updateScore`,data)
   }
 
   getDashboardData():Observable<ApiResponse<CompanyDashboardData>>{
-    return this._http.get<ApiResponse<CompanyDashboardData>>(`/api/company/dashboard`,{withCredentials: true})
+    return this._http.get<ApiResponse<CompanyDashboardData>>(`${environment.apiUrl}/company/dashboard`,{withCredentials: true})
   }
 
 }

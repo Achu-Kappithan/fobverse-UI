@@ -8,7 +8,7 @@ import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface }
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CandidateApplyjob } from '../candidate-applyjob/candidate-applyjob';
+import { CandidateApplyjob } from '../candidate-apply-job/candidate-applyjob';
 import { environment } from '../../../../../env/environment';
 import { AuthService } from '../../../auth/services/auth.service';
 import { UserPartial } from '../../../../shared/interfaces/api-response.interface';

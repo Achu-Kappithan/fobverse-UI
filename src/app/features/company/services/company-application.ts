@@ -20,6 +20,7 @@ import {
   FinalizeResultInterface,
 } from '../interfaces/company.interview-response.interface';
 import { Schedule } from '../interfaces/schedule.interface';
+import { environment } from '../../../../env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +51,7 @@ export class CompanyApplication {
     }
     httpParms = httpParms.set('jobId', params.jobId);
     return this._http.get<ApiResponse<ApplicationInterface[]>>(
-      `/api/applications/applicants`,
+      `${environment.apiUrl}/applications/applicants`,
       { params: httpParms }
     );
   }
@@ -60,19 +61,19 @@ export class CompanyApplication {
     canId: string
   ): Observable<ApiResponse<applicationWithProfile>> {
     return this._http.get<ApiResponse<applicationWithProfile>>(
-      `/api/applications/applicationDetails/${appId}/${canId}`
+      `${environment.apiUrl}/applications/applicationDetails/${appId}/${canId}`
     );
   }
 
   getHrlist(): Observable<ApiResponse<InternalUserInterface[]>> {
     return this._http.get<ApiResponse<InternalUserInterface[]>>(
-      `/api/company/hrusers`
+      `${environment.apiUrl}/company/hrusers`
     );
   }
 
   getInterviewers(): Observable<ApiResponse<InternalUserInterface[]>> {
     return this._http.get<ApiResponse<InternalUserInterface[]>>(
-      `/api/company/interviewers`
+      `${environment.apiUrl}/company/interviewers`
     );
   }
 
@@ -81,7 +82,7 @@ export class CompanyApplication {
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     this._logger.log('Scheduling interview', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/shedule`,
+      `${environment.apiUrl}/interview/shedule`,
       data
     );
   }
@@ -91,7 +92,7 @@ export class CompanyApplication {
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     this._logger.log('Scheduling telephone interview', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/telephone/shedule`,
+      `${environment.apiUrl}/interview/telephone/shedule`,
       data
     );
   }
@@ -101,7 +102,7 @@ export class CompanyApplication {
     stage: string
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     return this._http.get<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/getstagedetails`,
+      `${environment.apiUrl}/interview/getstagedetails`,
       { params: { applicationId: applicationId, stage: stage } }
     );
   }
@@ -111,7 +112,7 @@ export class CompanyApplication {
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     this._logger.log('Updating feedback', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/updatefeedback`,
+      `${environment.apiUrl}/interview/updatefeedback`,
       data
     );
   }
@@ -121,7 +122,7 @@ export class CompanyApplication {
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     this._logger.log('Rescheduling telephone interview', data);
     return this._http.put<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/telephone/reshedule`,
+      `${environment.apiUrl}/interview/telephone/reshedule`,
       data
     );
   }
@@ -131,7 +132,7 @@ export class CompanyApplication {
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     this._logger.log('Rescheduling interview', data);
     return this._http.put<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/reshedule`,
+      `${environment.apiUrl}/interview/reshedule`,
       data
     );
   }
@@ -140,7 +141,7 @@ export class CompanyApplication {
     dto: CancelInterviewInterface
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     return this._http.patch<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/cancelinterview`,
+      `${environment.apiUrl}/interview/cancelinterview`,
       dto
     );
   }
@@ -150,7 +151,7 @@ export class CompanyApplication {
   ): Observable<ApiResponse<ScheduleResponseInterface>> {
     this._logger.log('Finalizing telephone result', data);
     return this._http.post<ApiResponse<ScheduleResponseInterface>>(
-      `/api/interview/finalize-result`,
+      `${environment.apiUrl}/interview/finalize-result`,
       data
     );
   }
@@ -159,7 +160,7 @@ export class CompanyApplication {
     applicationId: string
   ): Observable<ApiResponse<any>> {
     return this._http.get<ApiResponse<any>>(
-      `/api/interview/all-stages`,
+      `${environment.apiUrl}/interview/all-stages`,
       { params: { applicationId: applicationId } }
     );
   }
@@ -183,7 +184,7 @@ export class CompanyApplication {
     }
 
     return this._http.get<PaginatedResponse<ApplicationInterface[]>>(
-      `/api/applications/all-applicants`,
+      `${environment.apiUrl}/applications/all-applicants`,
       { params: httpParms }
     );
   }
@@ -193,7 +194,7 @@ export class CompanyApplication {
     if (status) {
       httpParams = httpParams.set('status', status);
     }
-    return this._http.get<ApiResponse<Schedule[]>>(`/api/interview/my-schedules`, {
+    return this._http.get<ApiResponse<Schedule[]>>(`${environment.apiUrl}/interview/my-schedules`, {
       params: httpParams,
     });
   }

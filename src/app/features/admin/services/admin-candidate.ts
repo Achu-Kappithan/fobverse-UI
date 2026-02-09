@@ -4,6 +4,7 @@ import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { Observable } from 'rxjs';
 import { ApiResponse, PlainResponse, QueryParmsInterface } from '../../../shared/interfaces/api-response.interface';
 import { CandidateInterface } from '../../candidate/interfaces/candidate.interface';
+import { environment } from '../../../../env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +29,14 @@ export class AdminCandidate {
     }
 
     return this._http.get<ApiResponse<CandidateInterface[]>>(
-      `/api/admin/candidate/getallcandidates`,
+      `${environment.apiUrl}/admin/candidate/getallcandidates`,
       { params: httpParms }
     );
   }
 
   updateStatus(id:string):Observable<PlainResponse>{
     this._logger.log('Updating candidate status:', id);
-    return this._http.get<PlainResponse>(`/api/admin/candidate/updatestatus?id=${id}`)
+    return this._http.get<PlainResponse>(`${environment.apiUrl}/admin/candidate/updatestatus?id=${id}`)
   }
   
 }

@@ -9,10 +9,12 @@ import { CompanyApplication } from '../../services/company-application';
 import { ApplicationInterface, Stages } from '../../interfaces/company.response.interface';
 import { environment } from '../../../../../env/environment';
 
+import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-all-applicants',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, LoadingSpinner],
   templateUrl: './all-applicants.html',
   styleUrls: ['./all-applicants.css']
 })
@@ -22,6 +24,7 @@ export class AllApplicantsComponent implements OnInit {
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _toast = inject(ToastService);
   private readonly _logger = inject(LoggerService);
+  isLoading: boolean = false;
 
   baseUrl:string = environment.cloudinaryBaseUrl
 
@@ -45,6 +48,7 @@ export class AllApplicantsComponent implements OnInit {
   }
 
   fetchApplicants(): void {
+    this.isLoading = true;
     this._companyService.getCompanyApplicants({
       page: this.currentPage,
       limit: this.pageSize,
@@ -54,11 +58,14 @@ export class AllApplicantsComponent implements OnInit {
       next: (res) => {
         this.applicants = res.data;
         this.totalApplicants = res.meta?.totalItems || 0;
+        this.isLoading = false;
         this._cdr.detectChanges();
       },
       error: (err) => {
         this._logger.error('Error fetching applicants:', err);
         this._toast.error(err.error?.message || 'Failed to fetch applicants');
+        this.isLoading = false;
+        this._cdr.detectChanges();
       }
     });
   }
@@ -97,7 +104,6 @@ export class AllApplicantsComponent implements OnInit {
     
     this._logger.log('Navigating to application details:', { jobId, applicantId, canId });
     
-    // Construct the full path: /company/joblist/applications/:jobId/viewapplication/:appId/:canId
     this._router.navigate([APP_ROUTES.COMPANY_JOB_APPLICATIONS, jobId, 'viewapplication', applicantId, canId])
       .then(success => {
         if (!success) {
