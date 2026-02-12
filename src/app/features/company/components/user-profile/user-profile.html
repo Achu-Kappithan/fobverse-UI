@@ -68,8 +68,8 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase"
-                >User Role</label
+              <p class="block text-xs font-semibold text-gray-500 uppercase"
+                >User Role</p
               >
               <p
                 class="text-base font-semibold text-gray-800 tracking-wide"
@@ -88,8 +88,8 @@
           <br />
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase"
-                >User Name</label
+              <p class="block text-xs font-semibold text-gray-500 uppercase"
+                >User Name</p
               >
               <p class="text-lg font-medium text-gray-800" *ngIf="userProfile">
                 {{ userProfile.name }}
@@ -99,8 +99,8 @@
               </p>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase"
-                >E-mail</label
+              <p class="block text-xs font-semibold text-gray-500 uppercase"
+                >E-mail</p
               >
               <p class="text-lg font-medium text-gray-800" *ngIf="userProfile">
                 {{ userProfile.email }}
@@ -177,7 +177,7 @@
                 id="newPassword"
                 formControlName="newPassword"
                 class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                appPasswordvalidator
+                appPasswordValidator
                 [minLength]="8"
                 [requireUppercase]="true"
                 [requireLowercase]="true"

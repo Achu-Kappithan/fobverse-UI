@@ -3,20 +3,20 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 @Directive({
-  selector: '[appPasswordvalidator]',
+  selector: '[appPasswordValidator]',
   standalone: true,
   providers:[{
     provide:NG_VALIDATORS,
-    useExisting:Passwordvalidator,
+    useExisting:PasswordValidator,
     multi: true
   }]
 })
-export class Passwordvalidator implements Validator {
-  @Input() requireUppercase: boolean = true
-  @Input() requireLowercase: boolean = true
-  @Input() requireDigit: boolean = true
-  @Input() requireSpecialChar: boolean = true
-  @Input() minLength: number = 8
+export class PasswordValidator implements Validator {
+  @Input() requireUppercase = true
+  @Input() requireLowercase = true
+  @Input() requireDigit = true
+  @Input() requireSpecialChar = true
+  @Input() minLength = 8
 
   private readonly _logger = inject(LoggerService);
 validate(control: AbstractControl): ValidationErrors | null {
@@ -55,7 +55,7 @@ validate(control: AbstractControl): ValidationErrors | null {
       };
     }
 
-    if (this.requireSpecialChar && !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(value)) {
+    if (this.requireSpecialChar && !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(value)) {
       errors['requireSpecialChar'] = {
         message: 'Password must contain at least one special character.'
       };

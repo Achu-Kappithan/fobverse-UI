@@ -7,7 +7,7 @@ import { LoggerService } from '../logger/logger.service';
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(private injector: Injector) {}
 
-  handleError(error: any): void {
+  handleError(error: unknown): void {
     const logger = this.injector.get<LoggerService>(LoggerService);
     const toast = this.injector.get<ToastService>(ToastService);
 
@@ -18,16 +18,18 @@ export class GlobalErrorHandler implements ErrorHandler {
       // Server error
       message = error.error?.message || error.message || 'Server connection failed';
       logger.error(`[Server Error ${error.status}]: ${message}`, error);
-    } else {
-      // Client error
-      message = error.message ? error.message : error.toString();
-      stackTrace = error.stack ? error.stack : '';
+    } else if (error instanceof Error) {
+      // Client error (Standard Error)
+      message = error.message;
+      stackTrace = error.stack || '';
       logger.error(`[Client Error]: ${message}`, { stackTrace, error });
+    } else {
+      // Other error types
+      message = error ? String(error) : 'Unknown error';
+      logger.error(`[Client Error]: ${message}`, { error });
     }
 
     // Notify user via Toast
     toast.error('Application Error', message);
-    
-    // In many industrial apps, here you would also send the error to a logging service like Sentry or LogRocket
   }
 }

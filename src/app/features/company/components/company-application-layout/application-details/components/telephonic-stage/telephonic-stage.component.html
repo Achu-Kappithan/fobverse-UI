@@ -276,10 +276,11 @@
       <form [formGroup]="finalizeResultForm" (ngSubmit)="submitFinalizeResult()">
         <!-- Final Result Dropdown -->
         <div class="mb-5">
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
+          <label for="finalResult" class="block text-sm font-semibold text-gray-700 mb-2">
             Final Result <span class="text-red-500">*</span>
           </label>
           <select
+            id="finalResult"
             formControlName="finalResult"
             class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
           >
@@ -300,10 +301,11 @@
 
         <!-- Final Feedback Input -->
         <div class="mb-6">
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
+          <label for="finalFeedback" class="block text-sm font-semibold text-gray-700 mb-2">
             Final Feedback <span class="text-red-500">*</span>
           </label>
           <textarea
+            id="finalFeedback"
             formControlName="finalFeedback"
             rows="5"
             placeholder="Provide detailed feedback about the candidate's performance..."
@@ -395,10 +397,11 @@
       <form [formGroup]="FeedbackForm" (ngSubmit)="submitFeedback()">
         <!-- Feedback Input -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-dark-gray mb-1"
+          <label for="feedback" class="block text-sm font-medium text-dark-gray mb-1"
             >Feedback</label
           >
           <textarea
+            id="feedback"
             formControlName="feedback"
             rows="4"
             placeholder="Type your feedback here..."
@@ -417,10 +420,11 @@
 
         <!-- Result Dropdown -->
         <div class="mb-6">
-          <label class="block text-sm font-medium text-dark-gray mb-1"
+          <label for="result" class="block text-sm font-medium text-dark-gray mb-1"
             >Result</label
           >
           <select
+            id="result"
             formControlName="result"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
           >
@@ -492,10 +496,11 @@
       <form [formGroup]="FeedbackForm" (ngSubmit)="submitFeedback()">
         <!-- Feedback Input -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-dark-gray mb-1"
+          <label for="feedbackUpdate" class="block text-sm font-medium text-dark-gray mb-1"
             >Feedback</label
           >
           <textarea
+            id="feedbackUpdate"
             formControlName="feedback"
             rows="4"
             placeholder="Type your feedback here..."
@@ -514,10 +519,11 @@
 
         <!-- Result Dropdown -->
         <div class="mb-6">
-          <label class="block text-sm font-medium text-dark-gray mb-1"
+          <label for="resultUpdate" class="block text-sm font-medium text-dark-gray mb-1"
             >Result</label
           >
           <select
+            id="resultUpdate"
             formControlName="result"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
           >
@@ -604,9 +610,10 @@
     >
       <!-- Interview Date -->
       <div>
-        <label class="block text-gray-500 text-sm mb-1">Interview Date</label>
+        <label for="scheduledDate" class="block text-gray-500 text-sm mb-1">Interview Date</label>
         <input
           type="date"
+          id="scheduledDate"
           formControlName="scheduledDate"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
@@ -623,9 +630,10 @@
 
       <!-- Interview Start Time -->
       <div>
-        <label class="block text-gray-500 text-sm mb-1">Start Time</label>
+        <label for="scheduledTime" class="block text-gray-500 text-sm mb-1">Start Time</label>
         <input
           type="time"
+          id="scheduledTime"
           formControlName="scheduledTime"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-dark-gray bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
@@ -642,8 +650,9 @@
 
       <!-- HR Dropdown -->
       <div>
-        <label class="block text-gray-500 text-sm mb-1">Assign HR</label>
+        <label for="hrSelect" class="block text-gray-500 text-sm mb-1">Assign HR</label>
         <select
+          id="hrSelect"
           (change)="onHrSelect($event)"
           formControlName="hrId"
           class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-dark-gray focus:outline-none focus:ring-2 focus:ring-purple-500"

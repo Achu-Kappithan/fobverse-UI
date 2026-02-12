@@ -21,12 +21,12 @@ export class MySchedulesComponent implements OnInit {
 
   schedules: Schedule[] = [];
   filteredSchedules: Schedule[] = [];
-  searchQuery: string = '';
-  selectedStage: string = '';
-  selectedStatus: string = '';
-  currentPage: number = 1;
-  pageSize: number = 5;
-  totalSchedules: number = 0;
+  searchQuery = '';
+  selectedStage = '';
+  selectedStatus = '';
+  currentPage = 1;
+  pageSize = 5;
+  totalSchedules = 0;
 
 
   statusOptions = [

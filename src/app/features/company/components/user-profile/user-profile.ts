@@ -6,17 +6,17 @@ import { InternalUserInterface, UpdateInternalUserInterface } from '../../interf
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, switchMap, of } from 'rxjs'; 
-import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, RoleDisplayPipe, ReactiveFormsModule, Passwordvalidator],
+  imports: [CommonModule, RoleDisplayPipe, ReactiveFormsModule, PasswordValidator],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css'
 })
-export class UserProfile implements OnInit {
+export class UserProfileComponent implements OnInit {
   activeCard: 'profile' | 'password' | 'edit' = 'profile';
   userProfile: InternalUserInterface | null = null;
   isLoading = false;
@@ -110,8 +110,8 @@ export class UserProfile implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.previewImage = e.target?.result as string; 
         this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedFile);
@@ -144,7 +144,7 @@ export class UserProfile implements OnInit {
       name: this.updateProfileForm.get('name')?.value,
       email: this.updateProfileForm.get('email')?.value,
     };
-    let uploadObservable: Observable<any>;
+    let uploadObservable: Observable<Record<string, unknown> | null>;
     const publicIdBase = this.userProfile?.email ? this.userProfile.email.split('@')[0] : 'user_profile';
 
     if (this.selectedFile) {
@@ -167,9 +167,9 @@ export class UserProfile implements OnInit {
     }
     
     uploadObservable.subscribe({
-      next: (cloudinaryUploadResult) => {
-        if (cloudinaryUploadResult && cloudinaryUploadResult.secure_url) {
-          profileData.profileImg = this.stripCloudinaryBase(cloudinaryUploadResult.secure_url);
+      next: (cloudinaryUploadResult: Record<string, unknown> | null) => {
+        if (cloudinaryUploadResult && cloudinaryUploadResult['secure_url']) {
+          profileData.profileImg = this.stripCloudinaryBase(cloudinaryUploadResult['secure_url'] as string);
         }
         this._companyService.updateUserProfile(profileData).subscribe({
           next: (res) => {
@@ -216,7 +216,7 @@ export class UserProfile implements OnInit {
     
     const { currentPassword, newPassword } = this.passwordChangeForm.value;
     this._companyService.changePassword(currentPassword, newPassword).subscribe({
-      next: (res) => {
+      next: () => {
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.success('Password changed successfully.');
         this.isLoading = false;

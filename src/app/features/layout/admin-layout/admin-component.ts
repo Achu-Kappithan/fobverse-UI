@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AdminHeader } from '../../../common/admin-header/admin-header';
-import { AdminSidebar } from '../../../common/admin-sidebar/admin-sidebar';
+import { AdminHeaderComponent } from '../../../common/admin-header/admin-header';
+import { AdminSidebarComponent } from '../../../common/admin-sidebar/admin-sidebar';
 import { CommonModule } from '@angular/common';
-import { AutoCollapseSidebar } from '../../../shared/directives/auto-collapse-sidebar';
+import { AutoCollapseSidebarDirective } from '../../../shared/directives/auto-collapse-sidebar';
 
 @Component({
   selector: 'app-admin-component',
-  imports: [RouterOutlet, AdminHeader, AdminSidebar, CommonModule, AutoCollapseSidebar],
+  imports: [RouterOutlet, AdminHeaderComponent, AdminSidebarComponent, CommonModule, AutoCollapseSidebarDirective],
   templateUrl: './admin-component.html',
   styleUrl: './admin-component.css',
 })

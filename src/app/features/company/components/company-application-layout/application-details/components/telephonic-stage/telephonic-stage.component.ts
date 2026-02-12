@@ -73,17 +73,17 @@ export class TelephonicStageComponent implements OnInit {
   @Input() userEmail: string | undefined = undefined;
 
   hrList: InternalUserInterface[] | null = null;
-  isSaving: boolean = false;
-  saveComplete: boolean = false;
-  isLoading: boolean = false;
+  isSaving = false;
+  saveComplete = false;
+  isLoading = false;
 
   interviewSheduleForm!: FormGroup;
   FeedbackForm!: FormGroup;
   finalizeResultForm!: FormGroup;
 
   sheduleModal: string | null = null;
-  isFeedbackModalOpen: boolean = false;
-  isFinalizeModalOpen: boolean = false;
+  isFeedbackModalOpen = false;
+  isFinalizeModalOpen = false;
   selectedHr: InternalUserInterface | null = null;
   currentUserId: string | null = null;
   private readonly _logger = inject(LoggerService);

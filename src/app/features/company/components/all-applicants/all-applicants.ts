@@ -6,15 +6,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CompanyApplication } from '../../services/company-application';
-import { ApplicationInterface, Stages } from '../../interfaces/company.response.interface';
+import { ApplicationInterface } from '../../interfaces/company.response.interface';
 import { environment } from '../../../../../env/environment';
 
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 
 @Component({
   selector: 'app-all-applicants',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, LoadingSpinner],
+  imports: [CommonModule,LoadingSpinnerComponent,FormsModule,RouterModule],
   templateUrl: './all-applicants.html',
   styleUrls: ['./all-applicants.css']
 })
@@ -24,16 +25,16 @@ export class AllApplicantsComponent implements OnInit {
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _toast = inject(ToastService);
   private readonly _logger = inject(LoggerService);
-  isLoading: boolean = false;
+  isLoading = false;
 
   baseUrl:string = environment.cloudinaryBaseUrl
 
   applicants: ApplicationInterface[] = [];
-  searchQuery: string = '';
-  selectedStage: string = '';
-  currentPage: number = 1;
-  pageSize: number = 5;
-  totalApplicants: number = 0;
+  searchQuery = '';
+  selectedStage = '';
+  currentPage = 1;
+  pageSize = 5;
+  totalApplicants = 0;
 
   hiringStages = [
     { value: '', label: 'All Stages' },

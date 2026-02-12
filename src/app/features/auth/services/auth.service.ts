@@ -21,7 +21,7 @@ import {
 } from '../../../shared/interfaces/api-response.interface';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CompanyProfileInterface } from '../../company/interfaces/company.response.interface';
+
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../shared/constants/routes.constants';
@@ -45,11 +45,11 @@ export class AuthService {
 
   constructor(
     private _http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
-  registerCandidate(candidate: CandidateRegistration): Observable<any> {
-    return this._http.post(`${environment.apiUrl}/auth/register`, candidate, {
+  registerCandidate(candidate: CandidateRegistration): Observable<ApiResponse<UserPartial>> {
+    return this._http.post<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/register`, candidate, {
       withCredentials: true,
     });
   }
@@ -121,12 +121,12 @@ export class AuthService {
       );
   }
 
-  refreshToken(): Observable<any> {
+  refreshToken(): Observable<Record<string, unknown> | null> {
     this._logger.debug('Attempting to refresh token...');
     return this._http
-      .post(`${environment.apiUrl}/auth/refresh`, {}, { withCredentials: true })
+      .post<Record<string, unknown>>(`${environment.apiUrl}/auth/refresh`, {}, { withCredentials: true })
       .pipe(
-        tap((response) => {
+        tap(() => {
           this._logger.info('Refresh token successful. New access token set via cookie.');
         }),
         catchError((error) => {
@@ -138,7 +138,7 @@ export class AuthService {
   }
 
   hasRefreshToken(): boolean {
-    let refreshtoken = document.cookie.includes('refresh_token=');
+    const refreshtoken = document.cookie.includes('refresh_token=');
     return refreshtoken;
   }
 
@@ -146,8 +146,8 @@ export class AuthService {
     this._http
       .post(`${environment.apiUrl}/auth/logout`, {}, { withCredentials: true })
       .subscribe({
-        next: (res) => {
-          this._socialAuthService.signOut().catch(err => this._logger.warn('Social sign out failed or already signed out'));
+        next: () => {
+          this._socialAuthService.signOut().catch(() => this._logger.warn('Social sign out failed or already signed out'));
           if (User == 'company') {
             this.CompanySubject.next(null);
             this._router.navigate([`/${APP_ROUTES.COMPANY_LOGIN}`]);
@@ -216,10 +216,10 @@ export class AuthService {
 
   companyUsersLogin(
     loginInfo: loginInterface
-  ): Observable<ApiResponse<CompanyProfileInterface | any>> {
+  ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponse<CompanyProfileInterface | any>>(
+      .post<ApiResponse<UserPartial>>(
         `${environment.apiUrl}/auth/companyuserslogin`,
         loginInfo,
         { withCredentials: true }

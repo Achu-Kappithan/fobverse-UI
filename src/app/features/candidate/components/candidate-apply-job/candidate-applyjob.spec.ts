@@ -4,11 +4,11 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CandidateApplyjob } from './candidate-applyjob';
+import { CandidateApplyJobComponent } from './candidate-applyjob';
 
 describe('CandidateApplyjob', () => {
-  let component: CandidateApplyjob;
-  let fixture: ComponentFixture<CandidateApplyjob>;
+  let component: CandidateApplyJobComponent;
+  let fixture: ComponentFixture<CandidateApplyJobComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,11 +17,11 @@ describe('CandidateApplyjob', () => {
         provideHttpClient(),
         provideHttpClientTesting()
       ],
-      imports: [CandidateApplyjob]
+      imports: [CandidateApplyJobComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CandidateApplyjob);
+    fixture = TestBed.createComponent(CandidateApplyJobComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

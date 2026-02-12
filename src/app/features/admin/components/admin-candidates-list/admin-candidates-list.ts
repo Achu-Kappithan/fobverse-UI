@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCandidate } from '../../services/admin-candidate';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/api-response.interface';
@@ -14,14 +14,14 @@ import { LoggerService } from '../../../../shared/services/logger/logger.service
 
 @Component({
   selector: 'app-admin-candidates-list',
-  imports: [CommonModule,LoadingSpinner,FormsModule,RouterModule],
+  imports: [CommonModule,LoadingSpinnerComponent,FormsModule,RouterModule],
   templateUrl: './admin-candidates-list.html',
   styleUrl: './admin-candidates-list.css',
 })
-export class AdminCandidatesList  implements OnInit {
-  isLoading:boolean = false
+export class AdminCandidatesListComponent  implements OnInit {
+  isLoading = false
   candidates:CandidateInterface[] = []
-  ChildRouteActive:boolean = false
+  ChildRouteActive = false
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   QueryParms : QueryParmsInterface = {

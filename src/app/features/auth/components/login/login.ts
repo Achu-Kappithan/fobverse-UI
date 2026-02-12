@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,7 +16,7 @@ import {
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 
@@ -27,18 +27,18 @@ import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
     ReactiveFormsModule,
     CommonModule,
     GoogleSigninButtonModule,
-    Passwordvalidator,
+    PasswordValidator,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class CandidateLogin implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   user: SocialUser | null = null;
-  loggedIn: boolean = false;
+  loggedIn = false;
 
-  userType: string = '';
-  imagePath: string = '';
+  userType = '';
+  imagePath = '';
 
   private _AuthService = inject(AuthService);
   private _router = inject(Router);

@@ -32,9 +32,9 @@
           'border-red-500': interview.status === 'Cancelled',
           'border-blue-500': interview.status === 'Rescheduled'
         }">
-        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <p class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
           Status
-        </label>
+        </p>
         <span
           [ngClass]="{
             'bg-yellow-100 text-yellow-800': interview.status === 'Scheduled',
@@ -50,9 +50,9 @@
 
       <!-- Interview Date Card -->
       <div class="bg-gray-50 rounded-xl p-4 theme-transition">
-        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <p class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
           Interview Date
-        </label>
+        </p>
         <p class="text-lg font-bold text-gray-900">
           {{ interview.scheduledDate || "TBD" }}
         </p>
@@ -60,9 +60,9 @@
 
       <!-- Interview Time Card -->
       <div class="bg-gray-50 rounded-xl p-4 theme-transition">
-        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <p class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
           Interview Time
-        </label>
+        </p>
         <p class="text-lg font-bold text-gray-900">
           {{ interview.scheduledTime || "TBD" }}
         </p>
@@ -73,9 +73,9 @@
     <div class="px-6 pb-6">
       <div class="bg-purple-50 rounded-xl p-5 border border-purple-100 theme-transition">
         <div class="flex justify-between items-center mb-4">
-          <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider mb-0">
+          <p class="block text-sm font-semibold text-gray-700 uppercase tracking-wider mb-0">
             Assigned To (Interview Panel)
-          </label>
+          </p>
           
           <button
             *ngIf="(interview.status === 'Scheduled' || interview.status === 'Rescheduled') && !isFeedbackSubmitted()"
@@ -313,10 +313,11 @@
       <!-- Date and Time Row -->
       <div class="grid grid-cols-2 gap-4">
         <div class="space-y-2">
-          <label class="block text-sm font-bold text-gray-700">Interview Date <span class="text-red-500">*</span></label>
+          <label for="scheduledDate" class="block text-sm font-bold text-gray-700">Interview Date <span class="text-red-500">*</span></label>
           <div class="relative">
             <input 
               type="date" 
+              id="scheduledDate"
               formControlName="scheduledDate" 
               class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all theme-transition">
           </div>
@@ -326,10 +327,11 @@
         </div>
         
         <div class="space-y-2">
-          <label class="block text-sm font-bold text-gray-700">Start Time <span class="text-red-500">*</span></label>
+          <label for="scheduledTime" class="block text-sm font-bold text-gray-700">Start Time <span class="text-red-500">*</span></label>
           <div class="relative">
             <input 
               type="time" 
+              id="scheduledTime"
               formControlName="scheduledTime" 
               class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all theme-transition">
           </div>
@@ -341,7 +343,7 @@
 
       <!-- Interview Panel -->
       <div class="space-y-3">
-        <label class="block text-sm font-bold text-gray-700">Interview Panel <span class="text-red-500">*</span></label>
+        <p class="block text-sm font-bold text-gray-700">Interview Panel <span class="text-red-500">*</span></p>
         <div class="border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-gray-50 theme-transition">
           <div class="max-h-48 overflow-y-auto p-2 space-y-1 custom-scrollbar">
             
@@ -425,9 +427,10 @@
       
       <!-- Status Selection -->
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-gray-700">Interview Status <span class="text-red-500">*</span></label>
+        <label for="interviewResult" class="block text-sm font-bold text-gray-700">Interview Status <span class="text-red-500">*</span></label>
         <div class="relative">
           <select 
+            id="interviewResult"
             formControlName="result" 
             class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all appearance-none theme-transition"
           >
@@ -448,8 +451,9 @@
 
       <!-- Feedback Textarea -->
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-gray-700">Technical Feedback <span class="text-red-500">*</span></label>
+        <label for="technicalFeedback" class="block text-sm font-bold text-gray-700">Technical Feedback <span class="text-red-500">*</span></label>
         <textarea 
+          id="technicalFeedback"
           formControlName="feedback" 
           rows="5"
           (input)="onFeedbackInput($event)"
@@ -524,9 +528,10 @@
       
       <!-- Status Selection -->
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-gray-700">Final Result <span class="text-red-500">*</span></label>
+        <label for="finalResult" class="block text-sm font-bold text-gray-700">Final Result <span class="text-red-500">*</span></label>
         <div class="relative">
           <select 
+            id="finalResult"
             formControlName="finalResult" 
             class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all appearance-none theme-transition"
           >
@@ -547,8 +552,9 @@
 
       <!-- Feedback Textarea -->
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-gray-700">Overall Feedback <span class="text-red-500">*</span></label>
+        <label for="finalFeedback" class="block text-sm font-bold text-gray-700">Overall Feedback <span class="text-red-500">*</span></label>
         <textarea 
+          id="finalFeedback"
           formControlName="finalFeedback" 
           rows="5"
           (input)="onFinalizeInput($event)"

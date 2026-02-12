@@ -50,15 +50,15 @@ export class TechnicalStageComponent implements OnInit {
   currentUserId: string | null = null;
   private readonly _logger = inject(LoggerService);
 
-  technicalSheduleModalOpen: boolean = false;
-  feedbackModalOpen: boolean = false;
-  finalizeModalOpen: boolean = false;
-  feedbackCharCount: number = 0;
-  finalizeCharCount: number = 0;
+  technicalSheduleModalOpen = false;
+  feedbackModalOpen = false;
+  finalizeModalOpen = false;
+  feedbackCharCount = 0;
+  finalizeCharCount = 0;
   sheduleModal: string | null = null;
-  isLoading: boolean = false;
-  isSaving: boolean = false;
-  saveComplete: boolean = false;
+  isLoading = false;
+  isSaving = false;
+  saveComplete = false;
   interviewers: InternalUserInterface[] | null = null;
   technicalScheduleForm!: FormGroup;
   feedbackForm!: FormGroup;
@@ -132,7 +132,7 @@ export class TechnicalStageComponent implements OnInit {
       });
   }
 
-  openTechinalModal(mode: string = 'Scheduled') {
+  openTechinalModal(mode = 'Scheduled') {
     this.sheduleModal = mode;
     
     if (!this.technicalSheduleModalOpen && !this.interviewers) {
@@ -162,8 +162,8 @@ export class TechnicalStageComponent implements OnInit {
     this.feedbackCharCount = 0;
   }
 
-  onFeedbackInput(event: any) {
-    this.feedbackCharCount = event.target.value.length;
+  onFeedbackInput(event: Event) {
+    this.feedbackCharCount = (event.target as HTMLTextAreaElement).value.length;
   }
 
   openFinalizeModal() {
@@ -189,8 +189,8 @@ export class TechnicalStageComponent implements OnInit {
     this.finalizeCharCount = 0;
   }
 
-  onFinalizeInput(event: any) {
-    this.finalizeCharCount = event.target.value.length;
+  onFinalizeInput(event: Event) {
+    this.finalizeCharCount = (event.target as HTMLTextAreaElement).value.length;
   }
 
   submitFeedback() {
@@ -271,7 +271,7 @@ export class TechnicalStageComponent implements OnInit {
     }
     return this.interview.evaluators.some(
       (evaluator) =>
-        (typeof evaluator.interviewerId === 'string' ? evaluator.interviewerId : (evaluator.interviewerId as any)?._id) === currentUserId &&
+        (typeof evaluator.interviewerId === 'string' ? evaluator.interviewerId : (evaluator.interviewerId as unknown as Record<string, unknown>)?.['_id']) === currentUserId &&
         !!evaluator.feedback
     );
   }
@@ -282,7 +282,7 @@ export class TechnicalStageComponent implements OnInit {
         .filter(e => e.interviewerId)
         .map(e => {
           const id = e.interviewerId;
-          return typeof id === 'string' ? id : (id as any)?._id || '';
+          return typeof id === 'string' ? id : (id as unknown as Record<string, unknown>)?.['_id'] || '';
         })
         .filter(id => id !== ''); 
       
@@ -317,10 +317,10 @@ export class TechnicalStageComponent implements OnInit {
     let data = this.technicalScheduleForm.value;
     
     const selectedInterviewerIds = data.interviewers;
-    const validInterviewerIds = selectedInterviewerIds.filter((id: any) => typeof id === 'string' && id.trim() !== '');
+    const validInterviewerIds = selectedInterviewerIds.filter((id: unknown) => typeof id === 'string' && id.trim() !== '');
     if (validInterviewerIds.length !== selectedInterviewerIds.length) {
       this._logger.warn('Found invalid interviewer IDs (filtered out):', 
-        selectedInterviewerIds.filter((id: any) => typeof id !== 'string' || id.trim() === '')
+        selectedInterviewerIds.filter((id: unknown) => typeof id !== 'string' || id.trim() === '')
       );
     }
     
@@ -403,10 +403,10 @@ export class TechnicalStageComponent implements OnInit {
     });
   }
 
-  onInterviewerChange(event: any, hrId: string) {
+  onInterviewerChange(event: Event, hrId: string) {
     const selectedIds = this.technicalScheduleForm.get('interviewers')?.value || [];
     
-    if (event.target.checked) {
+    if ((event.target as HTMLInputElement).checked) {
       selectedIds.push(hrId);
     } else {
       const index = selectedIds.indexOf(hrId);
@@ -434,7 +434,7 @@ export class TechnicalStageComponent implements OnInit {
     const isEvaluator = this.interview.evaluators.some(
       evaluator => {
         const id = evaluator.interviewerId;
-        const idString = typeof id === 'string' ? id : (id as any)?._id || '';
+        const idString = typeof id === 'string' ? id : (id as unknown as Record<string, unknown>)?.['_id'] || '';
         return idString === currentUserId;
       }
     );

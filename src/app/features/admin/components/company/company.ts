@@ -7,6 +7,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './company.html',
   styleUrl: './company.css'
 })
-export class Company {
+export class AdminCompanyComponent {
 
 }

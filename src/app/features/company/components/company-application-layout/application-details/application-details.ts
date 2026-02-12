@@ -44,25 +44,25 @@ import { HiringStatusComponent } from './components/hiring-status/hiring-status.
     ]),
   ],
 })
-export class ApplicationDetails implements OnInit {
-  contentId: string = 'Profile';
+export class ApplicationDetailsComponent implements OnInit {
+  contentId = 'Profile';
   pdfSrc: SafeResourceUrl | null = null;
   applicationId: string | null = null;
   candidateId: string | null = null;
   applicationDetails: applicationWithProfile | null = null;
   profileData: CandidateInterface | null = null;
   addressValue: string | null = null;
-  isLoading: boolean = false;
-  isLoadingStage: boolean = false;
+  isLoading = false;
+  isLoadingStage = false;
   baseUrl: string = environment.cloudinaryBaseUrl;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
   resumePdfUrl: string | null = null;
   private readonly _logger = inject(LoggerService);
   Math = Math;
-  currentStageIndex: number = -1;
+  currentStageIndex = -1;
 
-  currentStageId: string = 'shortlisted';
-  interviewScheduled: boolean = true;
+  currentStageId = 'shortlisted';
+  interviewScheduled = true;
   
   hiringStages = ['Qualified', 'Telephonic', 'Technical', 'Hired'];
 
@@ -177,7 +177,7 @@ export class ApplicationDetails implements OnInit {
 
     if (index < this.currentStageIndex) return 'completed';
     if (index === this.currentStageIndex) {
-      if (index === 3 && (this.applicationDetails?.Stages as any) === Stages.Hired) {
+      if (index === 3 && (this.applicationDetails?.Stages as string) === Stages.Hired) {
         return 'completed';
       }
       return 'current';

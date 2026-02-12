@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../../../shared/constants/routes.constants';
-import { ApiResponse, PlainResponse } from '../../../../../shared/interfaces/api-response.interface';
+import { PlainResponse } from '../../../../../shared/interfaces/api-response.interface';
 
 @Component({
   selector: 'app-forgot.pass.email',
@@ -19,10 +19,10 @@ import { ApiResponse, PlainResponse } from '../../../../../shared/interfaces/api
   templateUrl: './forgot.pass.email.html',
   styleUrl: './forgot.pass.email.css',
 })
-export class ForgotPassEmail implements OnInit {
+export class ForgotPassEmailComponent implements OnInit {
   forgotPasswordForm!: FormGroup;
-  userType: string = '';
-  isLoading: boolean = false;
+  userType = '';
+  isLoading = false;
 
   private readonly _authService = inject(AuthService);
   private readonly _route = inject(ActivatedRoute);
@@ -35,7 +35,7 @@ export class ForgotPassEmail implements OnInit {
       this.userType = user['user'];
     });
 
-    this._logger.log('this is the data get from  qury ', this.userType);
+    this._logger.log('this is the data get from qury ', this.userType);
 
     this.forgotPasswordForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -63,10 +63,11 @@ export class ForgotPassEmail implements OnInit {
             this.forgotPasswordForm.reset();
           }
         },
-        error: (error: any) => {
+        error: (error: unknown) => {
           this.isLoading = false;
           this._logger.error('error updatePassword', error);
-          this._toast.error(error.error.message);
+          const errorObj = error as { error?: { message?: string } };
+          this._toast.error(errorObj?.error?.message || 'An error occurred');
           this.forgotPasswordForm.reset();
         },
       });

@@ -68,14 +68,14 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase"
-                >User Role</label
+              <p class="block text-xs font-semibold text-gray-500 uppercase"
+                >User Role</p
               >
               <p
                 class="text-base font-semibold text-gray-800 tracking-wide"
                 *ngIf="userProfile"
               >
-                {{ userProfile.role | roleDisplay }}
+                {{ getUserRole() | roleDisplay }}
               </p>
               <p
                 class="text-base font-semibold text-gray-800 tracking-wide"
@@ -88,22 +88,22 @@
           <br />
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase"
-                >User Name</label
+              <p class="block text-xs font-semibold text-gray-500 uppercase"
+                >User Name</p
               >
               <p class="text-lg font-medium text-gray-800" *ngIf="userProfile">
-                {{ userProfile.name }}
+                {{ userProfile['name'] }}
               </p>
               <p class="text-lg font-medium text-gray-800" *ngIf="isLoading">
                 Loading...
               </p>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase"
-                >E-mail</label
+              <p class="block text-xs font-semibold text-gray-500 uppercase"
+                >E-mail</p
               >
               <p class="text-lg font-medium text-gray-800" *ngIf="userProfile">
-                {{ userProfile.email }}
+                {{ userProfile['email'] }}
               </p>
               <p class="text-lg font-medium text-gray-800" *ngIf="isLoading">
                 Loading...
@@ -114,7 +114,7 @@
 
         <div class="relative w-32 h-32 mx-auto md:mx-0 mt-6 md:mt-0">
           <img
-            [src]="userProfile?.profileImg ? cludBaseUrl+userProfile?.profileImg :'https://placehold.co/150x150'"
+            [src]="userProfile?.['profileImg'] ? cludBaseUrl+userProfile?.['profileImg'] :'https://placehold.co/150x150'"
             alt="User"
             class="rounded-full w-full h-full object-cover border-4 border-purple-600 shadow-lg"
           />
@@ -177,7 +177,7 @@
                 id="newPassword"
                 formControlName="newPassword"
                 class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
-                appPasswordvalidator
+                appPasswordValidator
                 [minLength]="8"
                 [requireUppercase]="true"
                 [requireLowercase]="true"
@@ -290,7 +290,7 @@
           <div class="relative w-32 h-32 mx-auto md:mx-0 mt-6 mb-8">
             <img
               [src]="
-                previewImage || cludBaseUrl+userProfile?.profileImg || '/profileimages/logodefault.jpg'
+                previewImage || cludBaseUrl+userProfile?.['profileImg'] || '/profileimages/logodefault.jpg'
               "
               alt="User"
               class="rounded-full w-full h-full object-cover border-4 border-purple-600 shadow-lg"
@@ -394,3 +394,4 @@
     </div>
   </div>
 </div>
+

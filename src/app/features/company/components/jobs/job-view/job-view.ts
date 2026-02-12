@@ -5,16 +5,16 @@ import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.response.interface';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../../common/loading-spinner/loading-spinner';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-job-view',
-  imports: [RouterModule,CommonModule,LoadingSpinner],
+  imports: [CommonModule, RouterModule, LoadingSpinnerComponent],
   templateUrl: './job-view.html',
   styleUrl: './job-view.css'
 })
-export class JobView implements OnInit,OnDestroy{
+export class JobViewComponent implements OnInit,OnDestroy{
 
   private _subscription:Subscription = new Subscription()
 

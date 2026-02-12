@@ -27,15 +27,15 @@ import {
   templateUrl: './create-job.html',
   styleUrl: './create-job.css',
 })
-export class CreateJob implements OnInit {
+export class CreateJobComponent implements OnInit {
 
   creatJob!: FormGroup;
-  minDate: string = '';
+  minDate = '';
   locationPattern = /^[A-Za-z\s]+$/;
-  isSaving: boolean = false;
+  isSaving = false;
   private readonly _logger = inject(LoggerService);
 
-  suggestions: { [key: number]: string[] | undefined } = {};
+  suggestions: Record<number, string[] | undefined> = {};
 
   private searchSubject = new Subject<{ val: string; index: number }>();
 
@@ -217,7 +217,7 @@ export class CreateJob implements OnInit {
   }
 
   getFormValidationErrors() {
-    let formErrors: any = {};
+    const formErrors: Record<string, unknown> = {};
     Object.keys(this.creatJob.controls).forEach((key) => {
       const controlErrors = this.creatJob.get(key)?.errors;
       if (controlErrors) {

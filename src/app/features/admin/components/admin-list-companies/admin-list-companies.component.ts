@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCompanyService } from '../../services/admin-company-service';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -14,13 +14,13 @@ import { LoggerService } from '../../../../shared/services/logger/logger.service
 
 @Component({
   selector: 'app-admin-list-companies',
-  imports: [CommonModule,LoadingSpinner,FormsModule,RouterModule],
+  imports: [CommonModule,LoadingSpinnerComponent,FormsModule,RouterModule],
   templateUrl: './admin-list-companies.component.html',
   styleUrl: './admin-list-companies.component.css',
 })
 export class AdminListCompaniesComponent implements OnInit {
   companies: CompanyProfileInterface[] = [];
-  isLoading: boolean = false;
+  isLoading = false;
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   paginationMeta:PaginationMeta ={

@@ -1,5 +1,5 @@
-<div *ngIf="isOpen" (click)="onClose()" class="fixed inset-0 z-50 flex items-start justify-center bg-black/20 backdrop-blur-sm p-4 sm:p-6 lg:p-8 overflow-y-auto scrollbar-hide">
-    <div (click)="$event.stopPropagation()" appClickOutside (appClickOutside)="onClose()" class="relative max-w-lg w-full bg-white p-0 rounded-xl shadow-xl animate-fade-in-up mt-20 mb-8 max-h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide border border-divider theme-transition">
+<div *ngIf="isOpen" (click)="onClose()" (keydown.escape)="onClose()" class="fixed inset-0 z-50 flex items-start justify-center bg-black/20 backdrop-blur-sm p-4 sm:p-6 lg:p-8 overflow-y-auto scrollbar-hide" tabindex="-1">
+    <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" role="presentation" appClickOutside (appClickOutside)="onClose()" class="relative max-w-lg w-full bg-white p-0 rounded-xl shadow-xl animate-fade-in-up mt-20 mb-8 max-h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide border border-divider theme-transition">
         <button
             (click)="onClose()"
             [disabled]="isSubmitting"

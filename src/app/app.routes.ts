@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
-import { EmailVerificationFaild } from './features/auth/components/email-verification/email-verification-faild/email-verification-faild';
-import { EmailVerificationSuccess } from './features/auth/components/email-verification/email-verification-success/email-verification-success';
-import { EmailVerification } from './features/auth/components/email-verification/email-verification';
-import { CandidateHome } from './features/candidate/components/candidate-home/candidate-home';
-import { Authcomponent } from './features/layout/auth-layout/authcomponent';
-import { CompanyHome } from './features/company/components/company-home/company.home';
-import { ForgotPassEmail } from './features/auth/components/forgot-password/forgot.pass.email/forgot.pass.email';
-import { SetNewPassword } from './features/auth/components/forgot-password/set-new-password/set-new-password';
-import { UpdateProfileinfo } from './features/company/components/update-profile-info/update-profileinfo';
+import { EmailVerificationFailedComponent } from './features/auth/components/email-verification/email-verification-faild/email-verification-faild';
+import { EmailVerificationSuccessComponent } from './features/auth/components/email-verification/email-verification-success/email-verification-success';
+import { EmailVerificationComponent } from './features/auth/components/email-verification/email-verification';
+import { CandidateHomeComponent } from './features/candidate/components/candidate-home/candidate-home';
+import { AuthComponent } from './features/layout/auth-layout/authcomponent';
+import { CompanyHomeComponent } from './features/company/components/company-home/company.home';
+import { ForgotPassEmailComponent } from './features/auth/components/forgot-password/forgot.pass.email/forgot.pass.email';
+import { SetNewPasswordComponent } from './features/auth/components/forgot-password/set-new-password/set-new-password';
+import { UpdateProfileInfoComponent } from './features/company/components/update-profile-info/update-profileinfo';
+
 import { APP_ROUTES } from './shared/constants/routes.constants';
 
 // guards
@@ -19,13 +20,13 @@ import { isAdminGuard } from './shared/guards/admin-guards/is-admin-guard';
 import { isCompanyAdminGuard } from './shared/guards/company-guards/is-company-admin.guard';
 import { isHrUserGuard } from './shared/guards/company-guards/is-hr-user.guard';
 import { isInterviewerGuard } from './shared/guards/company-guards/is-interviewer.guard';
-import { CandidateLogin } from './features/auth/components/login/login';
-import { CandidateSignup } from './features/auth/components/signup/signup';
-import { CreateJob } from './features/company/components/create-job/create-job';
-import { JobView } from './features/company/components/jobs/job-view/job-view';
-import { JobEditing } from './features/company/components/jobs/job-editing/job-editing';
-import { CompanyPublicProfile } from './features/company/components/company-public-profile/company-public-profile';
-import { JobsPublicView } from './features/company/components/jobs-public-view/jobs-public-view';
+import { LoginComponent } from './features/auth/components/login/login';
+import { SignupComponent } from './features/auth/components/signup/signup';
+import { CreateJobComponent } from './features/company/components/create-job/create-job';
+import { JobViewComponent } from './features/company/components/jobs/job-view/job-view';
+import { JobEditingComponent } from './features/company/components/jobs/job-editing/job-editing';
+import { CompanyPublicProfileComponent } from './features/company/components/company-public-profile/company-public-profile';
+import { JobsPublicViewComponent } from './features/company/components/jobs-public-view/jobs-public-view';
   
 export const routes: Routes = [
   {
@@ -40,15 +41,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import(
         './features/layout/forgot-password-layout/forgotpasswordcomponent'
-      ).then((m) => m.Forgotpasswordcomponent),
+      ).then((m) => m.ForgotPasswordComponent),
     children: [
       {
         path: 'email',
-        component: ForgotPassEmail,
+        component: ForgotPassEmailComponent,
       },
       {
         path: 'newpassword',
-        component: SetNewPassword,
+        component: SetNewPasswordComponent,
       },
     ],
   },
@@ -61,46 +62,46 @@ export const routes: Routes = [
         (m) => m.EmailComponent
       ),
     children: [
-      { path: 'verification', component: EmailVerification },
-      { path: 'failed', component: EmailVerificationFaild },
-      { path: 'success', component: EmailVerificationSuccess },
+      { path: 'verification', component: EmailVerificationComponent },
+      { path: 'failed', component: EmailVerificationFailedComponent },
+      { path: 'success', component: EmailVerificationSuccessComponent },
     ],
   },
 
   {
     path: '',
-    component: Authcomponent,
+    component: AuthComponent,
     children: [
       // Auth
 
       {
         path: APP_ROUTES.LOGIN,
         canActivate: [isLogoutGuard],
-        component: CandidateLogin,
+        component: LoginComponent,
         data: { userType: 'candidate' },
       },
       {
         path: APP_ROUTES.SIGNUP,
         canActivate: [isLogoutGuard],
-        component: CandidateSignup,
+        component: SignupComponent,
         data: { userType: 'candidate' },
       },
       {
         path: APP_ROUTES.ADMIN_LOGIN,
         canActivate: [isLogoutGuard],
-        component: CandidateLogin,
+        component: LoginComponent,
         data: { userType: 'admin' },
       },
       {
         path: APP_ROUTES.COMPANY_LOGIN,
         canActivate: [isLogoutGuard],
-        component: CandidateLogin,
+        component: LoginComponent,
         data: { userType: 'company_admin' },
       },
       {
         path: APP_ROUTES.COMPANY_SIGNUP,
         canActivate: [isLogoutGuard],
-        component: CandidateSignup,
+        component: SignupComponent,
         data: { userType: 'company_admin' },
       },
     ],
@@ -114,12 +115,12 @@ export const routes: Routes = [
     path: APP_ROUTES.CANDIDATE,
     loadComponent: () =>
       import('./features/layout/candidate-layout/candidatecomponent').then(
-        (m) => m.Candidatecomponent
+        (m) => m.CandidateLayoutComponent
       ),
     children: [
       {
         path: 'home',
-        component: CandidateHome,
+        component: CandidateHomeComponent,
       },
       {
         path: 'profile',
@@ -127,7 +128,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/candidate/components/candidate-profile/candidate-profile'
-          ).then((m) => m.CandidateProfile),
+          ).then((m) => m.CandidateProfileComponent),
       },
       {
         path: 'profile/updateprofile',
@@ -135,7 +136,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/candidate/components/update-profile/update-profile'
-          ).then((m) => m.UpdateProfile),
+          ).then((m) => m.UpdateProfileComponent),
       },
       {
         path: 'settings',
@@ -143,7 +144,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/candidate/components/candidate-settings/candidate-settings'
-          ).then((m) => m.CandidateSettings),
+          ).then((m) => m.CandidateSettingsComponent),
       },
       {
         path: 'my-applications',
@@ -187,21 +188,21 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/candidate/components/layout-job-list/layout-jolist'
-          ).then((m) => m.LayoutJolist),
+          ).then((m) => m.LayoutJobListComponent),
         children: [
           {
             path: '',
             loadComponent: () =>
               import(
                 './features/candidate/components/candidate-job-list/candidate-joblist'
-              ).then((m) => m.CandidateJoblist),
+              ).then((m) => m.CandidateJobListComponent),
           },
           {
             path: 'jobsview',
             loadComponent: () =>
               import(
                 './features/company/components/jobs-public-view/jobs-public-view'
-              ).then((m) => m.JobsPublicView),
+              ).then((m) => m.JobsPublicViewComponent),
           },
         ],
       },
@@ -213,14 +214,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/candidate/components/candidate-company-list/candidate-companylist'
-              ).then((m) => m.CandidateCompanylist),
+              ).then((m) => m.CandidateCompanyListComponent),
           },
           {
             path: 'companyprofile',
             loadComponent: () =>
               import(
                 './features/company/components/company-public-profile/company-public-profile'
-              ).then((m) => m.CompanyPublicProfile),
+              ).then((m) => m.CompanyPublicProfileComponent),
           },
         ],
       },
@@ -246,32 +247,32 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: CompanyHome,
+        component: CompanyHomeComponent,
       },
       {
         path: 'profile',
         loadComponent: () =>
           import(
             './features/company/components/company-profile/company-profile'
-          ).then((m) => m.CompanyProfile),
+          ).then((m) => m.CompanyProfileComponent),
         children: [
           {
             path: 'updateprofile',
-            component: UpdateProfileinfo,
+            component: UpdateProfileInfoComponent,
             canActivate: [isCompanyAdminGuard],
           },
           {
             path: 'newjob',
-            component: CreateJob,
+            component: CreateJobComponent,
             canActivate: [isHrUserGuard],
           },
           {
             path: 'publicview',
-            component: CompanyPublicProfile,
+            component: CompanyPublicProfileComponent,
           },
           {
             path: 'jobview',
-            component: JobsPublicView,
+            component: JobsPublicViewComponent,
           },
         ],
       },
@@ -298,7 +299,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/company/components/user-profile/user-profile'
-          ).then((m) => m.UserProfile),
+          ).then((m) => m.UserProfileComponent),
       },
       {
         path: 'all-applicants',
@@ -318,7 +319,7 @@ export const routes: Routes = [
       {
         path: 'joblist',
         loadComponent: () =>
-          import('./features/company/components/jobs/jobs').then((m) => m.Jobs),
+          import('./features/company/components/jobs/jobs').then((m) => m.JobsComponent),
         canActivate: [isInterviewerGuard],
         children: [
           {
@@ -326,15 +327,15 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/company/components/jobs/jobs-list/jobs-list'
-              ).then((m) => m.JobsList),
+              ).then((m) => m.JobsListComponent),
           },
           {
             path: 'jobview',
-            component: JobView,
+            component: JobViewComponent,
           },
           {
             path: 'jobedit',
-            component: JobEditing,
+            component: JobEditingComponent,
             canActivate: [isHrUserGuard],
           },
           {
@@ -342,21 +343,21 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/company/components/company-application-layout/company-application-layout'
-              ).then((m) => m.CompanyApplicationLayout),
+              ).then((m) => m.CompanyApplicationLayoutComponent),
             children: [
               {
                 path: '',
                 loadComponent: () =>
                   import(
                     './features/company/components/company-application-layout/company-jobapplications/company-jobapplications'
-                  ).then((m) => m.CompanyJobapplications),
+                  ).then((m) => m.CompanyJobApplicationsComponent),
               },
               {
                 path: 'viewprofile',
                 loadComponent: () =>
                   import(
                     './features/candidate/components/candidate-profile-public-view/candidate-profile-publicview'
-                  ).then((m) => m.CandidateProfilePublicview),
+                  ).then((m) => m.CandidateProfilePublicViewComponent),
               },
               {
                 path: 'viewapplication/:appId/:canId',
@@ -370,7 +371,7 @@ export const routes: Routes = [
                     loadComponent: () =>
                       import(
                         './features/company/components/company-application-layout/application-details/application-details'
-                      ).then((m) => m.ApplicationDetails),
+                      ).then((m) => m.ApplicationDetailsComponent),
                   },
                   {
                     path: 'video-interview/:roomId',
@@ -388,14 +389,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/company/components/company-application-layout/company-jobapplications/company-jobapplications'
-              ).then((m) => m.CompanyJobapplications),
+              ).then((m) => m.CompanyJobApplicationsComponent),
           },
         ],
       },
       {
         path: '**',
         loadComponent: () =>
-          import('./common/not-found/not-found').then((m) => m.NotFound),
+          import('./common/not-found/not-found').then((m) => m.NotFoundComponent),
       },
     ],
   },
@@ -415,13 +416,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/admin/components/admin-dashboard/admin-dashboard'
-          ).then((m) => m.AdminDashboard),
+          ).then((m) => m.AdminDashboardComponent),
       },
       {
         path: 'companies',
         loadComponent: () =>
           import('./features/admin/components/company/company').then(
-            (m) => m.Company
+            (m) => m.AdminCompanyComponent
           ),
         children: [
           {
@@ -436,7 +437,7 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/company/components/company-public-profile/company-public-profile'
-              ).then((m) => m.CompanyPublicProfile),
+              ).then((m) => m.CompanyPublicProfileComponent),
           },
         ],
       },
@@ -444,7 +445,7 @@ export const routes: Routes = [
         path: 'candidates',
         loadComponent: () =>
           import('./features/admin/components/candidates/candidates').then(
-            (m) => m.Candidates
+            (m) => m.CandidatesComponent
           ),
         children: [
           {
@@ -452,14 +453,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/admin/components/admin-candidates-list/admin-candidates-list'
-              ).then((m) => m.AdminCandidatesList),
+              ).then((m) => m.AdminCandidatesListComponent),
           },
           {
             path: 'viewprofile',
             loadComponent: () =>
               import(
                 './features/candidate/components/candidate-profile-public-view/candidate-profile-publicview'
-              ).then((m) => m.CandidateProfilePublicview),
+              ).then((m) => m.CandidateProfilePublicViewComponent),
           },
         ],
       },
@@ -467,7 +468,7 @@ export const routes: Routes = [
         path: 'joblist',
         loadComponent: () =>
           import('./features/admin/components/admin-jobs/adminjobs').then(
-            (m) => m.Adminjobs
+            (m) => m.AdminJobsComponent
           ),
         children: [
           {
@@ -475,14 +476,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import(
                 './features/admin/components/admin-job-list/admin-joblist'
-              ).then((m) => m.AdminJoblist),
+              ).then((m) => m.AdminJoblistComponent),
           },
           {
             path: 'viewjob',
             loadComponent: () =>
               import(
                 './features/company/components/jobs-public-view/jobs-public-view'
-              ).then((m) => m.JobsPublicView),
+              ).then((m) => m.JobsPublicViewComponent),
           },
         ],
       },
@@ -491,12 +492,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './features/admin/components/admin-profile/admin-profile'
-          ).then((m) => m.AdminProfile),
+          ).then((m) => m.AdminProfileComponent),
       },
       {
         path: '**',
         loadComponent: () =>
-          import('./common/not-found/not-found').then((m) => m.NotFound),
+          import('./common/not-found/not-found').then((m) => m.NotFoundComponent),
       },
     ],
   },

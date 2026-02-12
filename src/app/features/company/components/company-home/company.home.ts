@@ -14,7 +14,7 @@ import { environment } from '../../../../../env/environment';
   templateUrl: './company.home.html',
   styleUrl: './company.home.css'
 })
-export class CompanyHome implements OnInit, OnDestroy {
+export class CompanyHomeComponent implements OnInit, OnDestroy {
   dashboardData: CompanyDashboardData | null = null;
   isLoading = true;
   error: string | null = null;

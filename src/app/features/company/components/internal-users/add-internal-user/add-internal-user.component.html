@@ -86,9 +86,13 @@
             [ngClass]="{'border-red-500': getControl('password')?.invalid && getControl('password')?.touched}"
           />
           <i
+            tabindex="0"
+            role="button"
+            aria-label="Toggle password visibility"
             class="fas cursor-pointer absolute right-3 top-10 text-gray-500"
             [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
             (click)="togglePasswordVisibility()"
+            (keydown.enter)="togglePasswordVisibility()"
           ></i>
           <p *ngIf="getControl('password')?.invalid && getControl('password')?.touched" class="text-red-500 text-xs mt-1">
             Must contain uppercase, lowercase, number & symbol (min 8 chars).
@@ -113,9 +117,13 @@
             }"
           />
           <i
+            tabindex="0"
+            role="button"
+            aria-label="Toggle confirm password visibility"
             class="fas cursor-pointer absolute right-3 top-10 text-gray-500"
             [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
             (click)="toggleConfirmPasswordVisibility()"
+            (keydown.enter)="toggleConfirmPasswordVisibility()"
           ></i>
           <p *ngIf="createUserForm.hasError('mismatch') && getControl('confirmPassword')?.touched" class="text-red-500 text-xs mt-1">
             Passwords do not match.

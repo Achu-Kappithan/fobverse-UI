@@ -17,16 +17,16 @@ import { ConfirmService } from '../../shared/services/confirm/confirm.service';
   templateUrl: './candidate-header.html',
   styleUrl: './candidate-header.css',
 })
-export class CandidateHeader implements OnInit {
+export class CandidateHeaderComponent implements OnInit {
   baseUrl: string = environment.cloudinaryBaseUrl;
   opendModal: string | null = null;
-  isDarkMode: boolean = false;
+  isDarkMode = false;
   candidate: UserPartial | null = null;
-  isNotificationModalOpen :boolean = false
+  isNotificationModalOpen  = false
   unreadMessageCount = 0;
   notificationTab: 'unread' | 'all' = 'unread';
   notifications: NotificationInterface[] =[]
-  isLoaded: boolean = false;
+  isLoaded = false;
   private readonly _logger = inject(LoggerService);
 
   constructor(
@@ -142,7 +142,7 @@ export class CandidateHeader implements OnInit {
   }
 
   getNotificationIcon(type: string, notificationType?: string): string {
-    const icons: { [key: string]: string } = {
+    const icons: Record<string, string> = {
       'RESCHEDULED': 'fa-calendar-alt',
       'SCHEDULED': 'fa-calendar-check',
       'CANCELLED': 'fa-calendar-times',

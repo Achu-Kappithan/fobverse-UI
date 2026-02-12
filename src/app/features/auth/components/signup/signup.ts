@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -20,16 +20,16 @@ import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
   templateUrl: './signup.html',
   styleUrl: './signup.css',
 })
-export class CandidateSignup implements OnInit {
+export class SignupComponent implements OnInit {
   private readonly _Authservice = inject(AuthService);
   private _toast = inject(ToastService);
   private _router = inject(Router);
   private _logger = inject(LoggerService);
 
   signupForm!: FormGroup;
-  userType: string = '';
-  imagePath: string = '';
-  isLoading: boolean = false;
+  userType = '';
+  imagePath = '';
+  isLoading = false;
 
   constructor(private route: ActivatedRoute) {
     this.route.data.subscribe((data) => {

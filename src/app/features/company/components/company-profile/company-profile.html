@@ -290,6 +290,10 @@
         <div class="flex items-center space-x-4 text-gray">
           <i
             (click)="openModal('addMemberModal')"
+            (keydown.enter)="openModal('addMemberModal')"
+            tabindex="0"
+            role="button"
+            aria-label="Add team member"
             class="fas fa-plus-circle"
           ></i>
           <!-- <i class="fas fa-pen"></i>
@@ -300,13 +304,17 @@
       <div class="relative w-full">
         <button
           (click)="scrollLeft()"
+          (keydown.enter)="scrollLeft()"
           class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-75 rounded-full p-3 shadow-lg hover:bg-opacity-90 transition-all duration-300 z-10 text-purple hidden md:block"
+          aria-label="Scroll left"
         >
           <i class="fas fa-chevron-left text-2xl"></i>
         </button>
         <button
           (click)="scrollRight()"
+          (keydown.enter)="scrollRight()"
           class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-75 rounded-full p-3 shadow-lg hover:bg-opacity-90 transition-all duration-300 z-10 text-purple hidden md:block"
+          aria-label="Scroll right"
         >
           <i class="fas fa-chevron-right text-2xl"></i>
         </button>

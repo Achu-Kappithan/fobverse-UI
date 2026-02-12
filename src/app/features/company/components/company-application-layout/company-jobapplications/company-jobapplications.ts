@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../../services/company-service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -29,10 +29,10 @@ import { CompanyApplication } from '../../../services/company-application';
   templateUrl: './company-jobapplications.html',
   styleUrl: './company-jobapplications.css',
 })
-export class CompanyJobapplications implements OnInit {
-  activeView: string = 'all';
+export class CompanyJobApplicationsComponent implements OnInit, OnDestroy {
+  activeView = 'all';
   jobId: string | null = null;
-  isLoading: boolean = false;
+  isLoading = false;
   ApplicationList: ApplicationInterface[] = [];
   baseUrl: string = environment.cloudinaryBaseUrl;
   modalId: string | null = null;
@@ -91,7 +91,8 @@ export class CompanyJobapplications implements OnInit {
       this.searchTearms
         .pipe(debounceTime(300), distinctUntilChanged())
         .subscribe((val) => {
-          (this.QueryParams.search = val), (this.QueryParams.page = 1);
+          this.QueryParams.search = val;
+          this.QueryParams.page = 1;
           this.fetchApplicaton();
         })
     );
@@ -156,8 +157,8 @@ export class CompanyJobapplications implements OnInit {
       this._CompanySevice.updateNewScore(value).subscribe({
         next: (res) => {
           if (res.success) {
-            (this.ApplicationList = res.data),
-              (this.paginationMeta = res.meta ? res.meta : this.paginationMeta);
+            this.ApplicationList = res.data;
+            this.paginationMeta = res.meta ? res.meta : this.paginationMeta;
             this.closeModal();
             this._cdr.detectChanges();
             this._toast.success(res.message);
@@ -169,7 +170,7 @@ export class CompanyJobapplications implements OnInit {
         },
       });
     } else {
-      this.atsForm.markAllAsTouched;
+      this.atsForm.markAllAsTouched();
       this._logger.warn('form is invalid');
     }
   }
@@ -229,7 +230,7 @@ export class CompanyJobapplications implements OnInit {
     }
     return pageNumber;
   }
-  removeUser(id: string) {}
+
 
   back() {
     this._router.navigate(['../'], { relativeTo: this._route });

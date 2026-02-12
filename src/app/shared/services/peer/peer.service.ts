@@ -21,7 +21,7 @@ export class PeerService {
   public incomingCallSubject = new Subject<MediaConnection>();
   public connectionErrorSubject = new Subject<Error>();
 
-  constructor() {}
+
   private readonly _logger = inject(LoggerService);
 
   /**
@@ -65,18 +65,18 @@ export class PeerService {
           }
         });
 
-        this.peer.on('open', (id) => {
+        this.peer.on('open', (id: string) => {
           this._logger.log('[Peer] Peer initialized with ID:', id);
           this.peerIdSubject.next(id);
           resolve(id);
         });
 
-        this.peer.on('call', (call) => {
+        this.peer.on('call', (call: MediaConnection) => {
           this._logger.log('[Peer] Incoming call from:', call.peer);
           this.incomingCallSubject.next(call);
         });
 
-        this.peer.on('error', (error) => {
+        this.peer.on('error', (error: Error) => {
           this._logger.error('[Peer] Error:', error);
           this.connectionErrorSubject.next(error);
           reject(error);
@@ -120,7 +120,7 @@ export class PeerService {
         reject(new Error(`Connection timeout for peer ${remotePeerId}`));
       }, 30000);
 
-      call.on('stream', (remoteStream) => {
+      call.on('stream', (remoteStream: MediaStream) => {
         clearTimeout(timeout);
         this._logger.log('[Peer] Received remote stream from:', remotePeerId);
         this.connections.set(remotePeerId, call);
@@ -133,7 +133,7 @@ export class PeerService {
         this.connections.delete(remotePeerId);
       });
 
-      call.on('error', (error) => {
+      call.on('error', (error: Error) => {
         clearTimeout(timeout);
         this._logger.error('[Peer] Call error with:', remotePeerId, error);
         this.connections.delete(remotePeerId);
@@ -150,7 +150,7 @@ export class PeerService {
       this._logger.log('[Peer] Answering call from:', call.peer);
       call.answer(stream);
 
-      call.on('stream', (remoteStream) => {
+      call.on('stream', (remoteStream: MediaStream) => {
         this._logger.log('[Peer] Received remote stream from:', call.peer);
         this.connections.set(call.peer, call);
         resolve(remoteStream);
@@ -161,7 +161,7 @@ export class PeerService {
         this.connections.delete(call.peer);
       });
 
-      call.on('error', (error) => {
+      call.on('error', (error: Error) => {
         this._logger.error('[Peer] Call error:', error);
         reject(error);
       });
@@ -261,7 +261,7 @@ export class PeerService {
     this._logger.log('[Peer] Destroying peer and connections');
     
     // Close all connections
-    this.connections.forEach((connection, peerId) => {
+    this.connections.forEach((connection) => {
       connection.close();
     });
     this.connections.clear();

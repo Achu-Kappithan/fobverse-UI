@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy, signal, computed, effect, ViewChild, ElementRef, inject } from '@angular/core';
 import { LoggerService } from '../../shared/services/logger/logger.service';
-import { APP_ROUTES } from '../../shared/constants/routes.constants';
+
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../shared/services/socket/socket.service';
 import { PeerService } from '../../shared/services/peer/peer.service';
-import { ChatMessage, Participant } from '../../shared/interfaces/video-call.interface';
+import { ChatMessage, Participant, RoomJoinedData, UserJoinedData, UserLeftData, VideoMessageData } from '../../shared/interfaces/video-call.interface';
 import { AuthService } from '../auth/services/auth.service';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
+import { MediaConnection } from 'peerjs';
 
 @Component({
   selector: 'app-video-interview',
@@ -31,10 +32,10 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   
   participantCount = computed(() => this.participants().length + 1);
   
-  roomId: string = '';
-  userId: string = '';
-  userName: string = '';
-  peerId: string = '';
+  roomId = '';
+  userId = '';
+  userName = '';
+  peerId = '';
   private readonly _logger = inject(LoggerService);
   
   constructor(
@@ -109,11 +110,12 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   setupSocketListeners() {
-    this.socketService.onRoomJoined((data) => {
-      this._logger.log('[VideoInterview] Room joined:', data);
+    this.socketService.onRoomJoined((data: unknown) => {
+      const roomData = data as RoomJoinedData;
+      this._logger.log('[VideoInterview] Room joined:', roomData);
       
-      if (data.otherPeers && data.otherPeers.length > 0) {
-        data.otherPeers.forEach((peer: any) => {
+      if (roomData.otherPeers && roomData.otherPeers.length > 0) {
+        roomData.otherPeers.forEach((peer: { peerId: string; userId: string; name: string }) => {
           this.callPeer(peer.peerId, peer.userId, peer.name);
         });
       }
@@ -121,28 +123,31 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       this.addSystemMessage(`You joined the room`);
     });
 
-    this.socketService.onUserJoinedVideo((data) => {
-      this._logger.log('[VideoInterview] User joined:', data);
-      this.addSystemMessage(`${data.name} joined the room`);
+    this.socketService.onUserJoinedVideo((data: unknown) => {
+      const userJoinedData = data as UserJoinedData;
+      this._logger.log('[VideoInterview] User joined:', userJoinedData);
+      this.addSystemMessage(`${userJoinedData.name} joined the room`);
       
-      if (data.peerId && data.userId !== this.userId) {
-        this.callPeer(data.peerId, data.userId, data.name);
+      if (userJoinedData.peerId && userJoinedData.userId !== this.userId) {
+        this.callPeer(userJoinedData.peerId, userJoinedData.userId, userJoinedData.name);
       }
     });
 
-    this.socketService.onUserLeftVideo((data) => {
-      this._logger.log('[VideoInterview] User left:', data);
-      this.removeParticipant(data.userId);
-      this.addSystemMessage(`${data.name || 'User'} left the room`);
+    this.socketService.onUserLeftVideo((data: unknown) => {
+      const userLeftData = data as UserLeftData;
+      this._logger.log('[VideoInterview] User left:', userLeftData);
+      this.removeParticipant(userLeftData.userId);
+      this.addSystemMessage(`${userLeftData.name || 'User'} left the room`);
     });
 
-    this.socketService.onVideoMessage((data) => {
-      this._logger.log('[VideoInterview] Chat message:', data);
+    this.socketService.onVideoMessage((data: unknown) => {
+      const messageData = data as VideoMessageData;
+      this._logger.log('[VideoInterview] Chat message:', messageData);
       this.chatMessages.update(messages => [...messages, {
-        userId: data.userId,
-        name: data.name,
-        message: data.message,
-        timestamp: new Date(data.timestamp),
+        userId: messageData.userId,
+        name: messageData.name,
+        message: messageData.message,
+        timestamp: new Date(messageData.timestamp),
         type: 'user'
       }]);
     });
@@ -165,12 +170,12 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
 
       this._logger.log('[VideoInterview] Successfully connected to:', name);
 
-    } catch (error: any) {
-      this._logger.warn('[VideoInterview] Failed to connect to peer:', name, error?.message || error);
+    } catch (error) {
+      this._logger.warn('[VideoInterview] Failed to connect to peer:', name, error instanceof Error ? error.message : error);
     }
   }
 
-  async handleIncomingCall(call: any) {
+  async handleIncomingCall(call: MediaConnection) {
     const localStream = this.localStream();
     if (!localStream) return;
 
@@ -325,7 +330,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   private getUserId(): string {
-    let currentUser = this.authService.CompanySubject.value ||
+    const currentUser = this.authService.CompanySubject.value ||
                       this.authService.CandidateSubject.value ||
                       this.authService.adminSubject.value;
     
@@ -346,7 +351,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   private getUserName(): string {
-    let currentUser = this.authService.CompanySubject.value ||
+    const currentUser = this.authService.CompanySubject.value ||
                       this.authService.CandidateSubject.value ||
                       this.authService.adminSubject.value;
     

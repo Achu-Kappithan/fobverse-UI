@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
-      @for( row of data; track row._id){
+      @for( row of data; track getRowId(row)){
         <tr class="hover:bg-gray-50">
           @for( col of columns; track col.field){
             <td
@@ -21,36 +21,36 @@
             >
             @switch (col.type) {
               @case ('text') {
-                <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ row[col.field] }}</span>
+                <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ getRowField(row, col.field) }}</span>
               }
               @case ('number') {
-                <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ row[col.field] | number }}</span>
+                <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ getRowFieldAsNumber(row, col.field) | number }}</span>
               }
               @case ('date') {
-                <span class="text-xs sm:text-sm text-gray">{{ row[col.field] | date:'mediumDate' }}</span>
+                <span class="text-xs sm:text-sm text-gray">{{ getRowFieldAsDate(row, col.field) | date:'mediumDate' }}</span>
               }
               @case ('status') {
                 <span 
                   class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium status-badge"
-                  [ngClass]="getStatusClass(row[col.field])">
-                  {{ row[col.field]? 'Active':'Inactive' }}
+                  [ngClass]="getStatusClass(getRowFieldAsBoolean(row, col.field))">
+                  {{ getRowField(row, col.field)? 'Active':'Inactive' }}
                 </span>
               }
               @case ('jobType') {
                 <span 
                   class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium"
-                  [ngClass]="getJobTypeClass(row[col.field])"> 
-                  {{row[col.field]}}
+                  [ngClass]="getJobTypeClass(getRowFieldAsString(row, col.field))"> 
+                  {{getRowField(row, col.field)}}
                 </span>
               }
               @case ('progress') {
                 <div>
                   <div class="flex items-center">
-                    <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ row[col.field] }}%</span>
+                    <span class="text-xs sm:text-sm font-medium text-dark-gray">{{ getRowField(row, col.field) }}%</span>
                     <div class="ml-2 w-12 sm:w-16 bg-gray-200 rounded-full h-2">
                       <div
                         class="bg-purple h-2 rounded-full"
-                        [style.width.%]="row[col.field]"
+                        [style.width.%]="getRowField(row, col.field)"
                       ></div>
                     </div>
                   </div>
@@ -60,7 +60,7 @@
                 <div class="relative">
                   <button
                     type="button"
-                    (click)="ShowDetails(row._id)"
+                    (click)="ShowDetails(getRowId(row))"
                     (appClickOutside)="closeModal()"
                     class="px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,7 +74,7 @@
               @case ('dropdown') {
                 <div class="relative">
                   <button
-                    (click)="toggleModal(row._id)"
+                    (click)="toggleModal(getRowId(row))"
                     type="button"
                     class="inline-flex justify-center items-center px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium text-dark-gray rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                     id="options-menu-button"
@@ -91,7 +91,7 @@
                       <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                     </svg>
                   </button>
-                  @if (opendModal(row._id)) {
+                  @if (opendModal(getRowId(row))) {
                     <div
                       class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
                       role="menu"
@@ -113,7 +113,7 @@
                 </div>
               }
               @default {
-                <span class="text-xs sm:text-sm text-dark-gray">{{ row[col.field] }}</span>
+                <span class="text-xs sm:text-sm text-dark-gray">{{ getRowField(row, col.field) }}</span>
               }
             }
             </td>

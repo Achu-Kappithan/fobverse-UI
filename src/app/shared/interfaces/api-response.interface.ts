@@ -49,9 +49,7 @@ export interface User {
 
 }
 
-export interface GoogleResponse {
-  
-}
+export type GoogleResponse = Record<string, unknown>;
 
 export interface PlainResponse {
   message: string,

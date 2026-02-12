@@ -36,9 +36,9 @@ import { QualificationLevel } from '../../enums/candidate.enum';
   templateUrl: './candidate-applyjob.html',
   styleUrl: './candidate-applyjob.css',
 })
-export class CandidateApplyjob implements OnInit {
-  @Input() isOpen: boolean = false;
-  @Input() uniqueIdentifier: string = '';
+export class CandidateApplyJobComponent implements OnInit {
+  @Input() isOpen = false;
+  @Input() uniqueIdentifier = '';
   @Input() jobDetails: CandidateJobsInterface | undefined = undefined;
 
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
@@ -47,9 +47,9 @@ export class CandidateApplyjob implements OnInit {
   qualificationOptions: QualificationOption[] = [];
 
   jobApplayForm!: FormGroup;
-  selectedFileName: string = '';
+  selectedFileName = '';
   selectedFile: File | null = null;
-  isSubmitting: boolean = false;
+  isSubmitting = false;
   private readonly _logger = inject(LoggerService);
 
   constructor(
@@ -175,9 +175,9 @@ export class CandidateApplyjob implements OnInit {
     if (this.jobApplayForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       this._logger.log('Form is valid and ready for submission.');
-      const { resume, useExistingResume, ...data } = this.jobApplayForm.value;
+      const { useExistingResume, ...data } = this.jobApplayForm.value;
       data.jobId = this.uniqueIdentifier;
-      let uploadObservable: Observable<any>; 
+      let uploadObservable: Observable<Record<string, unknown> | null>; 
 
       const publicBaseId = this.currentUser?.email.split('@')[0];
 
@@ -212,14 +212,14 @@ export class CandidateApplyjob implements OnInit {
       }
 
       uploadObservable.subscribe({
-        next: (cloudinaryUploadResult) => {
-          if (!useExistingResume && cloudinaryUploadResult && cloudinaryUploadResult.secure_url) {
+        next: (cloudinaryUploadResult: Record<string, unknown> | null) => {
+          if (!useExistingResume && cloudinaryUploadResult && cloudinaryUploadResult['secure_url']) {
             data.resumeUrl = this.splitUrls(
-              cloudinaryUploadResult.secure_url
+              cloudinaryUploadResult['secure_url'] as string
             );
           }
           this._logger.log("Form data for submission:", data);
-          this._candidateService.applayJob(this.jobDetails?.companyId?._id!, data).subscribe({
+          this._candidateService.applayJob(this.jobDetails?.companyId?._id as string, data).subscribe({
             next: (res) => {
               this.isSubmitting = false;
               if (res.success) {

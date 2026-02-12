@@ -6,7 +6,7 @@ import { ToastService } from '../../services/toast/toast.service';
 import { LoggerService } from '../../services/logger/logger.service';
 
 
-export const isAdminGuard: CanActivateFn = (route, state) => {
+export const isAdminGuard: CanActivateFn = () => {
   const _authService = inject(AuthService);
   const router = inject(Router);
   const _toast = inject(ToastService);

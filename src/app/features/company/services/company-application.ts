@@ -158,8 +158,8 @@ export class CompanyApplication {
 
   getAllStages(
     applicationId: string
-  ): Observable<ApiResponse<any>> {
-    return this._http.get<ApiResponse<any>>(
+  ): Observable<ApiResponse<Record<string, unknown>>> {
+    return this._http.get<ApiResponse<Record<string, unknown>>>(
       `${environment.apiUrl}/interview/all-stages`,
       { params: { applicationId: applicationId } }
     );

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CandidateInterface, ContactInfoItem } from '../../interfaces/candidate.interface';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { forkJoin, Observable, of, switchMap } from 'rxjs';
+import { forkJoin, Observable, of, Subject, switchMap } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { Router, RouterModule } from '@angular/router';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
@@ -17,9 +17,9 @@ import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
   templateUrl: './update-profile.html',
   styleUrl: './update-profile.css'
 })
-export class UpdateProfile implements OnInit {
-
-  isLoading: boolean = false;
+export class UpdateProfileComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  isLoading = false;
 
   updateProfileForm!: FormGroup;
   profileData: CandidateInterface | null = null; 
@@ -268,7 +268,7 @@ export class UpdateProfile implements OnInit {
     try {
       const publicIdBase = this.profileData?.name ? this.profileData.name.toLowerCase().replace(/\s/g, '_') : 'default';
 
-      let profileUpload$: Observable<any>;
+      let profileUpload$: Observable<Record<string, unknown> | null>;
       if (this.selectedProfileFile) {
         profileUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'candidate_profile',
@@ -293,7 +293,7 @@ export class UpdateProfile implements OnInit {
         profileUpload$ = of({ secure_url: undefined });
       }
 
-      let coverUpload$: Observable<any>;
+      let coverUpload$: Observable<Record<string, unknown> | null>;
       if (this.selectedCover) {
         coverUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'candidate_cover', 
@@ -320,14 +320,14 @@ export class UpdateProfile implements OnInit {
 
       forkJoin([profileUpload$, coverUpload$]).subscribe({
         next: ([profileUploadResult, coverUploadResult]) => {
-          if (profileUploadResult && profileUploadResult.secure_url) {
-            finalProfileData.profileUrl = this.splitUrls(profileUploadResult.secure_url);
+          if (profileUploadResult && (profileUploadResult as Record<string, unknown>)['secure_url']) {
+            finalProfileData.profileUrl = this.splitUrls((profileUploadResult as Record<string, unknown>)['secure_url'] as string);
           } else {
             finalProfileData.profileUrl = undefined;
           }
 
-          if (coverUploadResult && coverUploadResult.secure_url) {
-            finalProfileData.coverUrl = this.splitUrls(coverUploadResult.secure_url);
+          if (coverUploadResult && (coverUploadResult as Record<string, unknown>)['secure_url']) {
+            finalProfileData.coverUrl = this.splitUrls((coverUploadResult as Record<string, unknown>)['secure_url'] as string);
           } else {
             finalProfileData.coverUrl = undefined;
           }
@@ -369,5 +369,9 @@ export class UpdateProfile implements OnInit {
       this._toast.error('An unexpected error occurred!');
       this._cdr.detectChanges();
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

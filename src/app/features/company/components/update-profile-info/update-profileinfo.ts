@@ -1,7 +1,7 @@
 import { CommonModule} from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactInfoItem, CompanyProfileInterface } from '../../interfaces/company.response.interface';
 import { CompanyService } from '../../services/company-service';
@@ -11,17 +11,18 @@ import { catchError,forkJoin, Observable, of, Subject, switchMap, takeUntil } fr
 import { GalleryImageDisplay } from '../../../../shared/interfaces/cloudinary-signature.response.interface';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 
+
 @Component({
   selector: 'app-update-profileinfo',
-  imports: [CommonModule,ReactiveFormsModule,RouterModule, LoadingSpinner],
+  imports: [CommonModule,ReactiveFormsModule,RouterModule, LoadingSpinnerComponent],
   templateUrl: './update-profileinfo.html',
   styleUrl: './update-profileinfo.css'
 })
-export class UpdateProfileinfo implements OnInit ,OnDestroy {
+export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
  companyProfileForm!: FormGroup;
  profileData:CompanyProfileInterface | null = null
- isSaving:boolean = false
- baseUrl:string = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
+ isSaving = false
+ baseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload"
 
   selectedLogoFile: File | null = null;
   logoPreviewUrl: string | ArrayBuffer | null = null
@@ -145,8 +146,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
   onImageGallerySelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      for (let i = 0; i < input.files.length; i++) {
-        const file = input.files[i];
+      for (const file of Array.from(input.files)) {
         const reader = new FileReader();
         reader.onload = () => {
           const previewUrl = reader.result;
@@ -160,7 +160,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
   }
 
   removeGalleryImage(index: number): void {
-    const removedImage = this.imageGalleryDisplay[index];
+    // const removedImage = this.imageGalleryDisplay[index];
     this.imageGalleryDisplay.splice(index, 1);
     this.rebuildImageGalleryFormArray();
     this._cdr.detectChanges()
@@ -244,7 +244,7 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
     this.isSaving = true
 
  try {
-      const uploadObservables: Observable<any>[] = [];
+      const uploadObservables: Observable<Record<string, unknown> | null>[] = [];
       const uploadedImageResults: { url: string | null, publicId: string | null, isLogo: boolean, originalFileRef?: File }[] = [];
 
       if (this.selectedLogoFile) {
@@ -298,12 +298,12 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
       });
 
       if (uploadObservables.length > 0) {
-        const rawUploadResults = await forkJoin(uploadObservables).pipe(takeUntil(this.destroy$)).toPromise();
+        const rawUploadResults = await forkJoin(uploadObservables).pipe(takeUntil(this.destroy$)).toPromise() as (Record<string, unknown> & { isLogo: boolean, originalFileRef?: File} | null)[];
         rawUploadResults?.forEach(result => {
-          if (result && result.secure_url) {
+            if (result && (result as Record<string, unknown>)['secure_url']) {
             uploadedImageResults.push({
-              url: result.secure_url,
-              publicId: result.public_id,
+              url: (result as Record<string, unknown>)['secure_url'] as string,
+              publicId: (result as Record<string, unknown>)['public_id'] as string,
               isLogo: result.isLogo,
               originalFileRef: result.originalFileRef 
             });
@@ -349,9 +349,10 @@ export class UpdateProfileinfo implements OnInit ,OnDestroy {
         this._toast.error(res!.message);
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       this._logger.error("Profile update failed:", error);
-      this._toast.error(error.error?.message || 'An unexpected error occurred during profile update.');
+      const errorObj = error as { error?: { message?: string } };
+      this._toast.error(errorObj?.error?.message || 'An unexpected error occurred during profile update.');
     } finally {
       this.isSaving = false;
       this._cdr.detectChanges(); 

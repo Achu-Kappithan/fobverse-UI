@@ -7,6 +7,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './layout-jolist.html',
   styleUrl: './layout-jolist.css'
 })
-export class LayoutJolist {
+export class LayoutJobListComponent {
 
 }

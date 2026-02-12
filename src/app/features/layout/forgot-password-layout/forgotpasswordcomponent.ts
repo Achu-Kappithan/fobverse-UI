@@ -7,6 +7,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './forgotpasswordcomponent.html',
   styleUrl: './forgotpasswordcomponent.css'
 })
-export class Forgotpasswordcomponent {
+export class ForgotPasswordComponent {
 
 }

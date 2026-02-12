@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './company-sidebar.html',
   styleUrl: './company-sidebar.css'
 })
-export class CompanySidebar {
+export class CompanySidebarComponent {
   @Input() isOpen = false; 
   @Output() sidebarToggled = new EventEmitter<boolean>(); 
 

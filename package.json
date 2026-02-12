@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run lint && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:fobverse": "node dist/fobverse/server/server.mjs"
+    "serve:ssr:fobverse": "node dist/fobverse/server/server.mjs",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,7 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "ng2-pdf-viewer": "^10.4.0",
     "pdfjs-dist": "^5.4.54",
+    "peerjs": "^1.5.5",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.1",
     "sweetalert2": "^11.22.0",
@@ -37,7 +39,9 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "angular-eslint": "19.0.2",
     "autoprefixer": "^10.4.23",
+    "eslint": "^9.16.0",
     "jasmine-core": "~5.7.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -46,6 +50,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.0.0",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "typescript-eslint": "8.18.0"
   }
 }

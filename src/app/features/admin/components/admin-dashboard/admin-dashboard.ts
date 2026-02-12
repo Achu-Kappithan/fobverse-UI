@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { AdminDashboardService } from '../../services/admin-dashboard.service';
@@ -13,7 +13,7 @@ import { environment } from '../../../../../env/environment';
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })
-export class AdminDashboard implements OnInit {
+export class AdminDashboardComponent implements OnInit {
   stats: AdminDashboardStats | null = null;
   loading = true;
   error: string | null = null;
@@ -40,7 +40,7 @@ export class AdminDashboard implements OnInit {
         this.loading = false;
         this._cdr.detectChanges()
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         this.error = 'Failed to load dashboard statistics';
         this.loading = false;
         this._cdr.detectChanges()

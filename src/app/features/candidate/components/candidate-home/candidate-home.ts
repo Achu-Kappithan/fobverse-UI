@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -16,7 +16,7 @@ import { environment } from '../../../../../env/environment';
   templateUrl: './candidate-home.html',
   styleUrl: './candidate-home.css',
 })
-export class CandidateHome implements OnInit {
+export class CandidateHomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   jobs: CandidateJobsInterface[] = [];
   companies: CompanyProfileInterface[] = [];

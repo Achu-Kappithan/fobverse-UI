@@ -24,6 +24,23 @@ export interface ApplicationQueryParams {
   stage?: string;
 }
 
+export interface InterviewStage {
+  _id: string;
+  applicationId: string;
+  companyId: string;
+  candidateId: string;
+  jobId: string;
+  scheduledDate: string;
+  scheduledTime: string;
+  status: string;
+  meetingLink?: string;
+  finalResult: string;
+  overallFeedback?: string;
+  evaluators: Record<string, unknown>[]; 
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface DetailedApplicationResponse {
   atsStage: {
     _id: string;
@@ -42,9 +59,9 @@ export interface DetailedApplicationResponse {
     resumeUrl: string;
     createdAt: string;
     updatedAt: string;
-    profile: any;
-    jobDetails?: any;
+    profile: Record<string, unknown>;
+    jobDetails?: Record<string, unknown>;
   };
-  shortlistedStage?: any;
-  techStage?: any;
+  shortlistedStage?: InterviewStage;
+  techStage?: InterviewStage;
 }

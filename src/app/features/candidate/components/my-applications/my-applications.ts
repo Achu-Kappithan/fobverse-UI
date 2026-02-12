@@ -132,7 +132,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   }
 
   getJobTypeLabel(jobType: string): string {
-    const typeMap: { [key: string]: string } = {
+    const typeMap: Record<string, string> = {
       'fulltime': 'Full Time',
       'parttime': 'Part Time',
       'contract': 'Contract',
@@ -155,7 +155,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     const range = [];
     const maxPages = 5;
     let start = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
-    let end = Math.min(this.totalPages, start + maxPages - 1);
+    const end = Math.min(this.totalPages, start + maxPages - 1);
 
     if (end - start < maxPages - 1) {
       start = Math.max(1, end - maxPages + 1);

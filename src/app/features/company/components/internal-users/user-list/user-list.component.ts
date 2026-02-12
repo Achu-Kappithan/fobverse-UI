@@ -3,7 +3,7 @@ import { LoggerService } from '../../../../../shared/services/logger/logger.serv
 import { RouterModule } from '@angular/router';
 import { InternalUserInterface } from '../../../interfaces/company.response.interface';
 import { CompanyService } from '../../../services/company-service';
-import { LoadingSpinner } from '../../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../../common/loading-spinner/loading-spinner';
 import { CommonModule } from '@angular/common';
 import { RoleDisplayPipe } from '../../../../../shared/pipes/role-display-pipe';
 import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/api-response.interface';
@@ -15,7 +15,7 @@ import { ConfirmService } from '../../../../../shared/services/confirm/confirm.s
 
 @Component({
   selector: 'app-user-list.component',
-  imports: [RouterModule,LoadingSpinner,CommonModule,RoleDisplayPipe,FormsModule],
+  imports: [RouterModule,CommonModule,LoadingSpinnerComponent,RoleDisplayPipe,FormsModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
@@ -26,7 +26,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   private _subscriptions : Subscription = new Subscription()
   
-  isLoading:boolean = false
+  isLoading = false
   InternalUsers:InternalUserInterface[]=[]
 
   QueryParams :QueryParmsInterface = {

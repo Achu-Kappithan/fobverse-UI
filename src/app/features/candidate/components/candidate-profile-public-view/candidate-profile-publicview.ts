@@ -5,19 +5,19 @@ import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { environment } from '../../../../../env/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-candidate-profile-publicview',
-  imports: [CommonModule,LoadingSpinner,],
+  imports: [CommonModule,LoadingSpinnerComponent],
   templateUrl: './candidate-profile-publicview.html',
   styleUrl: './candidate-profile-publicview.css'
 })
-export class CandidateProfilePublicview implements OnInit {
+export class CandidateProfilePublicViewComponent implements OnInit {
 
-  isLoading:boolean = false
+  isLoading = false
   profileData:CandidateInterface |null = null
   profileId:string |null = null
   resumePdfUrl:string | null = null

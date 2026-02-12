@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
@@ -10,18 +10,18 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../shared/interfaces/table.interface';
 import { TableComponent } from '../../../../common/table-component/table-component';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { AllJobsAdminResponse } from '../../interfaces/company.response.interface';
 
 @Component({
   selector: 'app-admin-joblist',
-  imports: [RouterModule,CommonModule,FormsModule,TableComponent,LoadingSpinner],
+  imports: [CommonModule,LoadingSpinnerComponent,FormsModule,RouterModule, TableComponent],
   templateUrl: './admin-joblist.html',
   styleUrl: './admin-joblist.css'
 })
-export class AdminJoblist  implements OnInit {
+export class AdminJoblistComponent  implements OnInit {
 
-  isLoading:boolean = false
+  isLoading = false
   jobList:AllJobsAdminResponse[]=[]
   serchValue = new Subject<string>()
 
@@ -88,35 +88,37 @@ export class AdminJoblist  implements OnInit {
           this._cdr.detectChanges()
         }
       }),
-      error:(err)=>{
+      error:(err: unknown)=>{
         this._logger.error('error for getting Alljobs: ',err);
-        this._toast.error(err.error.message)
-        this.isLoading = false
-        this._cdr.detectChanges()
+        const errorObj = err as { error?: { message?: string } };
+        this._toast.error(errorObj?.error?.message || 'Failed to fetch jobs');
+        this.isLoading = false;
+        this._cdr.detectChanges();
       }
     })
   }
 
-  updateUserAction(event:{action:string,row:any}){
+  updateUserAction(event:{action:string,row:unknown}){
     const {action,row}= event
+    const jobRow = row as AllJobsAdminResponse;
     if(action ==='Activate'){
-      if(row.activeStatus){
+      if(jobRow.activeStatus){
         this._toast.error("Current User Status is Active")
       }else{
-        this.updateJobStatus(row)
+        this.updateJobStatus(jobRow)
       }
     }else if(action ==='deactivate'){
-      if(!row.activeStatus){
+      if(!jobRow.activeStatus){
         this._toast.error('Current User Status is Inactive')
       }else{
-        this.updateJobStatus(row)
+        this.updateJobStatus(jobRow)
       }
     }else if(action ==='view'){
-      this._router.navigate([APP_ROUTES.ADMIN_VIEW_JOB],{queryParams:{id:row._id}})
+      this._router.navigate([APP_ROUTES.ADMIN_VIEW_JOB],{queryParams:{id:jobRow._id}})
     }
   }
 
-  updateJobStatus(job:any){
+  updateJobStatus(job:AllJobsAdminResponse){
     this._adminService.ActivateJobStatus(job._id).subscribe({
       next:(res =>{
         if(res.success){
@@ -125,10 +127,11 @@ export class AdminJoblist  implements OnInit {
           this._toast.success(res.message)
         }
       }),
-      error:(err =>{
+      error:(err: unknown) => {
         this._logger.error("error regarding Activate job Status ",err);
-        this._toast.error(err.error.message)
-      })
+        const errorObj = err as { error?: { message?: string } };
+        this._toast.error(errorObj?.error?.message || 'Status update failed');
+      }
     })
   }
 
@@ -144,7 +147,7 @@ export class AdminJoblist  implements OnInit {
   }
 
   onPageChange(page:number){
-    this.QueryParms.page = page,
+    this.QueryParms.page = page;
     this.fetchAllJobs()
   }
 

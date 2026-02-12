@@ -18,7 +18,7 @@ export class CandidateApplicationDetailsComponent implements OnInit {
   applicationId: string | null = null;
   jobId: string | null = null;
   application: DetailedApplicationResponse | null = null;
-  isLoading: boolean = false;
+  isLoading = false;
   baseUrl = environment.cloudinaryBaseUrl;
   currentTab: 'progress' | 'current' = 'progress';
   private readonly _logger = inject(LoggerService);
@@ -77,7 +77,7 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     }
   }
 
-  getCurrentStageData(): any {
+  getCurrentStageData(): unknown {
     if (!this.application) return null;
     const currentStage = this.application.atsStage.Stages.toLowerCase();
     
@@ -89,12 +89,42 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     return null;
   }
 
-  getEvaluatorNames(evaluators: any[]): string {
+  getEvaluatorNames(evaluators: unknown[]): string {
     if (!evaluators || evaluators.length === 0) return 'TBA';
-    return evaluators.flat().map(e => e.interviewerName).join(', ');
+    return evaluators.flat().map((e) => (e as { interviewerName: string }).interviewerName).join(', ');
   }
 
   switchTab(tab: 'progress' | 'current'): void {
     this.currentTab = tab;
+  }
+
+  // Helper methods for type-safe property access
+  getStageDataField(stageData: unknown, field: string): unknown {
+    return (stageData as Record<string, unknown>)[field];
+  }
+
+  getStageScheduledDate(stageData: unknown): string | Date | null {
+    return (stageData as Record<string, unknown>)['scheduledDate'] as string | Date | null;
+  }
+
+  getStageEvaluators(stageData: unknown): unknown[] {
+    return (stageData as Record<string, unknown>)['evaluators'] as unknown[];
+  }
+
+  getStageMeetingLink(stageData: unknown): string {
+    return (stageData as Record<string, unknown>)['meetingLink'] as string;
+  }
+
+  getProfileUrl(): string {
+    const profile = this.application?.atsStage?.profile as Record<string, unknown> | undefined;
+    if (!profile) return '/profileimages/logodefault.jpg';
+    
+    const profileUrl = profile['profileUrl'] as string | undefined;
+    if (!profileUrl) return '/profileimages/logodefault.jpg';
+    
+    if ((profileUrl as string).startsWith('http')) {
+      return profileUrl;
+    }
+    return this.baseUrl + profileUrl;
   }
 }

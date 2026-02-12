@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { ApplicationInterface, CompanyProfileInterface, CompanyDashboardData, InternalUserInterface, JobsInterface, PopulatedCompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.response.interface';
 import { ApiResponse, PaginatedApiResponse, PlainResponse, QueryParmsInterface } from '../../../shared/interfaces/api-response.interface';
-import { ApplicationQureryInterface } from '../interfaces/company.interface';
+
 import { environment } from '../../../../env/environment';
 import { LoggerService } from '../../../shared/services/logger/logger.service';
 
@@ -124,8 +124,8 @@ export class CompanyService {
 
   searchLocations(query: string): Observable<string[]> {
   return this._http
-    .get<any[]>(`${environment.nominatimUrl}${query}`, { params: { format: 'json' } })
-    .pipe(map(res => res.map(item => item.display_name)));
+    .get<Record<string, unknown>[]>(`${environment.nominatimUrl}${query}`, { params: { format: 'json' } })
+    .pipe(map(res => res.map(item => (item as Record<string, unknown>)['display_name'] as string)));
   }
 
 

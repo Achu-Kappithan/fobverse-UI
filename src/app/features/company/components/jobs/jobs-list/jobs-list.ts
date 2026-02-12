@@ -10,17 +10,17 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CompanyService } from '../../../services/company-service';
 import { JobsInterface } from '../../../interfaces/company.response.interface';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
-import { LoadingSpinner } from "../../../../../common/loading-spinner/loading-spinner";
+import { LoadingSpinnerComponent } from '../../../../../common/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-jobs-list',
-  imports: [CommonModule, FormsModule, TableComponent, RouterModule, LoadingSpinner],
+  imports: [CommonModule,LoadingSpinnerComponent,RouterModule,FormsModule, TableComponent],
   templateUrl: './jobs-list.html',
   styleUrl: './jobs-list.css',
 })
-export class JobsList implements OnInit {
+export class JobsListComponent implements OnInit {
 
-  isLoading:boolean = false
+  isLoading = false
   serchValue = new Subject<string>()
   private readonly _logger = inject(LoggerService);
   jobs: JobsInterface[] = []
@@ -97,8 +97,8 @@ export class JobsList implements OnInit {
   }
 
   onLimitChange(limit:number){
-    this.QueryParms.limit = limit,
-    this.QueryParms.page = 1
+    this.QueryParms.limit = limit;
+    this.QueryParms.page = 1;
     this.fetchAllJobs()
   }
 
@@ -112,7 +112,7 @@ export class JobsList implements OnInit {
     this.serchValue.next(term)
   }
 
-  onRowSelected(row: any): void {
+  onRowSelected(row: unknown): void {
     this._logger.log('Row selected:', row);
   }
 
@@ -124,13 +124,14 @@ export class JobsList implements OnInit {
     return pageNumber
   }
 
-  updateAction(event:{action:string, row:JobsInterface}){
+  updateAction(event:{action:string, row:unknown}){
     const {action, row} = event
+    const jobRow = row as JobsInterface;
 
     if(action === 'viewDetails'){
-      this.showJobDetails(row)
+      this.showJobDetails(jobRow)
     }else if(action === 'viewApplications'){
-      this.showApplciations(row)
+      this.showApplciations(jobRow)
     }
   }
 

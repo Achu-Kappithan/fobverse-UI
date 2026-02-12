@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { JobsInterface } from '../../../interfaces/company.response.interface';
-import { OpenDirOptions } from 'fs';
+
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,17 +15,17 @@ import { Subscription } from 'rxjs';
   templateUrl: './job-editing.html',
   styleUrl: './job-editing.css'
 })
-export class JobEditing implements OnInit , OnDestroy {
+export class JobEditingComponent implements OnInit , OnDestroy {
 
   private _subscription:Subscription = new Subscription()
 
   jobId: string | null = null;
   jobDetails: JobsInterface | null = null;
   jobEditForm!: FormGroup;
-  loading: boolean = false;
+  loading = false;
   private readonly _logger = inject(LoggerService);
 
-  minDate: string = '';
+  minDate = '';
   locationPattern = /^[A-Za-z\s]+$/;
 
   constructor(

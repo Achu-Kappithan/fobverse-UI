@@ -20,10 +20,10 @@ import { ToastService } from '../../../../shared/services/toast/toast.service';
   templateUrl: './candidate-companylist.html',
   styleUrl: './candidate-companylist.css',
 })
-export class CandidateCompanylist implements OnInit {
+export class CandidateCompanyListComponent implements OnInit {
   baseUrl: string = environment.cloudinaryBaseUrl;
-  listView: boolean = false;
-  isLoading: boolean = false;
+  listView = false;
+  isLoading = false;
   private readonly _logger = inject(LoggerService);
 
   companyList: CompanyProfileInterface[] = [];
@@ -82,7 +82,7 @@ export class CandidateCompanylist implements OnInit {
         this.isLoading = false;
         this._cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this._logger.error('Error fetching companies:', err);
         this._toast.error('Failed to load companies');
         this.isLoading = false;

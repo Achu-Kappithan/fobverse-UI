@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './admin-sidebar.html',
   styleUrl: './admin-sidebar.css'
 })
-export class AdminSidebar {
+export class AdminSidebarComponent {
   @Input() isOpen = false; 
   @Output() sidebarToggled = new EventEmitter<boolean>(); 
 

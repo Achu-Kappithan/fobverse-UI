@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { LoggerService } from '../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../../../services/candidate.service';
@@ -13,20 +13,19 @@ import { InterviewFeedback, StageDetail } from '../../../../interfaces/candiate.
   templateUrl: './candidate-hiring-status.component.html',
   styleUrls: ['./candidate-hiring-status.component.css']
 })
-export class CandidateHiringStatusComponent implements OnInit, OnChanges {
+export class CandidateHiringStatusComponent implements OnChanges {
   @Input() status: string | null = null;
   @Input() applicationId: string | null = null;
   @Input() fullData: DetailedApplicationResponse | null = null;
 
   journeyData: StageDetail[] = [];
-  isLoading: boolean = false;
+  isLoading = false;
   errorMessage: string | null = null;
   private readonly _logger = inject(LoggerService);
 
   constructor(private readonly _candidateService: CandidateService) {}
 
-  ngOnInit(): void {
-  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['fullData'] && this.fullData) {
@@ -46,7 +45,7 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
     this.errorMessage = null;
 
     this._candidateService.getAllStages(this.applicationId).subscribe({
-      next: (response: any) => {
+      next: (response: { success: boolean; data: DetailedApplicationResponse; message?: string }) => {
         if (response.success && response.data) {
           this.mapApiResponseToJourneyData(response.data);
         } else {
@@ -54,7 +53,7 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
         }
         this.isLoading = false;
       },
-      error: (error: any) => {
+      error: (error: Error | Record<string, unknown>) => {
         this._logger.error('Error fetching all stages:', error);
         this.errorMessage = 'An error occurred while fetching data';
         this.isLoading = false;
@@ -62,7 +61,7 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
     });
   }
 
-  mapApiResponseToJourneyData(data: any): void {
+  mapApiResponseToJourneyData(data: DetailedApplicationResponse): void {
     this.journeyData = [];
 
     if (data.atsStage) {
@@ -141,17 +140,17 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
     return undefined;
   }
 
-  mapEvaluators(evaluators: any[]): InterviewFeedback[] | undefined {
+  mapEvaluators(evaluators: Record<string, unknown>[]): InterviewFeedback[] | undefined {
     if (!evaluators || evaluators.length === 0) return undefined;
     const flatEvaluators = evaluators.flat();
 
     return flatEvaluators
-      .filter(e => e.feedback || e.interviewerName)
-      .map(evaluator => ({
-        interviewerName: evaluator.interviewerName || 'Interviewer',
-        feedback: evaluator.feedback || 'No feedback provided',
-        role: evaluator.role,
-        avatarUrl: evaluator.avatarUrl
+      .filter(e => e['feedback'] || e['interviewerName'])
+      .map((evaluator: Record<string, unknown>) => ({
+        interviewerName: (evaluator['interviewerName'] as string) || 'Interviewer',
+        feedback: (evaluator['feedback'] as string) || 'No feedback provided',
+        role: evaluator['role'] as string,
+        avatarUrl: evaluator['avatarUrl'] as string
       }));
   }
 

@@ -5,30 +5,31 @@ import { Injectable, isDevMode } from '@angular/core';
 })
 export class LoggerService {
 
-  log(message: string, ...args: any[]): void {
+  log(message: string, ...args: unknown[]): void {
     if (isDevMode()) {
+       
       console.log(`[LOG]: ${message}`, ...args);
     }
   }
 
-  debug(message: string, ...args: any[]): void {
+  debug(message: string, ...args: unknown[]): void {
     if (isDevMode()) {
       console.debug(`[DEBUG]: ${message}`, ...args);
     }
   }
 
-  info(message: string, ...args: any[]): void {
+  info(message: string, ...args: unknown[]): void {
     if (isDevMode()) {
       console.info(`[INFO]: ${message}`, ...args);
     }
   }
 
-  warn(message: string, ...args: any[]): void {
+  warn(message: string, ...args: unknown[]): void {
     // Warnings are kept even in prod but can be filtered or sent to monitoring
     console.warn(`[WARN]: ${message}`, ...args);
   }
 
-  error(message: string, ...args: any[]): void {
+  error(message: string, ...args: unknown[]): void {
     // Errors are always logged
     console.error(`[ERROR]: ${message}`, ...args);
   }

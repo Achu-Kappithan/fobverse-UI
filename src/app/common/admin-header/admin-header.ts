@@ -22,17 +22,17 @@ import { LoggerService } from '../../shared/services/logger/logger.service';
   templateUrl: './admin-header.html',
   styleUrl: './admin-header.css',
 })
-export class AdminHeader implements OnInit {
+export class AdminHeaderComponent implements OnInit {
   
   activeAdmin:UserPartial | null  = null
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
-  @Input() isSidebarOpen: boolean = true;
-  isDarkMode: boolean = false
+  @Input() isSidebarOpen = true;
+  isDarkMode = false
 
   @Output() darkModeToggled = new EventEmitter<boolean>();
 
-  isProfileMenuOpen: boolean = false;
+  isProfileMenuOpen = false;
   private _router = inject(Router);
   private _logger = inject(LoggerService);
 

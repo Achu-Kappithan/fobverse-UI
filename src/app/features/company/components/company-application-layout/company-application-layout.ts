@@ -7,6 +7,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './company-application-layout.html',
   styleUrl: './company-application-layout.css'
 })
-export class CompanyApplicationLayout {
+export class CompanyApplicationLayoutComponent {
 
 }

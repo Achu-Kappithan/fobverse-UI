@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { LoggerService } from '../logger/logger.service';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { SocketService } from '../socket/socket.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '../../interfaces/api-response.interface';
@@ -39,9 +39,10 @@ export class NotificationService {
   }
 
   listenToSocket() {
-    this.socketService.onNotification((notification) => {
+    this.socketService.onNotification((notification: unknown) => {
+      const n = notification as NotificationInterface;
       const currentNotifications = this.notificationSubject.value;
-      this.notificationSubject.next([notification, ...currentNotifications]);
+      this.notificationSubject.next([n, ...currentNotifications]);
       this.incrementUnread();
     });
   }
@@ -54,8 +55,8 @@ export class NotificationService {
     this.unreadCountSubject.next(0);
   }
 
-  markAsRead(notificationId: string){
-    return this.http.patch(`${environment.apiUrl}/notification/${notificationId}/markasread`, {}).pipe(
+  markAsRead(notificationId: string) {
+    return this.http.patch<ApiResponse<unknown>>(`${environment.apiUrl}/notification/${notificationId}/markasread`, {}).pipe(
       tap(() => {
         const currentNotifications = this.notificationSubject.value;
         const updatedNotifications = currentNotifications.map(notif =>
@@ -69,8 +70,8 @@ export class NotificationService {
     );
   }
 
-  markAllAsRead(){
-    return this.http.patch(`${environment.apiUrl}/notification/markallread`, {}).pipe(
+  markAllAsRead() {
+    return this.http.patch<ApiResponse<unknown>>(`${environment.apiUrl}/notification/markallread`, {}).pipe(
       tap(() => {
         const currentNotifications = this.notificationSubject.value;
         const updatedNotifications = currentNotifications.map(notif => ({

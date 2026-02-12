@@ -21,9 +21,9 @@ import { LoggerService } from '../../shared/services/logger/logger.service';
   templateUrl: './company-header.html',
   styleUrl: './company-header.css',
 })
-export class CompanyHeader implements OnInit {
-  isDarkMode: boolean = false;
-  isProfileMenuOpen: boolean = false;
+export class CompanyHeaderComponent implements OnInit {
+  isDarkMode = false;
+  isProfileMenuOpen = false;
   cloudinaryBaseUrl = environment.cloudinaryBaseUrl
   userPorfile: string | null = null
   activeUser:UserPartial | null = null
@@ -39,14 +39,14 @@ export class CompanyHeader implements OnInit {
 
   ngOnInit(): void {
     this._themeService.isDarkMode$.subscribe(isDark => {
-      this.isDarkMode = isDark;
-    });
+      this.isDarkMode = isDark;
+    });
 
     this._authService.company$.subscribe({
       next: (comp) => {
         this._logger.log('active company user in header', comp);
         this.activeUser = comp
-        this.userPorfile = this.cloudinaryBaseUrl+comp?.profileImg!;
+        this.userPorfile = comp?.profileImg ? this.cloudinaryBaseUrl + comp.profileImg : null;
         this._logger.log("userprofile image path",this.userPorfile)
         this._cdr.detectChanges();
       },

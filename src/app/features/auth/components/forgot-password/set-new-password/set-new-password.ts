@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../../../shared/constants/routes.constants';
+import { PlainResponse } from '../../../../../shared/interfaces/api-response.interface';
 
 @Component({
   selector: 'app-set-new-password',
@@ -21,12 +22,12 @@ import { APP_ROUTES } from '../../../../../shared/constants/routes.constants';
   templateUrl: './set-new-password.html',
   styleUrl: './set-new-password.css',
 })
-export class SetNewPassword implements OnInit {
+export class SetNewPasswordComponent implements OnInit {
   resetForm!: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
-  verificationToken: string = '';
-  isLoading: boolean = false;
+  verificationToken = '';
+  isLoading = false;
 
   private readonly _authService = inject(AuthService);
   private readonly _route = inject(ActivatedRoute);
@@ -80,7 +81,7 @@ export class SetNewPassword implements OnInit {
         token: this.verificationToken,
       };
       this._authService.updateNewPassword(data).subscribe({
-        next: (response) => {
+        next: (response: PlainResponse) => {
           this.isLoading = false;
           this._logger.log('Updated Password Response', response);
           if (response.success) {
@@ -91,10 +92,11 @@ export class SetNewPassword implements OnInit {
             this.resetForm.reset();
           }
         },
-        error: (error) => {
+        error: (error: unknown) => {
           this.isLoading = false;
           this._logger.error('error regading new password updation', error);
-          this._toast.error(error.error.message);
+          const errorObj = error as { error?: { message?: string } };
+          this._toast.error(errorObj?.error?.message || 'An error occurred');
           this.resetForm.reset();
         },
       });

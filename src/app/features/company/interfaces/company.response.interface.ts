@@ -159,7 +159,7 @@ export interface ApplicationInterface {
 
   jobId: string;
 
-  jobDetails?: any;
+  jobDetails?: JobsInterface;
 }
 
 export interface applicationWithProfile {

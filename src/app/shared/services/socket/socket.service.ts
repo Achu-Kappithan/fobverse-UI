@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { Observable } from 'rxjs';
+
 import { environment } from '../../../../env/environment';
 import { LoggerService } from '../logger/logger.service';
 
@@ -27,7 +27,7 @@ export class SocketService {
     });
   }
 
-  onNotification(callback: (data: any) => void) {
+  onNotification(callback: (data: unknown) => void) {
 
     if (!this.socket) {
       this._logger.warn('Socket not initialized');
@@ -61,25 +61,25 @@ export class SocketService {
     }
   }
 
-  onRoomJoined(callback: (data: any) => void) {
+  onRoomJoined(callback: (data: unknown) => void) {
     if (this.socket) {
       this.socket.on('room-joined', callback);
     }
   }
 
-  onUserJoinedVideo(callback: (data: any) => void) {
+  onUserJoinedVideo(callback: (data: unknown) => void) {
     if (this.socket) {
       this.socket.on('user-joined-video', callback);
     }
   }
 
-  onUserLeftVideo(callback: (data: any) => void) {
+  onUserLeftVideo(callback: (data: unknown) => void) {
     if (this.socket) {
       this.socket.on('user-left-video', callback);
     }
   }
 
-  onVideoMessage(callback: (data: any) => void) {
+  onVideoMessage(callback: (data: unknown) => void) {
     if (this.socket) {
       this.socket.on('video-message', callback);
     }

@@ -76,7 +76,8 @@ createUserForm!: FormGroup;
       this.createUserForm.markAllAsTouched();
       return;
     }
-    const {confirmPassword,...data }= this.createUserForm.value
+    const data = { ...this.createUserForm.value };
+    delete data.confirmPassword;
     this._logger.log("Form submitted data", data);
     this._companyService.createUser(data).subscribe({
       next:(res =>{

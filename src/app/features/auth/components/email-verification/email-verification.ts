@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
-import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
@@ -14,18 +13,16 @@ import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
   templateUrl: './email-verification.html',
   styleUrl: './email-verification.css',
 })
-export class EmailVerification implements OnInit {
-  loadingMessage: string = 'Verifying your email. Please wait...';
+export class EmailVerificationComponent implements OnInit, OnDestroy {
+  loadingMessage = 'Verifying your email. Please wait...';
   private verificationSubscription: Subscription = new Subscription();
   private readonly MIN_LOAD_TIME_MS = 2000;
 
-  constructor(
-    private _route: ActivatedRoute,
-    private _router: Router,
-    private _userService: AuthService,
-    private _toast: ToastService,
-    private _logger: LoggerService
-  ) {}
+  private _route = inject(ActivatedRoute);
+  private _router = inject(Router);
+  private _userService = inject(AuthService);
+  private _toast = inject(ToastService);
+  private _logger = inject(LoggerService);
 
   ngOnInit(): void {
     this.verificationSubscription = this._route.queryParams
@@ -41,7 +38,7 @@ export class EmailVerification implements OnInit {
               success: false,
               message: 'No verification token found.',
               statusCode: 0,
-              data: undefined as any,
+              data: undefined as unknown,
               reason: 'missing_token',
             }).pipe(
               delay(
@@ -95,7 +92,7 @@ export class EmailVerification implements OnInit {
                   success: false,
                   message: errorMessage,
                   statusCode: error.status || 0,
-                  data: undefined as any,
+                  data: undefined as unknown,
                   reason: reason,
                 });
               }),
@@ -114,7 +111,7 @@ export class EmailVerification implements OnInit {
             this._router.navigate([`/${APP_ROUTES.EMAIL_SUCCESS}`]);
           } else {
             this._toast.error(response.message!);
-            const reasonForRoute = 'api_generic_failure';
+            const reasonForRoute = (response as { reason?: string }).reason || 'api_generic_failure';
             this._router.navigate([`/${APP_ROUTES.EMAIL_FAILED}`], {
               queryParams: { reason: reasonForRoute },
             });
@@ -122,6 +119,10 @@ export class EmailVerification implements OnInit {
         },
         error: (error) => {
           this._logger.error('Verification subscription error:', error);
+          this._toast.error('An error occurred during verification.');
+          this._router.navigate([`/${APP_ROUTES.EMAIL_FAILED}`], {
+            queryParams: { reason: 'network_error' },
+          });
         },
       });
   }

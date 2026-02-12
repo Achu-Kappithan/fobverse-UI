@@ -5,16 +5,16 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterModule } from '@angular/router';
 import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 
 @Component({
   selector: 'app-candidate-settings',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, Passwordvalidator],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, PasswordValidator],
   templateUrl: './candidate-settings.html',
   styleUrl: './candidate-settings.css'
 })
-export class CandidateSettings implements OnInit {
+export class CandidateSettingsComponent implements OnInit {
   passwordChangeForm!: FormGroup;
   isLoading = false;
   private loadingToastId: number | null = null;
@@ -63,7 +63,7 @@ export class CandidateSettings implements OnInit {
 
     const { currentPassword, newPassword } = this.passwordChangeForm.value;
     this._candidateService.changePassword(currentPassword, newPassword).subscribe({
-      next: (res) => {
+      next: () => {
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.success('Password changed successfully.');
         this.isLoading = false;

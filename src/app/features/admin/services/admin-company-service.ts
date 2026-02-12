@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, } from 'rxjs';
 import { ApiResponse, PaginatedApiResponse, PlainResponse, QueryParmsInterface } from '../../../shared/interfaces/api-response.interface';
-import { CompanyProfileInterface, JobsInterface } from '../../company/interfaces/company.response.interface';
+import { CompanyProfileInterface } from '../../company/interfaces/company.response.interface';
 import { AllJobsAdminResponse } from '../interfaces/company.response.interface';
 
 @Injectable({

@@ -3,7 +3,7 @@ import { LoggerService } from '../../../../shared/services/logger/logger.service
 import { CompanyService } from '../../services/company-service';
 import { CompanyProfileInterface, TeamMember } from '../../interfaces/company.response.interface';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule,} from '@angular/router';
 import { filter, Observable, Subject, switchMap, takeUntil} from 'rxjs';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
@@ -13,9 +13,10 @@ import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { environment } from '../../../../../env/environment';
 
+
 @Component({
   selector: 'app-company-profile',
-  imports: [CommonModule,LoadingSpinner,RouterModule,TechLogoPipe,ReactiveFormsModule],
+  imports: [CommonModule,RouterModule,LoadingSpinnerComponent,TechLogoPipe,ReactiveFormsModule],
   templateUrl: './company-profile.html',
   styleUrl: './company-profile.css',
   animations: [
@@ -30,13 +31,13 @@ import { environment } from '../../../../../env/environment';
     ])
   ]
 })
-export class CompanyProfile implements OnInit,OnDestroy {
+export class CompanyProfileComponent implements OnInit,OnDestroy {
 
-  isLoading:boolean = false
+  isLoading = false
   company$:CompanyProfileInterface | null = null
   activeModalId:string | null = null
   ChildRouteActive = false
-  logoUrl:string = "/profileimages/logodefault.jpg"
+  logoUrl = "/profileimages/logodefault.jpg"
   baseUrl:string = environment.cloudinaryBaseUrl
   private readonly _logger = inject(LoggerService);
 
@@ -46,7 +47,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
 
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
   @ViewChild('imagePreview') imagePreviewRef!: ElementRef<HTMLImageElement>;
-  defaultImagePreviewSrc: string = ""; 
+  defaultImagePreviewSrc = ""; 
 
   private destroy$ = new Subject<void>()
 
@@ -149,7 +150,7 @@ export class CompanyProfile implements OnInit,OnDestroy {
         name: this.teamMembersForm.get('name')?.value,
         role: this.teamMembersForm.get('role')?.value
       }
-      let uploadObservable: Observable<any> = new Observable(subscriber => subscriber.next(null))
+      let uploadObservable = new Observable<Record<string, unknown> | null>(subscriber => subscriber.next(null))
       const publicIdBase = teamData.name.toLowerCase().replace(/\s/g, '_');
 
       if(this.selectedImageFile) {
@@ -174,10 +175,10 @@ export class CompanyProfile implements OnInit,OnDestroy {
       }
 
       uploadObservable.subscribe({
-        next: (cludUploadResult)=>{
+        next: (cludUploadResult: Record<string, unknown> | null)=>{
           this._logger.log('Cloudinary upload result', cludUploadResult);
-          if(cludUploadResult && cludUploadResult.secure_url){
-            teamData.image = this.splitUrl(cludUploadResult.secure_url)
+          if(cludUploadResult && cludUploadResult['secure_url']){
+            teamData.image = this.splitUrl(cludUploadResult['secure_url'] as string)
           }else{
             teamData.image = undefined
           }
@@ -222,8 +223,8 @@ export class CompanyProfile implements OnInit,OnDestroy {
     if (input.files && input.files.length > 0) {
       this.selectedImageFile = input.files[0]; 
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreviewUrl = e.target.result; 
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.imagePreviewUrl = e.target?.result as string; 
         this._cdr.detectChanges(); 
       };
       reader.readAsDataURL(this.selectedImageFile);

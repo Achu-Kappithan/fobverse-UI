@@ -14,14 +14,14 @@ import { API_PUBLIC_PATHS, PUBLIC_ROUTES, APP_ROUTES } from '../constants/routes
 import { LoggerService } from '../services/logger/logger.service';
 
 let isRefreshing = false;
-const refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+const refreshTokenSubject: BehaviorSubject<unknown> = new BehaviorSubject<unknown>(
   null
 );
 
 export const authInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<any>,
+  req: HttpRequest<unknown>,
   next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
+): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const logger = inject(LoggerService);
@@ -44,12 +44,12 @@ export const authInterceptor: HttpInterceptorFn = (
 };
 
 function handle401Error(
-  req: HttpRequest<any>,
+  req: HttpRequest<unknown>,
   next: HttpHandlerFn,
   authService: AuthService,
   router: Router,
   logger: LoggerService
-): Observable<HttpEvent<any>> {
+): Observable<HttpEvent<unknown>> {
   logger.debug('Token refresh process initiated');
   if (!isRefreshing) {
     isRefreshing = true;

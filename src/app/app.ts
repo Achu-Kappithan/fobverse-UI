@@ -14,7 +14,7 @@ import { combineLatest, filter, switchMap } from 'rxjs';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
+export class AppComponent implements OnInit {
   constructor(
     private _authService: AuthService,
     private _themeService:ThemeService,

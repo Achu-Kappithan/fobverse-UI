@@ -2,7 +2,11 @@
   <div *ngFor="let toast of toasts$ | async" 
        [class]="'toast-item ' + getTypeClass(toast.type)"
        [class.closing]="toast.closing"
-       (click)="removeToast(toast.id)">
+       (click)="removeToast(toast.id)"
+       (keydown.enter)="removeToast(toast.id)"
+       (keydown.space)="removeToast(toast.id)"
+       tabindex="0"
+       role="alert">
     <div class="toast-icon">
       <i [class]="getIcon(toast.type)"></i>
     </div>

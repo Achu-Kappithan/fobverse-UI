@@ -23,7 +23,8 @@
             }
           </div>
           <div class="flex items-center gap-2">
-            <a
+            <button
+              type="button"
               (click)="backTo()"
               class="px-4 py-2 text-sm font-medium text-purple bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             >
@@ -42,7 +43,7 @@
                 />
               </svg>
               Back
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -164,6 +165,7 @@
             <img
               [src]="profileData?.logoUrl ? baseUrl+profileData?.logoUrl :'/profileimages/logodefault.jpg'"
               class="inline-flex size-16 md:size-20 m-2 md:m-5 items-center justify-center rounded-md bg-purple text-white font-bold text-3xl"
+              alt="{{ profileData?.name || 'Company Logo' }}"
             />
             <div>
               <h3 class="text-xl md:text-2xl font-semibold text-dark-gray">

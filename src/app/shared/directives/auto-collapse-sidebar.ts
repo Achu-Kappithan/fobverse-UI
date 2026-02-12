@@ -3,8 +3,8 @@ import { Directive, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 @Directive({
   selector: '[appAutoCollapseSidebar]'
 })
-export class AutoCollapseSidebar implements OnInit {
-  @Input()isOpen: boolean = true
+export class AutoCollapseSidebarDirective implements OnInit {
+  @Input()isOpen = true
   @Output() isOpenChange = new EventEmitter<boolean>()
 
   ngOnInit(): void {

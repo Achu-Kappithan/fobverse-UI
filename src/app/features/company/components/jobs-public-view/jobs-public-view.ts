@@ -5,21 +5,21 @@ import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-jobs-public-view',
-  imports: [CommonModule,LoadingSpinner,RouterModule],
+  imports: [CommonModule,RouterModule,LoadingSpinnerComponent],
   templateUrl: './jobs-public-view.html',
   styleUrl: './jobs-public-view.css'
 })
-export class JobsPublicView  implements OnInit,OnDestroy {
+export class JobsPublicViewComponent  implements OnInit,OnDestroy {
 
   private _subscription: Subscription = new Subscription()
 
-  isLoading:boolean = false
+  isLoading = false
   jobDetails:JobsInterface | null = null
   jobId:string | null = null
   responsibility:string[] =[]

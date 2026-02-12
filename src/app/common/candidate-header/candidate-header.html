@@ -138,6 +138,8 @@
                   <div
                     *ngFor="let notif of getFilteredNotifications()"
                     (click)="onNotificationClick(notif)"
+                    (keydown.enter)="onNotificationClick(notif)"
+                    tabindex="0"
                     class="p-4 cursor-pointer transition-all duration-200 notification-modal-item"
                     [class.notification-unread-item]="!notif.isRead"
                   >

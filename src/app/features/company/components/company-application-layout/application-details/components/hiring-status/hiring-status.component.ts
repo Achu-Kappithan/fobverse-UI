@@ -33,13 +33,18 @@ export class HiringStatusComponent implements OnInit, OnChanges {
   @Input() applicationId: string | null = null;
 
   journeyData: StageDetail[] = [];
-  isLoading: boolean = false;
+  isLoading = false;
   errorMessage: string | null = null;
   private readonly _logger = inject(LoggerService);
 
   constructor(private readonly _applicationService: CompanyApplication) {}
 
+
+
   ngOnInit(): void {
+    if (this.applicationId) {
+      this.fetchAllStages();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,15 +63,15 @@ export class HiringStatusComponent implements OnInit, OnChanges {
     this.errorMessage = null;
 
     this._applicationService.getAllStages(this.applicationId).subscribe({
-      next: (response: any) => {
+      next: (response) => {
         if (response.success && response.data) {
-          this.mapApiResponseToJourneyData(response.data);
+          this.mapApiResponseToJourneyData(response.data as Record<string, unknown>);
         } else {
           this.errorMessage = 'Failed to fetch stage data';
         }
         this.isLoading = false;
       },
-      error: (error: any) => {
+      error: (error: unknown) => {
         this._logger.error('Error fetching all stages:', error);
         this.errorMessage = 'An error occurred while fetching data';
         this.isLoading = false;
@@ -74,54 +79,59 @@ export class HiringStatusComponent implements OnInit, OnChanges {
     });
   }
 
-  mapApiResponseToJourneyData(data: any): void {
+  mapApiResponseToJourneyData(data: Record<string, unknown>): void {
     this.journeyData = [];
 
-    if (data.atsStage) {
+    if (data['atsStage']) {
+      const atsStageData = data['atsStage'] as Record<string, unknown>;
       const atsStage: StageDetail = {
         stageName: 'Application Qualified',
         stageType: 'qualified',
-        date: this.formatDate(data.atsStage.createdAt),
-        status: data.atsStage.Rejected ? 'Completed' : 'Completed',
-        description: `Candidate ${data.atsStage.name} has been qualified for this position with an ATS score of ${data.atsStage.atsScore}.`
+        date: this.formatDate(atsStageData['createdAt'] as string),
+        status: atsStageData['Rejected'] ? 'Completed' : 'Completed',
+        description: `Candidate ${atsStageData['name']} has been qualified for this position with an ATS score of ${atsStageData['atsScore']}.`
       };
       this.journeyData.push(atsStage);
     }
 
-    if (data.shortlistedStage) {
+    if (data['shortlistedStage']) {
+      const shortlistedStageData = data['shortlistedStage'] as Record<string, unknown>;
       const shortlistedStage: StageDetail = {
         stageName: 'Telephonic Interview',
         stageType: 'telephonic',
-        date: this.formatDate(data.shortlistedStage.scheduledDate),
-        status: this.mapStatus(data.shortlistedStage.status),
-        result: this.mapResult(data.shortlistedStage.finalResult),
-        finalFeedback: data.shortlistedStage.overallFeedback || undefined,
-        feedbacks: this.mapEvaluators(data.shortlistedStage.evaluators)
+        date: this.formatDate(shortlistedStageData['scheduledDate'] as string),
+        status: this.mapStatus(shortlistedStageData['status'] as string),
+        result: this.mapResult(shortlistedStageData['finalResult'] as string),
+        finalFeedback: (shortlistedStageData['overallFeedback'] as string) || undefined,
+        feedbacks: this.mapEvaluators(shortlistedStageData['evaluators'] as unknown[])
       };
       this.journeyData.push(shortlistedStage);
     }
 
-    if (data.techStage) {
+    if (data['techStage']) {
+      const techStageData = data['techStage'] as Record<string, unknown>;
       const techStage: StageDetail = {
         stageName: 'Technical Interview',
         stageType: 'technical',
-        date: this.formatDate(data.techStage.scheduledDate),
-        status: this.mapStatus(data.techStage.status),
-        result: this.mapResult(data.techStage.finalResult),
-        finalFeedback: data.techStage.overallFeedback || undefined,
-        feedbacks: this.mapEvaluators(data.techStage.evaluators)
+        date: this.formatDate(techStageData['scheduledDate'] as string),
+        status: this.mapStatus(techStageData['status'] as string),
+        result: this.mapResult(techStageData['finalResult'] as string),
+        finalFeedback: (techStageData['overallFeedback'] as string) || undefined,
+        feedbacks: this.mapEvaluators(techStageData['evaluators'] as unknown[])
       };
       this.journeyData.push(techStage);
     }
 
     if (this.status === 'hired') {
+      const atsStageData = data['atsStage'] as Record<string, unknown> | undefined;
+      const techStageData = data['techStage'] as Record<string, unknown> | undefined;
       const hiredStage: StageDetail = {
         stageName: 'Hired',
         stageType: 'hired',
-        date: data.atsStage?.updatedAt ? this.formatDate(data.atsStage.updatedAt) : this.formatDate(new Date().toISOString()),
+        date: atsStageData?.['updatedAt'] ? this.formatDate(atsStageData['updatedAt'] as string) : this.formatDate(new Date().toISOString()),
         status: 'Completed',
         description: 'Candidate has successfully completed all interview stages and has been officially hired for the position.',
-        finalFeedback: data.techStage?.overallFeedback || undefined
+        finalFeedback: (techStageData?.['overallFeedback'] as string) || undefined
       };
       this.journeyData.push(hiredStage);
     }
@@ -151,17 +161,20 @@ export class HiringStatusComponent implements OnInit, OnChanges {
     return undefined;
   }
 
-  mapEvaluators(evaluators: any[]): InterviewFeedback[] | undefined {
+  mapEvaluators(evaluators: unknown[]): InterviewFeedback[] | undefined {
     if (!evaluators || evaluators.length === 0) return undefined;
 
     return evaluators
-      .filter(e => e.feedback)
-      .map(evaluator => ({
-        interviewerName: evaluator.interviewerName,
-        feedback: evaluator.feedback || 'No feedback provided',
-        role: evaluator.role,
-        avatarUrl: evaluator.avatarUrl
-      }));
+      .filter(e => (e as Record<string, unknown>)['feedback'])
+      .map(evaluator => {
+        const ev = evaluator as Record<string, unknown>;
+        return {
+          interviewerName: ev['interviewerName'] as string,
+          feedback: (ev['feedback'] as string) || 'No feedback provided',
+          role: ev['role'] as string | undefined,
+          avatarUrl: ev['avatarUrl'] as string | undefined
+        };
+      });
   }
 
   formatDate(dateString: string): string {

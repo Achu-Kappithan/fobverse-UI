@@ -10,7 +10,7 @@ export class ToastService {
   toasts$: Observable<Toast[]> = this.toastsSubject.asObservable();
   private nextId = 0;
 
-  show(type: ToastType, title: string, message?: string, duration: number = 5000): number {
+  show(type: ToastType, title: string, message?: string, duration = 5000): number {
     const id = this.nextId++;
     const toast: Toast = { id, type, title, message, duration, closing: false };
     
@@ -24,19 +24,19 @@ export class ToastService {
     return id;
   }
 
-  success(title: string, message?: string, duration: number = 5000): void {
+  success(title: string, message?: string, duration = 5000): void {
     this.show('success', title, message, duration);
   }
 
-  error(title: string, message?: string, duration: number = 5000): void {
+  error(title: string, message?: string, duration = 5000): void {
     this.show('error', title, message, duration);
   }
 
-  info(title: string, message?: string, duration: number = 3000): void {
+  info(title: string, message?: string, duration = 3000): void {
     this.show('info', title, message, duration);
   }
 
-  warning(title: string, message?: string, duration: number = 3000): void {
+  warning(title: string, message?: string, duration = 3000): void {
     this.show('warning', title, message, duration);
   }
 

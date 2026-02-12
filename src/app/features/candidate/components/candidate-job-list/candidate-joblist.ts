@@ -8,7 +8,7 @@ import { CandidateJobsInterface, CandidatejobType, jobsPagesAndFilterInterface }
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CandidateApplyjob } from '../candidate-apply-job/candidate-applyjob';
+import { CandidateApplyJobComponent } from '../candidate-apply-job/candidate-applyjob';
 import { environment } from '../../../../../env/environment';
 import { AuthService } from '../../../auth/services/auth.service';
 import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
@@ -16,16 +16,16 @@ import { UserPartial } from '../../../../shared/interfaces/api-response.interfac
 
 @Component({
   selector: 'app-candidate-joblist',
-  imports: [CommonModule,FormsModule,RouterModule,CandidateApplyjob],
+  imports: [CommonModule,FormsModule,RouterModule,CandidateApplyJobComponent],
   templateUrl: './candidate-joblist.html',
   styleUrl: './candidate-joblist.css'
 })
-export class CandidateJoblist  implements OnInit, OnDestroy {
+export class CandidateJobListComponent  implements OnInit, OnDestroy {
   baseUrl:string = environment.cloudinaryBaseUrl
-  listView:boolean = false
+  listView = false
   private readonly _logger = inject(LoggerService);
-  isLoading:boolean = false
-  isApplyModalOpen: boolean = false;
+  isLoading = false
+  isApplyModalOpen = false;
   selectedJob: CandidateJobsInterface | null = null;
   candidate: UserPartial | null = null;
 
@@ -146,7 +146,7 @@ export class CandidateJoblist  implements OnInit, OnDestroy {
   }
 
   onPageChange(page:number){
-    this.QueryParms.page = page,
+    this.QueryParms.page = page;
     this.fetchAllJobs()
   }
 

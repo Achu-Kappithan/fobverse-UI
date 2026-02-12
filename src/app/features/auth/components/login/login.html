@@ -80,7 +80,7 @@
             </div>
 
             <!-- Google Sign Up -->
-            <div *ngIf="userType =='candidate'" class="flex justify-center">
+            <div *ngIf="userType ==='candidate'" class="flex justify-center">
               <asl-google-signin-button type='standard' size='large'>
               </asl-google-signin-button>
             </div>
@@ -158,7 +158,7 @@
                       placeholder="Enter password"
                       class="w-full h-12 px-3 pr-10 pl-3 border border-divider rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#6A45F5]
                       {{loginForm.get('password')?.invalid && loginForm.get('password')?.touched ?'border-red-500' : 'border-divider'}}"
-                      appPasswordvalidator
+                      appPasswordValidator
                       [minLength]="8"
                       [requireUppercase]="true"
                       [requireLowercase]="true"

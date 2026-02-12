@@ -5,22 +5,23 @@ import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { TechLogoPipe } from '../../../../shared/pipes/tech-logo-pipe';
+import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../../env/environment';
 
 @Component({
   selector: 'app-company-public-profile',
-  imports: [CommonModule,RouterModule,LoadingSpinner,TechLogoPipe],
+  imports: [CommonModule, RouterModule, LoadingSpinnerComponent, FormsModule, TechLogoPipe],
   templateUrl: './company-public-profile.html',
   styleUrl: './company-public-profile.css'
 })
-export class CompanyPublicProfile implements OnInit, OnDestroy {
+export class CompanyPublicProfileComponent implements OnInit, OnDestroy {
 
   private _subscription: Subscription = new Subscription()
 
-  isLoading:boolean = false
+  isLoading = false
   company$:CompanyProfileInterface | null = null
   jobsLit: JobsInterface[] = []
   companyId:string | null = null

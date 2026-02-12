@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CandidateHeader } from '../../../common/candidate-header/candidate-header';
+import { CandidateHeaderComponent } from '../../../common/candidate-header/candidate-header';
 
 @Component({
   selector: 'app-candidatecomponent',
-  imports: [RouterOutlet,CandidateHeader],
+  imports: [RouterOutlet,CandidateHeaderComponent],
   templateUrl: './candidatecomponent.html',
   styleUrl: './candidatecomponent.css'
 })
-export class Candidatecomponent {
+export class CandidateLayoutComponent {
 }

@@ -132,8 +132,8 @@ export class CandidateService {
     );
   }
 
-  getAllStages(applicationId: string): Observable<ApiResponse<any>> {
-    return this._http.get<ApiResponse<any>>(
+  getAllStages(applicationId: string): Observable<ApiResponse<DetailedApplicationResponse>> {
+    return this._http.get<ApiResponse<DetailedApplicationResponse>>(
       `${environment.apiUrl}/interview/all-stages`,
       { params: { applicationId: applicationId } }
     );

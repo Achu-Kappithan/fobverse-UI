@@ -4,7 +4,7 @@ import { AuthService } from '../../../features/auth/services/auth.service';
 import { combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { LoggerService } from '../../services/logger/logger.service';
 
-export const isLogoutGuard: CanActivateFn = (route, state) => {
+export const isLogoutGuard: CanActivateFn = () => {
   const _authService = inject(AuthService);
   const router = inject(Router);
   const _logger = inject(LoggerService);
