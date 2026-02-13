@@ -1,18 +1,21 @@
-import {
+﻿import {
   ChangeDetectorRef,
   Component,
   Input,
   OnInit,
+  inject
 } from '@angular/core';
-import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
+import { LoggerService } from '../../../../../../../shared/services/logger/logger.service';
+import { ScheduleResponseInterface } from '../../../../../interfaces/company.interview-response.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
+import { InternalUserInterface } from '../../../../../interfaces/company.response.interface';
 import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../../../auth/services/auth.service';
+import { ConfirmService } from '../../../../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-technical-stage',
@@ -39,22 +42,23 @@ import { AuthService } from '../../../../../../auth/services/auth.service';
   ],
 })
 export class TechnicalStageComponent implements OnInit {
-  interview: SheduleResponceInterface | null = null;
+  interview: ScheduleResponseInterface | null = null;
   @Input() applicationId: string | null = null;
   @Input() candidateId: string | null = null;
   @Input() userEmail: string | undefined = undefined;
 
   currentUserId: string | null = null;
+  private readonly _logger = inject(LoggerService);
 
-  technicalSheduleModalOpen: boolean = false;
-  feedbackModalOpen: boolean = false;
-  finalizeModalOpen: boolean = false;
-  feedbackCharCount: number = 0;
-  finalizeCharCount: number = 0;
+  technicalSheduleModalOpen = false;
+  feedbackModalOpen = false;
+  finalizeModalOpen = false;
+  feedbackCharCount = 0;
+  finalizeCharCount = 0;
   sheduleModal: string | null = null;
-  isLoading: boolean = false;
-  isSaving: boolean = false;
-  saveComplete: boolean = false;
+  isLoading = false;
+  isSaving = false;
+  saveComplete = false;
   interviewers: InternalUserInterface[] | null = null;
   technicalScheduleForm!: FormGroup;
   feedbackForm!: FormGroup;
@@ -67,7 +71,8 @@ export class TechnicalStageComponent implements OnInit {
     private readonly _toast: ToastService,
     private router: Router,
     private _route: ActivatedRoute,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -114,32 +119,30 @@ export class TechnicalStageComponent implements OnInit {
         next: (res) => {
           if (res.success) {
               this.interview = res.data;
-              console.log('Interview data:', this.interview);
-              console.log('Evaluators array:', this.interview?.evaluators);
-              console.log('Number of evaluators:', this.interview?.evaluators?.length);
+              this._logger.log('Interview evaluators fetched');
               this.isLoading = false;
               this._cdr.detectChanges();
           }
         },
         error: (err) => {
-          console.log('error regading fetch stage details', err);
+          this._logger.error('error regading fetch stage details', err);
           this.isLoading = false;
           this._cdr.detectChanges();
         },
       });
   }
 
-  openTechinalModal(mode: string = 'Scheduled') {
+  openTechinalModal(mode = 'Scheduled') {
     this.sheduleModal = mode;
-    
+
     if (!this.technicalSheduleModalOpen && !this.interviewers) {
         this.fetchInterviewers();
     }
-    
+
     if (mode === 'Rescheduled' && this.interview) {
       this.SetupReSheduleForm();
     }
-    
+
     this.technicalSheduleModalOpen = !this.technicalSheduleModalOpen;
   }
 
@@ -159,8 +162,8 @@ export class TechnicalStageComponent implements OnInit {
     this.feedbackCharCount = 0;
   }
 
-  onFeedbackInput(event: any) {
-    this.feedbackCharCount = event.target.value.length;
+  onFeedbackInput(event: Event) {
+    this.feedbackCharCount = (event.target as HTMLTextAreaElement).value.length;
   }
 
   openFinalizeModal() {
@@ -186,8 +189,8 @@ export class TechnicalStageComponent implements OnInit {
     this.finalizeCharCount = 0;
   }
 
-  onFinalizeInput(event: any) {
-    this.finalizeCharCount = event.target.value.length;
+  onFinalizeInput(event: Event) {
+    this.finalizeCharCount = (event.target as HTMLTextAreaElement).value.length;
   }
 
   submitFeedback() {
@@ -201,7 +204,6 @@ export class TechnicalStageComponent implements OnInit {
       ...data,
       interviewId:this.interview?._id
     };
-
 
     this.isSaving = true;
     this._ApplicationService.updateFeedback(data).subscribe({
@@ -218,7 +220,7 @@ export class TechnicalStageComponent implements OnInit {
       },
       error: (err) => {
         this.isSaving = false;
-        console.log('error updating feedback', err);
+        this._logger.error('error updating feedback', err);
         this._toast.error(err.error?.message || 'Failed to update feedback');
         this._cdr.detectChanges();
       }
@@ -254,7 +256,7 @@ export class TechnicalStageComponent implements OnInit {
       },
       error: (err) => {
         this.isSaving = false;
-        console.log('error finalizing result', err);
+        this._logger.error('error finalizing result', err);
         this._toast.error(err.error?.message || 'Failed to finalize result');
         this._cdr.detectChanges();
       }
@@ -268,7 +270,7 @@ export class TechnicalStageComponent implements OnInit {
     }
     return this.interview.evaluators.some(
       (evaluator) =>
-        (typeof evaluator.interviewerId === 'string' ? evaluator.interviewerId : (evaluator.interviewerId as any)?._id) === currentUserId &&
+        (typeof evaluator.interviewerId === 'string' ? evaluator.interviewerId : (evaluator.interviewerId as unknown as Record<string, unknown>)?.['_id']) === currentUserId &&
         !!evaluator.feedback
     );
   }
@@ -279,12 +281,12 @@ export class TechnicalStageComponent implements OnInit {
         .filter(e => e.interviewerId)
         .map(e => {
           const id = e.interviewerId;
-          return typeof id === 'string' ? id : (id as any)?._id || '';
+          return typeof id === 'string' ? id : (id as unknown as Record<string, unknown>)?.['_id'] || '';
         })
-        .filter(id => id !== ''); 
-      
-      console.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
-      
+        .filter(id => id !== '');
+
+      this._logger.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
+
       this.technicalScheduleForm.patchValue({
         scheduledDate: this.interview.scheduledDate,
         scheduledTime: this.interview.scheduledTime,
@@ -300,7 +302,7 @@ export class TechnicalStageComponent implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.log('error fetching HR list', err);
+        this._logger.error('error fetching HR list', err);
       },
     });
   }
@@ -312,20 +314,20 @@ export class TechnicalStageComponent implements OnInit {
     }
 
     let data = this.technicalScheduleForm.value;
-    
+
     const selectedInterviewerIds = data.interviewers;
-    const validInterviewerIds = selectedInterviewerIds.filter((id: any) => typeof id === 'string' && id.trim() !== '');
+    const validInterviewerIds = selectedInterviewerIds.filter((id: unknown) => typeof id === 'string' && id.trim() !== '');
     if (validInterviewerIds.length !== selectedInterviewerIds.length) {
-      console.warn('Found invalid interviewer IDs (filtered out):', 
-        selectedInterviewerIds.filter((id: any) => typeof id !== 'string' || id.trim() === '')
+      this._logger.warn('Found invalid interviewer IDs (filtered out):',
+        selectedInterviewerIds.filter((id: unknown) => typeof id !== 'string' || id.trim() === '')
       );
     }
-    
+
     const evaluators = validInterviewerIds.map((id: string) => {
       const interviewer = this.interviewers?.find(hr => hr._id === id);
       return {
         interviewerId: id,
-        interviewerName: interviewer?.name 
+        interviewerName: interviewer?.name
       };
     });
 
@@ -354,13 +356,23 @@ export class TechnicalStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading shedule interview ', err);
+        this._logger.error('error regading shedule interview ', err);
         this._toast.error(err.error.message);
       },
     });
   }
 
-  triggerCancel() {
+  async triggerCancel() {
+    const confirmed = await this._confirmService.confirm({
+      title: 'Cancel Interview?',
+      message: 'Are you sure you want to cancel this interview?',
+      confirmText: 'Yes, cancel',
+      cancelText: 'No, keep it',
+      type: 'danger',
+    });
+
+    if (!confirmed) return;
+
     this.isSaving = true;
     this.saveComplete = false;
     const data = {
@@ -382,7 +394,7 @@ export class TechnicalStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading cancel interview');
+        this._logger.error('error regading cancel interview');
         this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
@@ -390,10 +402,10 @@ export class TechnicalStageComponent implements OnInit {
     });
   }
 
-  onInterviewerChange(event: any, hrId: string) {
+  onInterviewerChange(event: Event, hrId: string) {
     const selectedIds = this.technicalScheduleForm.get('interviewers')?.value || [];
-    
-    if (event.target.checked) {
+
+    if ((event.target as HTMLInputElement).checked) {
       selectedIds.push(hrId);
     } else {
       const index = selectedIds.indexOf(hrId);
@@ -411,26 +423,26 @@ export class TechnicalStageComponent implements OnInit {
   canJoinInterview(): boolean {
     if (!this.interview) return false;
     const currentUserId = this.getCurrentUserId();
-    console.log('current user id ',currentUserId)
-    console.log('scheduled by ',this.interview.scheduledBy)
-    console.log('scheduled by ',this.interview.scheduledBy === currentUserId)
+    this._logger.log('current user id ',currentUserId);
+    this._logger.log('scheduled by ',this.interview.scheduledBy);
+    this._logger.log('scheduled by matching',this.interview.scheduledBy === currentUserId);
     if (this.interview.scheduledBy === currentUserId) {
       return true;
     }
-    
+
     const isEvaluator = this.interview.evaluators.some(
       evaluator => {
         const id = evaluator.interviewerId;
-        const idString = typeof id === 'string' ? id : (id as any)?._id || '';
+        const idString = typeof id === 'string' ? id : (id as unknown as Record<string, unknown>)?.['_id'] || '';
         return idString === currentUserId;
       }
     );
-    
+
     return isEvaluator;
   }
 
   onJoinInterview() {
-    console.log('Joining interview...');
+    this._logger.log('Joining interview...');
     if (this.interview?.meetingLink) {
       const roomId = this.interview.meetingLink.split('/').pop();
       if (roomId) {

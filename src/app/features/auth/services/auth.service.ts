@@ -15,14 +15,17 @@ import {
   throwError,
 } from 'rxjs';
 import {
-  ApiResponce,
-  PlainResponce,
+  ApiResponse,
+  PlainResponse,
   UserPartial,
-} from '../../../shared/interfaces/apiresponce.interface';
+} from '../../../shared/interfaces/api-response.interface';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
+
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { LoggerService } from '../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../shared/constants/routes.constants';
+import { environment } from '../../../../env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -38,37 +41,38 @@ export class AuthService {
   isLoading$ = this.isUserLoaded.asObservable();
   private _router = inject(Router);
   private _socialAuthService = inject(SocialAuthService);
+  private _logger = inject(LoggerService);
 
   constructor(
     private _http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
-  registerCandidate(candidate: CandidateRegistration): Observable<any> {
-    return this._http.post(`/api/auth/register`, candidate, {
+  registerCandidate(candidate: CandidateRegistration): Observable<ApiResponse<UserPartial>> {
+    return this._http.post<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/register`, candidate, {
       withCredentials: true,
     });
   }
 
-  candidateVarification(token: string): Observable<ApiResponce<UserPartial>> {
-    return this._http.get<ApiResponce<UserPartial>>(
-      `/api/auth/verify-email?token=${token}`,
+  candidateVerification(token: string): Observable<ApiResponse<UserPartial>> {
+    return this._http.get<ApiResponse<UserPartial>>(
+      `${environment.apiUrl}/auth/verify-email?token=${token}`,
       { withCredentials: true }
     );
   }
 
   candidateLogin(
     candidate: loginInterface
-  ): Observable<ApiResponce<UserPartial>> {
+  ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponce<UserPartial>>(`/api/auth/login`, candidate, {
+      .post<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/login`, candidate, {
         withCredentials: true,
       })
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Login successful, updating CandidateSubject', res.data);
+            this._logger.info('Login successful, updating CandidateSubject', { user: res.data.email });
             this.adminSubject.next(null);
             this.CompanySubject.next(null);
             this.CandidateSubject.next(res.data);
@@ -82,10 +86,10 @@ export class AuthService {
       );
   }
 
-  getCurrentUserDetails(): Observable<ApiResponce<UserPartial>> {
-    console.log('try to get user details');
+  getCurrentUserDetails(): Observable<ApiResponse<UserPartial>> {
+    this._logger.debug('Attempting to fetch current user details');
     return this._http
-      .get<ApiResponce<UserPartial>>(`/api/auth/getuser`, {
+      .get<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/getuser`, {
         withCredentials: true,
       })
       .pipe(
@@ -98,14 +102,12 @@ export class AuthService {
             } else {
               this.CompanySubject.next(response.data);
             }
-            console.log(
-              `${response.data.email} is active ${response.data.role}`
-            );
+            this._logger.info(`Session active for: ${response.data.email} (${response.data.role})`);
           } else {
             this.adminSubject.next(null);
             this.CompanySubject.next(null);
             this.CandidateSubject.next(null);
-            console.log('no active user found');
+            this._logger.debug('No active session found');
           }
           this.isUserLoaded.next(true);
         }),
@@ -119,19 +121,16 @@ export class AuthService {
       );
   }
 
-  refreshToken(): Observable<any> {
-    console.log('Attempting to refresh token...');
+  refreshToken(): Observable<Record<string, unknown> | null> {
+    this._logger.debug('Attempting to refresh token...');
     return this._http
-      .post(`/api/auth/refresh`, {}, { withCredentials: true })
+      .post<Record<string, unknown>>(`${environment.apiUrl}/auth/refresh`, {}, { withCredentials: true })
       .pipe(
-        tap((response) => {
-          console.log(
-            'Refresh token successful. New access token set via cookie.',
-            response
-          );
+        tap(() => {
+          this._logger.info('Refresh token successful. New access token set via cookie.');
         }),
         catchError((error) => {
-          console.error('Refresh token failed:', error);
+          this._logger.error('Refresh token failed', error);
           this.adminSubject.next(null);
           return of(null);
         })
@@ -139,25 +138,25 @@ export class AuthService {
   }
 
   hasRefreshToken(): boolean {
-    let refreshtoken = document.cookie.includes('refresh_token=');
+    const refreshtoken = document.cookie.includes('refresh_token=');
     return refreshtoken;
   }
 
   logoutUser(User: string): void {
     this._http
-      .post(`/api/auth/logout`, {}, { withCredentials: true })
+      .post(`${environment.apiUrl}/auth/logout`, {}, { withCredentials: true })
       .subscribe({
-        next: (res) => {
-          this._socialAuthService.signOut().catch(err => console.log('Social sign out failed or already signed out'));
+        next: () => {
+          this._socialAuthService.signOut().catch(() => this._logger.warn('Social sign out failed or already signed out'));
           if (User == 'company') {
             this.CompanySubject.next(null);
-            this._router.navigate(['/companylogin']);
+            this._router.navigate([`/${APP_ROUTES.COMPANY_LOGIN}`]);
           } else if (User === 'admin') {
             this.adminSubject.next(null);
-            this._router.navigate(['/adminlogin']);
+            this._router.navigate([`/${APP_ROUTES.ADMIN_LOGIN}`]);
           } else if(User ==='candidate') {
             this.CandidateSubject.next(null);
-            this._router.navigate(['/candidate/home']);
+            this._router.navigate([`/${APP_ROUTES.HOME}`]);
           }
 
           this.isUserLoaded.next(true);
@@ -168,17 +167,17 @@ export class AuthService {
   googleLogin(
     googleId: string,
     userType: string
-  ): Observable<ApiResponce<UserPartial>> {
+  ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .get<ApiResponce<UserPartial>>(
-        `/api/auth/google?googleId=${googleId}&role=${userType}`,
+      .get<ApiResponse<UserPartial>>(
+        `${environment.apiUrl}/auth/google?googleId=${googleId}&role=${userType}`,
         { withCredentials: true }
       )
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Google login successful, updating subjects', res.data);
+            this._logger.info('Google login successful, updating subjects', { user: res.data.email });
             if (userType === 'admin') this.adminSubject.next(res.data);
             else if (userType === 'candidate') this.CandidateSubject.next(res.data);
             else this.CompanySubject.next(res.data);
@@ -192,16 +191,16 @@ export class AuthService {
       );
   }
 
-  adminLogin(loginInfo: loginInterface): Observable<ApiResponce<UserPartial>> {
+  adminLogin(loginInfo: loginInterface): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponce<UserPartial>>(`/api/auth/admin/login`, loginInfo, {
+      .post<ApiResponse<UserPartial>>(`${environment.apiUrl}/auth/admin/login`, loginInfo, {
         withCredentials: true,
       })
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Admin login successful, updating adminSubject', res.data);
+            this._logger.info('Admin login successful, updating adminSubject', { user: res.data.email });
             this.adminSubject.next(res.data);
             this.CompanySubject.next(null);
             this.CandidateSubject.next(null);
@@ -217,18 +216,18 @@ export class AuthService {
 
   companyUsersLogin(
     loginInfo: loginInterface
-  ): Observable<ApiResponce<ComapnyProfileInterface | any>> {
+  ): Observable<ApiResponse<UserPartial>> {
     this.isUserLoaded.next(false);
     return this._http
-      .post<ApiResponce<ComapnyProfileInterface | any>>(
-        '/api/auth/companyuserslogin',
+      .post<ApiResponse<UserPartial>>(
+        `${environment.apiUrl}/auth/companyuserslogin`,
         loginInfo,
         { withCredentials: true }
       )
       .pipe(
         tap((res) => {
           if (res.success && res.data) {
-            console.log('Company user login successful, updating CompanySubject', res.data);
+            this._logger.info('Company user login successful, updating CompanySubject', { user: res.data.email });
             this.adminSubject.next(null);
             this.CandidateSubject.next(null);
             this.CompanySubject.next(res.data);
@@ -242,16 +241,16 @@ export class AuthService {
       );
   }
 
-  validateFogotpassEmail(
+  validateForgotPasswordEmail(
     user: validateEmailAndRole
-  ): Observable<PlainResponce> {
-    return this._http.post<PlainResponce>(`/api/auth/forgotpassword`, user, {
+  ): Observable<PlainResponse> {
+    return this._http.post<PlainResponse>(`${environment.apiUrl}/auth/forgotpassword`, user, {
       withCredentials: true,
     });
   }
 
-  updateNewPassword(data: passwordUpdate): Observable<PlainResponce> {
-    return this._http.post<PlainResponce>(`/api/auth/updatepassword`, data, {
+  updateNewPassword(data: passwordUpdate): Observable<PlainResponse> {
+    return this._http.post<PlainResponse>(`${environment.apiUrl}/auth/updatepassword`, data, {
       withCredentials: true,
     });
   }

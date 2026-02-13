@@ -66,7 +66,9 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "allowedHosts": ["collected-panel-despite-guidance.trycloudflare.com"]
+            "allowedHosts": [
+              "collected-panel-despite-guidance.trycloudflare.com"
+            ]
           }
         },
         "extract-i18n": {
@@ -90,11 +92,23 @@
               "zone.js/testing"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "7ecb7285-578d-4745-863a-3a5c158c840a"
+    "analytics": "7ecb7285-578d-4745-863a-3a5c158c840a",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }

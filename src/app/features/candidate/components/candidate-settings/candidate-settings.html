@@ -1,0 +1,160 @@
+<div class="settings-container bg-poster">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Section -->
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="section-title">Account Settings</h1>
+        <p class="section-subtitle">Manage your account preferences and security</p>
+      </div>
+      <a
+        [routerLink]="['../profile']"
+        class="settings-back-link"
+      >
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Profile</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Sidebar Navigation -->
+      <div class="md:col-span-1">
+        <nav class="space-y-2">
+          <a
+            class="settings-nav-item active"
+          >
+            <i class="fas fa-lock"></i>
+            <span>Security</span>
+          </a>
+          <a
+            [routerLink]="['../profile/updateprofile']"
+            class="settings-nav-item"
+          >
+            <i class="fas fa-user-edit"></i>
+            <span>Update Profile</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="md:col-span-3 space-y-6">
+        <!-- Password Change Card -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <h2 class="settings-card-title">
+              <i class="fas fa-shield-alt text-purple"></i>
+              Security Settings
+            </h2>
+            <p class="section-subtitle mt-1">Change your password and keep your account safe</p>
+          </div>
+
+          <form [formGroup]="passwordChangeForm" (ngSubmit)="updatePassword()" class="settings-form-section">
+            <div class="settings-input-group">
+              <label for="currentPassword" class="settings-label">Current Password</label>
+              <div class="settings-input-wrapper">
+                <span class="settings-input-icon">
+                  <i class="fas fa-key"></i>
+                </span>
+                <input
+                  type="password"
+                  formControlName="currentPassword"
+                  placeholder="Enter current password"
+                  class="settings-input"
+                  [class.settings-input-error]="passwordChangeForm.get('currentPassword')?.touched && passwordChangeForm.get('currentPassword')?.invalid"
+                />
+              </div>
+              <div *ngIf="passwordChangeForm.get('currentPassword')?.touched && passwordChangeForm.get('currentPassword')?.errors?.['required']" class="settings-error-text">
+                Current password is required
+              </div>
+            </div>
+
+            <div class="settings-sub-section">
+              <div class="settings-input-group">
+                <label for="newPassword" class="settings-label">New Password</label>
+                <div class="settings-input-wrapper">
+                  <span class="settings-input-icon">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                  <input
+                    type="password"
+                    formControlName="newPassword"
+                    appPasswordValidator
+                    [minLength]="6"
+                    placeholder="Enter new password (min. 6 chars)"
+                    class="settings-input"
+                    [class.settings-input-error]="passwordChangeForm.get('newPassword')?.touched && passwordChangeForm.get('newPassword')?.invalid"
+                  />
+                </div>
+                <div *ngIf="passwordChangeForm.get('newPassword')?.touched && passwordChangeForm.get('newPassword')?.errors?.['required']" class="settings-error-text">
+                  New password is required
+                </div>
+              </div>
+
+              <div class="settings-input-group mb-0">
+                <label for="confirmNewPassword" class="settings-label">Confirm New Password</label>
+                <div class="settings-input-wrapper">
+                  <span class="settings-input-icon">
+                    <i class="fas fa-check-circle"></i>
+                  </span>
+                  <input
+                    type="password"
+                    formControlName="confirmNewPassword"
+                    placeholder="Confirm your new password"
+                    class="settings-input"
+                    [class.settings-input-error]="passwordChangeForm.get('confirmNewPassword')?.touched && (passwordChangeForm.get('confirmNewPassword')?.invalid || passwordChangeForm.errors?.['mismatch'])"
+                  />
+                </div>
+                <div *ngIf="passwordChangeForm.get('confirmNewPassword')?.touched && passwordChangeForm.get('confirmNewPassword')?.errors?.['required']" class="settings-error-text">
+                  Please confirm your password
+                </div>
+                <div *ngIf="passwordChangeForm.get('confirmNewPassword')?.touched && passwordChangeForm.get('confirmNewPassword')?.errors?.['mismatch']" class="settings-error-text">
+                  Passwords do not match
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                [disabled]="passwordChangeForm.invalid || isLoading"
+                class="settings-save-btn flex items-center justify-center"
+              >
+                @if (isLoading) {
+                  <div class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  Updating...
+                } @else {
+                  <i class="fas fa-save mr-2"></i>
+                  Save Password
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Support Info Section -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700">
+           <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-lavender flex items-center justify-center text-purple">
+                 <i class="fas fa-info-circle text-xl"></i>
+              </div>
+              <div>
+                 <h4 class="font-bold text-dark-gray dark:text-white">Need help?</h4>
+                 <p class="text-sm text-gray mt-1">If you have issues changing your password or accessing your account, please contact our support team.</p>
+              </div>
+           </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="danger-zone">
+          <h3 class="danger-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Danger Zone
+          </h3>
+          <p class="danger-description">Once you delete your account, there is no going back. Please be certain.</p>
+          <div class="danger-btn">
+            Delete my account...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

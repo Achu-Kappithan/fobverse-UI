@@ -203,7 +203,7 @@
                 [disabled]="isLoading"
                  class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-                <span *ngIf="isLoading" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                <div *ngIf="isLoading" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 {{ isLoading ? 'Creating Account...' : 'Continue' }}
             </button>
             </form>  

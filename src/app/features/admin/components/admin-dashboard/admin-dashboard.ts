@@ -1,21 +1,25 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { AdminDashboardService } from '../../services/admin-dashboard.service';
 import { AdminDashboardStats } from '../../interfaces/admin-dashboard.interface';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../../../env/environment';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })
-export class AdminDashboard implements OnInit {
+export class AdminDashboardComponent implements OnInit {
   stats: AdminDashboardStats | null = null;
   loading = true;
   error: string | null = null;
+  private readonly _logger = inject(LoggerService);
   currentDate = new Date();
   baseUrl: string  = environment.cloudinaryBaseUrl
 
@@ -33,16 +37,16 @@ export class AdminDashboard implements OnInit {
     this.loading = true;
     this._dashboardService.getDashboardStats().subscribe({
       next: (response) => {
-        console.log(response)
+        this._logger.log('Dashboard stats fetched');
         this.stats = response.data;
         this.loading = false;
         this._cdr.detectChanges()
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         this.error = 'Failed to load dashboard statistics';
         this.loading = false;
         this._cdr.detectChanges()
-        console.error(err);
+        this._logger.error('Failed to load dashboard statistics:', err);
       },
     });
   }

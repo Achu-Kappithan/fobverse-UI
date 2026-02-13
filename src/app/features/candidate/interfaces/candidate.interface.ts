@@ -1,5 +1,4 @@
-import { QualificationLevel } from "../enums/candidate.enum";
-
+﻿import { QualificationLevel } from "../enums/candidate.enum";
 
 export interface CandidateInterface {
   id?: string;
@@ -32,7 +31,6 @@ export interface CandidateInterface {
 
   updatedAt: Date;
 }
-
 
 export interface ContactInfoItem {
   type: string;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Toast, ToastType } from './toast.model';
 
@@ -10,10 +10,10 @@ export class ToastService {
   toasts$: Observable<Toast[]> = this.toastsSubject.asObservable();
   private nextId = 0;
 
-  show(type: ToastType, title: string, message?: string, duration: number = 5000): number {
+  show(type: ToastType, title: string, message?: string, duration = 5000): number {
     const id = this.nextId++;
     const toast: Toast = { id, type, title, message, duration, closing: false };
-    
+
     this.toastsSubject.next([...this.toastsSubject.value, toast]);
 
     if (duration > 0) {
@@ -24,19 +24,19 @@ export class ToastService {
     return id;
   }
 
-  success(title: string, message?: string, duration: number = 5000): void {
+  success(title: string, message?: string, duration = 5000): void {
     this.show('success', title, message, duration);
   }
 
-  error(title: string, message?: string, duration: number = 5000): void {
+  error(title: string, message?: string, duration = 5000): void {
     this.show('error', title, message, duration);
   }
 
-  info(title: string, message?: string, duration: number = 3000): void {
+  info(title: string, message?: string, duration = 3000): void {
     this.show('info', title, message, duration);
   }
 
-  warning(title: string, message?: string, duration: number = 3000): void {
+  warning(title: string, message?: string, duration = 3000): void {
     this.show('warning', title, message, duration);
   }
 
@@ -47,9 +47,9 @@ export class ToastService {
   remove(id: number): void {
     const currentToasts = this.toastsSubject.value;
     const toastIndex = currentToasts.findIndex((t) => t.id === id);
-    
+
     if (toastIndex !== -1 && !currentToasts[toastIndex].closing) {
-      const newToasts = currentToasts.map(t => 
+      const newToasts = currentToasts.map(t =>
         t.id === id ? { ...t, closing: true } : t
       );
       this.toastsSubject.next(newToasts);

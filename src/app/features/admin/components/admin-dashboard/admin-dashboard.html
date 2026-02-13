@@ -2,10 +2,7 @@
   <div class="container mx-auto px-4 sm:px-6 py-8">
     
     <!-- Loading State -->
-    <div *ngIf="loading" class="flex flex-col items-center justify-center min-h-[300px] space-y-4">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple"></div>
-      <p class="text-gray font-medium">Loading statistics...</p>
-    </div>
+    <app-loading-spinner *ngIf="loading" message="Loading statistics..."></app-loading-spinner>
 
     <!-- Error State -->
     <div *ngIf="error && !loading" class="bg-white p-6 rounded-2xl shadow-sm border border-red-200 mb-6">

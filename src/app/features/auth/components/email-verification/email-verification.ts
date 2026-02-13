@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, delay, of, Subscription, switchMap, tap } from 'rxjs';
-import { UserPartial } from '../../../../shared/interfaces/apiresponce.interface';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-email-verification',
@@ -12,33 +13,32 @@ import { ToastService } from '../../../../shared/services/toast/toast.service';
   templateUrl: './email-verification.html',
   styleUrl: './email-verification.css',
 })
-export class EmailVerification implements OnInit {
-  loadingMessage: string = 'Verifying your email. Please wait...';
+export class EmailVerificationComponent implements OnInit, OnDestroy {
+  loadingMessage = 'Verifying your email. Please wait...';
   private verificationSubscription: Subscription = new Subscription();
   private readonly MIN_LOAD_TIME_MS = 2000;
 
-  constructor(
-    private _route: ActivatedRoute,
-    private _router: Router,
-    private _userService: AuthService,
-    private _toast: ToastService
-  ) {}
+  private _route = inject(ActivatedRoute);
+  private _router = inject(Router);
+  private _userService = inject(AuthService);
+  private _toast = inject(ToastService);
+  private _logger = inject(LoggerService);
 
   ngOnInit(): void {
     this.verificationSubscription = this._route.queryParams
       .pipe(
-        tap((parms) =>
-          console.log('token get from the parms ', parms['token'])
+        tap((params) =>
+          this._logger.log('token get from the params ', params['token'])
         ),
-        switchMap((parms) => {
-          const token = parms['token'];
+        switchMap((params) => {
+          const token = params['token'];
           const startTime = Date.now();
           if (!token) {
             return of({
               success: false,
               message: 'No verification token found.',
               statusCode: 0,
-              data: undefined as any,
+              data: undefined as unknown,
               reason: 'missing_token',
             }).pipe(
               delay(
@@ -46,9 +46,9 @@ export class EmailVerification implements OnInit {
               )
             );
           } else {
-            return this._userService.candidateVarification(token).pipe(
+            return this._userService.candidateVerification(token).pipe(
               tap((response) =>
-                console.log('Component: Raw API response:', response)
+                this._logger.log('Component: Raw API response:', response)
               ),
               catchError((error) => {
                 let errorMessage =
@@ -92,7 +92,7 @@ export class EmailVerification implements OnInit {
                   success: false,
                   message: errorMessage,
                   statusCode: error.status || 0,
-                  data: undefined as any,
+                  data: undefined as unknown,
                   reason: reason,
                 });
               }),
@@ -105,20 +105,24 @@ export class EmailVerification implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log(response);
+          this._logger.log('Verification result:', response);
           if (response.success) {
             this._toast.success('Email verified successfully!');
-            this._router.navigate(['/email/success']);
+            this._router.navigate([`/${APP_ROUTES.EMAIL_SUCCESS}`]);
           } else {
             this._toast.error(response.message!);
-            const reasonForRoute = 'api_generic_failure';
-            this._router.navigate(['/email/failed'], {
+            const reasonForRoute = (response as { reason?: string }).reason || 'api_generic_failure';
+            this._router.navigate([`/${APP_ROUTES.EMAIL_FAILED}`], {
               queryParams: { reason: reasonForRoute },
             });
           }
         },
         error: (error) => {
-          console.log(error);
+          this._logger.error('Verification subscription error:', error);
+          this._toast.error('An error occurred during verification.');
+          this._router.navigate([`/${APP_ROUTES.EMAIL_FAILED}`], {
+            queryParams: { reason: 'network_error' },
+          });
         },
       });
   }

@@ -1,11 +1,13 @@
-import {
+﻿import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  inject
 } from '@angular/core';
+import { LoggerService } from '../../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -13,12 +15,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SheduleResponceInterface } from '../../../../../interfaces/company.interviewresponce.interface';
-import { InternalUserInterface } from '../../../../../interfaces/company.responce.interface';
+import { ScheduleResponseInterface } from '../../../../../interfaces/company.interview-response.interface';
+import { InternalUserInterface } from '../../../../../interfaces/company.response.interface';
 import { CompanyApplication } from '../../../../../services/company-application';
 import { ToastService } from '../../../../../../../shared/services/toast/toast.service';
 import { AuthService } from '../../../../../../auth/services/auth.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ConfirmService } from '../../../../../../../shared/services/confirm/confirm.service';
 
 @Component({
   selector: 'app-telephonic-stage',
@@ -64,32 +67,34 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ],
 })
 export class TelephonicStageComponent implements OnInit {
-  interview: SheduleResponceInterface | null = null;
+  interview: ScheduleResponseInterface | null = null;
   @Input() applicationId: string | null = null;
   @Input() candidateId: string | null = null;
   @Input() userEmail: string | undefined = undefined;
 
   hrList: InternalUserInterface[] | null = null;
-  isSaving: boolean = false;
-  saveComplete: boolean = false;
-  isLoading: boolean = false;
+  isSaving = false;
+  saveComplete = false;
+  isLoading = false;
 
   interviewSheduleForm!: FormGroup;
   FeedbackForm!: FormGroup;
   finalizeResultForm!: FormGroup;
 
   sheduleModal: string | null = null;
-  isFeedbackModalOpen: boolean = false;
-  isFinalizeModalOpen: boolean = false;
+  isFeedbackModalOpen = false;
+  isFinalizeModalOpen = false;
   selectedHr: InternalUserInterface | null = null;
   currentUserId: string | null = null;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private fb: FormBuilder,
     private readonly _ApplicationService: CompanyApplication,
     private readonly _toast: ToastService,
     private _cdr: ChangeDetectorRef,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _confirmService: ConfirmService
   ) {}
 
   ngOnInit(): void {
@@ -137,14 +142,14 @@ export class TelephonicStageComponent implements OnInit {
           if (res.success) {
             if (res.data.stage == 'shortlisted') {
               this.interview = res.data;
-              console.log('current stage  details ', this.interview);
+              this._logger.log('current stage  details ', this.interview);
               this.isLoading = false;
               this._cdr.detectChanges();
             }
           }
         },
         error: (err) => {
-          console.log('error regading fetch stage details', err);
+          this._logger.error('error regading fetch stage details', err);
           this.isLoading = false;
           this._cdr.detectChanges();
         },
@@ -219,13 +224,23 @@ export class TelephonicStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading shedule interview ', err);
+        this._logger.error('error regading shedule interview ', err);
         this._toast.error(err.error.message);
       },
     });
   }
 
-  triggerCancel() {
+  async triggerCancel() {
+    const revealed = await this._confirmService.confirm({
+      title: 'Cancel Interview?',
+      message: 'Are you sure you want to cancel this interview?',
+      confirmText: 'Yes, cancel',
+      cancelText: 'No, keep it',
+      type: 'danger',
+    });
+
+    if (!revealed) return;
+
     this.isSaving = true;
     this.saveComplete = false;
     const data = {
@@ -247,7 +262,7 @@ export class TelephonicStageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.log('error regading Cancell interview');
+        this._logger.error('error regarding Cancell interview');
         this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
@@ -284,7 +299,7 @@ export class TelephonicStageComponent implements OnInit {
         this._toast.error(err.error.message);
         this.openFeedbackModal();
         this._cdr.detectChanges();
-        console.log('error regading update feedback', err);
+        this._logger.error('error regading update feedback', err);
       },
     });
   }
@@ -335,7 +350,7 @@ export class TelephonicStageComponent implements OnInit {
           this._toast.success(res.message);
           this.openFinalizeModal();
           this._cdr.detectChanges();
-          
+
           if (res.data.finalResult === 'Pass') {
             this.updateStage.emit();
           }
@@ -345,7 +360,7 @@ export class TelephonicStageComponent implements OnInit {
         this._toast.error(err.error.message);
         this.isSaving = false;
         this._cdr.detectChanges();
-        console.log('error regarding finalize result', err);
+        this._logger.error('error regarding finalize result', err);
       },
     });
   }
@@ -358,7 +373,7 @@ export class TelephonicStageComponent implements OnInit {
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.log('error regading  fetch  hr list ', err);
+          this._logger.error('error regading  fetch  hr list ', err);
         },
       });
     }

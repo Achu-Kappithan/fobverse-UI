@@ -1,22 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, } from 'rxjs';
-import { ApiResponce, PagenatedApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
-import { ComapnyProfileInterface, JobsInterface } from '../../company/interfaces/company.responce.interface';
-import { AllJobsAdminResponce } from '../interfaces/company.responce.interface';
+import { ApiResponse, PaginatedApiResponse, PlainResponse, QueryParmsInterface } from '../../../shared/interfaces/api-response.interface';
+import { CompanyProfileInterface } from '../../company/interfaces/company.response.interface';
+import { AllJobsAdminResponse } from '../interfaces/company.response.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminCompanyService {
-  private _CompnayState = new BehaviorSubject<ComapnyProfileInterface[]>([]);
-  company$ = this._CompnayState.asObservable();
+  private _CompanyState = new BehaviorSubject<CompanyProfileInterface[]>([]);
+  company$ = this._CompanyState.asObservable();
 
   constructor(
     private readonly _http: HttpClient
   ) {}
 
-  getAllCompanies(parms:QueryParmsInterface = {}): Observable<ApiResponce<ComapnyProfileInterface[]>> {
+  getAllCompanies(parms:QueryParmsInterface = {}): Observable<ApiResponse<CompanyProfileInterface[]>> {
     let httpParms = new HttpParams()
 
     if(parms.limit){
@@ -30,17 +30,17 @@ export class AdminCompanyService {
     if(parms.search){
       httpParms = httpParms.set('search',parms.search)
     }
-    return this._http.get<ApiResponce<ComapnyProfileInterface[]>>(
+    return this._http.get<ApiResponse<CompanyProfileInterface[]>>(
       `/api/admin/getallcompany`,
       {params:httpParms, withCredentials: true }
     );
   }
 
-  updateStatus(id:string):Observable<PlainResponce>{
-    return this._http.get<PlainResponce>(`/api/admin/company/updatestatus?id=${id}`,{withCredentials : true})
+  updateStatus(id:string):Observable<PlainResponse>{
+    return this._http.get<PlainResponse>(`/api/admin/company/updatestatus?id=${id}`,{withCredentials : true})
   }
 
-  getAlljobs(parms:QueryParmsInterface):Observable<PagenatedApiResponce<AllJobsAdminResponce[]>>{
+  getAlljobs(parms:QueryParmsInterface):Observable<PaginatedApiResponse<AllJobsAdminResponse[]>>{
     let httpParms = new HttpParams
 
     if(parms.limit){
@@ -53,11 +53,11 @@ export class AdminCompanyService {
       httpParms = httpParms.set('search',parms.search)
     }
 
-    return this._http.get<PagenatedApiResponce<AllJobsAdminResponce[]>>(`/api/admin/jobs/getalljobs`,{params:httpParms, withCredentials:true})
+    return this._http.get<PaginatedApiResponse<AllJobsAdminResponse[]>>(`/api/admin/jobs/getalljobs`,{params:httpParms, withCredentials:true})
   }
 
-  ActivateJobStatus(id:string):Observable<PlainResponce>{
-    return this._http.get<PlainResponce>(`/api/admin/jobs/updatejobstatus?id=${id}`)
+  ActivateJobStatus(id:string):Observable<PlainResponse>{
+    return this._http.get<PlainResponse>(`/api/admin/jobs/updatejobstatus?id=${id}`)
   }
 
 }

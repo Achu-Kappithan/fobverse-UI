@@ -46,18 +46,23 @@
 
   <!-- Section 2: Table Section -->
   <div
-    class="table-section mb-6 bg-white rounded-xl shadow-md overflow-hidden border border-divider transition-all duration-300"
+    class="table-section mb-6 bg-white rounded-xl shadow-md overflow-hidden border border-divider transition-all duration-300 min-h-[400px] flex flex-col justify-center"
   >
-    <div *ngIf="applicants.length === 0" class="p-20 text-center">
-      <i class="fas fa-users text-6xl text-gray-200 mb-4 block"></i>
-      <p class="text-gray text-lg">
-        No applicants found matching your criteria.
-      </p>
+    <div *ngIf="isLoading" class="p-20">
+      <app-loading-spinner message="Fetching applicants..."></app-loading-spinner>
     </div>
 
-    <div class="overflow-x-auto" *ngIf="applicants.length > 0">
-      <table class="w-full text-left border-collapse">
-        <thead>
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="applicants.length === 0" class="p-20 text-center">
+        <i class="fas fa-users text-6xl text-gray-200 mb-4 block"></i>
+        <p class="text-gray text-lg">
+          No applicants found matching your criteria.
+        </p>
+      </div>
+
+      <div class="overflow-x-auto" *ngIf="applicants.length > 0">
+        <table class="w-full text-left border-collapse">
+          <thead>
           <tr
             class="bg-gray-50 border-b border-divider"
           >
@@ -155,8 +160,9 @@
             </td>
           </tr>
         </tbody>
-      </table>
-    </div>
+        </table>
+      </div>
+    </ng-container>
   </div>
 
   <!-- Section 3: Pagination Section -->

@@ -1,16 +1,20 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CompanyApplication } from '../../services/company-application';
-import { ApplicationInterface, Stages } from '../../interfaces/company.responce.interface';
+import { ApplicationInterface } from '../../interfaces/company.response.interface';
 import { environment } from '../../../../../env/environment';
+
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-all-applicants',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule,LoadingSpinnerComponent,FormsModule,RouterModule],
   templateUrl: './all-applicants.html',
   styleUrls: ['./all-applicants.css']
 })
@@ -19,15 +23,17 @@ export class AllApplicantsComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _toast = inject(ToastService);
+  private readonly _logger = inject(LoggerService);
+  isLoading = false;
 
   baseUrl:string = environment.cloudinaryBaseUrl
 
   applicants: ApplicationInterface[] = [];
-  searchQuery: string = '';
-  selectedStage: string = '';
-  currentPage: number = 1;
-  pageSize: number = 5;
-  totalApplicants: number = 0;
+  searchQuery = '';
+  selectedStage = '';
+  currentPage = 1;
+  pageSize = 5;
+  totalApplicants = 0;
 
   hiringStages = [
     { value: '', label: 'All Stages' },
@@ -42,6 +48,7 @@ export class AllApplicantsComponent implements OnInit {
   }
 
   fetchApplicants(): void {
+    this.isLoading = true;
     this._companyService.getCompanyApplicants({
       page: this.currentPage,
       limit: this.pageSize,
@@ -51,11 +58,14 @@ export class AllApplicantsComponent implements OnInit {
       next: (res) => {
         this.applicants = res.data;
         this.totalApplicants = res.meta?.totalItems || 0;
+        this.isLoading = false;
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error fetching applicants:', err);
+        this._logger.error('Error fetching applicants:', err);
         this._toast.error(err.error?.message || 'Failed to fetch applicants');
+        this.isLoading = false;
+        this._cdr.detectChanges();
       }
     });
   }
@@ -88,21 +98,20 @@ export class AllApplicantsComponent implements OnInit {
 
   viewApplication(applicantId: string, jobId: string, canId: string): void {
     if (!jobId || !applicantId || !canId) {
-      console.error('Navigation failed: Missing required IDs', { jobId, applicantId, canId });
+      this._logger.error('Navigation failed: Missing required IDs', { jobId, applicantId, canId });
       return;
     }
-    
-    console.log('Navigating to application details:', { jobId, applicantId, canId });
-    
-    // Construct the full path: /company/joblist/applications/:jobId/viewapplication/:appId/:canId
-    this._router.navigate(['/company/joblist/applications', jobId, 'viewapplication', applicantId, canId])
+
+    this._logger.log('Navigating to application details:', { jobId, applicantId, canId });
+
+    this._router.navigate([APP_ROUTES.COMPANY_JOB_APPLICATIONS, jobId, 'viewapplication', applicantId, canId])
       .then(success => {
         if (!success) {
-          console.error('Navigation failed! Path might be incorrect or guarded.');
+          this._logger.error('Navigation failed! Path might be incorrect or guarded.');
         }
       })
       .catch(err => {
-        console.error('Navigation error:', err);
+        this._logger.error('Navigation error:', err);
       });
   }
 

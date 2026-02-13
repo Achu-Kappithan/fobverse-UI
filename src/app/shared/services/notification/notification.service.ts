@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from '../logger/logger.service';
+import { BehaviorSubject, tap } from 'rxjs';
 import { SocketService } from '../socket/socket.service';
 import { HttpClient } from '@angular/common/http';
-import { ApiResponce } from '../../interfaces/apiresponce.interface';
-import { NotificationInterface } from '../../interfaces/notification.res.interface';
+import { ApiResponse } from '../../interfaces/api-response.interface';
+import { NotificationInterface } from '../../interfaces/notification.response.interface';
+import { environment } from '../../../../env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,26 +21,28 @@ export class NotificationService {
     private socketService: SocketService,
     private http: HttpClient
   ) {}
+  private readonly _logger = inject(LoggerService);
 
   loadUnreadCount() {
-    this.http.get<ApiResponce<{ count: number }>>('/api/notification/getunreadcount')
+    this.http.get<ApiResponse<{ count: number }>>(`${environment.apiUrl}/notification/getunreadcount`)
       .subscribe(res => {
         this.unreadCountSubject.next(res.data.count);
       });
   }
 
   loadInitialData() {
-    this.http.get<ApiResponce<NotificationInterface[]>>('/api/notification/getnotification')
+    this.http.get<ApiResponse<NotificationInterface[]>>(`${environment.apiUrl}/notification/getnotification`)
       .subscribe(res => {
-        console.log('fetch inital notification',res)
+        this._logger.log('fetched initial notifications',res)
         this.notificationSubject.next(res.data);
       });
   }
 
   listenToSocket() {
-    this.socketService.onNotification((notification) => {
+    this.socketService.onNotification((notification: unknown) => {
+      const n = notification as NotificationInterface;
       const currentNotifications = this.notificationSubject.value;
-      this.notificationSubject.next([notification, ...currentNotifications]);
+      this.notificationSubject.next([n, ...currentNotifications]);
       this.incrementUnread();
     });
   }
@@ -51,8 +55,8 @@ export class NotificationService {
     this.unreadCountSubject.next(0);
   }
 
-  markAsRead(notificationId: string){
-    return this.http.patch(`/api/notification/${notificationId}/markasread`, {}).pipe(
+  markAsRead(notificationId: string) {
+    return this.http.patch<ApiResponse<unknown>>(`${environment.apiUrl}/notification/${notificationId}/markasread`, {}).pipe(
       tap(() => {
         const currentNotifications = this.notificationSubject.value;
         const updatedNotifications = currentNotifications.map(notif =>
@@ -66,8 +70,8 @@ export class NotificationService {
     );
   }
 
-  markAllAsRead(){
-    return this.http.patch(`/api/notification/markallread`, {}).pipe(
+  markAllAsRead() {
+    return this.http.patch<ApiResponse<unknown>>(`${environment.apiUrl}/notification/markallread`, {}).pipe(
       tap(() => {
         const currentNotifications = this.notificationSubject.value;
         const updatedNotifications = currentNotifications.map(notif => ({

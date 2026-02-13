@@ -1,0 +1,264 @@
+:host {
+  display: block;
+}
+
+/* Settings Container */
+.settings-container {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+}
+
+/* Settings Card */
+.settings-card {
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+}
+
+html.dark .settings-card {
+  background-color: #1a1c2e;
+  border-color: #374151;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* Settings Sidebar */
+.settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.settings-nav-item:hover {
+  background-color: #f9fafb;
+  color: #7a3ebb;
+}
+
+.settings-nav-item.active {
+  background-color: #ffffff;
+  color: #7a3ebb;
+  border-left: 4px solid #7a3ebb;
+  border-radius: 0 0.5rem 0.5rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+
+html.dark .settings-nav-item {
+  color: #9ca3af;
+}
+
+html.dark .settings-nav-item:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+  color: #a78bfa;
+}
+
+html.dark .settings-nav-item.active {
+  background-color: #2d3748;
+  color: #a78bfa;
+  border-left-color: #a78bfa;
+}
+
+/* Card Header */
+.settings-card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+html.dark .settings-card-header {
+  border-bottom-color: #374151;
+}
+
+.settings-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+html.dark .settings-card-title {
+  color: #ffffff;
+}
+
+/* Form Styles */
+.settings-form-section {
+  padding: 1.5rem;
+}
+
+.settings-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.settings-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+html.dark .settings-label {
+  color: #d1d5db;
+}
+
+.settings-input-wrapper {
+  position: relative;
+}
+
+.settings-input-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+  color: #9ca3af;
+}
+
+.settings-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  color: #1a1a1a;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.settings-input:focus {
+  border-color: #7a3ebb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(122, 62, 187, 0.1);
+}
+
+html.dark .settings-input {
+  background-color: #2d3748;
+  border-color: #4a5568;
+  color: #ffffff;
+}
+
+html.dark .settings-input:focus {
+  border-color: #a78bfa;
+  background-color: #1a1c2e;
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.1);
+}
+
+.settings-input-error {
+  border-color: #ef4444 !important;
+}
+
+.settings-error-text {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.settings-sub-section {
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+html.dark .settings-sub-section {
+  background-color: rgba(45, 55, 72, 0.4);
+}
+
+/* Danger Zone */
+.danger-zone {
+  margin-top: 2rem;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+}
+
+html.dark .danger-zone {
+  background-color: rgba(127, 29, 29, 0.1);
+  border-color: rgba(127, 29, 29, 0.2);
+}
+
+.danger-title {
+  color: #991b1b;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+html.dark .danger-title {
+  color: #f87171;
+}
+
+.danger-description {
+  color: #b91c1c;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+html.dark .danger-description {
+  color: #fca5a5;
+}
+
+.danger-btn {
+  margin-top: 1rem;
+  color: #b91c1c;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+html.dark .danger-btn {
+  color: #f87171;
+}
+
+/* Button styles mirroring hero-primary-btn but more compact */
+.settings-save-btn {
+  background-color: #7a3ebb;
+  color: #ffffff;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 10px 15px -3px rgba(122, 62, 187, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  background-color: #6a35a0;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(122, 62, 187, 0.3);
+}
+
+.settings-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.settings-back-link {
+  color: #7a3ebb;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.settings-back-link:hover {
+  text-decoration: underline;
+}
+
+html.dark .settings-back-link {
+  color: #a78bfa;
+}

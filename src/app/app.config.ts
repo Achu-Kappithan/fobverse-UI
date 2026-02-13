@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideEnvironmentInitializer, provideZonelessChangeDetection } from '@angular/core';
+﻿import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideEnvironmentInitializer, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -9,9 +9,13 @@ import { initializeUser } from './app.initializer';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { credentialsInterceptor } from './shared/interceptors/credentials-interceptor';
+import { ErrorHandler } from '@angular/core';
+import { GlobalErrorHandler } from './shared/services/error-handler/global-error-handler';
+import { environment } from '../env/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
@@ -23,14 +27,14 @@ export const appConfig: ApplicationConfig = {
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: false, 
+        autoLogin: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('304451399030-adooleficc1nd40qr3igngh4d2dmbc8v.apps.googleusercontent.com') 
+            provider: new GoogleLoginProvider(environment.googleClientId)
           }
         ],
-        onError: (err: any) => console.error('Social login error:', err)
+        onError: (err: unknown) => console.error('[SocialAuth] Login error:', err)
       } as SocialAuthServiceConfig
     },
   ]

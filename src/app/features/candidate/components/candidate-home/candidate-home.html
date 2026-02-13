@@ -76,8 +76,8 @@
         </a>
       </div>
 
-      <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div *ngFor="let i of [1,2,3,4]" class="animate-pulse bg-gray-100 h-64 rounded-3xl"></div>
+      <div *ngIf="isLoading" class="flex items-center justify-center py-12">
+        <app-loading-spinner></app-loading-spinner>
       </div>
 
       <div *ngIf="!isLoading && companies.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -143,8 +143,8 @@
         </a>
       </div>
 
-      <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div *ngFor="let i of [1,2,3]" class="animate-pulse bg-gray-100 dark:bg-gray-800 h-80 rounded-3xl"></div>
+      <div *ngIf="isLoading" class="flex items-center justify-center py-12">
+        <app-loading-spinner></app-loading-spinner>
       </div>
 
       <div *ngIf="!isLoading && jobs.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

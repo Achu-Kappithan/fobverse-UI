@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -16,16 +17,16 @@ export class MySchedulesComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _companyApplication = inject(CompanyApplication);
+  private readonly _logger = inject(LoggerService);
 
   schedules: Schedule[] = [];
   filteredSchedules: Schedule[] = [];
-  searchQuery: string = '';
-  selectedStage: string = '';
-  selectedStatus: string = '';
-  currentPage: number = 1;
-  pageSize: number = 5;
-  totalSchedules: number = 0;
-
+  searchQuery = '';
+  selectedStage = '';
+  selectedStatus = '';
+  currentPage = 1;
+  pageSize = 5;
+  totalSchedules = 0;
 
   statusOptions = [
     { value: '', label: 'All Status' },
@@ -47,7 +48,7 @@ export class MySchedulesComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error fetching schedules:', err);
+        this._logger.error('Error fetching schedules:', err);
       },
     });
   }
@@ -55,17 +56,16 @@ export class MySchedulesComponent implements OnInit {
   applyFilters(): void {
     let filtered = [...this.schedules];
 
-
     if (this.selectedStatus) {
       filtered = filtered.filter(schedule => schedule.status === this.selectedStatus);
     }
 
     this.totalSchedules = filtered.length;
-    
+
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.filteredSchedules = filtered.slice(start, end);
-    
+
     this._cdr.detectChanges();
   }
 
@@ -100,7 +100,6 @@ export class MySchedulesComponent implements OnInit {
     return Array.from({ length: total }, (_, i) => i + 1);
   }
 
-
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
       case 'scheduled': return 'status-scheduled';
@@ -112,9 +111,9 @@ export class MySchedulesComponent implements OnInit {
 
   viewApplication(schedule: Schedule): void {
 
-    console.log('jobid', schedule.jobId, 'applicationId' ,schedule.applicationId, 'canidateaId',schedule.candidateId )
+    this._logger.log('Viewing application details', { jobId: schedule.jobId, applicationId: schedule.applicationId });
     if (!schedule.jobId || !schedule.applicationId || !schedule.candidateId) {
-      console.error('Navigation failed: Missing required IDs', schedule);
+      this._logger.error('Navigation failed: Missing required IDs', schedule);
       return;
     }
 
@@ -128,11 +127,11 @@ export class MySchedulesComponent implements OnInit {
       ])
       .then((success) => {
         if (!success) {
-          console.error('Navigation failed! Path might be incorrect or guarded.');
+          this._logger.error('Navigation failed! Path might be incorrect or guarded.');
         }
       })
       .catch((err) => {
-        console.error('Navigation error:', err);
+        this._logger.error('Navigation error:', err);
       });
   }
 }

@@ -1,0 +1,236 @@
+<div class="bg-lavender min-h-[calc(100vh-5rem)] dark:bg-dark-lavender font-sans transition-colors duration-300">
+  <div class="container mx-auto px-4 sm:px-6 py-6" *ngIf="!isLoading && !error">
+    
+    <!-- Welcome Header Card -->
+    <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg p-6 mb-8 flex flex-col md:flex-row justify-between items-center border border-gray-100 dark:border-dark-gray/20">
+      <div>
+        <h1 class="text-3xl font-extrabold text-dark-gray dark:text-dark-text tracking-tight">Company Dashboard</h1>
+        <p class="text-gray dark:text-dark-gray-light mt-1">Overview of your recruitment activities and performance.</p>
+      </div>
+      <div class="mt-4 md:mt-0">
+        <button (click)="loadDashboardData()" class="p-2 text-purple dark:text-dark-purple hover:bg-purple/10 rounded-full transition-colors" title="Refresh Data">
+          <i class="fa-solid fa-arrows-rotate" [class.animate-spin]="isLoading"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Jobs -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-purple/10 dark:bg-dark-purple/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-briefcase text-purple dark:text-dark-purple text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Total Jobs</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.totalJobs || 0}}</p>
+      </div>
+
+      <!-- Active Jobs -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-blue/10 dark:bg-dark-blue/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-rocket text-blue dark:text-dark-blue text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Active Jobs</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.activeJobs || 0}}</p>
+      </div>
+
+      <!-- Total Applications -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-yellow/10 dark:bg-dark-yellow/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-user-group text-yellow dark:text-dark-yellow text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Total Applicants</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.totalApplications || 0}}</p>
+      </div>
+
+      <!-- Interviews Scheduled -->
+      <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 dark:border-dark-gray/20 group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-green-500/10 rounded-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-calendar-check text-green-600 dark:text-dark-green text-xl"></i>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-gray dark:text-dark-gray-light">Interviews</p>
+        <p class="text-3xl font-bold text-dark-gray dark:text-dark-text mt-1">{{dashboardData?.stats?.interviewsScheduled || 0}}</p>
+      </div>
+    </div>
+
+    <!-- Analytics & Visualization Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Job Performance Chart -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-dark-gray/20">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Job Performance</h2>
+          <span class="text-xs text-gray dark:text-dark-gray-light">Applications per Job</span>
+        </div>
+        <div class="space-y-6">
+          <div *ngFor="let job of dashboardData?.jobStats | slice:0:5" class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-semibold text-dark-gray dark:text-dark-text truncate max-w-[200px]">{{job.jobTitle}}</span>
+              <span class="text-sm font-bold text-purple dark:text-dark-purple">{{job.applicationCount}}</span>
+            </div>
+            <div class="w-full bg-lavender/30 dark:bg-dark-lavender/50 rounded-full h-3 overflow-hidden">
+              <div class="bg-purple dark:bg-dark-purple h-full rounded-full transition-all duration-1000 ease-out" 
+                   [style.width.%]="getJobPercentage(job.applicationCount)">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!dashboardData?.jobStats?.length" class="py-10 text-center text-gray italic text-sm">
+            No job data available for visualization.
+          </div>
+        </div>
+      </div>
+
+      <!-- Hiring Pipeline Funnel -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-dark-gray/20">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Hiring Pipeline</h2>
+          <span class="text-xs text-gray dark:text-dark-gray-light">Conversion Funnel</span>
+        </div>
+        <div class="flex flex-col space-y-4">
+          <!-- Total Applications -->
+          <div class="flex items-center group">
+            <div class="w-24 text-right pr-4 text-xs font-bold text-gray uppercase tracking-tighter">Applied</div>
+            <div class="flex-1 bg-lavender/30 dark:bg-dark-lavender/50 rounded-lg p-3 relative overflow-hidden group-hover:bg-lavender/50 transition-colors">
+              <div class="absolute inset-y-0 left-0 bg-blue/20 w-full"></div>
+              <div class="relative flex justify-between items-center px-4">
+                <span class="text-sm font-bold text-blue dark:text-dark-blue">{{dashboardData?.stats?.totalApplications}}</span>
+                <span class="text-[10px] text-blue/60 font-bold">100%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Interviews -->
+          <div class="flex items-center group">
+            <div class="w-24 text-right pr-4 text-xs font-bold text-gray uppercase tracking-tighter">Interviews</div>
+            <div class="flex-1 bg-lavender/30 dark:bg-dark-lavender/50 rounded-lg p-3 relative overflow-hidden group-hover:bg-lavender/50 transition-colors">
+              <div class="absolute inset-y-0 left-0 bg-yellow/20" 
+                   [style.width.%]="(dashboardData?.stats?.interviewsScheduled! / dashboardData?.stats?.totalApplications!) * 100"></div>
+              <div class="relative flex justify-between items-center px-4">
+                <span class="text-sm font-bold text-yellow-600 dark:text-dark-yellow">{{dashboardData?.stats?.interviewsScheduled}}</span>
+                <span class="text-[10px] text-yellow-600/60 font-bold" *ngIf="dashboardData?.stats?.totalApplications">
+                  {{((dashboardData?.stats?.interviewsScheduled! / dashboardData?.stats?.totalApplications!) * 100) | number:'1.0-0'}}%
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- Hired -->
+          <div class="flex items-center group">
+            <div class="w-24 text-right pr-4 text-xs font-bold text-gray uppercase tracking-tighter">Hired</div>
+            <div class="flex-1 bg-lavender/30 dark:bg-dark-lavender/50 rounded-lg p-3 relative overflow-hidden group-hover:bg-lavender/50 transition-colors">
+              <div class="absolute inset-y-0 left-0 bg-green-500/20" 
+                   [style.width.%]="(dashboardData?.stats?.hiredCandidates! / dashboardData?.stats?.totalApplications!) * 100"></div>
+              <div class="relative flex justify-between items-center px-4">
+                <span class="text-sm font-bold text-green-600 dark:text-dark-green">{{dashboardData?.stats?.hiredCandidates}}</span>
+                <span class="text-[10px] text-green-600/60 font-bold" *ngIf="dashboardData?.stats?.totalApplications">
+                  {{((dashboardData?.stats?.hiredCandidates! / dashboardData?.stats?.totalApplications!) * 100) | number:'1.0-0'}}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-4 border-t border-lavender/10 text-center">
+           <p class="text-xs text-gray dark:text-dark-gray-light">Your goal: Increase <span class="text-purple font-bold">Applied → Interview</span> conversion by 15%</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Recent Applicants -->
+      <div class="lg:col-span-2 bg-white dark:bg-dark-card rounded-2xl shadow-lg border border-gray-100 dark:border-dark-gray/20 overflow-hidden">
+        <div class="p-6 border-b border-gray-50 dark:border-dark-gray/10 flex justify-between items-center">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Recent Applicants</h2>
+          <a routerLink="../all-applicants" class="text-purple dark:text-dark-purple text-sm font-semibold hover:underline">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="dashboard-sub-bg">
+                <th class="px-6 py-4 text-xs font-bold text-dark-gray dark:text-dark-text uppercase tracking-wider">Candidate</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider">Job Applied</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray uppercase tracking-wider text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-dark-gray/10">
+              <tr *ngFor="let app of dashboardData?.recentApplications" class="hover:bg-lavender/20 dark:hover:bg-dark-lavender/10 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img [src]="app?.profile?.profileImg ?baseUrl+app?.profile?.profileImg :'/profileimages/defaultProfile.jpg'" alt="Candidate Profile" class="h-10 w-10 rounded-full object-cover border border-gray-100 dark:border-dark-gray/20 mr-3">
+                    <div>
+                      <div class="text-sm font-semibold text-dark-gray dark:text-dark-text">{{app.name}}</div>
+                      <div class="text-xs text-gray dark:text-dark-gray-light">{{app.email}}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="text-sm text-dark-gray dark:text-dark-text font-medium">{{app.jobDetails?.title || 'Unknown Job'}}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span [class]="'px-2 py-1 text-xs font-semibold rounded-full ' + (app.Rejected ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600')">
+                    {{app.Rejected ? 'Rejected' : (app.Stages === 'default' ? 'Pending' : (app.Stages | titlecase))}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                  <button [routerLink]="['../joblist/applications', app.jobId, 'viewapplication', app._id, app.candidateId]" class="text-purple dark:text-dark-purple font-bold hover:text-purple-darker">Details</button>
+                </td>
+              </tr>
+              <tr *ngIf="!dashboardData?.recentApplications?.length">
+                <td colspan="4" class="px-6 py-12 text-center text-gray dark:text-dark-gray-light italic">No recent applications found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Upcoming Interviews -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg border border-gray-100 dark:border-dark-gray/20 flex flex-col">
+        <div class="p-6 border-b border-gray-50 dark:border-dark-gray/10">
+          <h2 class="text-lg font-bold text-dark-gray dark:text-dark-text">Upcoming Interviews</h2>
+        </div>
+        <div class="p-6 space-y-4 flex-1 overflow-y-auto max-h-[500px]">
+          <div *ngFor="let interview of dashboardData?.upcomingInterviews" class="p-4 rounded-xl dashboard-card-inner hover:border-purple/30 transition-all cursor-pointer shadow-sm">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-bold text-purple dark:text-dark-purple uppercase tracking-tighter">{{interview.stage | titlecase}}</span>
+              <span class="text-xs text-gray dark:text-dark-gray-light">{{interview.scheduledDate}}</span>
+            </div>
+            <h3 class="text-sm font-bold text-dark-gray dark:text-dark-text">{{interview.candidateName}}</h3>
+            <p class="text-xs text-gray dark:text-dark-gray-light truncate">For: {{interview.jobTitle}}</p>
+            <div class="mt-3 flex items-center text-xs text-gray-500">
+              <i class="fa-regular fa-clock mr-1"></i>
+              {{interview.scheduledTime}}
+            </div>
+          </div>
+          <div *ngIf="!dashboardData?.upcomingInterviews?.length" class="text-center py-10">
+             <i class="fa-solid fa-calendar-day text-gray-300 text-4xl mb-3 block"></i>
+             <p class="text-sm text-gray dark:text-dark-gray-light italic">No upcoming interviews scheduled.</p>
+          </div>
+        </div>
+        <div class="p-6 dashboard-sub-bg border-t border-lavender/20 dark:border-dark-gray/10">
+          <button routerLink="../my-schedules" class="w-full py-2 btn-outline-purple-ref text-sm font-bold rounded-lg shadow-sm">Go to Calendar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center min-h-[50vh]">
+    <app-loading-spinner [message]="'Loading dashboard insights...'"></app-loading-spinner>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="flex flex-col items-center justify-center min-h-[50vh] px-4">
+    <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-900/10 text-center max-w-md">
+       <i class="fa-solid fa-triangle-exclamation text-red-500 text-4xl mb-4"></i>
+       <h2 class="text-lg font-bold text-red-900 dark:text-red-400 mb-2">Oops! Something went wrong</h2>
+       <p class="text-red-700 dark:text-red-300 mb-6">{{error}}</p>
+       <button (click)="loadDashboardData()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-bold">Try Again</button>
+    </div>
+  </div>
+</div>

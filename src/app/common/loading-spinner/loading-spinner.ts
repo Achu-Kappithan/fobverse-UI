@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -7,6 +7,6 @@ import { Component, Input, SimpleChanges } from '@angular/core';
   templateUrl: './loading-spinner.html',
   styleUrl: './loading-spinner.css'
 })
-export class LoadingSpinner {
-  @Input() message: string = 'Loading, please wait...';
+export class LoadingSpinnerComponent {
+  @Input() message = 'Loading, please wait...';
 }

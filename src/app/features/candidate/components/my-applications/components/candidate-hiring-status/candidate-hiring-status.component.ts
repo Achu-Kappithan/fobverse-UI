@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+﻿import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { LoggerService } from '../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../../../services/candidate.service';
 import { DetailedApplicationResponse } from '../../../../interfaces/candidate.application.interface';
 import { InterviewFeedback, StageDetail } from '../../../../interfaces/candiate.application.interface';
-
 
 @Component({
   selector: 'app-candidate-hiring-status',
@@ -12,19 +12,17 @@ import { InterviewFeedback, StageDetail } from '../../../../interfaces/candiate.
   templateUrl: './candidate-hiring-status.component.html',
   styleUrls: ['./candidate-hiring-status.component.css']
 })
-export class CandidateHiringStatusComponent implements OnInit, OnChanges {
+export class CandidateHiringStatusComponent implements OnChanges {
   @Input() status: string | null = null;
   @Input() applicationId: string | null = null;
   @Input() fullData: DetailedApplicationResponse | null = null;
 
   journeyData: StageDetail[] = [];
-  isLoading: boolean = false;
+  isLoading = false;
   errorMessage: string | null = null;
+  private readonly _logger = inject(LoggerService);
 
   constructor(private readonly _candidateService: CandidateService) {}
-
-  ngOnInit(): void {
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['fullData'] && this.fullData) {
@@ -44,7 +42,7 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
     this.errorMessage = null;
 
     this._candidateService.getAllStages(this.applicationId).subscribe({
-      next: (response: any) => {
+      next: (response: { success: boolean; data: DetailedApplicationResponse; message?: string }) => {
         if (response.success && response.data) {
           this.mapApiResponseToJourneyData(response.data);
         } else {
@@ -52,15 +50,15 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
         }
         this.isLoading = false;
       },
-      error: (error: any) => {
-        console.error('Error fetching all stages:', error);
+      error: (error: Error | Record<string, unknown>) => {
+        this._logger.error('Error fetching all stages:', error);
         this.errorMessage = 'An error occurred while fetching data';
         this.isLoading = false;
       }
     });
   }
 
-  mapApiResponseToJourneyData(data: any): void {
+  mapApiResponseToJourneyData(data: DetailedApplicationResponse): void {
     this.journeyData = [];
 
     if (data.atsStage) {
@@ -70,8 +68,8 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
         date: this.formatDate(data.atsStage.createdAt),
         status: 'Completed',
         result: data.atsStage.Rejected ? 'Fail' : 'Pass',
-        description: data.atsStage.Rejected 
-          ? `Your application has been rejected for this position.` 
+        description: data.atsStage.Rejected
+          ? `Your application has been rejected for this position.`
           : `Your application has been qualified for this position with an ATS score of ${data.atsStage.atsScore}.`
       };
       this.journeyData.push(atsStage);
@@ -117,7 +115,7 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
 
   mapStatus(status: string): 'Completed' | 'Pending' | 'In Progress' {
     if (!status) return 'Pending';
-    
+
     const normalizedStatus = status.toLowerCase();
     if (normalizedStatus === 'completed' || normalizedStatus === 'done') {
       return 'Completed';
@@ -129,7 +127,7 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
 
   mapResult(result: string): 'Pass' | 'Fail' | undefined {
     if (!result) return undefined;
-    
+
     const normalizedResult = result.toLowerCase();
     if (normalizedResult === 'pass' || normalizedResult === 'selected') {
       return 'Pass';
@@ -139,28 +137,28 @@ export class CandidateHiringStatusComponent implements OnInit, OnChanges {
     return undefined;
   }
 
-  mapEvaluators(evaluators: any[]): InterviewFeedback[] | undefined {
+  mapEvaluators(evaluators: Record<string, unknown>[]): InterviewFeedback[] | undefined {
     if (!evaluators || evaluators.length === 0) return undefined;
     const flatEvaluators = evaluators.flat();
 
     return flatEvaluators
-      .filter(e => e.feedback || e.interviewerName)
-      .map(evaluator => ({
-        interviewerName: evaluator.interviewerName || 'Interviewer',
-        feedback: evaluator.feedback || 'No feedback provided',
-        role: evaluator.role,
-        avatarUrl: evaluator.avatarUrl
+      .filter(e => e['feedback'] || e['interviewerName'])
+      .map((evaluator: Record<string, unknown>) => ({
+        interviewerName: (evaluator['interviewerName'] as string) || 'Interviewer',
+        feedback: (evaluator['feedback'] as string) || 'No feedback provided',
+        role: evaluator['role'] as string,
+        avatarUrl: evaluator['avatarUrl'] as string
       }));
   }
 
   formatDate(dateString: string): string {
     if (!dateString) return 'N/A';
-    
+
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   }
 }

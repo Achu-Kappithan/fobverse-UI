@@ -1,4 +1,4 @@
-import { QueryParmsInterface } from "../../../shared/interfaces/apiresponce.interface";
+import { QueryParmsInterface } from "../../../shared/interfaces/api-response.interface";
 
 export interface ApplicationQureryInterface extends QueryParmsInterface {
     jobId :string

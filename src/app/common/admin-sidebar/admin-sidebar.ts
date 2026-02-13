@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -8,12 +8,12 @@ import { RouterModule } from '@angular/router';
   templateUrl: './admin-sidebar.html',
   styleUrl: './admin-sidebar.css'
 })
-export class AdminSidebar {
-  @Input() isOpen = false; 
-  @Output() sidebarToggled = new EventEmitter<boolean>(); 
+export class AdminSidebarComponent {
+  @Input() isOpen = false;
+  @Output() sidebarToggled = new EventEmitter<boolean>();
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
-    this.sidebarToggled.emit(this.isOpen); 
+    this.sidebarToggled.emit(this.isOpen);
   }
 }

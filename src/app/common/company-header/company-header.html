@@ -15,6 +15,7 @@
                 <div class="px-4 py-3 profile-dropdown-header mb-2">
                     <div class="flex items-center space-x-3">
                         <img [src]="activeUser?.profileImg ? cloudinaryBaseUrl + activeUser?.profileImg : '/profileimages/defaultProfile.jpg'" 
+                             alt="User Profile Image"
                              class="h-10 w-10 rounded-full object-cover ring-2 ring-purple-100 dark:ring-purple-900/30">
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">

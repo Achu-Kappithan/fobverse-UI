@@ -83,10 +83,7 @@
 
       <!-- Loading State -->
       <div *ngIf="loading" class="flex justify-center items-center py-32 bg-white">
-        <div class="text-center">
-          <div class="animate-spin rounded-full h-16 w-16 border-4 border-lavender border-t-purple mx-auto mb-4"></div>
-          <p class="text-gray-600 font-medium">Loading your applications...</p>
-        </div>
+        <app-loading-spinner [message]="'Loading your applications...'"></app-loading-spinner>
       </div>
 
       <!-- Applications Grid -->

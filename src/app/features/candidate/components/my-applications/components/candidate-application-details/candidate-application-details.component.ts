@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
+import { LoggerService } from '../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CandidateService } from '../../../../services/candidate.service';
@@ -17,9 +18,10 @@ export class CandidateApplicationDetailsComponent implements OnInit {
   applicationId: string | null = null;
   jobId: string | null = null;
   application: DetailedApplicationResponse | null = null;
-  isLoading: boolean = false;
+  isLoading = false;
   baseUrl = environment.cloudinaryBaseUrl;
   currentTab: 'progress' | 'current' = 'progress';
+  private readonly _logger = inject(LoggerService);
 
   constructor(
     private _route: ActivatedRoute,
@@ -42,14 +44,14 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     this._candidateService.getApplicationDetails(this.applicationId!).subscribe({
       next: (response) => {
         if (response.success) {
-          console.log('responce data',response)
+          this._logger.log('Application details fetched');
           this.application = response.data;
         }
         this.isLoading = false;
         this._cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error fetching application details:', error);
+        this._logger.error('Error fetching application details:', error);
         this.isLoading = false;
         this._cdr.detectChanges();
       }
@@ -75,10 +77,10 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     }
   }
 
-  getCurrentStageData(): any {
+  getCurrentStageData(): unknown {
     if (!this.application) return null;
     const currentStage = this.application.atsStage.Stages.toLowerCase();
-    
+
     if (currentStage === 'shortlisted') {
       return this.application.shortlistedStage;
     } else if (currentStage === 'technical_analysis') {
@@ -87,12 +89,42 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     return null;
   }
 
-  getEvaluatorNames(evaluators: any[]): string {
+  getEvaluatorNames(evaluators: unknown[]): string {
     if (!evaluators || evaluators.length === 0) return 'TBA';
-    return evaluators.flat().map(e => e.interviewerName).join(', ');
+    return evaluators.flat().map((e) => (e as { interviewerName: string }).interviewerName).join(', ');
   }
 
   switchTab(tab: 'progress' | 'current'): void {
     this.currentTab = tab;
+  }
+
+
+  getStageDataField(stageData: unknown, field: string): unknown {
+    return (stageData as Record<string, unknown>)[field];
+  }
+
+  getStageScheduledDate(stageData: unknown): string | Date | null {
+    return (stageData as Record<string, unknown>)['scheduledDate'] as string | Date | null;
+  }
+
+  getStageEvaluators(stageData: unknown): unknown[] {
+    return (stageData as Record<string, unknown>)['evaluators'] as unknown[];
+  }
+
+  getStageMeetingLink(stageData: unknown): string {
+    return (stageData as Record<string, unknown>)['meetingLink'] as string;
+  }
+
+  getProfileUrl(): string {
+    const profile = this.application?.atsStage?.profile as Record<string, unknown> | undefined;
+    if (!profile) return '/profileimages/logodefault.jpg';
+
+    const profileUrl = profile['profileUrl'] as string | undefined;
+    if (!profileUrl) return '/profileimages/logodefault.jpg';
+
+    if ((profileUrl as string).startsWith('http')) {
+      return profileUrl;
+    }
+    return this.baseUrl + profileUrl;
   }
 }

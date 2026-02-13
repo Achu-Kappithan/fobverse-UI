@@ -1,8 +1,8 @@
-import { Passwordvalidator } from './passwordvalidator';
+import { PasswordValidator } from './passwordvalidator';
 
-describe('Passwordvalidator', () => {
+describe('PasswordValidator', () => {
   it('should create an instance', () => {
-    const directive = new Passwordvalidator();
+    const directive = new PasswordValidator();
     expect(directive).toBeTruthy();
   });
 });

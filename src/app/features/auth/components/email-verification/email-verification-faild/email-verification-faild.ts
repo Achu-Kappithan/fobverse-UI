@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './email-verification-faild.html',
   styleUrl: './email-verification-faild.css'
 })
-export class EmailVerificationFaild {
+export class EmailVerificationFailedComponent {
 
 }

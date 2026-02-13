@@ -86,7 +86,7 @@
     </div>
   }
 
-    <div *ngIf="!isLoading && candidates.length == 0" class="col-span-full text-center p-8">
+    <div *ngIf="!isLoading && candidates.length === 0" class="col-span-full text-center p-8">
       <p class="text-gray-600 text-lg">No candidates found.</p>
       <p class="text-gray-500 text-sm mt-2">
         There might be no candidates registered yet, or an error occurred.

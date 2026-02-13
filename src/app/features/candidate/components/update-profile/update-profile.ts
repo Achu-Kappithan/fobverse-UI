@@ -1,26 +1,30 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CandidateInterface, ContactInfoItem } from '../../interfaces/candidate.interface';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { forkJoin, Observable, of, switchMap } from 'rxjs';
+import { forkJoin, Observable, of, Subject, switchMap } from 'rxjs';
 import { CandidateService } from '../../services/candidate.service';
 import { Router, RouterModule } from '@angular/router';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { environment } from '../../../../../env/environment';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
+
+
 
 @Component({
   selector: 'app-update-profile',
-  imports: [ReactiveFormsModule,CommonModule,RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './update-profile.html',
   styleUrl: './update-profile.css'
 })
-export class UpdateProfile implements OnInit {
-
-  isLoading: boolean = false;
+export class UpdateProfileComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  isLoading = false;
 
   updateProfileForm!: FormGroup;
-  profileData: CandidateInterface | null = null; 
+  profileData: CandidateInterface | null = null;
 
   selectedProfileFile: File | null = null;
   ProfilePreviewUrl: string | ArrayBuffer | null = null;
@@ -30,6 +34,7 @@ export class UpdateProfile implements OnInit {
   cludBaseUrl:string = environment.cloudinaryBaseUrl;
   loadingToastId: number | null = null;
 
+  private readonly _logger = inject(LoggerService);
   constructor(
     private fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
@@ -42,22 +47,22 @@ export class UpdateProfile implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.isLoading = true;
-    this._candidateService.GetPorfile().subscribe({ 
+    this._candidateService.GetPorfile().subscribe({
       next: (resp) => {
-        this.profileData = resp.data; 
+        this.profileData = resp.data;
         this.populateForm();
         this.isLoading = false;
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error fetching profile data:', err);
+        this._logger.error('Error fetching profile data:', err);
         this._toast.error('Failed to load profile data.');
         this.isLoading = false;
         this._cdr.detectChanges();
       },
       complete: () => {
         if (!this.profileData) {
-          this.populateForm(); 
+          this.populateForm();
         }
       }
     });
@@ -67,10 +72,10 @@ export class UpdateProfile implements OnInit {
     this.updateProfileForm = this.fb.group({
       name: [null,[ Validators.required,Validators.maxLength(10),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       profileUrl: [null],
-      aboutme: [null, [Validators.required]], 
+      aboutme: [null, [Validators.required]],
       coverUrl: [null],
       contactInfo: this.fb.array<FormGroup>([]),
-      education: this.fb.array<FormControl>([]), 
+      education: this.fb.array<FormControl>([]),
       experience: this.fb.array<FormControl>([]),
       skills: this.fb.array<FormControl>([]),
       portfolioLinks: this.fb.array<FormControl>([])
@@ -94,7 +99,7 @@ export class UpdateProfile implements OnInit {
         this.ProfilePreviewUrl = this.cludBaseUrl+this.profileData.profileUrl;
         this.updateProfileForm.get('profileUrl')?.setValue(this.profileData.profileUrl);
       } else {
-        this.ProfilePreviewUrl = null; 
+        this.ProfilePreviewUrl = null;
         this.updateProfileForm.get('profileUrl')?.setValue(null);
       }
 
@@ -110,9 +115,9 @@ export class UpdateProfile implements OnInit {
       this.profileData.education?.forEach(edu => this.addEducation(edu));
       this.profileData.experience?.forEach(exp => this.addExperience(exp));
       this.profileData.skills?.forEach(skil => this.addSkills(skil));
-      this.profileData.portfolioLinks?.forEach(link => this.addPortfolioLink(link)); 
+      this.profileData.portfolioLinks?.forEach(link => this.addPortfolioLink(link));
     }
-    this._cdr.detectChanges(); 
+    this._cdr.detectChanges();
   }
 
   splitUrls(url: string): string {
@@ -185,7 +190,7 @@ export class UpdateProfile implements OnInit {
     this._cdr.detectChanges();
   }
 
-  addEducation(edu?: string): void { 
+  addEducation(edu?: string): void {
     this.education.push(this.fb.control(edu || "", Validators.required));
     this._cdr.detectChanges();
   }
@@ -195,7 +200,7 @@ export class UpdateProfile implements OnInit {
     this._cdr.detectChanges();
   }
 
-  addExperience(exp?: string): void { 
+  addExperience(exp?: string): void {
     this.experience.push(this.fb.control(exp || '', Validators.required));
     this._cdr.detectChanges();
   }
@@ -205,7 +210,7 @@ export class UpdateProfile implements OnInit {
     this._cdr.detectChanges();
   }
 
-  addSkills(skill?: string): void { 
+  addSkills(skill?: string): void {
     this.skills.push(this.fb.control(skill || "", Validators.required));
     this._cdr.detectChanges();
   }
@@ -215,7 +220,7 @@ export class UpdateProfile implements OnInit {
     this._cdr.detectChanges();
   }
 
-  addPortfolioLink(link?: string): void { 
+  addPortfolioLink(link?: string): void {
     this.portfolioLinks.push(this.fb.control(link || "", Validators.required));
     this._cdr.detectChanges();
   }
@@ -229,10 +234,10 @@ export class UpdateProfile implements OnInit {
     this.selectedProfileFile = null;
     this.ProfilePreviewUrl = null;
     this.updateProfileForm.get('profileUrl')?.setValue(null);
-    const profileInput = document.getElementById('profilePictureInput') as HTMLInputElement; 
+    const profileInput = document.getElementById('profilePictureInput') as HTMLInputElement;
 
     if (profileInput) {
-      profileInput.value = ''; 
+      profileInput.value = '';
     }
     this._cdr.detectChanges();
   }
@@ -241,20 +246,19 @@ export class UpdateProfile implements OnInit {
     this.selectedCover = null;
     this.coverPreviewUrl = null;
     this.updateProfileForm.get('coverUrl')?.setValue(null);
-    const coverInput = document.getElementById('coverPhotoInput') as HTMLInputElement; 
+    const coverInput = document.getElementById('coverPhotoInput') as HTMLInputElement;
 
     if (coverInput) {
-      coverInput.value = ''; 
+      coverInput.value = '';
     }
     this._cdr.detectChanges();
   }
-
 
   async onSubmit(): Promise<void> {
     if (this.updateProfileForm.invalid) {
       this._toast.error('Please fill all required fields');
       this.updateProfileForm.markAllAsTouched();
-      this._cdr.detectChanges(); 
+      this._cdr.detectChanges();
       return;
     }
 
@@ -265,7 +269,7 @@ export class UpdateProfile implements OnInit {
     try {
       const publicIdBase = this.profileData?.name ? this.profileData.name.toLowerCase().replace(/\s/g, '_') : 'default';
 
-      let profileUpload$: Observable<any>;
+      let profileUpload$: Observable<Record<string, unknown> | null>;
       if (this.selectedProfileFile) {
         profileUpload$ = this._cloudinaryService.getCloudinarySignature({
           folder: 'candidate_profile',
@@ -290,10 +294,10 @@ export class UpdateProfile implements OnInit {
         profileUpload$ = of({ secure_url: undefined });
       }
 
-      let coverUpload$: Observable<any>;
+      let coverUpload$: Observable<Record<string, unknown> | null>;
       if (this.selectedCover) {
         coverUpload$ = this._cloudinaryService.getCloudinarySignature({
-          folder: 'candidate_cover', 
+          folder: 'candidate_cover',
           publicIdPrefix: publicIdBase
         }).pipe(
           switchMap(signatureResp => {
@@ -317,32 +321,32 @@ export class UpdateProfile implements OnInit {
 
       forkJoin([profileUpload$, coverUpload$]).subscribe({
         next: ([profileUploadResult, coverUploadResult]) => {
-          if (profileUploadResult && profileUploadResult.secure_url) {
-            finalProfileData.profileUrl = this.splitUrls(profileUploadResult.secure_url);
+          if (profileUploadResult && (profileUploadResult as Record<string, unknown>)['secure_url']) {
+            finalProfileData.profileUrl = this.splitUrls((profileUploadResult as Record<string, unknown>)['secure_url'] as string);
           } else {
             finalProfileData.profileUrl = undefined;
           }
 
-          if (coverUploadResult && coverUploadResult.secure_url) {
-            finalProfileData.coverUrl = this.splitUrls(coverUploadResult.secure_url);
+          if (coverUploadResult && (coverUploadResult as Record<string, unknown>)['secure_url']) {
+            finalProfileData.coverUrl = this.splitUrls((coverUploadResult as Record<string, unknown>)['secure_url'] as string);
           } else {
             finalProfileData.coverUrl = undefined;
           }
 
           this._candidateService.updateProfile(finalProfileData).subscribe({
             next: (res) => {
-              console.log("Profile Updated successfully in the backend", res);
+              this._logger.info("Profile Updated successfully in the backend", res);
               if (res.success && res.data) {
                 this.profileData = res.data;
                 if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
                 this._toast.success('Profile updated successfully!');
-                this._router.navigate(['candidate/profile'])
+                this._router.navigate([`/${APP_ROUTES.CANDIDATE_PROFILE}`])
               }
               this.isLoading = false;
               this._cdr.detectChanges();
             },
             error: (err) => {
-              console.error('Error updating profile in the backend', err);
+              this._logger.error('Error updating profile in the backend', err);
               this.isLoading = false;
               if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
               this._toast.error('Failed to update profile!');
@@ -351,7 +355,7 @@ export class UpdateProfile implements OnInit {
           });
         },
         error: (err) => {
-          console.error('Error during cloudinary upload or Signature:', err);
+          this._logger.error('Error during cloudinary upload or Signature:', err);
           this.isLoading = false;
           if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
           this._toast.error('Image upload failed!');
@@ -360,11 +364,15 @@ export class UpdateProfile implements OnInit {
       });
 
     } catch (error) {
-      console.error("Caught an unexpected error in onSubmit:", error);
+      this._logger.error("Caught an unexpected error in onSubmit:", error);
       this.isLoading = false;
       if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
       this._toast.error('An unexpected error occurred!');
       this._cdr.detectChanges();
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

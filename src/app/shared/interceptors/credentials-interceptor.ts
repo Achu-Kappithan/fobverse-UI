@@ -1,7 +1,7 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 
 export const credentialsInterceptor: HttpInterceptorFn = (
-  req:HttpRequest<any>,
+  req:HttpRequest<unknown>,
   next:HttpHandlerFn) => {
     if (req.url.includes('cloudinary.com')) {
       return next(req);

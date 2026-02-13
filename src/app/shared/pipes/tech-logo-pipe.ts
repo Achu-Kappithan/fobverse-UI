@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+﻿import { Pipe, PipeTransform } from '@angular/core';
 import { TechLogoData } from '../interfaces/techlogo.interface';
 
 @Pipe({
@@ -28,7 +28,6 @@ export class TechLogoPipe implements PipeTransform {
    return {type: 'initials', initials:initials ,backgroundColor:backgroundColor,name:techname}
   }
 
-
   private getInitials(tech: string): string {
     if (!tech) return '';
     const words = tech.split(' ');
@@ -50,6 +49,6 @@ export class TechLogoPipe implements PipeTransform {
     }
     return color;
   }
-  
+
 
 }

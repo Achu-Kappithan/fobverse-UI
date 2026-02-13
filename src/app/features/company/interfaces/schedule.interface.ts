@@ -6,7 +6,7 @@ export interface Schedule {
   scheduledTime: string;
   meetingLink: string;
   status: string;
-  evaluators?: any[];
+  evaluators?: Record<string, unknown>[];
   candidateName?: string;
   jobTitle?: string;
   candidateId?: string;

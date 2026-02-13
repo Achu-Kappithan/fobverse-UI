@@ -41,3 +41,14 @@ export interface UserLeftData {
   name?: string;
   roomSize: number;
 }
+export interface RoomJoinedData {
+  otherPeers: { peerId: string; userId: string; name: string }[];
+  roomId: string;
+}
+
+export interface VideoMessageData {
+  userId: string;
+  name: string;
+  message: string;
+  timestamp: string;
+}

@@ -1,26 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { FormsModule } from '@angular/forms';
 import { TableColumn } from '../../../../../shared/interfaces/table.interface';
 import { TableComponent } from '../../../../../common/table-component/table-component';
 import { Router, RouterModule } from '@angular/router';
-import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../../shared/interfaces/api-response.interface';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { CompanyService } from '../../../services/company-service';
-import { JobsInterface } from '../../../interfaces/company.responce.interface';
+import { JobsInterface } from '../../../interfaces/company.response.interface';
 import { ToastService } from '../../../../../shared/services/toast/toast.service';
-import { LoadingSpinner } from "../../../../../common/loading-spinner/loading-spinner";
+import { LoadingSpinnerComponent } from '../../../../../common/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-jobs-list',
-  imports: [CommonModule, FormsModule, TableComponent, RouterModule, LoadingSpinner],
+  imports: [CommonModule,LoadingSpinnerComponent,RouterModule,FormsModule, TableComponent],
   templateUrl: './jobs-list.html',
   styleUrl: './jobs-list.css',
 })
-export class JobsList implements OnInit {
+export class JobsListComponent implements OnInit {
 
-  isLoading:boolean = false
+  isLoading = false
   serchValue = new Subject<string>()
+  private readonly _logger = inject(LoggerService);
   jobs: JobsInterface[] = []
 
   constructor(
@@ -77,7 +79,7 @@ export class JobsList implements OnInit {
     this._companyService.getAllJobs(this.QueryParms)
     .subscribe({
       next:(res=>{
-        console.log('responce for Get allJobs: ',res)
+        this._logger.log('Fetched jobs:', res.data?.length);
         if(res.success){
           this.jobs = res.data
           this.paginationMeta = res.meta ?? this.paginationMeta
@@ -86,7 +88,7 @@ export class JobsList implements OnInit {
         this._cdr.detectChanges()
       }),
       error:(err =>{
-        console.log("error get from  getalljobs : ",err)
+        this._logger.error("error get from  getalljobs : ",err)
         this.isLoading = false
         this._toast.error(err.error.message)
         this._cdr.detectChanges()
@@ -95,8 +97,8 @@ export class JobsList implements OnInit {
   }
 
   onLimitChange(limit:number){
-    this.QueryParms.limit = limit,
-    this.QueryParms.page = 1
+    this.QueryParms.limit = limit;
+    this.QueryParms.page = 1;
     this.fetchAllJobs()
   }
 
@@ -110,8 +112,8 @@ export class JobsList implements OnInit {
     this.serchValue.next(term)
   }
 
-  onRowSelected(row: any): void {
-    console.log('Row selected:', row);
+  onRowSelected(row: unknown): void {
+    this._logger.log('Row selected:', row);
   }
 
   get Pagenumbers():number[]{
@@ -122,13 +124,14 @@ export class JobsList implements OnInit {
     return pageNumber
   }
 
-  updateAction(event:{action:string, row:JobsInterface}){
+  updateAction(event:{action:string, row:unknown}){
     const {action, row} = event
+    const jobRow = row as JobsInterface;
 
     if(action === 'viewDetails'){
-      this.showJobDetails(row)
+      this.showJobDetails(jobRow)
     }else if(action === 'viewApplications'){
-      this.showApplciations(row)
+      this.showApplciations(jobRow)
     }
   }
 

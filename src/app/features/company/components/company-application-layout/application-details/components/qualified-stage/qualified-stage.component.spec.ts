@@ -1,4 +1,4 @@
-
+﻿
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -19,7 +19,7 @@ describe('QualifiedStageComponent', () => {
       imports: [QualifiedStageComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(QualifiedStageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

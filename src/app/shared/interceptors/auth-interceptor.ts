@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+﻿import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import {
   HttpRequest,
@@ -10,31 +10,23 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../../features/auth/services/auth.service';
+import { API_PUBLIC_PATHS, PUBLIC_ROUTES, APP_ROUTES } from '../constants/routes.constants';
+import { LoggerService } from '../services/logger/logger.service';
 
 let isRefreshing = false;
-const refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+const refreshTokenSubject: BehaviorSubject<unknown> = new BehaviorSubject<unknown>(
   null
 );
 
 export const authInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<any>,
+  req: HttpRequest<unknown>,
   next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
+): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const logger = inject(LoggerService);
 
-  const publicPaths = [
-    '/auth/refresh',
-    'auth/login',
-    'auth/register',
-    'auth/google',
-    'auth/adminlogin',
-    'auth/forgotpassword',
-    'auth/updatepassword',
-    'auth/verify-email',
-  ];
-
-  const isPublicRequest = publicPaths.some((path) => req.url.includes(path));
+  const isPublicRequest = API_PUBLIC_PATHS.some((path) => req.url.includes(path));
 
   if (isPublicRequest) {
     return next(req);
@@ -43,8 +35,8 @@ export const authInterceptor: HttpInterceptorFn = (
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        console.log('Interceptor caught 401 - trying to refresh token');
-        return handle401Error(req, next, authService, router);
+        logger.debug('Interceptor caught 401 - trying to refresh token');
+        return handle401Error(req, next, authService, router, logger);
       }
       return throwError(() => error);
     })
@@ -52,12 +44,13 @@ export const authInterceptor: HttpInterceptorFn = (
 };
 
 function handle401Error(
-  req: HttpRequest<any>,
+  req: HttpRequest<unknown>,
   next: HttpHandlerFn,
   authService: AuthService,
-  router: Router
-): Observable<HttpEvent<any>> {
-  console.log('interceptor working');
+  router: Router,
+  logger: LoggerService
+): Observable<HttpEvent<unknown>> {
+  logger.debug('Token refresh process initiated');
   if (!isRefreshing) {
     isRefreshing = true;
     refreshTokenSubject.next(null);
@@ -71,30 +64,17 @@ function handle401Error(
       catchError((error) => {
         isRefreshing = false;
         authService.adminSubject.next(null);
-        
-        const publicRoutes = [
-          '/login', 
-          '/signup', 
-          '/forgotpassword', 
-          '/email', 
-          '/adminlogin', 
-          '/companylogin', 
-          '/companysignup',
-          '/candidate/home',
-          '/candidate/joblist',
-          '/candidate/companylist'
-        ];
 
-        const currentUrl = router.url.split('?')[0]; 
-        const isPublicRoute = publicRoutes.some(route => currentUrl.startsWith(route) || currentUrl === '/');
+        const currentUrl = router.url.split('?')[0];
+        const isPublicRoute = PUBLIC_ROUTES.some(route => currentUrl.startsWith(route) || currentUrl === '/');
 
         if (!isPublicRoute) {
-          console.log('Redirecting to login due to unauthorized protected request');
-          router.navigate(['/login']);
+          logger.warn('Redirecting to login due to unauthorized protected request', { url: currentUrl });
+          router.navigate([`/${APP_ROUTES.LOGIN}`]);
         } else {
-          console.log('Suppressed redirect to login as user is already on a public route:', currentUrl);
+          logger.debug('Suppressed redirect to login as user is already on a public route:', currentUrl);
         }
-        
+
         return throwError(() => error);
       }),
       finalize(() => {

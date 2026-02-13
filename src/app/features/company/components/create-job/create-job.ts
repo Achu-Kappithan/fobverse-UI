@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import {
   FormArray,
   FormBuilder,
@@ -11,7 +12,7 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company-service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
-import { JobsInterface } from '../../interfaces/company.responce.interface';
+import { JobsInterface } from '../../interfaces/company.response.interface';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -20,20 +21,23 @@ import {
   switchMap,
 } from 'rxjs';
 
+
+
 @Component({
   selector: 'app-create-job',
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './create-job.html',
   styleUrl: './create-job.css',
 })
-export class CreateJob implements OnInit {
+export class CreateJobComponent implements OnInit {
 
   creatJob!: FormGroup;
-  minDate: string = '';
+  minDate = '';
   locationPattern = /^[A-Za-z\s]+$/;
-  isSaving: boolean = false;
+  isSaving = false;
+  private readonly _logger = inject(LoggerService);
 
-  suggestions: { [key: number]: string[] | undefined } = {};
+  suggestions: Record<number, string[] | undefined> = {};
 
   private searchSubject = new Subject<{ val: string; index: number }>();
 
@@ -77,7 +81,7 @@ export class CreateJob implements OnInit {
         )
       )
       .subscribe(({ index, results }) => {
-        console.log(results)
+        this._logger.log('Location search results:', results?.length);
         this.suggestions[index] = results;
         this._cdr.detectChanges()
       });
@@ -157,7 +161,7 @@ export class CreateJob implements OnInit {
   }
 
   removeSkill(index: number) {
-    console.log(index);
+    this._logger.log('Removing skill at index:', index);
     this.skills.removeAt(index);
   }
 
@@ -187,17 +191,16 @@ export class CreateJob implements OnInit {
   saveChanges() {
     this.creatJob.markAllAsTouched();
 
-    console.log('Form Valid:', this.creatJob.valid);
-    console.log('Form Errors:', this.getFormValidationErrors());
+    this._logger.log('Form submission check', { valid: this.creatJob.valid });
 
     if (this.creatJob.valid) {
       this.isSaving = true;
       const data: JobsInterface = this.creatJob.value;
-      console.log('Form Submitted Successfully!', data);
+      this._logger.log('Form Submitted Successfully!');
 
       this._companyService.addJobs(data).subscribe({
         next: (res) => {
-          console.log('Response from backend', res);
+          this._logger.log('Job created successfully');
           if (res.success) {
             this._toast.success(res.message);
             this._router.navigate(['../'], { relativeTo: this._route });
@@ -205,18 +208,18 @@ export class CreateJob implements OnInit {
           this.isSaving = false;
         },
         error: (err) => {
-          console.log(err);
+          this._logger.error('Error creating job:', err);
           this._toast.error(err.error.message);
           this.isSaving = false;
         },
       });
     } else {
-      console.log('Form is invalid. Please check the required fields.');
+      this._logger.warn('Form is invalid. Please check the required fields.');
     }
   }
 
   getFormValidationErrors() {
-    let formErrors: any = {};
+    const formErrors: Record<string, unknown> = {};
     Object.keys(this.creatJob.controls).forEach((key) => {
       const controlErrors = this.creatJob.get(key)?.errors;
       if (controlErrors) {
@@ -263,7 +266,7 @@ export class CreateJob implements OnInit {
 
   getSuggestion(event: Event, index: number) {
     const val = (event.target as HTMLInputElement).value.trim();
-    console.log(val)
+    this._logger.log('Searching for location:', val);
     if (val.length > 1) {
       this.searchSubject.next({ val, index });
     } else {

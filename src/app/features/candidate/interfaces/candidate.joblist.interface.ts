@@ -1,4 +1,4 @@
-
+﻿
 export interface jobsPagesAndFilterInterface {
   page?: number;
 
@@ -57,7 +57,7 @@ export interface CandidateJobsInterface {
 export interface jobApplicationDto {
   name: string;
 
-  jobId: string 
+  jobId: string
 
   candidateId: string;
 

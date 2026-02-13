@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyApplication } from '../../../services/company-application';
 import {
   applicationWithProfile,
-} from '../../../interfaces/company.responce.interface';
+} from '../../../interfaces/company.response.interface';
 import { CandidateInterface } from '../../../../candidate/interfaces/candidate.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,9 +22,9 @@ import { HiringStatusComponent } from './components/hiring-status/hiring-status.
 @Component({
   selector: 'app-application-details',
   imports: [
-    CommonModule, 
-    FormsModule, 
-    TextTransformPipe, 
+    CommonModule,
+    FormsModule,
+    TextTransformPipe,
     QualifiedStageComponent,
     TelephonicStageComponent,
     TechnicalStageComponent,
@@ -43,25 +44,26 @@ import { HiringStatusComponent } from './components/hiring-status/hiring-status.
     ]),
   ],
 })
-export class ApplicationDetails implements OnInit {
-  contentId: string = 'Profile';
+export class ApplicationDetailsComponent implements OnInit {
+  contentId = 'Profile';
   pdfSrc: SafeResourceUrl | null = null;
   applicationId: string | null = null;
   candidateId: string | null = null;
   applicationDetails: applicationWithProfile | null = null;
   profileData: CandidateInterface | null = null;
   addressValue: string | null = null;
-  isLoading: boolean = false;
-  isLoadingStage: boolean = false;
+  isLoading = false;
+  isLoadingStage = false;
   baseUrl: string = environment.cloudinaryBaseUrl;
   readonly cloudinaryBaseUrl = environment.cloudinaryUrl;
   resumePdfUrl: string | null = null;
+  private readonly _logger = inject(LoggerService);
   Math = Math;
-  currentStageIndex: number = -1;
+  currentStageIndex = -1;
 
-  currentStageId: string = 'shortlisted';
-  interviewScheduled: boolean = true;
-  
+  currentStageId = 'shortlisted';
+  interviewScheduled = true;
+
   hiringStages = ['Qualified', 'Telephonic', 'Technical', 'Hired'];
 
   constructor(
@@ -98,20 +100,19 @@ export class ApplicationDetails implements OnInit {
           this.addressValue = addressObj
             ? addressObj.value
             : 'No address available';
-          console.log(value);
+          this._logger.log('Application details loaded');
           this.setResumeUrl();
           this.getStages(value.data.Stages);
           this.isLoading = false;
           this._cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Error fetching applicationDetails:', err);
+          this._logger.error('Error fetching applicationDetails:', err);
           this._toast.error(err.error?.message || 'Failed to fetch application details');
           this._cdr.detectChanges();
         },
       });
   }
-
 
   getStarRating(percentage: number | null | undefined): number {
     if (percentage === null || percentage === undefined) {
@@ -145,7 +146,6 @@ export class ApplicationDetails implements OnInit {
     return this.currentStageId == id;
   }
 
-
   getStages(stage: string ): void {
     switch (stage?.toLowerCase()) {
       case Stages.Default:
@@ -165,7 +165,7 @@ export class ApplicationDetails implements OnInit {
         this.currentStageIndex = 3;
         break;
 
-      default: 
+      default:
         this.currentStageIndex = -1;
     }
   }
@@ -175,7 +175,7 @@ export class ApplicationDetails implements OnInit {
 
     if (index < this.currentStageIndex) return 'completed';
     if (index === this.currentStageIndex) {
-      if (index === 3 && (this.applicationDetails?.Stages as any) === Stages.Hired) {
+      if (index === 3 && (this.applicationDetails?.Stages as string) === Stages.Hired) {
         return 'completed';
       }
       return 'current';
@@ -186,7 +186,7 @@ export class ApplicationDetails implements OnInit {
   isStageEnabled(stageId: string): boolean {
     switch (stageId) {
       case 'shortlisted':
-        return true; 
+        return true;
       case 'telephone':
         return this.currentStageIndex >= 1;
       case 'technical_analysis':

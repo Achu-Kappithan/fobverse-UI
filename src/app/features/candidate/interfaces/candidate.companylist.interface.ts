@@ -1,5 +1,5 @@
 
-import { ComapnyProfileInterface } from '../../company/interfaces/company.responce.interface';
+import { CompanyProfileInterface } from '../../company/interfaces/company.response.interface';
 
 export interface companyListParamsInterface {
   page?: number;
@@ -7,4 +7,4 @@ export interface companyListParamsInterface {
   search?: string;
 }
 
-export type { ComapnyProfileInterface };
+export type { CompanyProfileInterface };

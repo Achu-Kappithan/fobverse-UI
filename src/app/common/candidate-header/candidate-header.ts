@@ -1,13 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+﻿import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../shared/services/logger/logger.service';
+import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { RouterModule } from '@angular/router';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { environment } from '../../../env/environment';
 import { NotificationService } from '../../shared/services/notification/notification.service';
-import { NotificationInterface } from '../../shared/interfaces/notification.res.interface';
+import { NotificationInterface } from '../../shared/interfaces/notification.response.interface';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
 
 @Component({
@@ -16,16 +17,17 @@ import { ConfirmService } from '../../shared/services/confirm/confirm.service';
   templateUrl: './candidate-header.html',
   styleUrl: './candidate-header.css',
 })
-export class CandidateHeader implements OnInit {
+export class CandidateHeaderComponent implements OnInit {
   baseUrl: string = environment.cloudinaryBaseUrl;
   opendModal: string | null = null;
-  isDarkMode: boolean = false;
+  isDarkMode = false;
   candidate: UserPartial | null = null;
-  isNotificationModalOpen :boolean = false
+  isNotificationModalOpen  = false
   unreadMessageCount = 0;
   notificationTab: 'unread' | 'all' = 'unread';
   notifications: NotificationInterface[] =[]
-  isLoaded: boolean = false;
+  isLoaded = false;
+  private readonly _logger = inject(LoggerService);
 
   constructor(
 
@@ -59,13 +61,12 @@ export class CandidateHeader implements OnInit {
 
     this._authService.candidate$.subscribe({
       next: (can) => {
-        console.log('candidate data in backend ',can)
+        this._logger.log('candidate data in header ',can)
         this.candidate = can;
         this._cdr.detectChanges();
       },
     });
   }
-
 
   async logOut(user: string): Promise<void> {
     const isConfirmed = await this._confirmService.confirm({
@@ -100,7 +101,7 @@ export class CandidateHeader implements OnInit {
   }
 
   openNotificationModal(){
-    console.log('works')
+    this._logger.log('Opening notification modal');
     this.isNotificationModalOpen = this.isNotificationModalOpen ? false : true
   }
 
@@ -110,7 +111,7 @@ export class CandidateHeader implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error marking all as read:', err);
+        this._logger.error('Error marking all as read:', err);
       }
     });
   }
@@ -121,7 +122,7 @@ export class CandidateHeader implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error marking notification as read:', err);
+        this._logger.error('Error marking notification as read:', err);
       }
     });
   }
@@ -140,7 +141,7 @@ export class CandidateHeader implements OnInit {
   }
 
   getNotificationIcon(type: string, notificationType?: string): string {
-    const icons: { [key: string]: string } = {
+    const icons: Record<string, string> = {
       'RESCHEDULED': 'fa-calendar-alt',
       'SCHEDULED': 'fa-calendar-check',
       'CANCELLED': 'fa-calendar-times',
@@ -159,7 +160,7 @@ export class CandidateHeader implements OnInit {
     if (date) {
       notificationDate = new Date(date);
     } else if (id && id.length === 24) {
-      // Extract timestamp from MongoDB ObjectId
+
       const timestamp = parseInt(id.substring(0, 8), 16) * 1000;
       notificationDate = new Date(timestamp);
     } else {

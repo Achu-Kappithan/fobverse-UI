@@ -1,26 +1,27 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCandidate } from '../../services/admin-candidate';
 import { CommonModule } from '@angular/common';
-import { LoadingSpinner } from '../../../../common/loading-spinner/loading-spinner';
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/apiresponce.interface';
+import { PaginationMeta, QueryParmsInterface } from '../../../../shared/interfaces/api-response.interface';
 import { CandidateInterface } from '../../../candidate/interfaces/candidate.interface';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { ConfirmService } from '../../../../shared/services/confirm/confirm.service';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 
 @Component({
   selector: 'app-admin-candidates-list',
-  imports: [CommonModule,LoadingSpinner,FormsModule,RouterModule],
+  imports: [CommonModule,LoadingSpinnerComponent,FormsModule,RouterModule],
   templateUrl: './admin-candidates-list.html',
   styleUrl: './admin-candidates-list.css',
 })
-export class AdminCandidatesList  implements OnInit {
-  isLoading:boolean = false
+export class AdminCandidatesListComponent  implements OnInit {
+  isLoading = false
   candidates:CandidateInterface[] = []
-  ChildRouteActive:boolean = false
+  ChildRouteActive = false
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
   QueryParms : QueryParmsInterface = {
@@ -38,12 +39,13 @@ export class AdminCandidatesList  implements OnInit {
 
   searchTerms = new Subject<string>()
 
-  constructor( 
+  constructor(
     private readonly _adminCandidateService:AdminCandidate,
     private readonly _cdr :ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
     private readonly _toast:ToastService,
-    private readonly _confirmService: ConfirmService
+    private readonly _confirmService: ConfirmService,
+    private readonly _logger: LoggerService
   ) {}
 
   ngOnInit(): void {
@@ -97,23 +99,22 @@ export class AdminCandidatesList  implements OnInit {
           if(response.success && response.data){
             this.candidates = response.data ?? []
             this.paginationMeta = response.meta ?? this.paginationMeta
-            console.log("responce data",response.data, " responce meta: ",response.meta)
+            this._logger.log('Candidates fetched successfully');
           }else{
-            console.log("faild to get responce",response)
+            this._logger.warn("failed to get response",response);
             this.candidates = []
           }
           this.isLoading = false
           this._cdr.detectChanges()
         },
         error:(err)=>{
-          console.log("error  while fetching the candiate list",err)
+          this._logger.error("error  while fetching the candiate list",err);
           this.candidates = []
           this.isLoading = false
           this._cdr.detectChanges()
         }
       })
   }
-
 
   onLimitChange(limit: number){
     this.QueryParms.limit = limit

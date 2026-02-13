@@ -1,63 +1,62 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+﻿import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { ApplicationInterface, ComapnyProfileInterface, CompanyDashboardData, InternalUserInterface, JobsInterface, populatecompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.responce.interface';
-import { ApiResponce, PagenatedApiResponce, PlainResponce, QueryParmsInterface } from '../../../shared/interfaces/apiresponce.interface';
-import { ApplicationQureryInterface } from '../interfaces/company.interface';
+import { ApplicationInterface, CompanyProfileInterface, CompanyDashboardData, InternalUserInterface, JobsInterface, PopulatedCompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.response.interface';
+import { ApiResponse, PaginatedApiResponse, PlainResponse, QueryParmsInterface } from '../../../shared/interfaces/api-response.interface';
+
+import { environment } from '../../../../env/environment';
+import { LoggerService } from '../../../shared/services/logger/logger.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-  public ComapnyProfileSubject = new BehaviorSubject<ComapnyProfileInterface | null>(null)
-  companyProfile$ = this.ComapnyProfileSubject.asObservable()
-
-  private readonly NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q='
+  public CompanyProfileSubject = new BehaviorSubject<CompanyProfileInterface | null>(null)
+  companyProfile$ = this.CompanyProfileSubject.asObservable()
 
   constructor(
-    private readonly _http: HttpClient
+    private readonly _http: HttpClient,
+    private readonly _logger: LoggerService
   ){}
 
-
-  getCompanyProfile():Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this._http.get<ApiResponce<ComapnyProfileInterface>>(`/api/company/profile`,{withCredentials: true}).pipe(
+  getCompanyProfile():Observable<ApiResponse<CompanyProfileInterface>>{
+    return this._http.get<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
         if(res && res.success){
-          this.ComapnyProfileSubject.next(res.data!)
+          this.CompanyProfileSubject.next(res.data!)
         }else{
-          this.ComapnyProfileSubject.next(null)
-          console.log("faild to add get company details")
+          this.CompanyProfileSubject.next(null)
+          this._logger.warn("failed to add get company details")
         }
       }),
     )
   }
 
-  getPublicView(id:string):Observable<ApiResponce<populatecompanyProfile>>{
-    return this._http.get<ApiResponce<populatecompanyProfile>>(`/api/company/public/profile?id=${id}`)
+  getPublicView(id:string):Observable<ApiResponse<PopulatedCompanyProfile>>{
+    return this._http.get<ApiResponse<PopulatedCompanyProfile>>(`${environment.apiUrl}/company/public/profile/${id}`)
   }
 
-
-  updateCompanyProfile(formData:FormData):Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this._http.patch<ApiResponce<ComapnyProfileInterface>>(`/api/company/updateprofile`,formData)
+  updateCompanyProfile(formData:FormData):Observable<ApiResponse<CompanyProfileInterface>>{
+    return this._http.patch<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/updateprofile`,formData)
     .pipe(
       tap(res =>{
         if(res.success){
-          console.log("Updated Responce",res.data)
-          this.ComapnyProfileSubject.next(res.data!)
+          this._logger.info("Updated Response",res.data)
+          this.CompanyProfileSubject.next(res.data!)
         }else{
-          console.log("error for updating profile info",res)
+          this._logger.error("error for updating profile info",res)
         }
       })
     )
   }
 
-  createUser(user:InternalUserInterface):Observable<ApiResponce<ComapnyProfileInterface>>{
-    return  this._http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/createuser`,user)
+  createUser(user:InternalUserInterface):Observable<ApiResponse<CompanyProfileInterface>>{
+    return  this._http.post<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/createuser`,user)
   }
 
-  getInternalUsers(params:QueryParmsInterface):Observable<PagenatedApiResponce<InternalUserInterface[]>>{
+  getInternalUsers(params:QueryParmsInterface):Observable<PaginatedApiResponse<InternalUserInterface[]>>{
     let  httpParms = new HttpParams
-    
+
     if(params.limit){
        httpParms = httpParms.set('limit',params.limit.toString())
     }
@@ -71,30 +70,30 @@ export class CompanyService {
       httpParms = httpParms.set('filtervalue',params.filtervalue)
     }
 
-    return this._http.get<PagenatedApiResponce<InternalUserInterface[]>>(`/api/company/internalusers`,{ params: httpParms,withCredentials:true})
+    return this._http.get<PaginatedApiResponse<InternalUserInterface[]>>(`${environment.apiUrl}/company/internalusers`,{ params: httpParms,withCredentials:true})
   }
 
-  getUserProfile():Observable<ApiResponce<InternalUserInterface>>{
-    return this._http.get<ApiResponce<InternalUserInterface>>(`/api/company/userprofile`)
+  getUserProfile():Observable<ApiResponse<InternalUserInterface>>{
+    return this._http.get<ApiResponse<InternalUserInterface>>(`${environment.apiUrl}/company/userprofile`)
   }
 
-  changePassword(currPass:string,newPass:string):Observable<ApiResponce<InternalUserInterface>>{
-    return this._http.post<ApiResponce<InternalUserInterface>>('/api/company/updatepassword',{currPass:currPass,newPass:newPass})
+  changePassword(currPass:string,newPass:string):Observable<ApiResponse<InternalUserInterface>>{
+    return this._http.post<ApiResponse<InternalUserInterface>>(`${environment.apiUrl}/company/updatepassword`,{currPass:currPass,newPass:newPass})
   }
 
-  updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponce<InternalUserInterface>>{
-    return this._http.post<ApiResponce<InternalUserInterface>>('/api/company/updateuserprofile',dto)
+  updateUserProfile(dto:UpdateInternalUserInterface):Observable<ApiResponse<InternalUserInterface>>{
+    return this._http.post<ApiResponse<InternalUserInterface>>(`${environment.apiUrl}/company/updateuserprofile`,dto)
   }
 
-  addTeamMembers(dto:TeamMember):Observable<ApiResponce<ComapnyProfileInterface>>{
-    return this._http.post<ApiResponce<ComapnyProfileInterface>>(`/api/company/addteammember`,dto)
+  addTeamMembers(dto:TeamMember):Observable<ApiResponse<CompanyProfileInterface>>{
+    return this._http.post<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/addteammember`,dto)
   }
 
-  addJobs(dto:JobsInterface):Observable<ApiResponce<JobsInterface>>{
-    return this._http.post<ApiResponce<JobsInterface>>(`/api/jobs/createjob`,dto)
+  addJobs(dto:JobsInterface):Observable<ApiResponse<JobsInterface>>{
+    return this._http.post<ApiResponse<JobsInterface>>(`${environment.apiUrl}/jobs/createjob`,dto)
   }
 
-  getAllJobs(params:QueryParmsInterface):Observable<PagenatedApiResponce<JobsInterface[]>>{
+  getAllJobs(params:QueryParmsInterface):Observable<PaginatedApiResponse<JobsInterface[]>>{
     let httpParms = new HttpParams
 
     if(params.limit){
@@ -106,38 +105,37 @@ export class CompanyService {
     if(params.search){
       httpParms = httpParms.set('search',params.search)
     }
-    return this._http.get<PagenatedApiResponce<JobsInterface[]>>(`api/jobs/getalljobs`,{params:httpParms, withCredentials:true})
+    return this._http.get<PaginatedApiResponse<JobsInterface[]>>(`${environment.apiUrl}/jobs/getalljobs`,{params:httpParms, withCredentials:true})
   }
 
-  getJobDetails(id:string):Observable<ApiResponce<JobsInterface>>{
-    return this._http.get<ApiResponce<JobsInterface>>(`/api/jobs/jobdetails?id=${id}`)
+  getJobDetails(id:string):Observable<ApiResponse<JobsInterface>>{
+    return this._http.get<ApiResponse<JobsInterface>>(`${environment.apiUrl}/jobs/jobdetails?id=${id}`)
   }
 
-  getJobPublicView(id:string):Observable<ApiResponce<populatedJobInterface>>{
-    return this._http.get<ApiResponce<populatedJobInterface>>(`/api/jobs/publicview?id=${id}`)
+  getJobPublicView(id:string):Observable<ApiResponse<populatedJobInterface>>{
+    return this._http.get<ApiResponse<populatedJobInterface>>(`${environment.apiUrl}/jobs/publicview?id=${id}`)
   }
 
-  updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponce<JobsInterface>>{
-    return this._http.post<ApiResponce<JobsInterface>>(`/api/jobs/updatejob?id=${id}`,data)
+  updateJobDetails(id:string,data:JobsInterface):Observable<ApiResponse<JobsInterface>>{
+    return this._http.post<ApiResponse<JobsInterface>>(`${environment.apiUrl}/jobs/updatejob?id=${id}`,data)
   }
 
   searchLocations(query: string): Observable<string[]> {
   return this._http
-    .get<any[]>(`${this.NOMINATIM_URL}${query}`, { params: { format: 'json' } })
-    .pipe(map(res => res.map(item => item.display_name)));
+    .get<Record<string, unknown>[]>(`${environment.nominatimUrl}${query}`, { params: { format: 'json' } })
+    .pipe(map(res => res.map(item => (item as Record<string, unknown>)['display_name'] as string)));
   }
 
-
-  removeUser(id:string):Observable<PlainResponce>{
-    return this._http.delete<PlainResponce>(`/api/company/removeuser?id=${id}`)
+  removeUser(id:string):Observable<PlainResponse>{
+    return this._http.delete<PlainResponse>(`${environment.apiUrl}/company/removeuser?id=${id}`)
   }
 
-  updateNewScore(data:{newScore:number,joId:string}):Observable<ApiResponce<ApplicationInterface[]>>{
-    return this._http.patch<ApiResponce<ApplicationInterface[]>>(`/api/applications/updateScore`,data)
+  updateNewScore(data:{newScore:number,joId:string}):Observable<ApiResponse<ApplicationInterface[]>>{
+    return this._http.patch<ApiResponse<ApplicationInterface[]>>(`${environment.apiUrl}/applications/updateScore`,data)
   }
 
-  getDashboardData():Observable<ApiResponce<CompanyDashboardData>>{
-    return this._http.get<ApiResponce<CompanyDashboardData>>(`/api/company/dashboard`,{withCredentials: true})
+  getDashboardData():Observable<ApiResponse<CompanyDashboardData>>{
+    return this._http.get<ApiResponse<CompanyDashboardData>>(`${environment.apiUrl}/company/dashboard`,{withCredentials: true})
   }
 
 }

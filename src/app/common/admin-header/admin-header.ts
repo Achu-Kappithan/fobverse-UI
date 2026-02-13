@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -9,11 +9,12 @@ import {
 } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { UserPartial } from '../../shared/interfaces/apiresponce.interface';
+import { UserPartial } from '../../shared/interfaces/api-response.interface';
 import { environment } from '../../../env/environment';
 import { ThemeService } from '../../shared/services/theme/theme.service';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside';
 import { ConfirmService } from '../../shared/services/confirm/confirm.service';
+import { LoggerService } from '../../shared/services/logger/logger.service';
 
 @Component({
   selector: 'app-admin-header',
@@ -21,18 +22,19 @@ import { ConfirmService } from '../../shared/services/confirm/confirm.service';
   templateUrl: './admin-header.html',
   styleUrl: './admin-header.css',
 })
-export class AdminHeader implements OnInit {
-  
+export class AdminHeaderComponent implements OnInit {
+
   activeAdmin:UserPartial | null  = null
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 
-  @Input() isSidebarOpen: boolean = true;
-  isDarkMode: boolean = false
+  @Input() isSidebarOpen = true;
+  isDarkMode = false
 
   @Output() darkModeToggled = new EventEmitter<boolean>();
 
-  isProfileMenuOpen: boolean = false;
+  isProfileMenuOpen = false;
   private _router = inject(Router);
+  private _logger = inject(LoggerService);
 
   constructor(
     private readonly _authService: AuthService,
@@ -46,7 +48,7 @@ export class AdminHeader implements OnInit {
     })
     this._authService.admin$.subscribe((val) => {
       this.activeAdmin = val
-      console.log('current user in state', this.activeAdmin);
+      this._logger.log('current Admin in header', this.activeAdmin);
     });
   }
 

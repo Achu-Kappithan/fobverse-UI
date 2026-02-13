@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { Toast } from '../../shared/services/toast/toast.model';
@@ -11,14 +11,12 @@ import { Observable, delay } from 'rxjs';
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.css']
 })
-export class ToastComponent implements OnInit {
+export class ToastComponent {
   toasts$: Observable<Toast[]>;
 
   constructor(private toastService: ToastService) {
     this.toasts$ = this.toastService.toasts$.pipe(delay(0));
   }
-
-  ngOnInit(): void {}
 
   removeToast(id: number): void {
     this.toastService.remove(id);

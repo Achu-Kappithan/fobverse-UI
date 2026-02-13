@@ -1,27 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../services/company-service';
-import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.responce.interface';
+import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.response.interface';
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable, switchMap, of } from 'rxjs'; 
-import { Passwordvalidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
+import { Observable, switchMap, of } from 'rxjs';
+import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, RoleDisplayPipe, ReactiveFormsModule, Passwordvalidator],
+  imports: [CommonModule, RoleDisplayPipe, ReactiveFormsModule, PasswordValidator, LoadingSpinnerComponent],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css'
 })
-export class UserProfile implements OnInit {
+export class UserProfileComponent implements OnInit {
   activeCard: 'profile' | 'password' | 'edit' = 'profile';
   userProfile: InternalUserInterface | null = null;
   isLoading = false;
   updateProfileForm!: FormGroup;
   passwordChangeForm!: FormGroup;
   previewImage: string | null = null;
+  private readonly _logger = inject(LoggerService);
   selectedFile: File | null = null;
   cloudinaryBaseUrl = "https://res.cloudinary.com/dl9iuhkmq/image/upload";
   private loadingToastId: number | null = null;
@@ -74,7 +78,7 @@ export class UserProfile implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error fetching user profile ", err);
+        this._logger.error("Error fetching user profile ", err);
         this.isLoading = false;
         this._toast.error('Failed to fetch user profile.');
         this._cdr.detectChanges();
@@ -108,8 +112,8 @@ export class UserProfile implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.previewImage = e.target?.result as string;
         this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedFile);
@@ -137,12 +141,12 @@ export class UserProfile implements OnInit {
     }
     this.isLoading = true;
     this.loadingToastId = this._toast.loading('Updating profile...');
-    
+
     const profileData: UpdateInternalUserInterface = {
       name: this.updateProfileForm.get('name')?.value,
       email: this.updateProfileForm.get('email')?.value,
     };
-    let uploadObservable: Observable<any>;
+    let uploadObservable: Observable<Record<string, unknown> | null>;
     const publicIdBase = this.userProfile?.email ? this.userProfile.email.split('@')[0] : 'user_profile';
 
     if (this.selectedFile) {
@@ -161,13 +165,13 @@ export class UserProfile implements OnInit {
       );
     } else {
       profileData.profileImg = this.userProfile?.profileImg || undefined;
-      uploadObservable = of(null); 
+      uploadObservable = of(null);
     }
-    
+
     uploadObservable.subscribe({
-      next: (cloudinaryUploadResult) => {
-        if (cloudinaryUploadResult && cloudinaryUploadResult.secure_url) {
-          profileData.profileImg = this.stripCloudinaryBase(cloudinaryUploadResult.secure_url);
+      next: (cloudinaryUploadResult: Record<string, unknown> | null) => {
+        if (cloudinaryUploadResult && cloudinaryUploadResult['secure_url']) {
+          profileData.profileImg = this.stripCloudinaryBase(cloudinaryUploadResult['secure_url'] as string);
         }
         this._companyService.updateUserProfile(profileData).subscribe({
           next: (res) => {
@@ -182,7 +186,7 @@ export class UserProfile implements OnInit {
             this._cdr.detectChanges();
           },
           error: (err) => {
-            console.error("Error updating profile in backend:", err);
+            this._logger.error("Error updating profile in backend:", err);
             if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
             this._toast.error(err.error?.message || 'Failed to update profile.');
             this.isLoading = false;
@@ -191,7 +195,7 @@ export class UserProfile implements OnInit {
         });
       },
       error: (err) => {
-        console.error("Error during Cloudinary upload or signature:", err);
+        this._logger.error("Error during Cloudinary upload or signature:", err);
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.error('Failed to upload profile picture.');
         this.isLoading = false;
@@ -211,10 +215,10 @@ export class UserProfile implements OnInit {
     }
     this.isLoading = true;
     this.loadingToastId = this._toast.loading('Updating password...');
-    
+
     const { currentPassword, newPassword } = this.passwordChangeForm.value;
     this._companyService.changePassword(currentPassword, newPassword).subscribe({
-      next: (res) => {
+      next: () => {
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.success('Password changed successfully.');
         this.isLoading = false;
@@ -223,7 +227,7 @@ export class UserProfile implements OnInit {
         this._cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error changing password:", err);
+        this._logger.error("Error changing password:", err);
         if (this.loadingToastId !== null) this._toast.remove(this.loadingToastId);
         this._toast.error(err.error?.message || 'Failed to change password.');
         this.isLoading = false;
