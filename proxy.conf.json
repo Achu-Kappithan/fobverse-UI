@@ -1,7 +1,7 @@
 
 {
   "/api": {
-    "target": "http://localhost:3007/api/v1", 
+    "target": "https://fobverse-api.onrender.com/api/v1", 
     "secure": false, 
     "changeOrigin": true,
     "pathRewrite": {
