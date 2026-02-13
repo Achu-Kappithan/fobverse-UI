@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+﻿import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { Observable } from 'rxjs';
@@ -49,7 +49,7 @@ export class CandidateService {
 
     if (params.jobType && params.jobType.length > 0) {
       params.jobType.forEach(type => {
-        httpParams = httpParams.append('jobType', type); 
+        httpParams = httpParams.append('jobType', type);
       });
     }
 
@@ -62,11 +62,10 @@ export class CandidateService {
     }
 
     if (params.dueDate) {
-      httpParams = httpParams.set('dueDate', params.dueDate); 
+      httpParams = httpParams.set('dueDate', params.dueDate);
     }
     return this._http.get<ApiResponse<CandidateJobsInterface[]>>(`${environment.apiUrl}/jobs/getalljobs`, { params: httpParams });
   }
-
 
   updateResume(filename:string):Observable<ApiResponse<CandidateInterface>>{
     return this._http.post<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/updataprofile`, { resumeUrl: filename })

@@ -1,4 +1,4 @@
-
+﻿
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -8,7 +8,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { credentialsInterceptor } from './credentials-interceptor';
 
 describe('credentialsInterceptor', () => {
-  const interceptor: HttpInterceptorFn = (req, next) => 
+  const interceptor: HttpInterceptorFn = (req, next) =>
     TestBed.runInInjectionContext(() => credentialsInterceptor(req, next));
 
   beforeEach(() => {

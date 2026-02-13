@@ -14,9 +14,11 @@ import {
 import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-candidate-companylist',
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, LoadingSpinnerComponent],
   templateUrl: './candidate-companylist.html',
   styleUrl: './candidate-companylist.css',
 })

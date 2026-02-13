@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+﻿import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map, filter, switchMap, take } from 'rxjs';
 import { AuthService } from '../../../features/auth/services/auth.service';
@@ -18,7 +18,7 @@ export const isCompanyAdminGuard: CanActivateFn = (route, state) => {
         return true;
       }
       toast.warning('Access Denied', 'Only Company Admins can access this section.');
-      
+
       const currentUrl = router.url;
       if (currentUrl && currentUrl !== '/' && currentUrl !== state.url) {
         return false;

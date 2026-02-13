@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CandidateInterface, ContactInfoItem } from '../../interfaces/candidate.interface';
@@ -11,9 +11,11 @@ import { environment } from '../../../../../env/environment';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 
+
+
 @Component({
   selector: 'app-update-profile',
-  imports: [ReactiveFormsModule,CommonModule,RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './update-profile.html',
   styleUrl: './update-profile.css'
 })
@@ -22,7 +24,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   updateProfileForm!: FormGroup;
-  profileData: CandidateInterface | null = null; 
+  profileData: CandidateInterface | null = null;
 
   selectedProfileFile: File | null = null;
   ProfilePreviewUrl: string | ArrayBuffer | null = null;
@@ -45,9 +47,9 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.isLoading = true;
-    this._candidateService.GetPorfile().subscribe({ 
+    this._candidateService.GetPorfile().subscribe({
       next: (resp) => {
-        this.profileData = resp.data; 
+        this.profileData = resp.data;
         this.populateForm();
         this.isLoading = false;
         this._cdr.detectChanges();
@@ -60,7 +62,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       },
       complete: () => {
         if (!this.profileData) {
-          this.populateForm(); 
+          this.populateForm();
         }
       }
     });
@@ -70,10 +72,10 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this.updateProfileForm = this.fb.group({
       name: [null,[ Validators.required,Validators.maxLength(10),Validators.pattern(/^(?!\d+$)(?![^a-zA-Z]+$)[a-zA-Z\s]+$/)]],
       profileUrl: [null],
-      aboutme: [null, [Validators.required]], 
+      aboutme: [null, [Validators.required]],
       coverUrl: [null],
       contactInfo: this.fb.array<FormGroup>([]),
-      education: this.fb.array<FormControl>([]), 
+      education: this.fb.array<FormControl>([]),
       experience: this.fb.array<FormControl>([]),
       skills: this.fb.array<FormControl>([]),
       portfolioLinks: this.fb.array<FormControl>([])
@@ -97,7 +99,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
         this.ProfilePreviewUrl = this.cludBaseUrl+this.profileData.profileUrl;
         this.updateProfileForm.get('profileUrl')?.setValue(this.profileData.profileUrl);
       } else {
-        this.ProfilePreviewUrl = null; 
+        this.ProfilePreviewUrl = null;
         this.updateProfileForm.get('profileUrl')?.setValue(null);
       }
 
@@ -113,9 +115,9 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       this.profileData.education?.forEach(edu => this.addEducation(edu));
       this.profileData.experience?.forEach(exp => this.addExperience(exp));
       this.profileData.skills?.forEach(skil => this.addSkills(skil));
-      this.profileData.portfolioLinks?.forEach(link => this.addPortfolioLink(link)); 
+      this.profileData.portfolioLinks?.forEach(link => this.addPortfolioLink(link));
     }
-    this._cdr.detectChanges(); 
+    this._cdr.detectChanges();
   }
 
   splitUrls(url: string): string {
@@ -188,7 +190,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this._cdr.detectChanges();
   }
 
-  addEducation(edu?: string): void { 
+  addEducation(edu?: string): void {
     this.education.push(this.fb.control(edu || "", Validators.required));
     this._cdr.detectChanges();
   }
@@ -198,7 +200,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this._cdr.detectChanges();
   }
 
-  addExperience(exp?: string): void { 
+  addExperience(exp?: string): void {
     this.experience.push(this.fb.control(exp || '', Validators.required));
     this._cdr.detectChanges();
   }
@@ -208,7 +210,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this._cdr.detectChanges();
   }
 
-  addSkills(skill?: string): void { 
+  addSkills(skill?: string): void {
     this.skills.push(this.fb.control(skill || "", Validators.required));
     this._cdr.detectChanges();
   }
@@ -218,7 +220,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this._cdr.detectChanges();
   }
 
-  addPortfolioLink(link?: string): void { 
+  addPortfolioLink(link?: string): void {
     this.portfolioLinks.push(this.fb.control(link || "", Validators.required));
     this._cdr.detectChanges();
   }
@@ -232,10 +234,10 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this.selectedProfileFile = null;
     this.ProfilePreviewUrl = null;
     this.updateProfileForm.get('profileUrl')?.setValue(null);
-    const profileInput = document.getElementById('profilePictureInput') as HTMLInputElement; 
+    const profileInput = document.getElementById('profilePictureInput') as HTMLInputElement;
 
     if (profileInput) {
-      profileInput.value = ''; 
+      profileInput.value = '';
     }
     this._cdr.detectChanges();
   }
@@ -244,20 +246,19 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this.selectedCover = null;
     this.coverPreviewUrl = null;
     this.updateProfileForm.get('coverUrl')?.setValue(null);
-    const coverInput = document.getElementById('coverPhotoInput') as HTMLInputElement; 
+    const coverInput = document.getElementById('coverPhotoInput') as HTMLInputElement;
 
     if (coverInput) {
-      coverInput.value = ''; 
+      coverInput.value = '';
     }
     this._cdr.detectChanges();
   }
-
 
   async onSubmit(): Promise<void> {
     if (this.updateProfileForm.invalid) {
       this._toast.error('Please fill all required fields');
       this.updateProfileForm.markAllAsTouched();
-      this._cdr.detectChanges(); 
+      this._cdr.detectChanges();
       return;
     }
 
@@ -296,7 +297,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       let coverUpload$: Observable<Record<string, unknown> | null>;
       if (this.selectedCover) {
         coverUpload$ = this._cloudinaryService.getCloudinarySignature({
-          folder: 'candidate_cover', 
+          folder: 'candidate_cover',
           publicIdPrefix: publicIdBase
         }).pipe(
           switchMap(signatureResp => {

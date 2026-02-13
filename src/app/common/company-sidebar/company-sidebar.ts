@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -9,13 +9,13 @@ import { RouterModule } from '@angular/router';
   styleUrl: './company-sidebar.css'
 })
 export class CompanySidebarComponent {
-  @Input() isOpen = false; 
-  @Output() sidebarToggled = new EventEmitter<boolean>(); 
+  @Input() isOpen = false;
+  @Output() sidebarToggled = new EventEmitter<boolean>();
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
-    this.sidebarToggled.emit(this.isOpen); 
+    this.sidebarToggled.emit(this.isOpen);
   }
 
-  
+
 }

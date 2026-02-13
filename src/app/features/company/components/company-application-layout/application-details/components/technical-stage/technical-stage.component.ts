@@ -1,4 +1,4 @@
-import {
+﻿import {
   ChangeDetectorRef,
   Component,
   Input,
@@ -134,15 +134,15 @@ export class TechnicalStageComponent implements OnInit {
 
   openTechinalModal(mode = 'Scheduled') {
     this.sheduleModal = mode;
-    
+
     if (!this.technicalSheduleModalOpen && !this.interviewers) {
         this.fetchInterviewers();
     }
-    
+
     if (mode === 'Rescheduled' && this.interview) {
       this.SetupReSheduleForm();
     }
-    
+
     this.technicalSheduleModalOpen = !this.technicalSheduleModalOpen;
   }
 
@@ -204,7 +204,6 @@ export class TechnicalStageComponent implements OnInit {
       ...data,
       interviewId:this.interview?._id
     };
-
 
     this.isSaving = true;
     this._ApplicationService.updateFeedback(data).subscribe({
@@ -284,10 +283,10 @@ export class TechnicalStageComponent implements OnInit {
           const id = e.interviewerId;
           return typeof id === 'string' ? id : (id as unknown as Record<string, unknown>)?.['_id'] || '';
         })
-        .filter(id => id !== ''); 
-      
+        .filter(id => id !== '');
+
       this._logger.log('Extracted evaluator IDs for reschedule:', evaluatorIds);
-      
+
       this.technicalScheduleForm.patchValue({
         scheduledDate: this.interview.scheduledDate,
         scheduledTime: this.interview.scheduledTime,
@@ -315,20 +314,20 @@ export class TechnicalStageComponent implements OnInit {
     }
 
     let data = this.technicalScheduleForm.value;
-    
+
     const selectedInterviewerIds = data.interviewers;
     const validInterviewerIds = selectedInterviewerIds.filter((id: unknown) => typeof id === 'string' && id.trim() !== '');
     if (validInterviewerIds.length !== selectedInterviewerIds.length) {
-      this._logger.warn('Found invalid interviewer IDs (filtered out):', 
+      this._logger.warn('Found invalid interviewer IDs (filtered out):',
         selectedInterviewerIds.filter((id: unknown) => typeof id !== 'string' || id.trim() === '')
       );
     }
-    
+
     const evaluators = validInterviewerIds.map((id: string) => {
       const interviewer = this.interviewers?.find(hr => hr._id === id);
       return {
         interviewerId: id,
-        interviewerName: interviewer?.name 
+        interviewerName: interviewer?.name
       };
     });
 
@@ -405,7 +404,7 @@ export class TechnicalStageComponent implements OnInit {
 
   onInterviewerChange(event: Event, hrId: string) {
     const selectedIds = this.technicalScheduleForm.get('interviewers')?.value || [];
-    
+
     if ((event.target as HTMLInputElement).checked) {
       selectedIds.push(hrId);
     } else {
@@ -430,7 +429,7 @@ export class TechnicalStageComponent implements OnInit {
     if (this.interview.scheduledBy === currentUserId) {
       return true;
     }
-    
+
     const isEvaluator = this.interview.evaluators.some(
       evaluator => {
         const id = evaluator.interviewerId;
@@ -438,7 +437,7 @@ export class TechnicalStageComponent implements OnInit {
         return idString === currentUserId;
       }
     );
-    
+
     return isEvaluator;
   }
 

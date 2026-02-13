@@ -1,7 +1,7 @@
-
+﻿
 export interface ProfileInterface {
   id:string
-  
+
   name: string;
 
   email: string;
@@ -13,9 +13,8 @@ export interface ProfileInterface {
   password: string;
 }
 
-
 export interface UpdateAdminProfileInterface {
-  
+
   name: string;
 
   email: string;

@@ -9,10 +9,12 @@ import { CandidateApplication, ApplicationQueryParams } from '../../interfaces/c
 import { PaginatedApiResponse } from '../../../../shared/interfaces/api-response.interface';
 import { environment } from '../../../../../env/environment';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-my-applications',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './my-applications.html',
   styleUrl: './my-applications.css'
 })

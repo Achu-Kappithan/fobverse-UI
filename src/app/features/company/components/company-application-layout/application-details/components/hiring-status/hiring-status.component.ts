@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+﻿import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { LoggerService } from '../../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { CompanyApplication } from '../../../../../services/company-application';
@@ -38,8 +38,6 @@ export class HiringStatusComponent implements OnInit, OnChanges {
   private readonly _logger = inject(LoggerService);
 
   constructor(private readonly _applicationService: CompanyApplication) {}
-
-
 
   ngOnInit(): void {
     if (this.applicationId) {
@@ -139,7 +137,7 @@ export class HiringStatusComponent implements OnInit, OnChanges {
 
   mapStatus(status: string): 'Completed' | 'Pending' | 'In Progress' {
     if (!status) return 'Pending';
-    
+
     const normalizedStatus = status.toLowerCase();
     if (normalizedStatus === 'completed' || normalizedStatus === 'done') {
       return 'Completed';
@@ -151,7 +149,7 @@ export class HiringStatusComponent implements OnInit, OnChanges {
 
   mapResult(result: string): 'Pass' | 'Fail' | undefined {
     if (!result) return undefined;
-    
+
     const normalizedResult = result.toLowerCase();
     if (normalizedResult === 'pass' || normalizedResult === 'selected') {
       return 'Pass';
@@ -179,12 +177,12 @@ export class HiringStatusComponent implements OnInit, OnChanges {
 
   formatDate(dateString: string): string {
     if (!dateString) return 'N/A';
-    
+
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   }
 }

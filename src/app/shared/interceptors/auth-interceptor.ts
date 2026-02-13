@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+﻿import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import {
   HttpRequest,
@@ -64,8 +64,8 @@ function handle401Error(
       catchError((error) => {
         isRefreshing = false;
         authService.adminSubject.next(null);
-        
-        const currentUrl = router.url.split('?')[0]; 
+
+        const currentUrl = router.url.split('?')[0];
         const isPublicRoute = PUBLIC_ROUTES.some(route => currentUrl.startsWith(route) || currentUrl === '/');
 
         if (!isPublicRoute) {
@@ -74,7 +74,7 @@ function handle401Error(
         } else {
           logger.debug('Suppressed redirect to login as user is already on a public route:', currentUrl);
         }
-        
+
         return throwError(() => error);
       }),
       finalize(() => {

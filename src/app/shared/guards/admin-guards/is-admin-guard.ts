@@ -1,10 +1,9 @@
-import { inject } from '@angular/core';
+﻿import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map, filter, switchMap, take } from 'rxjs';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { LoggerService } from '../../services/logger/logger.service';
-
 
 export const isAdminGuard: CanActivateFn = () => {
   const _authService = inject(AuthService);

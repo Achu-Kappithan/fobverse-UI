@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CandidateService } from '../../services/candidate.service';
@@ -13,10 +13,11 @@ import { environment } from '../../../../../env/environment';
 import { AuthService } from '../../../auth/services/auth.service';
 import { UserPartial } from '../../../../shared/interfaces/api-response.interface';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-candidate-joblist',
-  imports: [CommonModule,FormsModule,RouterModule,CandidateApplyJobComponent],
+  imports: [CommonModule, FormsModule, RouterModule, CandidateApplyJobComponent, LoadingSpinnerComponent],
   templateUrl: './candidate-joblist.html',
   styleUrl: './candidate-joblist.css'
 })
@@ -31,17 +32,16 @@ export class CandidateJobListComponent  implements OnInit, OnDestroy {
 
   jobList:CandidateJobsInterface[] = []
 
-
   private destroy$ = new Subject<void>();
   searchValue = new Subject<string>()
 
-  selectedJobTypes: string[] = []; 
+  selectedJobTypes: string[] = [];
   selectedMinSalary: number | null = null;
   selectedMaxSalary: number | null = null;
   selectedDueDate: string | null = null;
 
   availableJobTypes = [
-    { name: CandidatejobType.FullTime }, 
+    { name: CandidatejobType.FullTime },
     { name: CandidatejobType.PartTime },
     { name: CandidatejobType.OnSite },
     { name: CandidatejobType.Remote }
@@ -191,7 +191,6 @@ export class CandidateJobListComponent  implements OnInit, OnDestroy {
     this.selectedJob = job;
     this.isApplyModalOpen = true;
   }
-
 
   isModalOpen(jobId: string): boolean {
     return this.isApplyModalOpen && this.selectedJob?._id === jobId;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../services/company-service';
 import { CompanyProfileInterface, TeamMember } from '../../interfaces/company.response.interface';
@@ -13,7 +13,6 @@ import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { environment } from '../../../../../env/environment';
 
-
 @Component({
   selector: 'app-company-profile',
   imports: [CommonModule,RouterModule,LoadingSpinnerComponent,TechLogoPipe,ReactiveFormsModule],
@@ -22,8 +21,8 @@ import { environment } from '../../../../../env/environment';
   animations: [
     trigger('modalAnimation', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0.95)' }), 
-        animate('200ms ease-out', style({ opacity: 1, transform: 'scale(1)' })) 
+        style({ opacity: 0, transform: 'scale(0.95)' }),
+        animate('200ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
       ]),
       transition(':leave', [
         animate('150ms ease-in', style({ opacity: 0, transform: 'scale(0.95)' }))
@@ -47,7 +46,7 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
 
   @ViewChild('teamCardsContainer') teamCardsContainer!: ElementRef;
   @ViewChild('imagePreview') imagePreviewRef!: ElementRef<HTMLImageElement>;
-  defaultImagePreviewSrc = ""; 
+  defaultImagePreviewSrc = "";
 
   private destroy$ = new Subject<void>()
 
@@ -92,13 +91,13 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
 
   openModal(id:string){
     this.activeModalId = id
-    this.teamMembersForm.reset(); 
-    this.selectedImageFile = null; 
-    this.imagePreviewUrl = this.defaultImagePreviewSrc; 
+    this.teamMembersForm.reset();
+    this.selectedImageFile = null;
+    this.imagePreviewUrl = this.defaultImagePreviewSrc;
     if (this.imagePreviewRef) {
         this.imagePreviewRef.nativeElement.src = this.defaultImagePreviewSrc;
     }
-    this._cdr.detectChanges(); 
+    this._cdr.detectChanges();
   }
 
   closeModal(){
@@ -121,11 +120,11 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
       case 'email': return 'fas fa-envelope';
       case 'website': return 'fas fa-globe';
       case 'phone': return 'fas fa-phone';
-      default: return 'fas fa-link'; 
+      default: return 'fas fa-link';
     }
   }
 
-  // temMember adding modal
+
 
   initTeamMemberForm(){
     this.teamMembersForm = new FormGroup({
@@ -139,7 +138,6 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
   const parts = url.split('/image/upload');
   return parts[1]
   }
-
 
   async addTeamMember(){
     if(this.teamMembersForm.valid){
@@ -191,7 +189,7 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
                 this.company$ = resdata.data
                 this.isLoading = false
                 this._toast.success(resdata.message)
-                this.closeModal(); 
+                this.closeModal();
                 this.teamMembersForm.reset();
                 this.selectedImageFile = null;
                 this._cdr.detectChanges()
@@ -221,24 +219,24 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedImageFile = input.files[0]; 
+      this.selectedImageFile = input.files[0];
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
-        this.imagePreviewUrl = e.target?.result as string; 
-        this._cdr.detectChanges(); 
+        this.imagePreviewUrl = e.target?.result as string;
+        this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedImageFile);
     } else {
-      this.selectedImageFile = null; 
-      this.imagePreviewUrl = this.defaultImagePreviewSrc; 
-      this._cdr.detectChanges(); 
+      this.selectedImageFile = null;
+      this.imagePreviewUrl = this.defaultImagePreviewSrc;
+      this._cdr.detectChanges();
     }
   }
 
     scrollLeft(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
-        left: -this.teamCardsContainer.nativeElement.offsetWidth / 4, 
+        left: -this.teamCardsContainer.nativeElement.offsetWidth / 4,
         behavior: 'smooth'
       });
     }
@@ -247,12 +245,11 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
   scrollRight(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
-        left: this.teamCardsContainer.nativeElement.offsetWidth / 4, 
+        left: this.teamCardsContainer.nativeElement.offsetWidth / 4,
         behavior: 'smooth'
       });
     }
   }
-
 
   ngOnDestroy(): void {
   this.destroy$.next();

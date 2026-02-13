@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,10 +9,12 @@ import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { environment } from '../../../../../env/environment';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-admin-profile',
   standalone: true,
-  imports: [CommonModule,RouterModule,ReactiveFormsModule,RoleDisplayPipe,PasswordValidator],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, RoleDisplayPipe, PasswordValidator, LoadingSpinnerComponent],
   templateUrl: './admin-profile.html',
   styleUrl: './admin-profile.css'
 })
@@ -125,7 +127,7 @@ export class AdminProfileComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    
+
     if (this.selectedFile) {
       this.uploadImageAndSave();
     } else {
@@ -169,8 +171,8 @@ export class AdminProfileComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    
-    // Simulate password change - implement actual service call
+
+
     setTimeout(() => {
       this._toast.success('Password changed successfully.');
       this.isLoading = false;

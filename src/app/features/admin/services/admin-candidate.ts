@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+﻿import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { LoggerService } from '../../../shared/services/logger/logger.service';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ export class AdminCandidate {
       private readonly _http: HttpClient
     ) {}
     private readonly _logger = inject(LoggerService);
-  
+
     getAllCandidates(parms:QueryParmsInterface): Observable<ApiResponse<CandidateInterface[]>> {
     let httpParms = new HttpParams();
 
@@ -38,5 +38,5 @@ export class AdminCandidate {
     this._logger.log('Updating candidate status:', id);
     return this._http.get<PlainResponse>(`${environment.apiUrl}/admin/candidate/updatestatus?id=${id}`)
   }
-  
+
 }

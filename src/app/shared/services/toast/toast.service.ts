@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Toast, ToastType } from './toast.model';
 
@@ -13,7 +13,7 @@ export class ToastService {
   show(type: ToastType, title: string, message?: string, duration = 5000): number {
     const id = this.nextId++;
     const toast: Toast = { id, type, title, message, duration, closing: false };
-    
+
     this.toastsSubject.next([...this.toastsSubject.value, toast]);
 
     if (duration > 0) {
@@ -47,9 +47,9 @@ export class ToastService {
   remove(id: number): void {
     const currentToasts = this.toastsSubject.value;
     const toastIndex = currentToasts.findIndex((t) => t.id === id);
-    
+
     if (toastIndex !== -1 && !currentToasts[toastIndex].closing) {
-      const newToasts = currentToasts.map(t => 
+      const newToasts = currentToasts.map(t =>
         t.id === id ? { ...t, closing: true } : t
       );
       this.toastsSubject.next(newToasts);

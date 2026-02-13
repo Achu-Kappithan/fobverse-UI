@@ -1,4 +1,4 @@
-import {
+﻿import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -350,7 +350,7 @@ export class TelephonicStageComponent implements OnInit {
           this._toast.success(res.message);
           this.openFinalizeModal();
           this._cdr.detectChanges();
-          
+
           if (res.data.finalResult === 'Pass') {
             this.updateStage.emit();
           }

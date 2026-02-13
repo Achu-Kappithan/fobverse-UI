@@ -116,10 +116,15 @@
               <button
                 type="submit"
                 [disabled]="passwordChangeForm.invalid || isLoading"
-                class="settings-save-btn"
+                class="settings-save-btn flex items-center justify-center"
               >
-                <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading" [class.animate-spin]="isLoading"></i>
-                <span class="ml-2">{{ isLoading ? 'Updating...' : 'Save Password' }}</span>
+                @if (isLoading) {
+                  <div class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  Updating...
+                } @else {
+                  <i class="fas fa-save mr-2"></i>
+                  Save Password
+                }
               </button>
             </div>
           </form>

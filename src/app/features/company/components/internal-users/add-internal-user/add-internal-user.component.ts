@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import {
@@ -85,7 +85,7 @@ createUserForm!: FormGroup;
           this._logger.log("User created successfully", res.data);
           this._toast.success(res.message!)
           this.createUserForm.reset()
-          this._router.navigate(['../'], { relativeTo: this._route });       
+          this._router.navigate(['../'], { relativeTo: this._route });
         }
       }),
       error: (err =>{

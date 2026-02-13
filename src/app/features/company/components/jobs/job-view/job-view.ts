@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CompanyService } from '../../../services/company-service';
@@ -21,7 +21,7 @@ export class JobViewComponent implements OnInit,OnDestroy{
   isLoading = false
   jobId :string| null = null
   jobDetails:JobsInterface | null = null
-  responsibility:string[] = [] 
+  responsibility:string[] = []
   private readonly _logger = inject(LoggerService);
 
   constructor(

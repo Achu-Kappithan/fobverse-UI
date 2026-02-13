@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableColumn } from '../../shared/interfaces/table.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,7 +21,6 @@ export class TableComponent {
   selectedRow: unknown | null = null;
   activeDropdown: string | null = null;
 
-
   getStatusClass(status: boolean| string): string {
     if (status === true || status === 'true') {
     return 'bg-green-100 text-green-700 text-xs font-medium rounded-full';
@@ -31,7 +30,7 @@ export class TableComponent {
     }
     return '';
   }
-  
+
 
   getJobTypeClass(type:string):string{
     switch (type?.toLowerCase()) {
@@ -71,7 +70,7 @@ export class TableComponent {
     this.activeDropdown = null;
   }
 
-  // Helper methods for type-safe property access on unknown rows
+
   getRowId(row: unknown): string {
     return (row as Record<string, unknown>)['_id'] as string;
   }

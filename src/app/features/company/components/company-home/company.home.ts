@@ -7,10 +7,12 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../../env/environment';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-company.home',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, LoadingSpinnerComponent],
   templateUrl: './company.home.html',
   styleUrl: './company.home.css'
 })

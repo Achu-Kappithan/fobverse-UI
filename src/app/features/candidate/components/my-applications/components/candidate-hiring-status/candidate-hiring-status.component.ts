@@ -1,10 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+﻿import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { LoggerService } from '../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { CandidateService } from '../../../../services/candidate.service';
 import { DetailedApplicationResponse } from '../../../../interfaces/candidate.application.interface';
 import { InterviewFeedback, StageDetail } from '../../../../interfaces/candiate.application.interface';
-
 
 @Component({
   selector: 'app-candidate-hiring-status',
@@ -24,8 +23,6 @@ export class CandidateHiringStatusComponent implements OnChanges {
   private readonly _logger = inject(LoggerService);
 
   constructor(private readonly _candidateService: CandidateService) {}
-
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['fullData'] && this.fullData) {
@@ -71,8 +68,8 @@ export class CandidateHiringStatusComponent implements OnChanges {
         date: this.formatDate(data.atsStage.createdAt),
         status: 'Completed',
         result: data.atsStage.Rejected ? 'Fail' : 'Pass',
-        description: data.atsStage.Rejected 
-          ? `Your application has been rejected for this position.` 
+        description: data.atsStage.Rejected
+          ? `Your application has been rejected for this position.`
           : `Your application has been qualified for this position with an ATS score of ${data.atsStage.atsScore}.`
       };
       this.journeyData.push(atsStage);
@@ -118,7 +115,7 @@ export class CandidateHiringStatusComponent implements OnChanges {
 
   mapStatus(status: string): 'Completed' | 'Pending' | 'In Progress' {
     if (!status) return 'Pending';
-    
+
     const normalizedStatus = status.toLowerCase();
     if (normalizedStatus === 'completed' || normalizedStatus === 'done') {
       return 'Completed';
@@ -130,7 +127,7 @@ export class CandidateHiringStatusComponent implements OnChanges {
 
   mapResult(result: string): 'Pass' | 'Fail' | undefined {
     if (!result) return undefined;
-    
+
     const normalizedResult = result.toLowerCase();
     if (normalizedResult === 'pass' || normalizedResult === 'selected') {
       return 'Pass';
@@ -156,12 +153,12 @@ export class CandidateHiringStatusComponent implements OnChanges {
 
   formatDate(dateString: string): string {
     if (!dateString) return 'N/A';
-    
+
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   }
 }

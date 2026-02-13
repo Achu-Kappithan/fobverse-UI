@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyApplication } from '../../../services/company-application';
@@ -22,9 +22,9 @@ import { HiringStatusComponent } from './components/hiring-status/hiring-status.
 @Component({
   selector: 'app-application-details',
   imports: [
-    CommonModule, 
-    FormsModule, 
-    TextTransformPipe, 
+    CommonModule,
+    FormsModule,
+    TextTransformPipe,
     QualifiedStageComponent,
     TelephonicStageComponent,
     TechnicalStageComponent,
@@ -63,7 +63,7 @@ export class ApplicationDetailsComponent implements OnInit {
 
   currentStageId = 'shortlisted';
   interviewScheduled = true;
-  
+
   hiringStages = ['Qualified', 'Telephonic', 'Technical', 'Hired'];
 
   constructor(
@@ -114,7 +114,6 @@ export class ApplicationDetailsComponent implements OnInit {
       });
   }
 
-
   getStarRating(percentage: number | null | undefined): number {
     if (percentage === null || percentage === undefined) {
       return 0;
@@ -147,7 +146,6 @@ export class ApplicationDetailsComponent implements OnInit {
     return this.currentStageId == id;
   }
 
-
   getStages(stage: string ): void {
     switch (stage?.toLowerCase()) {
       case Stages.Default:
@@ -167,7 +165,7 @@ export class ApplicationDetailsComponent implements OnInit {
         this.currentStageIndex = 3;
         break;
 
-      default: 
+      default:
         this.currentStageIndex = -1;
     }
   }
@@ -188,7 +186,7 @@ export class ApplicationDetailsComponent implements OnInit {
   isStageEnabled(stageId: string): boolean {
     switch (stageId) {
       case 'shortlisted':
-        return true; 
+        return true;
       case 'telephone':
         return this.currentStageIndex >= 1;
       case 'technical_analysis':

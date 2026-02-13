@@ -1,4 +1,4 @@
-export const APP_ROUTES = {
+﻿export const APP_ROUTES = {
   HOME: 'candidate/home',
   LOGIN: 'login',
   SIGNUP: 'signup',
@@ -11,8 +11,8 @@ export const APP_ROUTES = {
   EMAIL_VERIFICATION: 'email/verification',
   EMAIL_FAILED: 'email/failed',
   EMAIL_SUCCESS: 'email/success',
-  
-  // Candidate
+
+
   CANDIDATE: 'candidate',
   CANDIDATE_HOME: 'candidate/home',
   CANDIDATE_PROFILE: 'candidate/profile',
@@ -22,8 +22,8 @@ export const APP_ROUTES = {
   CANDIDATE_JOBLIST: 'candidate/joblist',
   CANDIDATE_COMPANY_LIST: 'candidate/companylist',
   CANDIDATE_ABOUT_US: 'candidate/about-us',
-  
-  // Company
+
+
   COMPANY: 'company',
   COMPANY_HOME: 'company/home',
   COMPANY_PROFILE: 'company/profile',
@@ -40,8 +40,8 @@ export const APP_ROUTES = {
   COMPANY_JOB_APPLICATIONS: 'company/joblist/applications',
   COMPANY_VIEW_APPLICATION: 'company/joblist/applications/viewapplication',
   COMPANY_JOB_EDIT: 'company/joblist/jobedit',
-  
-  // Admin
+
+
   ADMIN: 'admin',
   ADMIN_DASHBOARD: 'admin/dashboard',
   ADMIN_COMPANIES: 'admin/companies',
@@ -57,7 +57,7 @@ export const PUBLIC_ROUTES = [
   `/${APP_ROUTES.LOGIN}`,
   `/${APP_ROUTES.SIGNUP}`,
   `/${APP_ROUTES.FORGOT_PASSWORD}`,
-  '/email', // Base path for email verification
+  '/email',
   `/${APP_ROUTES.ADMIN_LOGIN}`,
   `/${APP_ROUTES.COMPANY_LOGIN}`,
   `/${APP_ROUTES.COMPANY_SIGNUP}`,

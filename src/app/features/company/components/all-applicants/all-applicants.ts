@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
@@ -10,7 +10,6 @@ import { ApplicationInterface } from '../../interfaces/company.response.interfac
 import { environment } from '../../../../../env/environment';
 
 import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
-
 
 @Component({
   selector: 'app-all-applicants',
@@ -102,9 +101,9 @@ export class AllApplicantsComponent implements OnInit {
       this._logger.error('Navigation failed: Missing required IDs', { jobId, applicantId, canId });
       return;
     }
-    
+
     this._logger.log('Navigating to application details:', { jobId, applicantId, canId });
-    
+
     this._router.navigate([APP_ROUTES.COMPANY_JOB_APPLICATIONS, jobId, 'viewapplication', applicantId, canId])
       .then(success => {
         if (!success) {

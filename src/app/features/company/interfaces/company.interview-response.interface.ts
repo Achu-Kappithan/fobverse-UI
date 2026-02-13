@@ -1,4 +1,4 @@
-export interface ScheduleInterface{
+﻿export interface ScheduleInterface{
 
   applicationId: string;
 
@@ -15,9 +15,9 @@ export interface ScheduleInterface{
   scheduledTime: string;
 
   userEmail:string;
-  
+
   interviewers?: string[];
-  
+
   meetingLink?: string;
 
 }
@@ -47,7 +47,7 @@ export interface FinalizeResultInterface {
 
 export interface PanelInterface {
   interviewerId?: string;
-  
+
   interviewerName: string;
 
   feedback?: string;

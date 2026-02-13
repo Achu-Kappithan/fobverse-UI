@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -23,7 +23,7 @@ import { LoggerService } from '../../shared/services/logger/logger.service';
   styleUrl: './admin-header.css',
 })
 export class AdminHeaderComponent implements OnInit {
-  
+
   activeAdmin:UserPartial | null  = null
   cludBaseUrl:string = environment.cloudinaryBaseUrl
 

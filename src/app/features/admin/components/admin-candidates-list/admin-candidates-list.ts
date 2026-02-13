@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCandidate } from '../../services/admin-candidate';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
@@ -39,7 +39,7 @@ export class AdminCandidatesListComponent  implements OnInit {
 
   searchTerms = new Subject<string>()
 
-  constructor( 
+  constructor(
     private readonly _adminCandidateService:AdminCandidate,
     private readonly _cdr :ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
@@ -115,7 +115,6 @@ export class AdminCandidatesListComponent  implements OnInit {
         }
       })
   }
-
 
   onLimitChange(limit: number){
     this.QueryParms.limit = limit

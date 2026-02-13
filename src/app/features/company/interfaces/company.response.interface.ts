@@ -1,11 +1,9 @@
-import { CandidateInterface } from "../../candidate/interfaces/candidate.interface";
-
-
+﻿import { CandidateInterface } from "../../candidate/interfaces/candidate.interface";
 
 import { Schedule } from './schedule.interface';
 export interface InternalUserInterface {
   _id:string
-  
+
   name: string;
 
   email: string;
@@ -18,7 +16,7 @@ export interface InternalUserInterface {
 }
 
 export interface UpdateInternalUserInterface {
-  
+
   name: string;
 
   email: string;
@@ -116,7 +114,7 @@ export interface populatedJobInterface {
   profile: CompanyProfileInterface[]
 }
 
-export interface PopulatedCompanyProfile { 
+export interface PopulatedCompanyProfile {
   company: CompanyProfileInterface
   jobs:JobsInterface[]
 }
@@ -153,7 +151,7 @@ export interface ApplicationInterface {
 
   resumeUrl: string;
 
-  profile?: { _id:string , profileImg: string} 
+  profile?: { _id:string , profileImg: string}
 
   createdAt:string
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component} from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { inject } from '@angular/core';
@@ -32,9 +32,8 @@ export class CompanyComponent {
     this.isSidebarOpen = isOpen
   }
 
-
   handleSidebarStateChange(isOpen: boolean) {
-    this._logger.log('Sidebar state changed to:', isOpen); 
+    this._logger.log('Sidebar state changed to:', isOpen);
     this.isSidebarOpen = isOpen;
   }
 }

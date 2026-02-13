@@ -1,18 +1,20 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../services/company-service';
 import { InternalUserInterface, UpdateInternalUserInterface } from '../../interfaces/company.response.interface';
 import { RoleDisplayPipe } from '../../../../shared/pipes/role-display-pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable, switchMap, of } from 'rxjs'; 
+import { Observable, switchMap, of } from 'rxjs';
 import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, RoleDisplayPipe, ReactiveFormsModule, PasswordValidator],
+  imports: [CommonModule, RoleDisplayPipe, ReactiveFormsModule, PasswordValidator, LoadingSpinnerComponent],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css'
 })
@@ -111,7 +113,7 @@ export class UserProfileComponent implements OnInit {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
-        this.previewImage = e.target?.result as string; 
+        this.previewImage = e.target?.result as string;
         this._cdr.detectChanges();
       };
       reader.readAsDataURL(this.selectedFile);
@@ -139,7 +141,7 @@ export class UserProfileComponent implements OnInit {
     }
     this.isLoading = true;
     this.loadingToastId = this._toast.loading('Updating profile...');
-    
+
     const profileData: UpdateInternalUserInterface = {
       name: this.updateProfileForm.get('name')?.value,
       email: this.updateProfileForm.get('email')?.value,
@@ -163,9 +165,9 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       profileData.profileImg = this.userProfile?.profileImg || undefined;
-      uploadObservable = of(null); 
+      uploadObservable = of(null);
     }
-    
+
     uploadObservable.subscribe({
       next: (cloudinaryUploadResult: Record<string, unknown> | null) => {
         if (cloudinaryUploadResult && cloudinaryUploadResult['secure_url']) {
@@ -213,7 +215,7 @@ export class UserProfileComponent implements OnInit {
     }
     this.isLoading = true;
     this.loadingToastId = this._toast.loading('Updating password...');
-    
+
     const { currentPassword, newPassword } = this.passwordChangeForm.value;
     this._companyService.changePassword(currentPassword, newPassword).subscribe({
       next: () => {

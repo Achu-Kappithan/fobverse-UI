@@ -1,4 +1,4 @@
-
+﻿
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -8,7 +8,7 @@ import { CanActivateFn } from '@angular/router';
 import { isLogoutGuard } from './is-logout-guard';
 
 describe('isLogoutGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
+  const executeGuard: CanActivateFn = (...guardParameters) =>
       TestBed.runInInjectionContext(() => isLogoutGuard(...guardParameters));
 
   beforeEach(() => {

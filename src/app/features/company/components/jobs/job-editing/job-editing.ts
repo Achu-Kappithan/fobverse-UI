@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,9 +9,11 @@ import { JobsInterface } from '../../../interfaces/company.response.interface';
 
 import { Subscription } from 'rxjs';
 
+
+
 @Component({
   selector: 'app-job-editing',
-  imports: [RouterModule,CommonModule,ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './job-editing.html',
   styleUrl: './job-editing.css'
 })
@@ -72,7 +74,7 @@ export class JobEditingComponent implements OnInit , OnDestroy {
         next: (res) => {
           if (res.success && res.data) {
             this.jobDetails = res.data;
-            this.populateForm(); 
+            this.populateForm();
           } else {
             this._toast.error('Job not found');
             this._router.navigate(['./'],{relativeTo:this._route})
@@ -95,9 +97,9 @@ export class JobEditingComponent implements OnInit , OnDestroy {
       jobType: ['', Validators.required],
       vacancies: [1, [Validators.required, Validators.min(1)]],
       dueDate: ['', [Validators.required]],
-      skills: this.fb.array([], [Validators.required]), 
-      location: this.fb.array([], [Validators.required]), 
-      experience: this.fb.array([]), 
+      skills: this.fb.array([], [Validators.required]),
+      location: this.fb.array([], [Validators.required]),
+      experience: this.fb.array([]),
       salary: this.fb.group({
         min: [0, [Validators.required, Validators.min(0)]],
         max: [0, [Validators.required, Validators.min(0)]]
@@ -139,7 +141,6 @@ export class JobEditingComponent implements OnInit , OnDestroy {
       });
     }
   }
-
 
   get skills(): FormArray {
     return this.jobEditForm.get('skills') as FormArray;
@@ -196,7 +197,6 @@ export class JobEditingComponent implements OnInit , OnDestroy {
     this.experience.removeAt(index);
   }
 
-
   isNestedInvalid(groupName: string, controlName: string): boolean {
     const group = this.jobEditForm.get(groupName) as FormGroup;
     const control = group ? group.get(controlName) : null;
@@ -236,7 +236,7 @@ export class JobEditingComponent implements OnInit , OnDestroy {
         })
       })
     } else {
-      this.jobEditForm.markAllAsTouched(); 
+      this.jobEditForm.markAllAsTouched();
       this._toast.error('Validation Error: Please fill out all required fields and correct any errors.');
       this._logger.warn('Form is invalid:', this.jobEditForm.value);
     }

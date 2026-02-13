@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -121,7 +121,7 @@ export class CandidateApplyJobComponent implements OnInit {
         this.selectedFileName = '';
       }
       resumeControl.updateValueAndValidity();
-      this._cdr.detectChanges(); 
+      this._cdr.detectChanges();
     });
   }
 
@@ -177,13 +177,13 @@ export class CandidateApplyJobComponent implements OnInit {
       this._logger.log('Form is valid and ready for submission.');
       const { useExistingResume, ...data } = this.jobApplayForm.value;
       data.jobId = this.uniqueIdentifier;
-      let uploadObservable: Observable<Record<string, unknown> | null>; 
+      let uploadObservable: Observable<Record<string, unknown> | null>;
 
       const publicBaseId = this.currentUser?.email.split('@')[0];
 
       if (useExistingResume) {
         data.resumeUrl = '';
-        uploadObservable = of(null); 
+        uploadObservable = of(null);
       } else if (this.selectedFile) {
         uploadObservable = this._cloudinaryService
           .getCloudinarySignature({

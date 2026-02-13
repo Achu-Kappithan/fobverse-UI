@@ -1,4 +1,4 @@
-
+﻿
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -20,7 +20,7 @@ describe('TelephonicStageComponent', () => {
       imports: [TelephonicStageComponent, ReactiveFormsModule]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(TelephonicStageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

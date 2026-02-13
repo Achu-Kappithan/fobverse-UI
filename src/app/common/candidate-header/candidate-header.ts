@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { LoggerService } from '../../shared/services/logger/logger.service';
 import { UserPartial } from '../../shared/interfaces/api-response.interface';
@@ -67,7 +67,6 @@ export class CandidateHeaderComponent implements OnInit {
       },
     });
   }
-
 
   async logOut(user: string): Promise<void> {
     const isConfirmed = await this._confirmService.confirm({
@@ -161,7 +160,7 @@ export class CandidateHeaderComponent implements OnInit {
     if (date) {
       notificationDate = new Date(date);
     } else if (id && id.length === 24) {
-      // Extract timestamp from MongoDB ObjectId
+
       const timestamp = parseInt(id.substring(0, 8), 16) * 1000;
       notificationDate = new Date(timestamp);
     } else {

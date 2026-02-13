@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { LoggerService } from '../../../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -80,7 +80,7 @@ export class CandidateApplicationDetailsComponent implements OnInit {
   getCurrentStageData(): unknown {
     if (!this.application) return null;
     const currentStage = this.application.atsStage.Stages.toLowerCase();
-    
+
     if (currentStage === 'shortlisted') {
       return this.application.shortlistedStage;
     } else if (currentStage === 'technical_analysis') {
@@ -98,7 +98,7 @@ export class CandidateApplicationDetailsComponent implements OnInit {
     this.currentTab = tab;
   }
 
-  // Helper methods for type-safe property access
+
   getStageDataField(stageData: unknown, field: string): unknown {
     return (stageData as Record<string, unknown>)[field];
   }
@@ -118,10 +118,10 @@ export class CandidateApplicationDetailsComponent implements OnInit {
   getProfileUrl(): string {
     const profile = this.application?.atsStage?.profile as Record<string, unknown> | undefined;
     if (!profile) return '/profileimages/logodefault.jpg';
-    
+
     const profileUrl = profile['profileUrl'] as string | undefined;
     if (!profileUrl) return '/profileimages/logodefault.jpg';
-    
+
     if ((profileUrl as string).startsWith('http')) {
       return profileUrl;
     }

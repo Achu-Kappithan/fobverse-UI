@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CompanyProfileInterface, JobsInterface } from '../../interfaces/company.response.interface';
 import { CompanyService } from '../../services/company-service';
@@ -29,13 +29,12 @@ export class CompanyPublicProfileComponent implements OnInit, OnDestroy {
   cludBaseUrl:string = environment.cloudinaryBaseUrl
   private readonly _logger = inject(LoggerService);
 
-
   constructor(
     private readonly _companyService:CompanyService,
     private readonly _toast:ToastService,
     private readonly _cdr:ChangeDetectorRef,
     private readonly _route:ActivatedRoute,
-    private readonly _router:Router 
+    private readonly _router:Router
   ){}
 
   ngOnInit(): void {
@@ -78,14 +77,14 @@ export class CompanyPublicProfileComponent implements OnInit, OnDestroy {
       case 'email': return 'fas fa-envelope';
       case 'website': return 'fas fa-globe';
       case 'phone': return 'fas fa-phone';
-      default: return 'fas fa-link'; 
+      default: return 'fas fa-link';
     }
   }
 
   scrollLeft(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
-        left: -this.teamCardsContainer.nativeElement.offsetWidth / 4, 
+        left: -this.teamCardsContainer.nativeElement.offsetWidth / 4,
         behavior: 'smooth'
       });
     }
@@ -94,7 +93,7 @@ export class CompanyPublicProfileComponent implements OnInit, OnDestroy {
   scrollRight(): void {
     if (this.teamCardsContainer) {
       this.teamCardsContainer.nativeElement.scrollBy({
-        left: this.teamCardsContainer.nativeElement.offsetWidth / 4, 
+        left: this.teamCardsContainer.nativeElement.offsetWidth / 4,
         behavior: 'smooth'
       });
     }

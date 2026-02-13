@@ -1,4 +1,4 @@
-import { CommonModule} from '@angular/common';
+﻿import { CommonModule} from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
@@ -10,7 +10,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { catchError,forkJoin, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { GalleryImageDisplay } from '../../../../shared/interfaces/cloudinary-signature.response.interface';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
-
 
 @Component({
   selector: 'app-update-profileinfo',
@@ -50,7 +49,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
         this.profileData = val;
         this._logger.log("Profile data loaded", { name: this.profileData?.name });
         this.populateForm();
-        this._cdr.detectChanges()   
+        this._cdr.detectChanges()
       }
     })
   }
@@ -86,13 +85,13 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
       this.officeLocation.clear();
       this.techStack.clear();
       this.benefits.clear();
-      this.imageGallery.clear(); 
+      this.imageGallery.clear();
       this.imageGalleryDisplay = [];
 
-      if (this.profileData.logoUrl) { 
+      if (this.profileData.logoUrl) {
         this.logoPreviewUrl = this.profileData.logoUrl;
         this.logoPreviewUrl = this.baseUrl+this.profileData.logoUrl;
-        this.companyProfileForm.get('logoUrl')?.setValue(this.profileData.logoUrl); 
+        this.companyProfileForm.get('logoUrl')?.setValue(this.profileData.logoUrl);
       }
 
       this.profileData.contactInfo?.forEach(info => this.addContactInfo(info));
@@ -124,7 +123,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.onload = () => {
         this.logoPreviewUrl = reader.result;
-        this._cdr.detectChanges() 
+        this._cdr.detectChanges()
       };
       reader.readAsDataURL(this.selectedLogoFile);
     } else {
@@ -160,16 +159,16 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
   }
 
   removeGalleryImage(index: number): void {
-    // const removedImage = this.imageGalleryDisplay[index];
+
     this.imageGalleryDisplay.splice(index, 1);
     this.rebuildImageGalleryFormArray();
     this._cdr.detectChanges()
   }
 
   private rebuildImageGalleryFormArray(): void {
-    this.imageGallery.clear(); 
+    this.imageGallery.clear();
     this.imageGalleryDisplay
-      .filter(item => !item.isNew && item.url) 
+      .filter(item => !item.isNew && item.url)
       .map(item => item.url as string)
       .forEach(url => this.imageGallery.push(new FormControl(url)));
   }
@@ -264,7 +263,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
           catchError(error => {
             this._logger.error('Logo upload failed:', error);
             this._toast.error('Failed to upload company logo.');
-            return of(null); 
+            return of(null);
           })
         );
         uploadObservables.push(logoUpload$.pipe(
@@ -305,7 +304,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
               url: (result as Record<string, unknown>)['secure_url'] as string,
               publicId: (result as Record<string, unknown>)['public_id'] as string,
               isLogo: result.isLogo,
-              originalFileRef: result.originalFileRef 
+              originalFileRef: result.originalFileRef
             });
           }
         });
@@ -320,7 +319,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
       } else if (!this.selectedLogoFile && this.companyProfileForm.get('logoUrl')?.value) {
         finalFormData.logoUrl = this.companyProfileForm.get('logoUrl')?.value;
       } else {
-        finalFormData.logoUrl = null; 
+        finalFormData.logoUrl = null;
       }
 
       const existingGalleryItems = this.imageGalleryDisplay.filter(item => !item.isNew);
@@ -334,7 +333,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
       finalFormData.imageGallery = combinedGalleryItems.map(item => this.stripCloudinaryBase(item.url as string));
       this.imageGalleryDisplay = combinedGalleryItems;
 
-      this.imageGallery.clear(); 
+      this.imageGallery.clear();
       finalFormData.imageGallery.forEach((url: string) => this.imageGallery.push(new FormControl(url)));
       this.companyProfileForm.get('logoUrl')?.setValue(finalFormData.logoUrl);
 
@@ -355,7 +354,7 @@ export class UpdateProfileInfoComponent implements OnInit, OnDestroy {
       this._toast.error(errorObj?.error?.message || 'An unexpected error occurred during profile update.');
     } finally {
       this.isSaving = false;
-      this._cdr.detectChanges(); 
+      this._cdr.detectChanges();
     }
   }
 }

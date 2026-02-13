@@ -1,11 +1,11 @@
-import { notificationType } from '../enums/notification.enum';
+﻿import { notificationType } from '../enums/notification.enum';
 
 export interface NotificationInterface {
   _id: string;
   candidateId: string;
 
   type: notificationType;
-  notificationType?: string; // Fallback for backend naming inconsistency
+  notificationType?: string;
 
   title: string;
 

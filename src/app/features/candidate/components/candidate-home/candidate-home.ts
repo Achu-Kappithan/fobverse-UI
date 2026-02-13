@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -9,10 +9,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../../env/environment';
 
+import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
+
 @Component({
   selector: 'app-candidate-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LoadingSpinnerComponent],
   templateUrl: './candidate-home.html',
   styleUrl: './candidate-home.css',
 })
@@ -36,7 +38,7 @@ export class CandidateHomeComponent implements OnInit, OnDestroy {
 
   loadData(): void {
     this.isLoading = true;
-    
+
     this._candidateService.getHomeDataPublic()
       .pipe(takeUntil(this.destroy$))
       .subscribe({

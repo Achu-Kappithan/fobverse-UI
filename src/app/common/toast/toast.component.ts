@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { Toast } from '../../shared/services/toast/toast.model';
@@ -17,7 +17,6 @@ export class ToastComponent {
   constructor(private toastService: ToastService) {
     this.toasts$ = this.toastService.toasts$.pipe(delay(0));
   }
-
 
   removeToast(id: number): void {
     this.toastService.remove(id);

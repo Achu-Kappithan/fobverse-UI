@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { CompanyService } from '../../../services/company-service';
@@ -77,7 +77,6 @@ export class CompanyJobApplicationsComponent implements OnInit, OnDestroy {
     this.currentJobdetails = saved ? JSON.parse(saved) : null;
     }
     this._logger.log('loaded job details',this.currentJobdetails);
-
 
     this._route.paramMap.subscribe((parms) => {
       this.jobId = parms.get('id');
@@ -230,7 +229,6 @@ export class CompanyJobApplicationsComponent implements OnInit, OnDestroy {
     }
     return pageNumber;
   }
-
 
   back() {
     this._router.navigate(['../'], { relativeTo: this._route });

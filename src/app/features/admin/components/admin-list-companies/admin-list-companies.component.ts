@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AdminCompanyService } from '../../services/admin-company-service';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../../common/loading-spinner/loading-spinner';
@@ -126,13 +126,13 @@ export class AdminListCompaniesComponent implements OnInit {
 
   onLimitChange(newLimit: number): void {
     this.currentQueryParms.limit = newLimit;
-    this.currentQueryParms.page = 1;  
+    this.currentQueryParms.page = 1;
     this.fetchAllcompany();
   }
 
   onSearchInput(event: Event): void {
     const term = (event.target as HTMLInputElement).value;
-    this.searchTerms.next(term); 
+    this.searchTerms.next(term);
   }
 
   get pageNumbers(): number[] {

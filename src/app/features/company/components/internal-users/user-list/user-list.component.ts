@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LoggerService } from '../../../../../shared/services/logger/logger.service';
 import { RouterModule } from '@angular/router';
 import { InternalUserInterface } from '../../../interfaces/company.response.interface';
@@ -25,7 +25,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   private readonly _logger = inject(LoggerService);
 
   private _subscriptions : Subscription = new Subscription()
-  
+
   isLoading = false
   InternalUsers:InternalUserInterface[]=[]
 
@@ -68,7 +68,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     )
     this._logger.log('Internal users initialized');
   }
-
 
   fetchAllInternalUsers(){
     this.isLoading = true
@@ -126,7 +125,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   async removeUser(id:string,index:number){
     this._logger.log("Removing user at index:", index);
-    
+
     const confirmed = await this._confirmService.confirm({
       title: 'Remove User',
       message: 'Are you sure you want to remove this internal user? This action cannot be undone.',

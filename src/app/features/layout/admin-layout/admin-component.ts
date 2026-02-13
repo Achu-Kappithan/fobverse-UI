@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AdminHeaderComponent } from '../../../common/admin-header/admin-header';
 import { AdminSidebarComponent } from '../../../common/admin-sidebar/admin-sidebar';
@@ -22,6 +22,5 @@ export class AdminComponent {
   handleSidebarStateChange(isOpen: boolean) {
     this.isSidebarOpen = isOpen;
   }
-
 
 }

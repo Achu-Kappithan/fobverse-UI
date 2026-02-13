@@ -1,4 +1,4 @@
-import { Directive, inject, Input } from '@angular/core';
+﻿import { Directive, inject, Input } from '@angular/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
@@ -24,7 +24,7 @@ validate(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
 
     if (!value) {
-      return null; 
+      return null;
     }
 
     const errors: ValidationErrors = {};

@@ -7,6 +7,8 @@ import { CandidateService } from '../../services/candidate.service';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { PasswordValidator } from '../../../../shared/directives/passwordvalidators/passwordvalidator';
 
+
+
 @Component({
   selector: 'app-candidate-settings',
   standalone: true,

@@ -1,4 +1,4 @@
-export interface CandidateApplication {
+﻿export interface CandidateApplication {
   _id: string;
   applicationStatus: boolean;
   Stages: string;
@@ -15,7 +15,6 @@ export interface CandidateApplication {
   jobId: string;
   companyId: string;
 }
-
 
 export interface ApplicationQueryParams {
   page?: number;
@@ -36,7 +35,7 @@ export interface InterviewStage {
   meetingLink?: string;
   finalResult: string;
   overallFeedback?: string;
-  evaluators: Record<string, unknown>[]; 
+  evaluators: Record<string, unknown>[];
   createdAt: string;
   updatedAt: string;
 }

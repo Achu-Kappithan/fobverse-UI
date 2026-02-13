@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal, computed, effect, ViewChild, ElementRef, inject } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, signal, computed, effect, ViewChild, ElementRef, inject } from '@angular/core';
 import { LoggerService } from '../../shared/services/logger/logger.service';
 
 import { CommonModule } from '@angular/common';
@@ -29,15 +29,15 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   isConnecting = signal(true);
   showChat = signal(true);
   newMessage = signal('');
-  
+
   participantCount = computed(() => this.participants().length + 1);
-  
+
   roomId = '';
   userId = '';
   userName = '';
   peerId = '';
   private readonly _logger = inject(LoggerService);
-  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -56,7 +56,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.roomId = this.route.snapshot.paramMap.get('roomId') || '';
-    
+
     if (!this.roomId) {
       this._logger.error('[VideoInterview] No room ID provided');
       this.router.navigate(['../../'], { relativeTo: this.route });
@@ -89,7 +89,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
         userId: this.userId,
         peerId: this.peerId,
         name: this.userName,
-        role: 'interviewer' 
+        role: 'interviewer'
       });
 
       this.peerService.incomingCallSubject.subscribe((call) => {
@@ -113,7 +113,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     this.socketService.onRoomJoined((data: unknown) => {
       const roomData = data as RoomJoinedData;
       this._logger.log('[VideoInterview] Room joined:', roomData);
-      
+
       if (roomData.otherPeers && roomData.otherPeers.length > 0) {
         roomData.otherPeers.forEach((peer: { peerId: string; userId: string; name: string }) => {
           this.callPeer(peer.peerId, peer.userId, peer.name);
@@ -127,7 +127,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
       const userJoinedData = data as UserJoinedData;
       this._logger.log('[VideoInterview] User joined:', userJoinedData);
       this.addSystemMessage(`${userJoinedData.name} joined the room`);
-      
+
       if (userJoinedData.peerId && userJoinedData.userId !== this.userId) {
         this.callPeer(userJoinedData.peerId, userJoinedData.userId, userJoinedData.name);
       }
@@ -160,7 +160,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     try {
       this._logger.log('[VideoInterview] Calling peer:', peerId, 'Name:', name);
       const remoteStream = await this.peerService.call(peerId, localStream);
-      
+
       this.addOrUpdateParticipant({
         userId,
         peerId,
@@ -182,9 +182,9 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     try {
       this._logger.log('[VideoInterview] Answering call from:', call.peer);
       const remoteStream = await this.peerService.answer(call, localStream);
-      
+
       const existingParticipant = this.participants().find(p => p.peerId === call.peer || p.userId === call.peer);
-      
+
       this.addOrUpdateParticipant({
         userId: existingParticipant?.userId || call.peer,
         peerId: call.peer,
@@ -201,7 +201,7 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     this.participants.update(participants => {
       const existing = participants.find(p => p.userId === participant.userId);
       if (existing) {
-        return participants.map(p => 
+        return participants.map(p =>
           p.userId === participant.userId ? { ...p, ...participant } : p
         );
       }
@@ -210,14 +210,14 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
   }
 
   removeParticipant(userId: string) {
-    this.participants.update(participants => 
+    this.participants.update(participants =>
       participants.filter(p => p.userId !== userId)
     );
   }
 
   displayLocalVideo(stream: MediaStream) {
     let videoElement: HTMLVideoElement | null = null;
-    
+
     if (this.localVideoRef && this.localVideoRef.nativeElement) {
       videoElement = this.localVideoRef.nativeElement;
     } else {
@@ -249,11 +249,11 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
 
   async toggleCamera() {
     const newState = !this.isCameraOn();
-    
+
     try {
       await this.peerService.toggleVideo(newState);
       this.isCameraOn.set(newState);
-      
+
       if (newState) {
         const stream = this.peerService.getLocalStream();
         if (stream) {
@@ -333,19 +333,19 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     const currentUser = this.authService.CompanySubject.value ||
                       this.authService.CandidateSubject.value ||
                       this.authService.adminSubject.value;
-    
+
     if (currentUser && (currentUser.id || currentUser._id)) {
       const userId = currentUser.id || currentUser._id || '';
       this._logger.log('[VideoInterview] Got user ID from AuthService:', userId);
       return userId;
     }
-    
+
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       this._logger.log('[VideoInterview] Got user ID from localStorage:', storedUserId);
       return storedUserId;
     }
-    
+
     this._logger.error('[VideoInterview] No authenticated user found in AuthService or localStorage');
     return '';
   }
@@ -354,18 +354,18 @@ export class VideoInterviewComponent implements OnInit, OnDestroy {
     const currentUser = this.authService.CompanySubject.value ||
                       this.authService.CandidateSubject.value ||
                       this.authService.adminSubject.value;
-    
+
     if (currentUser && currentUser.name) {
       this._logger.log('[VideoInterview] Got user name from AuthService:', currentUser.name);
       return currentUser.name;
     }
-    
+
     const storedUserName = localStorage.getItem('userName') || localStorage.getItem('name');
     if (storedUserName) {
       this._logger.log('[VideoInterview] Got user name from localStorage:', storedUserName);
       return storedUserName;
     }
-    
+
     this._logger.error('[VideoInterview] No authenticated user name found');
     return '';
   }

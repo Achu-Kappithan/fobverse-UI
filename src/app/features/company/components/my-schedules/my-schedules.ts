@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { LoggerService } from '../../../../shared/services/logger/logger.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -28,7 +28,6 @@ export class MySchedulesComponent implements OnInit {
   pageSize = 5;
   totalSchedules = 0;
 
-
   statusOptions = [
     { value: '', label: 'All Status' },
     { value: 'Scheduled', label: 'Scheduled' },
@@ -57,17 +56,16 @@ export class MySchedulesComponent implements OnInit {
   applyFilters(): void {
     let filtered = [...this.schedules];
 
-
     if (this.selectedStatus) {
       filtered = filtered.filter(schedule => schedule.status === this.selectedStatus);
     }
 
     this.totalSchedules = filtered.length;
-    
+
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.filteredSchedules = filtered.slice(start, end);
-    
+
     this._cdr.detectChanges();
   }
 
@@ -101,7 +99,6 @@ export class MySchedulesComponent implements OnInit {
     if (total <= 0) return [];
     return Array.from({ length: total }, (_, i) => i + 1);
   }
-
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {

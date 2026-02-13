@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+﻿import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { ApplicationInterface, CompanyProfileInterface, CompanyDashboardData, InternalUserInterface, JobsInterface, PopulatedCompanyProfile, populatedJobInterface, TeamMember, UpdateInternalUserInterface } from '../interfaces/company.response.interface';
@@ -19,7 +19,6 @@ export class CompanyService {
     private readonly _logger: LoggerService
   ){}
 
-
   getCompanyProfile():Observable<ApiResponse<CompanyProfileInterface>>{
     return this._http.get<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/profile`,{withCredentials: true}).pipe(
       tap(res =>{
@@ -34,9 +33,8 @@ export class CompanyService {
   }
 
   getPublicView(id:string):Observable<ApiResponse<PopulatedCompanyProfile>>{
-    return this._http.get<ApiResponse<PopulatedCompanyProfile>>(`${environment.apiUrl}/company/public/profile?id=${id}`)
+    return this._http.get<ApiResponse<PopulatedCompanyProfile>>(`${environment.apiUrl}/company/public/profile/${id}`)
   }
-
 
   updateCompanyProfile(formData:FormData):Observable<ApiResponse<CompanyProfileInterface>>{
     return this._http.patch<ApiResponse<CompanyProfileInterface>>(`${environment.apiUrl}/company/updateprofile`,formData)
@@ -58,7 +56,7 @@ export class CompanyService {
 
   getInternalUsers(params:QueryParmsInterface):Observable<PaginatedApiResponse<InternalUserInterface[]>>{
     let  httpParms = new HttpParams
-    
+
     if(params.limit){
        httpParms = httpParms.set('limit',params.limit.toString())
     }
@@ -127,7 +125,6 @@ export class CompanyService {
     .get<Record<string, unknown>[]>(`${environment.nominatimUrl}${query}`, { params: { format: 'json' } })
     .pipe(map(res => res.map(item => (item as Record<string, unknown>)['display_name'] as string)));
   }
-
 
   removeUser(id:string):Observable<PlainResponse>{
     return this._http.delete<PlainResponse>(`${environment.apiUrl}/company/removeuser?id=${id}`)

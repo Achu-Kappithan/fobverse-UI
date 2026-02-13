@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+﻿import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../../shared/interfaces/api-response.interface';
@@ -9,7 +9,7 @@ import { ProfileInterface, UpdateAdminProfileInterface } from '../interfaces/adm
   providedIn: 'root'
 })
 export class AdminProfileService {
-  
+
   constructor(
     private readonly _http: HttpClient
   ) {}

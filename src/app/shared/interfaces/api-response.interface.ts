@@ -1,9 +1,9 @@
-
+﻿
 export interface ApiResponse<T> {
   success: boolean;
   data: T ,
   message: string;
-  meta?: PaginationMeta; 
+  meta?: PaginationMeta;
   timestamp: string;
 }
 
@@ -29,15 +29,15 @@ export interface PaginatedApiResponse<T> {
   timestamp: string;
 }
 
-export interface UserPartial { 
-  id?: string; // Actual field from auth service
-  _id?: string; // Legacy/fallback field
+export interface UserPartial {
+  id?: string;
+  _id?: string;
   email: string;
   name: string;
   is_verified?: boolean;
   role: string
   profileImg:string
-  
+
 }
 
 export interface User {
@@ -56,14 +56,12 @@ export interface PlainResponse {
   success:boolean,
 }
 
-
 export interface QueryParmsInterface {
   page?: number
   limit?: number
   search?:string
   filtervalue?: string
 }
-
 
 export interface PaginationMeta {
   totalItems: number;

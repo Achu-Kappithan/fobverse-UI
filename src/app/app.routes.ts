@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+﻿import { Routes } from '@angular/router';
 import { EmailVerificationFailedComponent } from './features/auth/components/email-verification/email-verification-faild/email-verification-faild';
 import { EmailVerificationSuccessComponent } from './features/auth/components/email-verification/email-verification-success/email-verification-success';
 import { EmailVerificationComponent } from './features/auth/components/email-verification/email-verification';
@@ -11,7 +11,6 @@ import { UpdateProfileInfoComponent } from './features/company/components/update
 
 import { APP_ROUTES } from './shared/constants/routes.constants';
 
-// guards
 import { AddInternalUserComponent } from './features/company/components/internal-users/add-internal-user/add-internal-user.component';
 import { UserListComponent } from './features/company/components/internal-users/user-list/user-list.component';
 import { isLogoutGuard } from './shared/guards/auth-guards/is-logout-guard';
@@ -27,14 +26,14 @@ import { JobViewComponent } from './features/company/components/jobs/job-view/jo
 import { JobEditingComponent } from './features/company/components/jobs/job-editing/job-editing';
 import { CompanyPublicProfileComponent } from './features/company/components/company-public-profile/company-public-profile';
 import { JobsPublicViewComponent } from './features/company/components/jobs-public-view/jobs-public-view';
-  
+
 export const routes: Routes = [
   {
     path: '',
     redirectTo: APP_ROUTES.HOME,
     pathMatch: 'full',
   },
-  // forgoPassword
+
 
   {
     path: APP_ROUTES.FORGOT_PASSWORD,
@@ -54,7 +53,7 @@ export const routes: Routes = [
     ],
   },
 
-  // email
+
   {
     path: 'email',
     loadComponent: () =>
@@ -72,7 +71,7 @@ export const routes: Routes = [
     path: '',
     component: AuthComponent,
     children: [
-      // Auth
+
 
       {
         path: APP_ROUTES.LOGIN,
@@ -108,8 +107,6 @@ export const routes: Routes = [
   },
 
 
-
-  // candidate
 
   {
     path: APP_ROUTES.CANDIDATE,
@@ -235,7 +232,7 @@ export const routes: Routes = [
     ],
   },
 
-  //company
+
 
   {
     path: APP_ROUTES.COMPANY,
@@ -401,7 +398,7 @@ export const routes: Routes = [
     ],
   },
 
-  // Admin
+
 
   {
     path: APP_ROUTES.ADMIN,

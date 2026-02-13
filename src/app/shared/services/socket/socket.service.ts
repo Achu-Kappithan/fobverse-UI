@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 
 import { environment } from '../../../../env/environment';
@@ -8,7 +8,7 @@ import { LoggerService } from '../logger/logger.service';
   providedIn: 'root',
 })
 export class SocketService {
-  
+
   private socket!: Socket
 
   constructor(private _logger: LoggerService) {}
@@ -40,7 +40,7 @@ export class SocketService {
     });
   }
 
-  // Video Call Methods
+
   joinVideoRoom(data: { roomId: string; userId: string; peerId: string; name: string; role?: string }) {
     if (this.socket) {
       this._logger.debug('[Socket] Joining video room:', data);
