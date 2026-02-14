@@ -3,9 +3,9 @@
         <div class="relative bg-purple-ultra-light w-full lg:w-[634px] p-8 flex flex-col items-center justify-center lg:py-0 lg:px-20">
             <div class="absolute top-5 left-8 lg:left-20 flex items-center space-x-2">
                 <div class="w-8 h-8 bg-[#6A45F5] rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">J</span>
+                    <span class="text-white font-bold text-lg">F</span>
                 </div>
-                <span class="text-navy font-bold text-2xl">JobVerse</span>
+                <span class="text-navy font-bold text-2xl">FobVerse</span>
             </div>
 
             <div class="hidden lg:block relative w-full h-full">
@@ -54,7 +54,7 @@
             </div>
 
             <div class="lg:hidden text-center text-navy my-8">
-                <h2 class="text-2xl font-semibold">Join JobVerse today!</h2>
+                <h2 class="text-2xl font-semibold">Join FobVerse today!</h2>
                 <p class="text-lg opacity-70">Find your dream job with ease.</p>
             </div>
         </div>
@@ -210,9 +210,11 @@
 
                 <button
                   type="submit"
-                  class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors"
+                  [disabled]="isLoading"
+                  class="w-full h-[50px] bg-[#6A45F5] hover:bg-[#5C32E6] text-white font-bold text-base rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Continue
+                  <div *ngIf="isLoading" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  {{ isLoading ? 'Waiting for response...' : 'Continue' }}
                 </button>
               </form>
             <div class="flex flex-col items-center space-y-2 mt-4">

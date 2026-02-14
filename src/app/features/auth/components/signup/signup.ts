@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -27,6 +27,7 @@ export class SignupComponent implements OnInit {
   private _toast = inject(ToastService);
   private _router = inject(Router);
   private _logger = inject(LoggerService);
+  private _cdr = inject(ChangeDetectorRef);
 
   signupForm!: FormGroup;
   userType = '';
@@ -81,6 +82,7 @@ export class SignupComponent implements OnInit {
   handleSubmit(): void {
     if (this.signupForm.valid) {
       this.isLoading = true;
+      this._cdr.detectChanges();
       const { fullName, email, password } = this.signupForm.value;
       const userData = {
         name: fullName,
@@ -92,6 +94,7 @@ export class SignupComponent implements OnInit {
       this._Authservice.registerCandidate(userData).subscribe({
         next: (response) => {
           this.isLoading = false;
+          this._cdr.detectChanges();
           this._logger.log('registration response comes from the backend', response);
           this._toast.success(response.message);
           this.signupForm.reset();
@@ -99,6 +102,7 @@ export class SignupComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
+          this._cdr.detectChanges();
           this._logger.error('Registration error:', error);
           let errorMessage = 'An unexpected error occurred';
           if (error.error && error.error.message) {

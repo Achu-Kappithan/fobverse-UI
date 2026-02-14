@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -47,6 +47,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _googlesub?: Subscription;
   private _logger = inject(LoggerService);
+  private _cdr = inject(ChangeDetectorRef);
+
+  isLoading = false;
 
   ngOnInit(): void {
     this._route.data.subscribe((data) => {
@@ -109,8 +112,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       this._logger.info('Form submitted successfully!', userdata);
 
       if (this.userType === 'admin') {
+        this.isLoading = true;
+        this._cdr.detectChanges();
         this._AuthService.adminLogin(userdata).subscribe({
           next: (response) => {
+            this.isLoading = false;
+            this._cdr.detectChanges();
             this._logger.log('adminLogin Response', response);
             if (response.success) {
               this._toast.success(
@@ -121,13 +128,19 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
           },
           error: (error) => {
+            this.isLoading = false;
+            this._cdr.detectChanges();
             this._toast.error(error.error.message);
             this.loginForm.reset();
           },
         });
       } else if (this.userType === 'candidate') {
+        this.isLoading = true;
+        this._cdr.detectChanges();
         this._AuthService.candidateLogin(userdata).subscribe({
           next: (response) => {
+            this.isLoading = false;
+            this._cdr.detectChanges();
             if (response.success) {
               this._toast.success(
                 response.message ?? 'Login SuccessFull'
@@ -142,15 +155,21 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
           },
           error: (err) => {
+            this.isLoading = false;
+            this._cdr.detectChanges();
             this._logger.error('Login error:', err);
             this._toast.error(err.statusText, err.error.message);
             this.loginForm.reset();
           },
         });
       } else {
+        this.isLoading = true;
+        this._cdr.detectChanges();
         const logindata = this.loginForm.value;
         this._AuthService.companyUsersLogin(logindata).subscribe({
           next: (res) => {
+            this.isLoading = false;
+            this._cdr.detectChanges();
             this._logger.log('companylogin Response', res);
             if (res.success) {
               this._toast.success(res.message ?? 'Login SuccessFull');
@@ -160,6 +179,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
           },
           error: (err) => {
+            this.isLoading = false;
+            this._cdr.detectChanges();
             this._logger.error('error regading company login', err);
             this._toast.error(
               err.error.message ?? 'Error regading login  plz try again..!'
