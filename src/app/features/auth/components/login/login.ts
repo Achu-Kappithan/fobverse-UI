@@ -79,7 +79,8 @@ export class LoginComponent implements OnInit, OnDestroy {
               },
               error: (error) => {
                 this._logger.error('Error during login:', error);
-                this._toast.error(error.error.message);
+                const errorMessage = error?.error?.message || error?.message || 'Google Login failed';
+                this._toast.error(errorMessage);
               },
             });
           }
@@ -130,7 +131,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           error: (error) => {
             this.isLoading = false;
             this._cdr.detectChanges();
-            this._toast.error(error.error.message);
+            const errorMessage = error?.error?.message || error?.message || 'Admin Login failed';
+            this._toast.error(errorMessage);
             this.loginForm.reset();
           },
         });
@@ -158,7 +160,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.isLoading = false;
             this._cdr.detectChanges();
             this._logger.error('Login error:', err);
-            this._toast.error(err.statusText, err.error.message);
+            const errorMessage = err?.error?.message || err?.statusText || 'Login failed';
+            this._toast.error(errorMessage);
             this.loginForm.reset();
           },
         });
@@ -181,10 +184,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           error: (err) => {
             this.isLoading = false;
             this._cdr.detectChanges();
-            this._logger.error('error regading company login', err);
-            this._toast.error(
-              err.error.message ?? 'Error regading login  plz try again..!'
-            );
+            this._logger.error('error regarding company login', err);
+            const errorMessage = err?.error?.message || 'Error regarding login please try again..!';
+            this._toast.error(errorMessage);
           },
         });
       }

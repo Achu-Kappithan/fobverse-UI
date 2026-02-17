@@ -100,13 +100,13 @@ export class CandidateApplyJobComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern(/^[+]?[0-9\s-]{10,15}$/)]],
       experience: ['', [Validators.required]],
       qualification: ['', [Validators.required]],
-      resume: [null, [Validators.required, this.fileValidator()]],
+      resumeUrl: [null, [Validators.required, this.fileValidator()]],
       useExistingResume: [false]
     });
   }
 
   setupFormChanges() {
-    const resumeControl = this.jobApplayForm.get('resume') as FormControl;
+    const resumeControl = this.jobApplayForm.get('resumeUrl') as FormControl;
     const useExistingResumeControl = this.jobApplayForm.get('useExistingResume') as FormControl;
 
     useExistingResumeControl.valueChanges.subscribe(useExisting => {
@@ -128,8 +128,8 @@ export class CandidateApplyJobComponent implements OnInit {
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      this.jobApplayForm.patchValue({ resume: file });
-      this.jobApplayForm.get('resume')?.updateValueAndValidity();
+      this.jobApplayForm.patchValue({ resumeUrl: file });
+      this.jobApplayForm.get('resumeUrl')?.updateValueAndValidity();
       this.selectedFile = file;
       this.selectedFileName = file.name;
     } else {

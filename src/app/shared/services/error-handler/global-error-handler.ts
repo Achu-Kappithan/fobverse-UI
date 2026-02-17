@@ -14,22 +14,25 @@ export class GlobalErrorHandler implements ErrorHandler {
     let message = 'An unexpected error occurred';
     let stackTrace = '';
 
-    if (error instanceof HttpErrorResponse) {
+    try {
+      if (error instanceof HttpErrorResponse) {
+        message = error.error?.message || error.message || 'Server connection failed';
+        logger.error(`[Server Error ${error.status}]: ${message}`, error);
+      } else if (error instanceof Error) {
+        message = error.message;
+        stackTrace = error.stack || '';
+        logger.error(`[Client Error]: ${message}`, { stackTrace, error });
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = (error as { message: string }).message;
+        logger.error(`[Client Error]: ${message}`, { error });
+      } else {
+        message = error ? String(error) : 'Unknown error';
+        logger.error(`[Client Error]: ${message}`, { error });
+      }
 
-      message = error.error?.message || error.message || 'Server connection failed';
-      logger.error(`[Server Error ${error.status}]: ${message}`, error);
-    } else if (error instanceof Error) {
-
-      message = error.message;
-      stackTrace = error.stack || '';
-      logger.error(`[Client Error]: ${message}`, { stackTrace, error });
-    } else {
-
-      message = error ? String(error) : 'Unknown error';
-      logger.error(`[Client Error]: ${message}`, { error });
+      toast.error('Application Error', message);
+    } catch (handlerError) {
+      console.error('Critical failure in GlobalErrorHandler:', handlerError);
     }
-
-
-    toast.error('Application Error', message);
   }
 }

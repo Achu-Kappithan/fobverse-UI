@@ -125,7 +125,7 @@
                         <div class="flex text-sm text-gray theme-transition">
                             <label for="file-upload-{{uniqueIdentifier}}" class="relative cursor-pointer bg-white rounded-md font-medium text-purple hover:text-light-purple focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500 theme-transition">
                                 <span>Upload a file</span>
-                                <input id="file-upload-{{uniqueIdentifier}}" name="resume" type="file" class="sr-only" accept=".pdf" (change)="onFileSelected($event)" />
+                                <input id="file-upload-{{uniqueIdentifier}}" name="resumeUrl" type="file" class="sr-only" accept=".pdf" (change)="onFileSelected($event)" />
                             </label>
                             <p class="pl-1 theme-transition">or drag and drop</p>
                         </div>
@@ -134,9 +134,9 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="jobApplayForm.get('resume')?.invalid && (jobApplayForm.get('resume')?.dirty || jobApplayForm.get('resume')?.touched)" class="mt-1 text-sm text-red-600">
-                    <p *ngIf="jobApplayForm.get('resume')?.errors?.['required']">Resume is required.</p>
-                    <p *ngIf="jobApplayForm.get('resume')?.errors?.['invalidFileType']">Only PDF files are allowed.</p>
+                <div *ngIf="jobApplayForm.get('resumeUrl')?.invalid && (jobApplayForm.get('resumeUrl')?.dirty || jobApplayForm.get('resumeUrl')?.touched)" class="mt-1 text-sm text-red-600">
+                    <p *ngIf="jobApplayForm.get('resumeUrl')?.errors?.['required']">Resume is required.</p>
+                    <p *ngIf="jobApplayForm.get('resumeUrl')?.errors?.['invalidFileType']">Only PDF files are allowed.</p>
                 </div>
             </div>
             
