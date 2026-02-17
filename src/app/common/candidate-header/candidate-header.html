@@ -317,7 +317,7 @@
           </ng-container>
   
           <ng-template #guestActions>
-            <div class="flex items-center space-x-4">
+            <div class="hidden md:flex items-center space-x-4">
               <a
                 [routerLink]="['/login']"
                 class="text-purple font-semibold hover:text-purple-700 transition-colors"
@@ -336,6 +336,82 @@
         </ng-container>
       </div>
       </div>
+      <div class="flex items-center md:hidden">
+        <button
+          (click)="toggleMobileMenu(); $event.stopPropagation()"
+          class="inline-flex items-center justify-center p-2 rounded-md text-dark-gray hover:text-purple hover:bg-lavender focus:outline-none transition-colors"
+          [attr.aria-expanded]="isMobileMenuOpen"
+        >
+          <span class="sr-only">Open main menu</span>
+          <i class="fas" [ngClass]="isMobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    *ngIf="isMobileMenuOpen"
+    appClickOutside
+    (appClickOutside)="closeModal()"
+    class="md:hidden bg-white border-t border-gray-100 shadow-lg animate-fade-in-down"
+  >
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a
+        [routerLink]="['home']"
+        (click)="closeModal()"
+        [routerLinkActive]="'bg-lavender text-purple font-bold'"
+        class="block px-3 py-2 rounded-md text-base font-medium text-dark-gray hover:text-purple hover:bg-lavender transition-all"
+        >Home</a
+      >
+      <a
+        [routerLink]="['joblist']"
+        (click)="closeModal()"
+        [routerLinkActive]="'bg-lavender text-purple font-bold'"
+        class="block px-3 py-2 rounded-md text-base font-medium text-dark-gray hover:text-purple hover:bg-lavender transition-all"
+        >Find Job</a
+      >
+      <a
+        [routerLink]="['companylist']"
+        (click)="closeModal()"
+        [routerLinkActive]="'bg-lavender text-purple font-bold'"
+        class="block px-3 py-2 rounded-md text-base font-medium text-dark-gray hover:text-purple hover:bg-lavender transition-all"
+        >Employers</a
+      >
+      <a
+        [routerLink]="['my-applications']"
+        (click)="closeModal()"
+        [routerLinkActive]="'bg-lavender text-purple font-bold'"
+        class="block px-3 py-2 rounded-md text-base font-medium text-dark-gray hover:text-purple hover:bg-lavender transition-all"
+        >My Application</a
+      >
+      <a
+        [routerLink]="['/candidate/about-us']"
+        (click)="closeModal()"
+        [routerLinkActive]="'bg-lavender text-purple font-bold'"
+        class="block px-3 py-2 rounded-md text-base font-medium text-dark-gray hover:text-purple hover:bg-lavender transition-all"
+        >About Us</a
+      >
+
+      <!-- Guest Actions in Mobile Menu -->
+      <ng-container *ngIf="!candidate">
+        <div class="border-t border-gray-100 my-2 pt-2">
+          <a
+            [routerLink]="['/login']"
+            (click)="closeModal()"
+            class="block px-3 py-2 rounded-md text-base font-bold text-purple hover:bg-lavender transition-all"
+          >
+            Login
+          </a>
+          <a
+            [routerLink]="['/signup']"
+            (click)="closeModal()"
+            class="block px-3 py-2 mt-1 rounded-md text-base bg-purple text-white text-center shadow-md hover:bg-purple-700 transition-all"
+          >
+            Sign Up
+          </a>
+        </div>
+      </ng-container>
     </div>
   </div>
 </nav>

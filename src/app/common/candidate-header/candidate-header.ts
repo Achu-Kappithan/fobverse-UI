@@ -27,6 +27,7 @@ export class CandidateHeaderComponent implements OnInit {
   notificationTab: 'unread' | 'all' = 'unread';
   notifications: NotificationInterface[] =[]
   isLoaded = false;
+  isMobileMenuOpen = false;
   private readonly _logger = inject(LoggerService);
 
   constructor(
@@ -93,6 +94,12 @@ export class CandidateHeaderComponent implements OnInit {
   closeModal(): void {
     this.opendModal = null;
     this.isNotificationModalOpen = false;
+    this.isMobileMenuOpen = false;
+    this._cdr.detectChanges();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
     this._cdr.detectChanges();
   }
 
