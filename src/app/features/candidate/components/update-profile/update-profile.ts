@@ -78,7 +78,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       education: this.fb.array<FormControl>([]),
       experience: this.fb.array<FormControl>([]),
       skills: this.fb.array<FormControl>([]),
-      portfolioLinks: this.fb.array<FormControl>([])
     });
   }
 
@@ -93,7 +92,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       this.education.clear();
       this.experience.clear();
       this.skills.clear();
-      this.portfolioLinks.clear();
 
       if (this.profileData.profileUrl) {
         this.ProfilePreviewUrl = this.cludBaseUrl+this.profileData.profileUrl;
@@ -115,7 +113,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       this.profileData.education?.forEach(edu => this.addEducation(edu));
       this.profileData.experience?.forEach(exp => this.addExperience(exp));
       this.profileData.skills?.forEach(skil => this.addSkills(skil));
-      this.profileData.portfolioLinks?.forEach(link => this.addPortfolioLink(link));
     }
     this._cdr.detectChanges();
   }
@@ -173,10 +170,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     return this.updateProfileForm.get('skills') as FormArray;
   }
 
-  get portfolioLinks(): FormArray {
-    return this.updateProfileForm.get('portfolioLinks') as FormArray;
-  }
-
   addContactInfo(info?: ContactInfoItem): void {
     this.contactInfo.push(this.fb.group({
       type: [info ? info.type : '', Validators.required],
@@ -217,16 +210,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
 
   removeSkills(index: number): void {
     this.skills.removeAt(index);
-    this._cdr.detectChanges();
-  }
-
-  addPortfolioLink(link?: string): void {
-    this.portfolioLinks.push(this.fb.control(link || "", Validators.required));
-    this._cdr.detectChanges();
-  }
-
-  removePortfolioLink(index: number): void {
-    this.portfolioLinks.removeAt(index);
     this._cdr.detectChanges();
   }
 

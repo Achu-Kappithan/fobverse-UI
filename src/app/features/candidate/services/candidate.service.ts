@@ -68,7 +68,7 @@ export class CandidateService {
   }
 
   updateResume(filename:string):Observable<ApiResponse<CandidateInterface>>{
-    return this._http.post<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/updataprofile`, { resumeUrl: filename })
+    return this._http.post<ApiResponse<CandidateInterface>>(`${environment.apiUrl}/candidate/updateprofile`, { resumeUrl: filename })
   }
 
   applayJob(id:string,data:jobApplicationDto):Observable<PlainResponse>{
