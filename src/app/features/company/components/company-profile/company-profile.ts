@@ -12,6 +12,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ToastService } from '../../../../shared/services/toast/toast.service';
 import { CloudinaryService } from '../../../../shared/services/cloudinary.service';
 import { environment } from '../../../../../env/environment';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-company-profile',
@@ -56,9 +57,12 @@ export class CompanyProfileComponent implements OnInit,OnDestroy {
     private readonly _cdr:ChangeDetectorRef,
     private readonly _router : Router,
     private readonly _route: ActivatedRoute,
-    private readonly _toast : ToastService
+    private readonly _toast : ToastService,
+    private readonly _authService: AuthService
   ){
   }
+
+  
 
   ngOnInit(): void {
     this.initTeamMemberForm()

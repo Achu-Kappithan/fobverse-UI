@@ -1,3 +1,8 @@
 html, body {
     overflow-x: hidden;
 }
+
+.restricted-cursor {
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}

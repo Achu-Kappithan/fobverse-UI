@@ -64,7 +64,7 @@ export class CandidateService {
     if (params.dueDate) {
       httpParams = httpParams.set('dueDate', params.dueDate);
     }
-    return this._http.get<ApiResponse<CandidateJobsInterface[]>>(`${environment.apiUrl}/jobs/getalljobs`, { params: httpParams });
+    return this._http.get<ApiResponse<CandidateJobsInterface[]>>(`${environment.apiUrl}/jobs/getalljobs-public`, { params: httpParams });
   }
 
   updateResume(filename:string):Observable<ApiResponse<CandidateInterface>>{
